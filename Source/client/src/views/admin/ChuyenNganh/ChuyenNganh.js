@@ -7,6 +7,9 @@ import { useMemo, useState, useEffect } from 'react';
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
 import Example from "./Example";
 
+
+
+
 const data = [
     {
         madkcn: 'John',

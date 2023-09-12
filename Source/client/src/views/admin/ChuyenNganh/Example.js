@@ -2,7 +2,18 @@ import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
 import { Box, Button } from '@mantine/core';
 import { IconDownload, IconUpload } from '@tabler/icons-react';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
-
+import {
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    MenuItem,
+    Stack,
+    TextField,
+    Tooltip,
+} from '@mui/material';
+import { Delete, Edit } from '@mui/icons-material';
 //defining columns outside of the component is fine, is stable
 const columns = [
     {
@@ -35,6 +46,7 @@ const columns = [
         size: 220,
     },
 ];
+
 
 const data = [
 
@@ -162,6 +174,8 @@ const Example = () => {
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',
         positionToolbarAlertBanner: 'bottom',
+        enableColumnActions: true,
+
         renderTopToolbarCustomActions: ({ table }) => (
             <Box
                 sx={{
@@ -230,6 +244,7 @@ const Example = () => {
                     Create Data
                 </Button> */}
             </Box>
+
         ),
     });
 
