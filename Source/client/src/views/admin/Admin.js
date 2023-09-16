@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import Nav from "./Nav/Nav";
 import "./Admin.scss"
 import ChuyenNganh from "./ChuyenNganh/ChuyenNganh";
+import EditChuyenNganh from "./ChuyenNganh/EditChuyenNganh";
 const Admin = () => {
     const [hiddenDB, setHiddenDB] = useState(false);
     const [switchmode, setSwitchmode] = useState(false);
@@ -27,13 +28,17 @@ const Admin = () => {
                     <Routes >
                         <Route path="/admin" exact>
                             <Route path='' element={<Tongquan />} exact></Route>
-                            <Route path='chuyennganh' element={<ChuyenNganh />} ></Route>
+                            <Route path='chuyennganh'  >
+                                <Route index element={<ChuyenNganh />}></Route>
+                                <Route path="new"></Route>
+                                <Route path="single/:madkcn" element={<EditChuyenNganh />}></Route>
+                            </Route>
                         </Route>
 
                     </Routes >
                 </section>
 
-            </div>
+            </div >
 
 
 

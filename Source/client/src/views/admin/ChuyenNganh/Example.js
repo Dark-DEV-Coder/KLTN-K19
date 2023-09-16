@@ -1,9 +1,12 @@
 import "./Example.scss"
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Box, Button } from '@mantine/core';
 import { IconDownload, IconUpload } from '@tabler/icons-react';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
 import { MenuItem } from '@mui/material';
+import { Link } from "react-router-dom";
+import moment from 'moment'
 import {
     Dialog,
     DialogActions,
@@ -14,79 +17,53 @@ import {
     TextField,
     Tooltip,
 } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
-//defining columns outside of the component is fine, is stable
+import { Delete, Edit, Visibility } from '@mui/icons-material';
+
+
 // const columns = [
 //     {
-//         accessorKey: 'id',
-//         header: 'ID',
-//         size: 40,
-//         alignItems: "center",
-//         justifyContent: "center",
+//         accessorKey: 'madkcn',
+//         header: 'Mã',
+//         size: 10,
+//         enableColumnOrdering: false,
+//         enableEditing: false, //disable editing on this column
+//         enableSorting: false,
+
 //     },
 //     {
-//         accessorKey: 'firstName',
-//         header: 'First Name',
+//         accessorKey: 'nienkhoa',
+//         header: 'Niên khóa',
 //         size: 130,
 //     },
 //     {
-//         accessorKey: 'lastName',
-//         header: 'Last Name',
+//         accessorKey: 'khoahoc',
+//         header: 'Khóa',
 //         size: 130,
 //     },
 //     {
-//         accessorKey: 'company',
-//         header: 'Company',
-//         size: 200,
-//         textAlign: 'center',
+//         type: 'date',
+//         accessorKey: 'tgbd',
+//         header: 'Bắt đầu',
+//         size: 150,
+
 //     },
 //     {
-//         accessorKey: 'city',
-//         header: 'City',
-//         size: 200,
+//         type: 'date',
+//         accessorKey: 'tgkt',
+//         header: 'Kết thúc',
+//         size: 150,
 //     },
 //     {
-//         accessorKey: 'country',
-//         header: 'Country',
-//         size: 200,
+//         accessorKey: 'nganh',
+//         header: 'Ngành',
+//         size: 100,
+
 //     },
 // ];
 
 
-const columns = [
-    {
-        accessorKey: 'madkcn',
-        header: 'Mã',
-        size: 10,
 
-    },
-    {
-        accessorKey: 'nienkhoa',
-        header: 'Niên khóa',
-        size: 130,
-    },
-    {
-        accessorKey: 'khoahoc',
-        header: 'Khóa',
-        size: 130,
-    },
-    {
-        accessorKey: 'tgbd',
-        header: 'Bắt đầu',
-        size: 150,
-        textAlign: 'center',
-    },
-    {
-        accessorKey: 'tgkt',
-        header: 'Kết thúc',
-        size: 150,
-    },
-    {
-        accessorKey: 'nganh',
-        header: 'Ngành',
-        size: 100,
-    },
-];
+
 
 
 const data = [
@@ -98,7 +75,6 @@ const data = [
         khoahoc: 'K19',
         tgbd: '01/02/2019',
         tgkt: '14/03/2019',
-        nganh: 'KTPM',
         trangthai: 1,
     },
     {
@@ -107,7 +83,6 @@ const data = [
         khoahoc: 'K19',
         tgbd: '01/02/2019',
         tgkt: '14/03/2019',
-        nganh: 'KHMT',
         trangthai: 1,
     },
     {
@@ -116,7 +91,6 @@ const data = [
         khoahoc: 'K19',
         tgbd: '01/02/2019',
         tgkt: '14/03/2019',
-        nganh: 'MMT',
         trangthai: 1,
     },
     {
@@ -125,7 +99,6 @@ const data = [
         khoahoc: 'K19',
         tgbd: '01/02/2019',
         tgkt: '14/03/2019',
-        nganh: 'KTPM',
         trangthai: 1,
     },
     {
@@ -134,7 +107,6 @@ const data = [
         khoahoc: 'K19',
         tgbd: '01/02/2019',
         tgkt: '14/03/2019',
-        nganh: 'KTPM',
         trangthai: 1,
     },
     {
@@ -143,7 +115,6 @@ const data = [
         khoahoc: 'K19',
         tgbd: '01/02/2019',
         tgkt: '14/03/2019',
-        nganh: 'KHMT',
         trangthai: 1,
     },
     {
@@ -152,7 +123,6 @@ const data = [
         khoahoc: 'K19',
         tgbd: '01/02/2019',
         tgkt: '14/03/2019',
-        nganh: 'HTTT',
         trangthai: 1,
     },
     {
@@ -161,7 +131,6 @@ const data = [
         khoahoc: 'K19',
         tgbd: '01/02/2019',
         tgkt: '14/03/2019',
-        nganh: 'KTPM',
         trangthai: 1,
     },
     {
@@ -170,7 +139,6 @@ const data = [
         khoahoc: 'K19',
         tgbd: '01/02/2019',
         tgkt: '14/03/2019',
-        nganh: 'KTPM',
         trangthai: 1,
     },
     {
@@ -179,7 +147,6 @@ const data = [
         khoahoc: 'K19',
         tgbd: '01/02/2019',
         tgkt: '14/03/2019',
-        nganh: 'KTPM',
         trangthai: 1,
     },
     {
@@ -188,7 +155,6 @@ const data = [
         khoahoc: 'K19',
         tgbd: '01/02/2019',
         tgkt: '14/03/2019',
-        nganh: 'KTPM',
         trangthai: 1,
     },
     {
@@ -197,7 +163,6 @@ const data = [
         khoahoc: 'K19',
         tgbd: '01/02/2019',
         tgkt: '14/03/2019',
-        nganh: 'KTPM',
         trangthai: 1,
     },
 ]
@@ -209,6 +174,8 @@ const csvConfig = mkConfig({
 });
 
 const Example = () => {
+    const [checkdiv, setCheckdiv] = useState(false)
+
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
         const csv = generateCsv(csvConfig)(rowData);
@@ -219,6 +186,48 @@ const Example = () => {
         const csv = generateCsv(csvConfig)(data);
         download(csvConfig)(csv);
     };
+    const columns = useMemo(
+        () => [
+            {
+                accessorKey: 'madkcn',
+                header: 'Mã',
+                size: 10,
+                enableColumnOrdering: false,
+                enableEditing: false, //disable editing on this column
+                enableSorting: false,
+
+            },
+            {
+                accessorKey: 'nienkhoa',
+                header: 'Niên khóa',
+                size: 100,
+                enableEditing: false,
+
+            },
+            {
+                accessorKey: 'khoahoc',
+                header: 'Khóa',
+                size: 100,
+                enableEditing: false,
+            },
+            {
+
+                accessorKey: 'tgbd',
+                header: 'Bắt đầu',
+                size: 150,
+                enableEditing: false,
+
+
+            },
+            {
+                type: 'date',
+                accessorKey: 'tgkt',
+                header: 'Kết thúc',
+                size: 150,
+                enableEditing: false,
+            },
+        ]
+    );
 
     const table = useMantineReactTable({
         columns,
@@ -233,17 +242,25 @@ const Example = () => {
 
 
 
-        renderRowActions: ({ row }) => (
+        renderRowActions: ({ row, table }) => (
             <Box sx={{ display: 'flex', gap: '0.3rem' }}>
-                <IconButton onClick={() => console.log(row.original.name)}>
-                    <Edit />
+                <IconButton onClick={() => table.setEditingRow(row)}>
+                    <Visibility fontSize="small" />
                 </IconButton>
+                <Link to={"/admin/chuyennganh/single/" + row.original.madkcn}>
+                    <IconButton >
+                        <Edit fontSize="small" />
+                    </IconButton>
+                </Link>
+
+
                 <IconButton onClick={() => console.log(row.original.name)}>
-                    <Delete sx={{ color: 'red' }} />
+                    <Delete fontSize="small" sx={{ color: 'red' }} />
                 </IconButton>
-            </Box>
+            </Box >
 
         ),
+
 
 
         renderTopToolbarCustomActions: ({ table }) => (
@@ -318,8 +335,14 @@ const Example = () => {
         ),
     });
 
-    return <MantineReactTable table={table}
-    />;
+    return (
+        <>
+
+            <MantineReactTable table={table} />;
+
+        </>
+    )
+
 };
 
 export default Example;
