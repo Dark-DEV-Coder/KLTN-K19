@@ -1,10 +1,10 @@
 import HeaderMain from "../HeaderMain/HeaderMain";
 import "./ChuyenNganh.scss"
-import "./Example"
+import "./TableChuyenNganh.scss"
 import { Link } from "react-router-dom";
 import { useMemo, useState, useEffect } from 'react';
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
-import Example from "./Example";
+import TableChuyenNganh from "./TableChuyenNganh";
 
 
 const ChuyenNganh = () => {
@@ -38,7 +38,7 @@ const ChuyenNganh = () => {
                 {/* <MantineReactTable table={table} />; */}
 
 
-                <Example />
+                <TableChuyenNganh />
 
             </main >
         </>

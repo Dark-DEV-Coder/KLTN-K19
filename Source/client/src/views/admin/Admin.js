@@ -9,7 +9,8 @@ import { useEffect, useState } from "react";
 import Nav from "./Nav/Nav";
 import "./Admin.scss"
 import ChuyenNganh from "./ChuyenNganh/ChuyenNganh";
-import EditChuyenNganh from "./ChuyenNganh/EditChuyenNganh";
+import SingleChuyenNganh from "./ChuyenNganh/ChiTietDKCN/SingleChuyenNganh";
+import EditDKCN from "./ChuyenNganh/EditDKCN/EditDKCN";
 const Admin = () => {
     const [hiddenDB, setHiddenDB] = useState(false);
     const [switchmode, setSwitchmode] = useState(false);
@@ -31,7 +32,8 @@ const Admin = () => {
                             <Route path='chuyennganh'  >
                                 <Route index element={<ChuyenNganh />}></Route>
                                 <Route path="new"></Route>
-                                <Route path="single/:madkcn" element={<EditChuyenNganh />}></Route>
+                                <Route path="single/:madkcn" element={<SingleChuyenNganh />}></Route>
+                                <Route path="edit/:madkcn" element={<EditDKCN />}></Route>
                             </Route>
                         </Route>
 

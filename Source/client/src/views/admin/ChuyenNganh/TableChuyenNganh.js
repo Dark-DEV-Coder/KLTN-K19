@@ -1,4 +1,4 @@
-import "./Example.scss"
+import "./TableChuyenNganh.scss"
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Box, Button } from '@mantine/core';
@@ -173,7 +173,7 @@ const csvConfig = mkConfig({
     useKeysAsHeaders: true,
 });
 
-const Example = () => {
+const TableChuyenNganh = () => {
     const [checkdiv, setCheckdiv] = useState(false)
 
     const handleExportRows = (rows) => {
@@ -244,15 +244,17 @@ const Example = () => {
 
         renderRowActions: ({ row, table }) => (
             <Box sx={{ display: 'flex', gap: '0.3rem' }}>
-                <IconButton onClick={() => table.setEditingRow(row)}>
-                    <Visibility fontSize="small" />
-                </IconButton>
                 <Link to={"/admin/chuyennganh/single/" + row.original.madkcn}>
-                    <IconButton >
-                        <Edit fontSize="small" />
+                    <IconButton>
+                        <Visibility fontSize="small" />
                     </IconButton>
                 </Link>
 
+                <Link to={"/admin/chuyennganh/edit/" + row.original.madkcn}>
+                    <IconButton  >
+                        <Edit fontSize="small" />
+                    </IconButton>
+                </Link>
 
                 <IconButton onClick={() => console.log(row.original.name)}>
                     <Delete fontSize="small" sx={{ color: 'red' }} />
@@ -345,4 +347,4 @@ const Example = () => {
 
 };
 
-export default Example;
+export default TableChuyenNganh;
