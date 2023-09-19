@@ -12,6 +12,9 @@ import ChuyenNganh from "./ChuyenNganh/ChuyenNganh";
 import SingleChuyenNganh from "./ChuyenNganh/ChiTietDKCN/SingleChuyenNganh";
 import EditDKCN from "./ChuyenNganh/EditDKCN/EditDKCN";
 import AddDKCN from "./ChuyenNganh/ThemDKCN/AddDKCN";
+import GiangVien from "./GiangVien/GiangVien";
+import EditGiangVien from "./GiangVien/EditGiangVien/EditGiangVien";
+import AddGiangVien from "./GiangVien/ThemGiangVien/AddGiangVien";
 const Admin = () => {
     const [hiddenDB, setHiddenDB] = useState(false);
     const [switchmode, setSwitchmode] = useState(false);
@@ -35,6 +38,11 @@ const Admin = () => {
                                 <Route path="new" element={<AddDKCN />}></Route>
                                 <Route path="single/:madkcn" element={<SingleChuyenNganh />}></Route>
                                 <Route path="edit/:madkcn" element={<EditDKCN />}></Route>
+                            </Route>
+                            <Route path='giangvien'  >
+                                <Route index element={<GiangVien />}></Route>
+                                <Route path="new" element={<AddGiangVien />} ></Route>
+                                <Route path="edit/:magv" element={<EditGiangVien />} ></Route>
                             </Route>
                         </Route>
 

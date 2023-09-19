@@ -87,7 +87,7 @@ const EditDKCN = () => {
                             <div className="card">
                                 <div className="card-body">
                                     <h5 className="card-title2">CÔNG NGHỆ THÔNG TIN</h5>
-                                    <ul>
+                                    <ul className="ul-admin">
                                         <li>
                                             <div className="form-group row lb">
                                                 <label for="inputlabel-card" className="col-sm-6 col-form-label label-card">Hệ thống thông tin</label>

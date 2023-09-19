@@ -2,14 +2,15 @@
     font-family: 'Montserrat';
 }
 
-.form-edit {
+.form-new {
     .btn {
         background-color: var(--blue);
 
-        padding    : 0.8rem;
-        margin-top : 1.5rem;
-        font-size  : 18px;
-        font-weight: 400;
+        padding      : 0.8rem;
+        margin-top   : 1rem;
+        margin-bottom: 0;
+        font-size    : 18px;
+        font-weight  : 400;
     }
 }
 
@@ -19,11 +20,11 @@
 
 .left {
     h1 {
-        text-align: start;
+        text-align: start !important;
     }
 }
 
-.inputDKCN {
+.inputGV {
     width : 100% !important;
     margin: 0 !important;
 
@@ -36,8 +37,4 @@
 
 .card-title2 {
     text-align: start;
-}
-
-.ul-admin {
-    margin-top: 1.5rem !important;
 }
