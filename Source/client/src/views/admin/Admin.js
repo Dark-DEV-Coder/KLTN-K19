@@ -11,6 +11,7 @@ import "./Admin.scss"
 import ChuyenNganh from "./ChuyenNganh/ChuyenNganh";
 import SingleChuyenNganh from "./ChuyenNganh/ChiTietDKCN/SingleChuyenNganh";
 import EditDKCN from "./ChuyenNganh/EditDKCN/EditDKCN";
+import AddDKCN from "./ChuyenNganh/ThemDKCN/AddDKCN";
 const Admin = () => {
     const [hiddenDB, setHiddenDB] = useState(false);
     const [switchmode, setSwitchmode] = useState(false);
@@ -31,7 +32,7 @@ const Admin = () => {
                             <Route path='' element={<Tongquan />} exact></Route>
                             <Route path='chuyennganh'  >
                                 <Route index element={<ChuyenNganh />}></Route>
-                                <Route path="new"></Route>
+                                <Route path="new" element={<AddDKCN />}></Route>
                                 <Route path="single/:madkcn" element={<SingleChuyenNganh />}></Route>
                                 <Route path="edit/:madkcn" element={<EditDKCN />}></Route>
                             </Route>

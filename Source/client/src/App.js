@@ -45,6 +45,7 @@ function App() {
 
       {/* Admin */}
       <div className='App'>
+        {/* <Client /> */}
         <Admin />
       </div>
 
