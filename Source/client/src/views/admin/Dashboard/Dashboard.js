@@ -17,7 +17,7 @@ const Dashboard = (props) => {
     const [catalog, setCatalog] = useState([
 
         { id: '1', title: 'Dashboard', img: 'bx bxs-dashboard', link: '' },
-        { id: '2', title: 'Chuyên ngành', img: 'bx bxs-shopping-bag-alt', link: 'chuyennganh' },
+        { id: '2', title: 'Đăng ký chuyên ngành', img: 'bx bxs-shopping-bag-alt', link: 'dkichuyennganh' },
         { id: '3', title: 'Khóa luận', img: 'bx bxs-shopping-bag-alt', link: 'khoaluan' },
         { id: '4', title: 'Thực tập', img: 'bx bxs-doughnut-chart', link: 'thuctap' },
         { id: '5', title: 'Tốt nghiệp', img: 'bx bxs-message-dots', link: 'totnghiep' },
@@ -25,8 +25,10 @@ const Dashboard = (props) => {
         { id: '7', title: 'Giảng viên', img: 'bx bxs-dashboard', link: 'giangvien' },
         { id: '8', title: 'Sinh viên', img: 'bx bxs-dashboard', link: 'sinhvien' },
         { id: '9', title: 'Ngành', img: 'bx bxs-dashboard', link: 'nganhhoc' },
-        { id: '10', title: 'Tài khoản', img: 'bx bxs-dashboard', link: 'taikhoan' },
-        { id: '11', title: 'Chức năng', img: 'bx bxs-dashboard', link: 'chucnang' },
+        { id: '10', title: 'Chuyên ngành', img: 'bx bxs-dashboard', link: 'chuyennganh' },
+        { id: '11', title: 'Tài khoản', img: 'bx bxs-dashboard', link: 'taikhoan' },
+        { id: '12', title: 'Chức năng', img: 'bx bxs-dashboard', link: 'chucnang' },
+        { id: '13', title: 'ChatBox', img: 'bx bxs-dashboard', link: 'chat' },
 
     ]);
 

@@ -1,4 +1,4 @@
-import "./TableChuyenNganh.scss"
+import "./TableNganh.scss"
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Box, Button } from '@mantine/core';
@@ -13,23 +13,13 @@ import { Delete, Edit, Visibility } from '@mui/icons-material';
 
 const data = [
     {
-        machuyennganh: 'HTTT',
-        tenchuyennganh: 'Hệ Thống Thông Tin',
+        manganhhoc: 'CNTT',
+        tennganh: 'Công nghệ thông tin',
         trangthai: 1,
     },
     {
-        machuyennganh: 'KHMT',
-        tenchuyennganh: 'Khoa Học Máy Tính',
-        trangthai: 1,
-    },
-    {
-        machuyennganh: 'KTPM',
-        tenchuyennganh: 'Kỹ Thuật Phần Mềm',
-        trangthai: 1,
-    },
-    {
-        machuyennganh: 'MMT',
-        tenchuyennganh: 'Mạng Máy Tính',
+        manganhhoc: 'CNTT_CLC',
+        tennganh: 'Công nghệ thông tin CLC',
         trangthai: 1,
     },
 ]
@@ -40,7 +30,7 @@ const csvConfig = mkConfig({
     useKeysAsHeaders: true,
 });
 
-const TableChuyenNganh = () => {
+const TableNganh = () => {
     const [checkdiv, setCheckdiv] = useState(false)
 
     const handleExportRows = (rows) => {
@@ -56,8 +46,8 @@ const TableChuyenNganh = () => {
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'machuyennganh',
-                header: 'Mã Chuyên Ngành',
+                accessorKey: 'manganhhoc',
+                header: 'Mã ngành',
                 size: 100,
                 enableColumnOrdering: false,
                 enableEditing: false, //disable editing on this column
@@ -65,8 +55,8 @@ const TableChuyenNganh = () => {
 
             },
             {
-                accessorKey: 'tenchuyennganh',
-                header: 'Tên Chuyên Ngành',
+                accessorKey: 'tennganh',
+                header: 'Tên ngành',
                 size: 600,
                 enableEditing: false,
 
@@ -95,7 +85,7 @@ const TableChuyenNganh = () => {
                 </IconButton>
 
 
-                <Link to={"/admin/chuyennganh/edit/" + row.original.machuyennganh}>
+                <Link to={"/admin/nganhhoc/edit/" + row.original.manganhhoc}>
                     <IconButton  >
                         <Edit fontSize="small" />
                     </IconButton>
@@ -163,4 +153,4 @@ const TableChuyenNganh = () => {
 
 };
 
-export default TableChuyenNganh;
+export default TableNganh;

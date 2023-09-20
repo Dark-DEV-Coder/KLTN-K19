@@ -2,20 +2,31 @@ import { Title } from "@mui/icons-material";
 import {
     Routes,
     Route,
+    useParams,
 } from "react-router-dom";
 import Dashboard from "./Dashboard/Dashboard"
 import Tongquan from "./Tongquan/Tongquan";
 import { useEffect, useState } from "react";
 import Nav from "./Nav/Nav";
 import "./Admin.scss"
-import ChuyenNganh from "./ChuyenNganh/ChuyenNganh";
-import SingleChuyenNganh from "./ChuyenNganh/ChiTietDKCN/SingleChuyenNganh";
-import EditDKCN from "./ChuyenNganh/EditDKCN/EditDKCN";
-import AddDKCN from "./ChuyenNganh/ThemDKCN/AddDKCN";
+import DkiChuyenNganh from "./DKiChuyenNganh/DKiChuyenNganh";
+import SingleDkiChuyenNganh from "./DKiChuyenNganh/ChiTietDKCN/SingleDkiChuyenNganh";
+import EditDKCN from "./DKiChuyenNganh/EditDKCN/EditDKCN";
+import AddDKCN from "./DKiChuyenNganh/ThemDKCN/AddDKCN";
 import GiangVien from "./GiangVien/GiangVien";
 import EditGiangVien from "./GiangVien/EditGiangVien/EditGiangVien";
 import AddGiangVien from "./GiangVien/ThemGiangVien/AddGiangVien";
+import SinhVien from "./SinhVien/SinhVien";
+import AddSinhVien from "./SinhVien/ThemSinhVien/AddSinhVien";
+import EditSinhVien from "./SinhVien/EditSinhVien/EditSinhVien";
+import Nganh from "./Nganh/Nganh";
+import EditNganh from "./Nganh/EditNganh/EditNganh";
+import AddNganh from "./Nganh/ThemNganh/AddNganh";
+import ChuyenNganh from "./ChuyenNganh/ChuyenNganh";
+import EditChuyenNganh from "./ChuyenNganh/EditChuyenNganh/EditChuyenNganh";
+import AddChuyenNganh from "./ChuyenNganh/ThemChuyenNganh/AddChuyenNganh";
 const Admin = () => {
+
     const [hiddenDB, setHiddenDB] = useState(false);
     const [switchmode, setSwitchmode] = useState(false);
     const changleHidden = () => {
@@ -33,16 +44,31 @@ const Admin = () => {
                     <Routes >
                         <Route path="/admin" exact>
                             <Route path='' element={<Tongquan />} exact></Route>
-                            <Route path='chuyennganh'  >
-                                <Route index element={<ChuyenNganh />}></Route>
+                            <Route path='dkichuyennganh'  >
+                                <Route index element={<DkiChuyenNganh />}></Route>
                                 <Route path="new" element={<AddDKCN />}></Route>
-                                <Route path="single/:madkcn" element={<SingleChuyenNganh />}></Route>
+                                <Route path="single/:madkcn" element={<SingleDkiChuyenNganh />}></Route>
                                 <Route path="edit/:madkcn" element={<EditDKCN />}></Route>
                             </Route>
                             <Route path='giangvien'  >
                                 <Route index element={<GiangVien />}></Route>
                                 <Route path="new" element={<AddGiangVien />} ></Route>
                                 <Route path="edit/:magv" element={<EditGiangVien />} ></Route>
+                            </Route>
+                            <Route path='sinhvien'  >
+                                <Route index element={<SinhVien />}></Route>
+                                <Route path="new" element={<AddSinhVien />} ></Route>
+                                <Route path="edit/:masv" element={<EditSinhVien />} ></Route>
+                            </Route>
+                            <Route path='nganhhoc'  >
+                                <Route index element={<Nganh />}></Route>
+                                <Route path="new" element={<AddNganh />} ></Route>
+                                <Route path="edit/:manganhhoc" element={<EditNganh />} ></Route>
+                            </Route>
+                            <Route path='chuyennganh'  >
+                                <Route index element={<ChuyenNganh />}></Route>
+                                <Route path="new" element={<AddChuyenNganh />} ></Route>
+                                <Route path="edit/:machuyennganh" element={<EditChuyenNganh />} ></Route>
                             </Route>
                         </Route>
 

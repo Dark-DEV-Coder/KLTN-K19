@@ -10,8 +10,8 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import CardNganh from "./CardNganh";
 import TableCTDKCN from "./TableCTDKCN";
-import "./SingleChuyenNganh.scss"
-const SingleChuyenNganh = () => {
+import "./SingleDkiChuyenNganh.scss"
+const SingleDkiChuyenNganh = () => {
 
     const data_HTTT = [
         {
@@ -542,4 +542,4 @@ const SingleChuyenNganh = () => {
         </main >
     )
 }
-export default SingleChuyenNganh;
+export default SingleDkiChuyenNganh;
