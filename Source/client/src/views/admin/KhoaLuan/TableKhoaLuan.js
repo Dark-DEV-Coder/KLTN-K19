@@ -69,14 +69,14 @@ const TableKhoaLuan = () => {
             {
                 accessorKey: 'ten',
                 header: 'Tên',
-                size: 200,
+                size: 400,
                 enableEditing: false,
 
             },
             {
                 accessorKey: 'nienkhoa',
                 header: 'Niên khóa',
-                size: 80,
+                size: 150,
                 enableEditing: false,
 
             },
@@ -98,13 +98,13 @@ const TableKhoaLuan = () => {
 
         renderRowActions: ({ row, table }) => (
             <Box sx={{ display: 'flex', gap: '0.3rem' }}>
-                <Link to={"/admin/dkichuyennganh/single/" + row.original.madkcn}>
+                <Link to={"/admin/khoaluan/single/" + row.original.makl}>
                     <IconButton>
                         <Visibility fontSize="small" />
                     </IconButton>
                 </Link>
 
-                <Link to={"/admin/dkichuyennganh/edit/" + row.original.madkcn}>
+                <Link to={"/admin/khoaluan/edit/" + row.original.makl}>
                     <IconButton  >
                         <Edit fontSize="small" />
                     </IconButton>

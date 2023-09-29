@@ -26,6 +26,7 @@ import ChuyenNganh from "./ChuyenNganh/ChuyenNganh";
 import EditChuyenNganh from "./ChuyenNganh/EditChuyenNganh/EditChuyenNganh";
 import AddChuyenNganh from "./ChuyenNganh/ThemChuyenNganh/AddChuyenNganh";
 import KhoaLuan from "./KhoaLuan/KhoaLuan";
+import SingleKhoaLuan from "./KhoaLuan/ChiTietKhoaLuan/SingleKhoaLuan";
 const Admin = () => {
 
     const [hiddenDB, setHiddenDB] = useState(false);
@@ -44,7 +45,7 @@ const Admin = () => {
                     <Nav changleHidden={changleHidden} changleSwitchMode={changleSwitchMode} />
                     <Routes >
                         <Route path="/admin" exact>
-                            <Route path='' element={<Tongquan />} exact></Route>
+                            <Route index element={<Tongquan />}></Route>
                             <Route path='dkichuyennganh'  >
                                 <Route index element={<DkiChuyenNganh />}></Route>
                                 <Route path="new" element={<AddDKCN />}></Route>
@@ -54,7 +55,7 @@ const Admin = () => {
                             <Route path='khoaluan'  >
                                 <Route index element={<KhoaLuan />}></Route>
                                 <Route path="new" element={<AddDKCN />}></Route>
-                                <Route path="single/:madkcn" element={<SingleDkiChuyenNganh />}></Route>
+                                <Route path="single/:makl" element={<SingleKhoaLuan />}></Route>
                                 <Route path="edit/:madkcn" element={<EditDKCN />}></Route>
                             </Route>
                             <Route path='giangvien'  >
