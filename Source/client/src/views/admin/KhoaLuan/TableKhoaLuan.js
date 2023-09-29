@@ -1,168 +1,37 @@
-import "./TableDKiChuyenNganh.scss"
+import "./TableKhoaLuan.scss"
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Box, Button } from '@mantine/core';
 import { IconDownload, IconUpload } from '@tabler/icons-react';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
-import { MenuItem } from '@mui/material';
 import { Link } from "react-router-dom";
 import moment from 'moment'
-import {
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    IconButton,
-    Stack,
-    TextField,
-    Tooltip,
-} from '@mui/material';
+import { IconButton, } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
 
-
-// const columns = [
-//     {
-//         accessorKey: 'madkcn',
-//         header: 'Mã',
-//         size: 10,
-//         enableColumnOrdering: false,
-//         enableEditing: false, //disable editing on this column
-//         enableSorting: false,
-
-//     },
-//     {
-//         accessorKey: 'nienkhoa',
-//         header: 'Niên khóa',
-//         size: 130,
-//     },
-//     {
-//         accessorKey: 'khoahoc',
-//         header: 'Khóa',
-//         size: 130,
-//     },
-//     {
-//         type: 'date',
-//         accessorKey: 'tgbd',
-//         header: 'Bắt đầu',
-//         size: 150,
-
-//     },
-//     {
-//         type: 'date',
-//         accessorKey: 'tgkt',
-//         header: 'Kết thúc',
-//         size: 150,
-//     },
-//     {
-//         accessorKey: 'nganh',
-//         header: 'Ngành',
-//         size: 100,
-
-//     },
-// ];
-
-
-
-
-
-
 const data = [
-
-
     {
-        madkcn: 'CN1',
-        nienkhoa: '2019',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
+        makl: 'KL1',
+        ten: 'Đợt đăng ký khóa luận năm học 2023-2024',
+        nienkhoa: '2023-2024',
         trangthai: 1,
     },
     {
-        madkcn: 'CN2',
-        nienkhoa: '2019',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
+        makl: 'KL2',
+        ten: 'Đợt đăng ký khóa luận năm học 2022-2023',
+        nienkhoa: '2022-2023',
         trangthai: 1,
     },
     {
-        madkcn: 'CN3',
-        nienkhoa: '2019',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
+        makl: 'KL3',
+        ten: 'Đợt đăng ký khóa luận năm học 2021-2022',
+        nienkhoa: '2021-2022',
         trangthai: 1,
     },
     {
-        madkcn: 'CN4',
-        nienkhoa: '2019',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
-        trangthai: 1,
-    },
-    {
-        madkcn: 'CN5',
-        nienkhoa: '2019',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
-        trangthai: 1,
-    },
-    {
-        madkcn: 'CN6',
-        nienkhoa: '2019',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
-        trangthai: 1,
-    },
-    {
-        madkcn: 'CN7',
-        nienkhoa: '2019',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
-        trangthai: 1,
-    },
-    {
-        madkcn: 'CN8',
-        nienkhoa: '2019',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
-        trangthai: 1,
-    },
-    {
-        madkcn: 'CN9',
-        nienkhoa: '2019',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
-        trangthai: 1,
-    },
-    {
-        madkcn: 'CN10',
-        nienkhoa: '2019',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
-        trangthai: 1,
-    },
-    {
-        madkcn: 'CN11',
-        nienkhoa: '2019',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
-        trangthai: 1,
-    },
-    {
-        madkcn: 'CN12',
-        nienkhoa: '2019',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
+        makl: 'KL4',
+        ten: 'Đợt đăng ký khóa luận năm học 2020-2021',
+        nienkhoa: '2020-2021',
         trangthai: 1,
     },
 ]
@@ -173,7 +42,7 @@ const csvConfig = mkConfig({
     useKeysAsHeaders: true,
 });
 
-const TableDKiChuyenNganh = () => {
+const TableKhoaLuan = () => {
     const [checkdiv, setCheckdiv] = useState(false)
 
     const handleExportRows = (rows) => {
@@ -189,42 +58,27 @@ const TableDKiChuyenNganh = () => {
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'madkcn',
+                accessorKey: 'makl',
                 header: 'Mã',
-                size: 10,
+                size: 80,
                 enableColumnOrdering: false,
                 enableEditing: false, //disable editing on this column
                 enableSorting: false,
 
             },
             {
+                accessorKey: 'ten',
+                header: 'Tên',
+                size: 200,
+                enableEditing: false,
+
+            },
+            {
                 accessorKey: 'nienkhoa',
                 header: 'Niên khóa',
-                size: 100,
+                size: 80,
                 enableEditing: false,
 
-            },
-            {
-                accessorKey: 'khoahoc',
-                header: 'Khóa',
-                size: 100,
-                enableEditing: false,
-            },
-            {
-
-                accessorKey: 'tgbd',
-                header: 'Bắt đầu',
-                size: 150,
-                enableEditing: false,
-
-
-            },
-            {
-                type: 'date',
-                accessorKey: 'tgkt',
-                header: 'Kết thúc',
-                size: 150,
-                enableEditing: false,
             },
         ]
     );
@@ -283,26 +137,6 @@ const TableDKiChuyenNganh = () => {
                 >
                     Export All Data
                 </Button>
-                {/* <Button
-                    disabled={table.getPrePaginationRowModel().rows.length === 0}
-                    //export all rows, including from the next page, (still respects filtering and sorting)
-                    onClick={() =>
-                        handleExportRows(table.getPrePaginationRowModel().rows)
-                    }
-                    leftIcon={<IconDownload />}
-                    variant="filled"
-                >
-                    Export All Rows
-                </Button> */}
-                {/* <Button
-                    disabled={table.getRowModel().rows.length === 0}
-                    //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
-                    onClick={() => handleExportRows(table.getRowModel().rows)}
-                    leftIcon={<IconDownload />}
-                    variant="filled"
-                >
-                    Export Page Rows
-                </Button> */}
                 <Button
                     disabled={
                         !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
@@ -347,4 +181,4 @@ const TableDKiChuyenNganh = () => {
 
 };
 
-export default TableDKiChuyenNganh;
+export default TableKhoaLuan;

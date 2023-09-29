@@ -7,16 +7,28 @@ const EditChuyenNganh = () => {
     const dulieutest = {
         machuyennganh: 'HTTT',
         tenchuyennganh: 'Hệ Thống Thông Tin',
+        nganh: 'cntt',
         trangthai: 1,
     };
     const chuyennganh = useParams();
     const [manchuyenganh, SetMachuyennganh] = useState(dulieutest.machuyennganh)
     const [tenchuyennganh, SetTenchuyennganh] = useState(dulieutest.tenchuyennganh)
-
+    const [nganhhoc, SetNganhhoc] = useState(dulieutest.nganh)
     const onChangeInputSL = (event, SetSL) => {
         let changeValue = event.target.value;
         SetSL(changeValue);
     }
+    const onChangeSelect = (event, SetSelect) => {
+        let changeValue = event.target.value;
+        console.log('select', changeValue)
+        SetSelect(changeValue);
+    }
+    const nganh = [
+        { id: 'cntt', ten: 'Công nghệ thông tin' },
+        { id: 'cntt_clc', ten: 'Công nghệ thông tin CLC' },
+        { id: 'ktpm', ten: 'Kỹ thuật phần mềm' },
+
+    ]
 
     return (
         <main className="main2">
@@ -52,6 +64,20 @@ const EditChuyenNganh = () => {
                         <div className="form-group col-md-6">
                             <label className="inputNganh" for="inputTen">Tên chuyên ngành</label>
                             <input type="text" className="form-control" id="inputTen" value={tenchuyennganh} onChange={(event) => onChangeInputSL(event, SetTenchuyennganh)} />
+                        </div>
+                    </div>
+                    <div className="form-row">
+                        <div className="form-group col-md-6">
+                            <label className="inputNganh" for="inputNganh">Ngành</label>
+                            <select value={nganhhoc} onChange={(event) => onChangeSelect(event, SetNganhhoc)} id="inputNganh" className="form-control">
+                                {nganh && nganh.length > 0 &&
+                                    nganh.map((item, index) => {
+                                        return (
+                                            <option key={item.id} value={item.id}>{item.ten}</option>
+                                        )
+                                    })
+                                }
+                            </select>
                         </div>
                     </div>
 

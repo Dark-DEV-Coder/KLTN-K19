@@ -25,6 +25,7 @@ import AddNganh from "./Nganh/ThemNganh/AddNganh";
 import ChuyenNganh from "./ChuyenNganh/ChuyenNganh";
 import EditChuyenNganh from "./ChuyenNganh/EditChuyenNganh/EditChuyenNganh";
 import AddChuyenNganh from "./ChuyenNganh/ThemChuyenNganh/AddChuyenNganh";
+import KhoaLuan from "./KhoaLuan/KhoaLuan";
 const Admin = () => {
 
     const [hiddenDB, setHiddenDB] = useState(false);
@@ -46,6 +47,12 @@ const Admin = () => {
                             <Route path='' element={<Tongquan />} exact></Route>
                             <Route path='dkichuyennganh'  >
                                 <Route index element={<DkiChuyenNganh />}></Route>
+                                <Route path="new" element={<AddDKCN />}></Route>
+                                <Route path="single/:madkcn" element={<SingleDkiChuyenNganh />}></Route>
+                                <Route path="edit/:madkcn" element={<EditDKCN />}></Route>
+                            </Route>
+                            <Route path='khoaluan'  >
+                                <Route index element={<KhoaLuan />}></Route>
                                 <Route path="new" element={<AddDKCN />}></Route>
                                 <Route path="single/:madkcn" element={<SingleDkiChuyenNganh />}></Route>
                                 <Route path="edit/:madkcn" element={<EditDKCN />}></Route>

@@ -55,7 +55,7 @@ const EditSinhVien = () => {
             {/* <HeaderMain title={'Chuyên ngành'} /> */}
             <div className="head-title">
                 <div className="left">
-                    <h1>TẠO MỚI </h1>
+                    <h1>CHỈNH SỬA </h1>
                     <ul className="breadcrumb">
                         <li>
                             <Link>Dashboard</Link>

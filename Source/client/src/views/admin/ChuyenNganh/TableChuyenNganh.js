@@ -15,21 +15,25 @@ const data = [
     {
         machuyennganh: 'HTTT',
         tenchuyennganh: 'Hệ Thống Thông Tin',
+        nganh: 'Công nghệ thông tin',
         trangthai: 1,
     },
     {
         machuyennganh: 'KHMT',
         tenchuyennganh: 'Khoa Học Máy Tính',
+        nganh: 'Công nghệ thông tin',
         trangthai: 1,
     },
     {
         machuyennganh: 'KTPM',
         tenchuyennganh: 'Kỹ Thuật Phần Mềm',
+        nganh: 'Công nghệ thông tin',
         trangthai: 1,
     },
     {
         machuyennganh: 'MMT',
         tenchuyennganh: 'Mạng Máy Tính',
+        nganh: 'Kỹ thuật phần mềm',
         trangthai: 1,
     },
 ]
@@ -67,7 +71,14 @@ const TableChuyenNganh = () => {
             {
                 accessorKey: 'tenchuyennganh',
                 header: 'Tên Chuyên Ngành',
-                size: 600,
+                size: 250,
+                enableEditing: false,
+
+            },
+            {
+                accessorKey: 'nganh',
+                header: 'Ngành học',
+                size: 100,
                 enableEditing: false,
 
             },
