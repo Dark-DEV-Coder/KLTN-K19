@@ -33,9 +33,23 @@ const data = [
     {
         machuyennganh: 'MMT',
         tenchuyennganh: 'Mạng Máy Tính',
+        nganh: 'Công nghệ thông tin',
+        trangthai: 1,
+    },
+
+    {
+        machuyennganh: 'LTUD',
+        tenchuyennganh: 'Lập trình ứng dụng',
         nganh: 'Kỹ thuật phần mềm',
         trangthai: 1,
     },
+    {
+        machuyennganh: 'LTW',
+        tenchuyennganh: 'Lập trình Web',
+        nganh: 'Kỹ thuật phần mềm',
+        trangthai: 1,
+    },
+    
 ]
 
 const csvConfig = mkConfig({

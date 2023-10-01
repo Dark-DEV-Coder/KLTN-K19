@@ -19,6 +19,9 @@ const EditDKCN = () => {
     const [sl_ktpm, SetSl_ktpm] = useState(70)
     const [sl_mmt, SetSl_mmt] = useState(70)
 
+    const [sl_ltw, SetSl_ltw] = useState(70)
+    const [sl_ltud, SetSl_ltud] = useState(70)
+
     const [tenDKCN, SetTenDKCN] = useState(dulieutest.tendkcn)
     const [nienkhoaDKCN, SetNienkhoaDKCN] = useState(dulieutest.nienkhoa)
     const [khoahocDKCN, SetKhoahocDKCN] = useState(dulieutest.khoahoc)
@@ -83,47 +86,98 @@ const EditDKCN = () => {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-sm-12">
+                        {/* CNTT */}
+                        <div className="col-sm-6">
                             <div className="card">
                                 <div className="card-body">
                                     <h5 className="card-title2">CÔNG NGHỆ THÔNG TIN</h5>
                                     <ul className="ul-admin">
                                         <li>
                                             <div className="form-group row lb">
-                                                <label for="inputlabel-card" className="col-sm-6 col-form-label label-card">Hệ thống thông tin</label>
+                                                <label for="inputlabel-card" className="col-sm-8 col-form-label label-card">Hệ thống thông tin</label>
                                                 <div className="col-sm-4">
-                                                    <input type="text" className="form-control" id="inputlabel-card" value={sl_httt} onChange={(event) => onChangeInputSL(event, SetSl_httt)} />
+                                                    <input type="number" className="form-control" id="inputlabel-card" value={sl_httt} onChange={(event) => onChangeInputSL(event, SetSl_httt)} />
                                                 </div>
                                             </div>
                                         </li>
                                         <li>
                                             <div className="form-group row lb">
-                                                <label for="inputlabel-card" className="col-sm-6 col-form-label label-card">Khoa học máy tính</label>
+                                                <label for="inputlabel-card" className="col-sm-8 col-form-label label-card">Khoa học máy tính</label>
                                                 <div className="col-sm-4">
-                                                    <input type="text" className="form-control" id="inputlabel-card" value={sl_khmt} onChange={(event) => onChangeInputSL(event, SetSl_khmt)} />
+                                                    <input type="number" className="form-control" id="inputlabel-card" value={sl_khmt} onChange={(event) => onChangeInputSL(event, SetSl_khmt)} />
                                                 </div>
                                             </div>
                                         </li>
                                         <li>
                                             <div className="form-group row lb">
-                                                <label for="inputlabel-card" className="col-sm-6 col-form-label label-card">Kỹ thuật phần mềm</label>
+                                                <label for="inputlabel-card" className="col-sm-8 col-form-label label-card">Kỹ thuật phần mềm</label>
                                                 <div className="col-sm-4">
-                                                    <input type="text" className="form-control" id="inputlabel-card" value={sl_ktpm} onChange={(event) => onChangeInputSL(event, SetSl_ktpm)} />
+                                                    <input type="number" className="form-control" id="inputlabel-card" value={sl_ktpm} onChange={(event) => onChangeInputSL(event, SetSl_ktpm)} />
                                                 </div>
                                             </div>
                                         </li>
                                         <li>
                                             <div className="form-group row lb">
-                                                <label for="inputlabel-card" className="col-sm-6 col-form-label label-card">Mạng máy tính   </label>
+                                                <label for="inputlabel-card" className="col-sm-8 col-form-label label-card">Mạng máy tính </label>
                                                 <div className="col-sm-4">
-                                                    <input type="text" className="form-control" id="inputlabel-card" value={sl_mmt} onChange={(event) => onChangeInputSL(event, SetSl_mmt)} />
+                                                    <input type="number" className="form-control" id="inputlabel-card" value={sl_mmt} onChange={(event) => onChangeInputSL(event, SetSl_mmt)} />
                                                 </div>
                                             </div>
                                         </li>
                                     </ul>
+                                    {/* <p className="note">*Lưu ý: Nếu không nhập số lượng thì mặc định bằng 0</p> */}
                                 </div>
                             </div>
                         </div>
+                        {/* CNTT */}
+
+                        {/* KTPM */}
+                        <div className="col-sm-6">
+                            <div className="card">
+                                <div className="card-body">
+                                    <h5 className="card-title2">KỸ THUẬT PHẦN MỀM</h5>
+                                    <ul className="ul-admin">
+                                        <li>
+                                            <div className="form-group row lb">
+                                                <label for="inputlabel-card" className="col-sm-8 col-form-label label-card">Lập trình web</label>
+                                                <div className="col-sm-4">
+                                                    <input type="number" className="form-control" id="inputlabel-card" value={sl_ltw} onChange={(event) => onChangeInputSL(event, SetSl_ltw)} />
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="form-group row lb">
+                                                <label for="inputlabel-card" className="col-sm-8 col-form-label label-card">Lập trình ứng dụng</label>
+                                                <div className="col-sm-4">
+                                                    <input type="number" className="form-control" id="inputlabel-card" value={sl_ltud} onChange={(event) => onChangeInputSL(event, SetSl_ltud)} />
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="form-group row lb">
+                                                <label for="inputlabel-card" className="col-sm-8 col-form-label label-card"></label>
+                                                <div className="col-sm-4">
+                                                    <input type="number" className="form-control" id="inputlabel-card" value={sl_khmt} style={{ visibility: 'hidden' }} />
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="form-group row lb">
+                                                <label for="inputlabel-card" className="col-sm-8 col-form-label label-card"></label>
+                                                <div className="col-sm-4">
+                                                    <input type="number" className="form-control" id="inputlabel-card" value={sl_khmt} style={{ visibility: 'hidden' }} />
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                        {/* KTPM */}
+
+
+                        <p className="note">*Lưu ý: Nếu không nhập số lượng thì mặc định bằng 0</p>
 
                     </div>
                     <button className="btn" type="submit">Submit form</button>

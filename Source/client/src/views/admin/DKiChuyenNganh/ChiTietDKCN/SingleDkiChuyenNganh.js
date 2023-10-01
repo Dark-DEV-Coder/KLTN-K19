@@ -11,8 +11,50 @@ import TabPanel from '@mui/lab/TabPanel';
 import CardNganh from "./CardNganh";
 import TableCTDKCN from "./TableCTDKCN";
 import "./SingleDkiChuyenNganh.scss"
+import TabContentTheoNganh from "./TabContentTheoNganh"
 const SingleDkiChuyenNganh = () => {
-
+    const data_CNTT = [
+        {
+            masv: '3119560010',
+            ho: 'Lê Thị Cẩm',
+            ten: 'Duyên',
+            diem: 2.97,
+            chuyennganh: 'Hệ thống thông tin',
+            trangthai: 1,
+        },
+        {
+            masv: '3119560011',
+            ho: 'Lê Thị Cẩm',
+            ten: 'Duyên',
+            diem: 2.97,
+            chuyennganh: 'Chưa đăng ký',
+            trangthai: 1,
+        },
+        {
+            masv: '3119560012',
+            ho: 'Lê Thị Cẩm',
+            ten: 'Duyên',
+            diem: 2.97,
+            chuyennganh: 'Chưa đăng ký',
+            trangthai: 1,
+        },
+        {
+            masv: '3119560013',
+            ho: 'Lê Thị Cẩm',
+            ten: 'Duyên',
+            diem: 2.97,
+            chuyennganh: 'Chưa đăng ký',
+            trangthai: 1,
+        },
+        {
+            masv: '3119560014',
+            ho: 'Lê Thị Cẩm',
+            ten: 'Duyên',
+            diem: 2.97,
+            chuyennganh: 'Kỹ thuật phần mềm',
+            trangthai: 1,
+        },
+    ]
     const data_HTTT = [
         {
             masv: '3119560010',
@@ -27,89 +69,10 @@ const SingleDkiChuyenNganh = () => {
             ho: 'Lê Thị Cẩm',
             ten: 'Duyên',
             diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
+            chuyennganh: 'Hệ thống thông tin',
             trangthai: 1,
         },
-        {
-            masv: '3119560012',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560013',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560014',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560015',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560016',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560017',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560018',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560019',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560020',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560021',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
+
     ]
 
     const data_KHMT = [
@@ -126,87 +89,15 @@ const SingleDkiChuyenNganh = () => {
             ho: 'Lê Thị Cẩm',
             ten: 'Duyên',
             diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
+            chuyennganh: 'Khoa học máy tính',
             trangthai: 1,
         },
         {
-            masv: '3119560012',
+            masv: '3119560011',
             ho: 'Lê Thị Cẩm',
             ten: 'Duyên',
             diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560013',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560014',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560015',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560016',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560017',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560018',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560019',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560020',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560021',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
+            chuyennganh: 'Khoa học máy tính',
             trangthai: 1,
         },
     ]
@@ -237,78 +128,6 @@ const SingleDkiChuyenNganh = () => {
             chuyennganh: 'Kỹ thuật phần mềm',
             trangthai: 1,
         },
-        {
-            masv: '3119560013',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560014',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560015',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560016',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560017',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560018',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560019',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560020',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560021',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
     ]
 
     const data_MMT = [
@@ -325,7 +144,7 @@ const SingleDkiChuyenNganh = () => {
             ho: 'Lê Thị Cẩm',
             ten: 'Duyên',
             diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
+            chuyennganh: 'Mạng máy tính',
             trangthai: 1,
         },
         {
@@ -333,110 +152,66 @@ const SingleDkiChuyenNganh = () => {
             ho: 'Lê Thị Cẩm',
             ten: 'Duyên',
             diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560013',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560014',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560015',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560016',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560017',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560018',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560019',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560020',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
-            trangthai: 1,
-        },
-        {
-            masv: '3119560021',
-            ho: 'Lê Thị Cẩm',
-            ten: 'Duyên',
-            diem: 2.97,
-            chuyennganh: 'Kỹ thuật phần mềm',
+            chuyennganh: 'Mạng máy tính',
             trangthai: 1,
         },
     ]
 
+    const data_LTW = [
+        {
+            masv: '3119560010',
+            ho: 'Lê Thị Cẩm',
+            ten: 'Duyên',
+            diem: 2.97,
+            chuyennganh: 'Lập trình web',
+            trangthai: 1,
+        },
+        {
+            masv: '3119560011',
+            ho: 'Lê Thị Cẩm',
+            ten: 'Duyên',
+            diem: 2.97,
+            chuyennganh: 'Lập trình web',
+            trangthai: 1,
+        },
+        {
+            masv: '3119560012',
+            ho: 'Lê Thị Cẩm',
+            ten: 'Duyên',
+            diem: 2.97,
+            chuyennganh: 'Lập trình web',
+            trangthai: 1,
+        },
+    ]
 
+    const data_LTUD = [
+        {
+            masv: '3119560010',
+            ho: 'Lê Thị Cẩm',
+            ten: 'Duyên',
+            diem: 2.97,
+            chuyennganh: 'Lập trình ứng dụng',
+            trangthai: 1,
+        },
+        {
+            masv: '3119560011',
+            ho: 'Lê Thị Cẩm',
+            ten: 'Duyên',
+            diem: 2.97,
+            chuyennganh: 'Lập trình ứng dụng',
+            trangthai: 1,
+        },
+        {
+            masv: '3119560012',
+            ho: 'Lê Thị Cẩm',
+            ten: 'Duyên',
+            diem: 2.97,
+            chuyennganh: 'Lập trình ứng dụng',
+            trangthai: 1,
+        },
+    ]
 
     const [value, setValue] = useState('1');
-    const [listData, setListData] = useState(data_HTTT);
-    const handleChangeTest = (id) => {
-        if (id === 1) {
-            setListData(data_HTTT)
-            return
-        }
-        if (id === 2) {
-            setListData(data_HTTT)
-            return
-        }
-        if (id === 3) {
-            setListData(data_KHMT)
-            return
-        }
-        if (id === 4) {
-            setListData(data_KTPM)
-            return
-        }
-        if (id === 5) {
-            setListData(data_MMT)
-            return
-        }
-    }
-
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -448,6 +223,53 @@ const SingleDkiChuyenNganh = () => {
         tgkt: '14/03/2019',
         trangthai: 1,
     };
+
+    const [valueTableCNTT, setValueTableCNTT] = useState('cntt');
+    const [listData, setListData] = useState(data_CNTT);
+    const handleChangeCNTT = (event, newValue) => {
+        setValueTableCNTT(newValue);
+    };
+    const handleChangeTest = (maCN) => {
+        if (maCN === "cntt") {
+            setListData(data_CNTT)
+            return
+        }
+        if (maCN === "httt") {
+            setListData(data_HTTT)
+            return
+        }
+        if (maCN === "khmt") {
+            setListData(data_KHMT)
+            return
+        }
+        if (maCN === "ktpm") {
+            setListData(data_KTPM)
+            return
+        }
+
+        if (maCN === "mmt") {
+            setListData(data_MMT)
+            return
+        }
+    }
+
+
+    const [listData_KTPM, setListData_KTPM] = useState(data_LTW);
+    const [valueTableKTPM, setValueTableKTPM] = useState('ltw');
+    const handleChangeKTPM = (event, newValue) => {
+        setValueTableKTPM(newValue);
+    };
+    const handleChange_KTPM = (maCN) => {
+        if (maCN === "ltw") {
+            setListData_KTPM(data_LTW)
+            return
+        }
+        if (maCN === "ltud") {
+            setListData_KTPM(data_LTUD)
+            return
+        }
+    }
+
     return (
         <main className="main2">
             {/* <HeaderMain title={'Chuyên ngành'} /> */}
@@ -480,56 +302,96 @@ const SingleDkiChuyenNganh = () => {
             <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <TabList onChange={handleChange} aria-label="lab API tabs example">
-                        <Tab label="Công nghệ thông tin" value="1" onClick={() => handleChangeTest(1)} />
-                        <Tab label="Hệ thống thông tin" value="2" onClick={() => handleChangeTest(2)} />
-                        <Tab label="Khoa học máy tính" value="3" onClick={() => handleChangeTest(3)} />
-                        <Tab label="Kỹ thuật phần mềm" value="4" onClick={() => handleChangeTest(4)} />
-                        <Tab label="Mạng máy tính" value="5" onClick={() => handleChangeTest(5)} />
+                        <Tab label="Công nghệ thông tin" value="1" />
+                        <Tab label="Kỹ thuật phần mềm" value="2" />
                     </TabList>
                 </Box>
                 <TabPanel value="1">
-                    <div className="table">
-                        <div className="card4">
-                            <h6 className="card-header">Số lượng: 3/75</h6>
-                        </div>
-                        <TableCTDKCN listData={listData} />
+                    <TabContext value={valueTableCNTT}>
+                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                            <TabList onChange={handleChangeCNTT} aria-label="lab API tabs example">
+                                <Tab label="Công nghệ thông tin" value="cntt" onClick={() => handleChangeTest("cntt")} />
+                                <Tab label="Hệ thống thông tin" value="httt" onClick={() => handleChangeTest("httt")} />
+                                <Tab label="Khoa học máy tính" value="khmt" onClick={() => handleChangeTest("khmt")} />
+                                <Tab label="Kỹ thuật phần mềm" value="ktpm" onClick={() => handleChangeTest("ktpm")} />
+                                <Tab label="Mạng máy tính" value="mmt" onClick={() => handleChangeTest("mmt")} />
+                            </TabList>
+                        </Box>
+                        <TabPanel value="cntt">
+                            <div className="table">
+                                <div className="card4">
+                                    <h6 className="card-header">Số lượng: {listData.length}/75</h6>
+                                </div>
+                                <TableCTDKCN listData={listData} />
 
-                    </div>
+                            </div>
+                        </TabPanel>
+                        <TabPanel value="httt">
+                            <div className="table">
+                                <div className="card4">
+                                    <h6 className="card-header">Số lượng: {listData.length}/75</h6>
+                                </div>
+                                <TableCTDKCN listData={listData} />
+
+                            </div>
+                        </TabPanel>
+                        <TabPanel value="khmt">
+                            <div className="table">
+                                <div className="card4">
+                                    <h6 className="card-header">Số lượng: {listData.length}/75</h6>
+                                </div>
+                                <TableCTDKCN listData={listData} />
+
+                            </div>
+                        </TabPanel>
+                        <TabPanel value="ktpm">
+                            <div className="table">
+                                <div className="card4">
+                                    <h6 className="card-header">Số lượng: {listData.length}/75</h6>
+                                </div>
+                                <TableCTDKCN listData={listData} />
+
+                            </div>
+                        </TabPanel>
+                        <TabPanel value="mmt">
+                            <div className="table">
+                                <div className="card4">
+                                    <h6 className="card-header">Số lượng: {listData.length}/75</h6>
+                                </div>
+                                <TableCTDKCN listData={listData} />
+                            </div>
+                        </TabPanel>
+
+                    </TabContext>
                 </TabPanel>
                 <TabPanel value="2">
-                    <div className="table">
-                        <div className="card4">
-                            <h6 className="card-header">Số lượng: 3/75</h6>
-                        </div>
-                        <TableCTDKCN listData={listData} />
+                    <TabContext value={valueTableKTPM}>
+                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                            <TabList onChange={handleChangeKTPM} aria-label="lab API tabs example">
+                                <Tab label="Lập trình web" value="ltw" onClick={() => handleChange_KTPM("ltw")} />
+                                <Tab label="Lập trình ứng dụng" value="ltud" onClick={() => handleChange_KTPM("ltud")} />
+                            </TabList>
+                        </Box>
+                        <TabPanel value="ltw">
+                            <div className="table">
+                                <div className="card4">
+                                    <h6 className="card-header">Số lượng: {listData_KTPM.length}/75</h6>
+                                </div>
+                                <TableCTDKCN listData={listData_KTPM} />
 
-                    </div>
-                </TabPanel>
-                <TabPanel value="3">
-                    <div className="table">
-                        <div className="card4">
-                            <h6 className="card-header">Số lượng: 3/75</h6>
-                        </div>
-                        <TableCTDKCN listData={listData} />
+                            </div>
+                        </TabPanel>
+                        <TabPanel value="ltud">
+                            <div className="table">
+                                <div className="card4">
+                                    <h6 className="card-header">Số lượng: {listData_KTPM.length}/75</h6>
+                                </div>
+                                <TableCTDKCN listData={listData_KTPM} />
 
-                    </div>
-                </TabPanel>
-                <TabPanel value="4">
-                    <div className="table">
-                        <div className="card4">
-                            <h6 className="card-header">Số lượng: 3/75</h6>
-                        </div>
-                        <TableCTDKCN listData={listData} />
+                            </div>
+                        </TabPanel>
 
-                    </div>
-                </TabPanel>
-                <TabPanel value="5">
-                    <div className="table">
-                        <div className="card4">
-                            <h6 className="card-header">Số lượng: 3/75</h6>
-                        </div>
-                        <TableCTDKCN listData={listData} />
-                    </div>
+                    </TabContext>
                 </TabPanel>
 
             </TabContext>

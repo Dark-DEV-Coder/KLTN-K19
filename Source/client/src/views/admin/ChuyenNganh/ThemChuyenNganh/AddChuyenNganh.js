@@ -20,9 +20,9 @@ const AddChuyenNganh = () => {
         SetSelect(changeValue);
     }
     const nganh = [
-        { id: 'cntt', ten: 'Công nghệ thông tin' },
-        { id: 'cntt_clc', ten: 'Công nghệ thông tin CLC' },
-        { id: 'ktpm', ten: 'Kỹ thuật phần mềm' },
+        { id: 'CNTT', ten: 'Công nghệ thông tin' },
+        { id: 'CNTT_CLC', ten: 'Công nghệ thông tin CLC' },
+        { id: 'KTPM', ten: 'Kỹ thuật phần mềm' },
 
     ]
 

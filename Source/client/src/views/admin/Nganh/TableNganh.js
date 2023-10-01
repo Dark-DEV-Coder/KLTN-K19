@@ -18,6 +18,11 @@ const data = [
         trangthai: 1,
     },
     {
+        manganhhoc: 'KTPM',
+        tennganh: 'Kỹ thuật phần mềm',
+        trangthai: 1,
+    },
+    {
         manganhhoc: 'CNTT_CLC',
         tennganh: 'Công nghệ thông tin CLC',
         trangthai: 1,
