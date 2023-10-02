@@ -21,7 +21,7 @@ const Nav = (props) => {
                 </div>
             </form>
             <input type="checkbox" id="switch-mode" hidden />
-            <label htmlFor="switch-mode" className="switch-mode" onClick={() => onChangleSwitchMode()}></label>
+            {/* <label htmlFor="switch-mode" className="switch-mode" onClick={() => onChangleSwitchMode()}></label> */}
             <a href="#" className="notification">
                 <i className='bx bxs-bell'></i>
                 <span className="num">8</span>

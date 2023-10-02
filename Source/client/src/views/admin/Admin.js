@@ -27,6 +27,10 @@ import EditChuyenNganh from "./ChuyenNganh/EditChuyenNganh/EditChuyenNganh";
 import AddChuyenNganh from "./ChuyenNganh/ThemChuyenNganh/AddChuyenNganh";
 import KhoaLuan from "./KhoaLuan/KhoaLuan";
 import SingleKhoaLuan from "./KhoaLuan/ChiTietKhoaLuan/SingleKhoaLuan";
+import ChiTietDeTai from "./KhoaLuan/ChiTietDeTai/ChiTietDeTai";
+import EditDeTai from "./KhoaLuan/EditDeTai/EditDeTai";
+import EditKhoaLuan from "./KhoaLuan/EditKhoaLuan/EditKhoaLuan";
+import AddKhoaLuan from "./KhoaLuan/ThemKhoaLuan/AddKhoaLuan";
 const Admin = () => {
 
     const [hiddenDB, setHiddenDB] = useState(false);
@@ -54,9 +58,13 @@ const Admin = () => {
                             </Route>
                             <Route path='khoaluan'  >
                                 <Route index element={<KhoaLuan />}></Route>
-                                <Route path="new" element={<AddDKCN />}></Route>
+                                <Route path="new" element={<AddKhoaLuan />}></Route>
                                 <Route path="single/:makl" element={<SingleKhoaLuan />}></Route>
-                                <Route path="edit/:madkcn" element={<EditDKCN />}></Route>
+                                <Route path="edit/:makl" element={<EditKhoaLuan />}></Route>
+
+                                <Route path="detai/:ten" element={<ChiTietDeTai />}></Route>
+                                <Route path="detai/edit/:ten" element={<EditDeTai />}></Route>
+
                             </Route>
                             <Route path='giangvien'  >
                                 <Route index element={<GiangVien />}></Route>

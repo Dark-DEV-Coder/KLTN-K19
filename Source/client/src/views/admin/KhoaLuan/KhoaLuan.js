@@ -26,7 +26,7 @@ const KhoaLuan = () => {
                             </li>
                         </ul>
                     </div>
-                    <Link to={"/admin/dkichuyennganh/new"} className="btn-download">
+                    <Link to={"/admin/khoaluan/new"} className="btn-download">
                         <i className='bx bxs-cloud-download'></i>
                         <span className="text">Create Data</span>
                     </Link>

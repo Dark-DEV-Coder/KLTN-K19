@@ -288,11 +288,11 @@ const SingleDkiChuyenNganh = () => {
 
                     </ul>
                 </div>
-                <a href="#" className="btn-download">
+                {/* <a href="#" className="btn-download">
                     <i className='bx bxs-cloud-download'></i>
                     <span className="text">Export Data</span>
 
-                </a>
+                </a> */}
             </div>
 
             {/* <MantineReactTable table={table} />; */}

@@ -1,10 +1,11 @@
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo, } from 'react';
 import { Box, Button } from '@mantine/core';
-import { IconDownload, IconUpload } from '@tabler/icons-react';
+import { IconUpload } from '@tabler/icons-react';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
 import "./TableDSDeTai.scss"
 import { IconButton, } from '@mui/material';
+import { Link } from "react-router-dom";
 import { Delete, Edit, Visibility } from '@mui/icons-material';
 const csvConfig = mkConfig({
     fieldSeparator: ',',
@@ -13,34 +14,8 @@ const csvConfig = mkConfig({
 });
 
 const TableDSDeTai = (props) => {
-    const data = [
-        {
+    const { data_detai } = props
 
-            ten: 'Nghiên cứu và xây dựng một hệ thống khuyến nghị.',
-            giangvienhuongdan: 'Phan Tấn Quốc',
-            donvi: 'Khoa CNTT',
-            trangthai: 1,
-        },
-        {
-            ten: 'Phần mềm quản lý ghi chú cá nhân với tính năng nhận dạng tiếng nói',
-            giangvienhuongdan: 'Nguyễn Tuấn Đăng',
-            donvi: 'Khoa CNTT',
-            trangthai: 1,
-        },
-        {
-            ten: 'Xây dựng website hỗ trợ đào tạo khoa CNTT.',
-            giangvienhuongdan: 'Nguyễn Thanh Sang',
-            donvi: 'Khoa CNTT',
-            trangthai: 1,
-        },
-        {
-            ten: 'Xây dựng trò chơi hỗ trợ làm quen với tiếng Anh',
-            giangvienhuongdan: 'Phạm Thi Vương',
-            donvi: 'Viện KHDL - TTNT',
-            trangthai: 1,
-        },
-    ]
-    const { listData } = props;
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
         const csv = generateCsv(csvConfig)(rowData);
@@ -48,7 +23,7 @@ const TableDSDeTai = (props) => {
     };
 
     const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(listData);
+        const csv = generateCsv(csvConfig)(data_detai);
         download(csvConfig)(csv);
     };
     const columns = useMemo(
@@ -57,16 +32,12 @@ const TableDSDeTai = (props) => {
                 accessorKey: 'ten',
                 header: 'Tên đề tài',
                 size: 500,
-                enableColumnOrdering: false,
-                enableEditing: false, //disable editing on this column
-                enableSorting: false,
 
             },
             {
                 accessorKey: 'giangvienhuongdan',
                 header: 'Giảng viên hướng dẫn',
                 size: 250,
-                enableEditing: false,
 
             },
             {
@@ -74,20 +45,18 @@ const TableDSDeTai = (props) => {
                 accessorKey: 'donvi',
                 header: 'Đơn vị công tác',
                 size: 100,
-                enableEditing: false,
             },
             {
                 header: 'Trạng thái',
                 accessorKey: 'trangthai',
                 size: 100,
-                enableEditing: false,
             },
         ]
     );
 
     const table = useMantineReactTable({
         columns,
-        data,
+        data: data_detai,
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',
@@ -97,18 +66,18 @@ const TableDSDeTai = (props) => {
         enableRowActions: true,
         positionActionsColumn: 'last',
 
-        renderRowActions: ({ row, table }) => (
+        renderRowActions: ({ row }) => (
             <Box sx={{ display: 'flex', gap: '0.3rem' }}>
-                <IconButton >
-                    <Visibility fontSize="small" />
-                </IconButton>
-
-
-
-                <IconButton  >
-                    <Edit fontSize="small" />
-                </IconButton>
-
+                <Link to={"/admin/khoaluan/detai/" + row.original.ten}>
+                    <IconButton >
+                        <Visibility fontSize="small" />
+                    </IconButton>
+                </Link>
+                <Link to={"/admin/khoaluan/detai/edit/" + row.original.ten}>
+                    <IconButton  >
+                        <Edit fontSize="small" />
+                    </IconButton>
+                </Link>
 
                 <IconButton onClick={() => console.log(row.original.name)}>
                     <Delete fontSize="small" sx={{ color: 'red' }} />

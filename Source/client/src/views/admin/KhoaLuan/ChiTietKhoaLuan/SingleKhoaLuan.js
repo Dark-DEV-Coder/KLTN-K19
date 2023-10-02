@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import FormControl from '@mui/material/FormControl';
+import { useState } from "react";
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
@@ -13,8 +12,7 @@ import TableDSDeTai from "./TableDSDeTai";
 const SingleKhoaLuan = () => {
 
     const maKL = useParams();
-
-    const [value, setValue] = useState('1');
+    const [value, setValue] = useState('CNTT');
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -36,9 +34,35 @@ const SingleKhoaLuan = () => {
         nienkhoa: '2023-2024',
         trangthai: 1,
     };
+
+    const data_detai = [
+        {
+            ten: 'Nghiên cứu và xây dựng một hệ thống khuyến nghị.',
+            giangvienhuongdan: 'Phan Tấn Quốc',
+            donvi: 'Khoa CNTT',
+            trangthai: 1,
+        },
+        {
+            ten: 'Phần mềm quản lý ghi chú cá nhân với tính năng nhận dạng tiếng nói',
+            giangvienhuongdan: 'Nguyễn Tuấn Đăng',
+            donvi: 'Khoa CNTT',
+            trangthai: 1,
+        },
+        {
+            ten: 'Xây dựng website hỗ trợ đào tạo khoa CNTT.',
+            giangvienhuongdan: 'Nguyễn Thanh Sang',
+            donvi: 'Khoa CNTT',
+            trangthai: 1,
+        },
+        {
+            ten: 'Xây dựng trò chơi hỗ trợ làm quen với tiếng Anh',
+            giangvienhuongdan: 'Phạm Thi Vương',
+            donvi: 'Viện KHDL - TTNT',
+            trangthai: 1,
+        },
+    ]
     return (
         <main className="main2">
-            {/* <HeaderMain title={'Chuyên ngành'} /> */}
             <div className="head-title">
                 <div className="left">
                     <h1>TÊN DKY KHÓA LUẬN</h1>
@@ -54,74 +78,48 @@ const SingleKhoaLuan = () => {
 
                     </ul>
                 </div>
-                <a href="#" className="btn-download">
+                {/* <a href="#" className="btn-download">
                     <i className='bx bxs-cloud-download'></i>
                     <span className="text">Export Data</span>
 
-                </a>
+                </a> */}
             </div>
 
-            {/* <MantineReactTable table={table} />; */}
 
 
             {/* TabContext */}
             <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <TabList onChange={handleChange} aria-label="lab API tabs example">
+
                         {nganh && nganh.length > 0 &&
                             nganh.map((item, index) => {
-                                let valuee = index + 1;
+
                                 return (
-                                    <Tab label={item.tennganh} value={valuee.toString()} key={item.manganhhoc} />
+                                    <Tab label={item.tennganh} value={item.manganhhoc} key={item.manganhhoc} />
                                 )
                             })}
                     </TabList>
                 </Box>
 
-                <TabPanel value="1" >
+                <TabPanel value="CNTT" >
                     <div className="table">
                         <div className="card4">
                             <h6 className="card-header">Danh sách đề tài</h6>
                         </div>
-                        <TableDSDeTai />
-
+                        <TableDSDeTai data_detai={data_detai} />
                     </div>
                 </TabPanel>
-                <TabPanel value="2">
+                <TabPanel value="CNTT_CLC">
                     <div className="table">
                         <div className="card4">
-                            <h6 className="card-header">Số lượng: 3/75</h6>
+                            <h6 className="card-header">Danh sách đề tài</h6>
                         </div>
 
 
                     </div>
                 </TabPanel>
-                <TabPanel value="3">
-                    <div className="table">
-                        <div className="card4">
-                            <h6 className="card-header">Số lượng: 3/75</h6>
-                        </div>
 
-
-                    </div>
-                </TabPanel>
-                <TabPanel value="4">
-                    <div className="table">
-                        <div className="card4">
-                            <h6 className="card-header">Số lượng: 3/75</h6>
-                        </div>
-
-
-                    </div>
-                </TabPanel>
-                <TabPanel value="5">
-                    <div className="table">
-                        <div className="card4">
-                            <h6 className="card-header">Số lượng: 3/75</h6>
-                        </div>
-
-                    </div>
-                </TabPanel>
 
             </TabContext>
             {/* TabContext */}
