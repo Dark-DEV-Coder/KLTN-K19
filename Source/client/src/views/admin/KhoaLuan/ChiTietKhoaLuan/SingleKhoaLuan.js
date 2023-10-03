@@ -65,7 +65,7 @@ const SingleKhoaLuan = () => {
         <main className="main2">
             <div className="head-title">
                 <div className="left">
-                    <h1>TÊN DKY KHÓA LUẬN</h1>
+                    <h1>THÔNG TIN CHI TIẾT</h1>
                     <ul className="breadcrumb">
                         <li>
                             <Link>{maKL.makl}</Link>

@@ -275,7 +275,7 @@ const SingleDkiChuyenNganh = () => {
             {/* <HeaderMain title={'Chuyên ngành'} /> */}
             <div className="head-title">
                 <div className="left">
-                    <h1>TÊN DKY CHUYÊN NGÀNH</h1>
+                    <h1>THÔNG TIN CHI TIẾT</h1>
                     <ul className="breadcrumb">
                         <li>
                             <Link>{dulieutest.tgbd}</Link>
