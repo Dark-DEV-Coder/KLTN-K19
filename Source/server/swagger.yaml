@@ -1,0 +1,52 @@
+swagger: "2.0"
+info:
+  description: "API của Website Hỗ trợ đào tạo SGU"
+  version: "1.0.0"
+  title: "Website Hỗ trợ đào tạo SGU"
+  contact:
+    email: ""
+host: ""
+# localhost:8000
+basePath: "/api"
+schemes:
+- "http"
+- "https"
+tags:
+- name: "auth"
+  description: "Endpoint Authentication"
+paths:
+  # /admin/staff/get-login-offline-code:
+  #   get: 
+  #     tags:
+  #       - "staff"
+  #     summary: Admin get login offine code of staff
+  #     produces:
+  #       - application/json     
+  #     parameters:
+  #     - in: query
+  #       name: staffCode
+  #       type: string
+  #       required: true
+  #       description: staff code
+  #     responses:
+  #       200: 
+  #         description: get login offine code of staff successfully,
+  #         schema:
+  #           type: object
+  #           example: {
+  #             "success": true,
+  #             "message": "get login offine code of staff successfully",
+  #             "data": {
+  #               "code": "string",
+  #             }
+  #           }
+  #       400:
+  #         description: get login offine code of staff failed,
+  #         schema:
+  #           type: object
+  #           example: {
+  #             "success": false,
+  #             "message": "string",
+  #           }
+  #     security:
+  #     - ApiKeyAuth: []
