@@ -1,3 +1,4 @@
+import Error from "../error/Error";
 import Footer from "./Footer/Footer";
 import Login from "./Login/Login";
 import Nav from "./Nav";
@@ -23,14 +24,12 @@ const Client = () => {
                 <Route path='/user' exact ></Route>
                 <Route path='/users/:id'></Route>
             </Routes> */}
-
-
             <Routes >
                 {/* <Route path="/"> */}
+
                 <Route index path='' element={<TrangChu />} exact></Route>
                 <Route path='login' element={<Login />}></Route>
-                <Route path='todo'></Route>
-                <Route path='about' ></Route>
+                <Route path='about' element={<Error />} ></Route>
                 <Route path='user' exact ></Route>
                 <Route path='users/:id'></Route>
 
