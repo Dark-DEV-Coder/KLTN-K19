@@ -35,6 +35,13 @@ import CanhBaoHocTap from "./CanhBaoHocTap/CanhBaoHocTap";
 import ChiTietCBHT from "./CanhBaoHocTap/ChiTietCBHT/ChiTietCBHT";
 import EditCBHT from "./CanhBaoHocTap/EditCBHT/EditCBHT";
 import AddCBHT from "./CanhBaoHocTap/ThemCBHT/AddCBHT";
+import Error from "../error/Error";
+import ThucTap from "./ThucTap/ThucTap";
+import ChiTietThucTap from "./ThucTap/ChiTietThucTap/ChiTietThucTap";
+import ViTriThucTap from "./ThucTap/DSViTriThucTap/ViTriThucTap";
+import EditThucTap from "./ThucTap/EditThucTap/EditThucTap";
+import AddThucTap from "./ThucTap/ThemThucTap/AddThucTap";
+import EditCongTyThucTap from "./ThucTap/EditCongTyThucTap/EditCongTyThucTap";
 const Admin = () => {
 
     const [hiddenDB, setHiddenDB] = useState(false);
@@ -65,7 +72,18 @@ const Admin = () => {
                                 <Route path="new" element={<AddKhoaLuan />}></Route>
                                 <Route path="single/:makl" element={<SingleKhoaLuan />}></Route>
                                 <Route path="edit/:makl" element={<EditKhoaLuan />}></Route>
+
                                 <Route path="detai/:ten" element={<ChiTietDeTai />}></Route>
+                                <Route path="detai/edit/:ten" element={<EditDeTai />}></Route>
+                            </Route>
+                            <Route path='thuctap'  >
+                                <Route index element={<ThucTap />}></Route>
+                                <Route path="new" element={<AddThucTap />}></Route>
+                                <Route path="single/:MaDKTT" element={<ChiTietThucTap />}></Route>
+                                <Route path="edit/:MaDKTT" element={<EditThucTap />}></Route>
+
+                                <Route path="vitri/:TenCongTy" element={<ViTriThucTap />}></Route>
+                                <Route path="vitri/edit/:TenCongTy" element={<EditCongTyThucTap />}></Route>
                                 <Route path="detai/edit/:ten" element={<EditDeTai />}></Route>
                             </Route>
                             <Route path='canhbaohoctap'  >
