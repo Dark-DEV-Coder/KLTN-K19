@@ -1,4 +1,5 @@
-import "./TableChuyenNganh.scss"
+
+
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Box, Button } from '@mantine/core';
@@ -13,40 +14,40 @@ import { Delete, Edit, Visibility } from '@mui/icons-material';
 
 const data = [
     {
-        machuyennganh: 'HTTT',
-        tenchuyennganh: 'Hệ Thống Thông Tin',
-        nganh: 'Công nghệ thông tin',
+        MaTK: 'TK1',
+        TenDangNhap: 'admin',
+        MatKhau: 'admin',
         trangthai: 1,
     },
     {
-        machuyennganh: 'KHMT',
-        tenchuyennganh: 'Khoa Học Máy Tính',
-        nganh: 'Công nghệ thông tin',
+        MaTK: 'TK2',
+        TenDangNhap: 'giangvien2',
+        MatKhau: 'admin',
         trangthai: 1,
     },
     {
-        machuyennganh: 'KTPM',
-        tenchuyennganh: 'Kỹ Thuật Phần Mềm',
-        nganh: 'Công nghệ thông tin',
+        MaTK: 'TK3',
+        TenDangNhap: 'giangvien3',
+        MatKhau: 'admin',
         trangthai: 1,
     },
     {
-        machuyennganh: 'MMT',
-        tenchuyennganh: 'Mạng Máy Tính',
-        nganh: 'Công nghệ thông tin',
+        MaTK: 'TK4',
+        TenDangNhap: 'giangvien4',
+        MatKhau: 'admin',
         trangthai: 1,
     },
 
     {
-        machuyennganh: 'LTUD',
-        tenchuyennganh: 'Lập trình ứng dụng',
-        nganh: 'Kỹ thuật phần mềm',
+        MaTK: 'TK5',
+        TenDangNhap: 'giangvien5',
+        MatKhau: 'admin',
         trangthai: 1,
     },
     {
-        machuyennganh: 'LTW',
-        tenchuyennganh: 'Lập trình Web',
-        nganh: 'Kỹ thuật phần mềm',
+        MaTK: 'TK6',
+        TenDangNhap: 'giangvien6',
+        MatKhau: 'admin',
         trangthai: 1,
     },
 
@@ -58,7 +59,7 @@ const csvConfig = mkConfig({
     useKeysAsHeaders: true,
 });
 
-const TableChuyenNganh = () => {
+const TableTaiKhoan = () => {
     const [checkdiv, setCheckdiv] = useState(false)
 
     const handleExportRows = (rows) => {
@@ -74,8 +75,8 @@ const TableChuyenNganh = () => {
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'machuyennganh',
-                header: 'Mã Chuyên Ngành',
+                accessorKey: 'MaTK',
+                header: 'Mã tài khoản',
                 size: 100,
                 enableColumnOrdering: false,
                 enableEditing: false, //disable editing on this column
@@ -83,15 +84,15 @@ const TableChuyenNganh = () => {
 
             },
             {
-                accessorKey: 'tenchuyennganh',
-                header: 'Tên Chuyên Ngành',
+                accessorKey: 'TenDangNhap',
+                header: 'Tên đăng nhập',
                 size: 100,
                 enableEditing: false,
 
             },
             {
-                accessorKey: 'nganh',
-                header: 'Ngành học',
+                accessorKey: 'MatKhau',
+                header: 'Mật khẩu',
                 size: 100,
                 enableEditing: false,
 
@@ -114,13 +115,13 @@ const TableChuyenNganh = () => {
 
         renderRowActions: ({ row, table }) => (
             <Box sx={{ display: 'flex', gap: '0.3rem' }}>
+                <Link to={"/admin/taikhoan/single/" + row.original.MaTK}>
+                    <IconButton>
+                        <Visibility fontSize="small" />
+                    </IconButton>
+                </Link>
 
-                <IconButton onClick={() => table.setEditingRow(row)}>
-                    <Visibility fontSize="small" />
-                </IconButton>
-
-
-                <Link to={"/admin/chuyennganh/edit/" + row.original.machuyennganh}>
+                <Link to={"/admin/taikhoan/edit/" + row.original.MaTK}>
                     <IconButton  >
                         <Edit fontSize="small" />
                     </IconButton>
@@ -188,4 +189,4 @@ const TableChuyenNganh = () => {
 
 };
 
-export default TableChuyenNganh;
+export default TableTaiKhoan;

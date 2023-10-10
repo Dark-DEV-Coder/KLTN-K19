@@ -122,7 +122,7 @@ const TableDSCtyThucTap = () => {
                     </IconButton>
                 </Link>
 
-                <Link to={"/admin/thuctap/vitri/edit/" + row.original.TenCongTy}>
+                <Link to={"/admin/thuctap/cty/edit/" + row.original.TenCongTy}>
                     <IconButton onClick={() => table.setEditingRow(row)}>
                         <Edit fontSize="small" />
                     </IconButton>

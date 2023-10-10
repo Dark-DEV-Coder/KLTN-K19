@@ -42,6 +42,13 @@ import ViTriThucTap from "./ThucTap/DSViTriThucTap/ViTriThucTap";
 import EditThucTap from "./ThucTap/EditThucTap/EditThucTap";
 import AddThucTap from "./ThucTap/ThemThucTap/AddThucTap";
 import EditCongTyThucTap from "./ThucTap/EditCongTyThucTap/EditCongTyThucTap";
+import TaiKhoan from "./TaiKhoan/TaiKhoan";
+import SingleTaiKhoan from "./TaiKhoan/SingleTaiKhoan/SingleTaiKhoan";
+import EditTaiKhoan from "./TaiKhoan/EditTaiKhoan/EditTaiKhoan";
+import AddTaiKhoan from "./TaiKhoan/ThemTaiKhoan/AddTaiKhoan";
+import ChucNang from "./ChucNang/ChucNang";
+import EditChucNang from "./ChucNang/EditChucNang/EditChucNang";
+import AddChucNang from "./ChucNang/ThemChucNang/AddChucNang";
 const Admin = () => {
 
     const [hiddenDB, setHiddenDB] = useState(false);
@@ -83,8 +90,7 @@ const Admin = () => {
                                 <Route path="edit/:MaDKTT" element={<EditThucTap />}></Route>
 
                                 <Route path="vitri/:TenCongTy" element={<ViTriThucTap />}></Route>
-                                <Route path="vitri/edit/:TenCongTy" element={<EditCongTyThucTap />}></Route>
-                                <Route path="detai/edit/:ten" element={<EditDeTai />}></Route>
+                                <Route path="cty/edit/:TenCongTy" element={<EditCongTyThucTap />}></Route>
                             </Route>
                             <Route path='canhbaohoctap'  >
                                 <Route index element={<CanhBaoHocTap />}></Route>
@@ -111,6 +117,17 @@ const Admin = () => {
                                 <Route index element={<ChuyenNganh />}></Route>
                                 <Route path="new" element={<AddChuyenNganh />} ></Route>
                                 <Route path="edit/:machuyennganh" element={<EditChuyenNganh />} ></Route>
+                            </Route>
+                            <Route path='taikhoan'  >
+                                <Route index element={<TaiKhoan />}></Route>
+                                <Route path="new" element={<AddTaiKhoan />} ></Route>
+                                <Route path="single/:MaTK" element={<SingleTaiKhoan />} ></Route>
+                                <Route path="edit/:MaTK" element={<EditTaiKhoan />} ></Route>
+                            </Route>
+                            <Route path='chucnang'  >
+                                <Route index element={<ChucNang />}></Route>
+                                <Route path="new" element={<AddChucNang />} ></Route>
+                                <Route path="edit/:MaCN" element={<EditChucNang />} ></Route>
                             </Route>
                         </Route>
 
