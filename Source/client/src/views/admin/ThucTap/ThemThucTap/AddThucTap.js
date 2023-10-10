@@ -47,13 +47,13 @@ const AddThucTap = () => {
                 <div className="container-edit">
                     <div className="form-group">
                         <label className="inputKL" for="inputTen">Tên đợt đăng ký khóa luận</label>
-                        <input type="text" className="form-control" id="inputTen" value={Ten} onChange={(event) => onChangeInputSL(event, SetTen)} />
+                        <input type="text" className="form-control" id="inputTen" placeholder="Điền tên đợt đăng ký khóa luận ..." value={Ten} onChange={(event) => onChangeInputSL(event, SetTen)} />
                     </div>
                     <div className="form-row">
 
                         <div className="form-group col-md-6">
                             <label className="inputKL" for="inputNienKhoa">Niên khóa</label>
-                            <input type="text" className="form-control" id="inputNienKhoa" value={NienKhoa} onChange={(event) => onChangeInputSL(event, SetNienKhoa)} />
+                            <input type="text" className="form-control" id="inputNienKhoa" placeholder="Điền niên khóa ..." value={NienKhoa} onChange={(event) => onChangeInputSL(event, SetNienKhoa)} />
                         </div>
                         <div className="form-group col-md-6">
                             <div className="custom-file">
