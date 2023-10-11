@@ -19,6 +19,14 @@ const AddChuyenNganh = () => {
         console.log('select', changeValue)
         SetSelect(changeValue);
     }
+
+
+    // check dữ liệu
+    const [checkdulieuMa, SetCheckdulieuMa] = useState(true)
+    const [checkdulieuTen, SetCheckdulieuTen] = useState(true)
+    const checkdulieu = (value, SetDuLieu) => {
+        value === '' ? SetDuLieu(false) : SetDuLieu(true)
+    }
     const nganh = [
         { id: 'CNTT', ten: 'Công nghệ thông tin' },
         { id: 'CNTT_CLC', ten: 'Công nghệ thông tin CLC' },
@@ -58,11 +66,13 @@ const AddChuyenNganh = () => {
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputNganh" for="inputMa">Mã chuyên ngành</label>
-                            <input type="text" className="form-control" id="inputMa" placeholder="Điền mã chuyên ngành ..." value={machuyennganh} onChange={(event) => onChangeInputSL(event, SetMachuyennganh)} />
+                            <input type="text" className="form-control" id="inputMa" placeholder="Điền mã chuyên ngành ..." value={machuyennganh} onChange={(event) => onChangeInputSL(event, SetMachuyennganh)} onBlur={() => checkdulieu(machuyennganh, SetCheckdulieuMa)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuMa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputNganh" for="inputTen">Tên chuyên ngành</label>
-                            <input type="text" className="form-control" id="inputTen" placeholder="Điền tên chuyên ngành ..." value={tenchuyennganh} onChange={(event) => onChangeInputSL(event, SetTenchuyennganh)} />
+                            <input type="text" className="form-control" id="inputTen" placeholder="Điền tên chuyên ngành ..." value={tenchuyennganh} onChange={(event) => onChangeInputSL(event, SetTenchuyennganh)} onBlur={() => checkdulieu(tenchuyennganh, SetCheckdulieuTen)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
                     <div className="form-row">

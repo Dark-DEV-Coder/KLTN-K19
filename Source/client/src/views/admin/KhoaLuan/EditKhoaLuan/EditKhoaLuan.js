@@ -27,6 +27,14 @@ const EditKhoaLuan = () => {
         SetSL(changeValue);
     }
 
+    // check dữ liệu
+    const [checkdulieuTen, SetCheckdulieuTen] = useState(true)
+    const [checkdulieuKhoaHoc, SetCheckdulieuKhoaHoc] = useState(true)
+    const [checkdulieuNienKhoa, SetCheckdulieuNienKhoa] = useState(true)
+    const checkdulieu = (value, SetDuLieu) => {
+        value === '' ? SetDuLieu(false) : SetDuLieu(true)
+    }
+
     return (
         <main className="main2">
             {/* <HeaderMain title={'Chuyên ngành'} /> */}
@@ -57,16 +65,19 @@ const EditKhoaLuan = () => {
                 <div className="container-edit">
                     <div className="form-group">
                         <label className="inputKL" for="inputTen">Tên đợt đăng ký khóa luận</label>
-                        <input type="text" className="form-control" id="inputTen" value={ten} onChange={(event) => onChangeInputSL(event, SetTen)} />
+                        <input type="text" className="form-control" id="inputTen" value={ten} onChange={(event) => onChangeInputSL(event, SetTen)} onBlur={() => checkdulieu(ten, SetCheckdulieuTen)} />
+                        <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputKL" for="inputKhoa">Khóa học</label>
-                            <input type="text" className="form-control" id="inputKhoa" value={khoahoc} onChange={(event) => onChangeInputSL(event, SetKhoahoc)} />
+                            <input type="text" className="form-control" id="inputKhoa" value={khoahoc} onChange={(event) => onChangeInputSL(event, SetKhoahoc)} onBlur={() => checkdulieu(khoahoc, SetCheckdulieuKhoaHoc)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuKhoaHoc ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputKL" for="inputNienKhoa">Niên khóa</label>
-                            <input type="text" className="form-control" id="inputNienKhoa" value={nienkhoa} onChange={(event) => onChangeInputSL(event, SetNienkhoa)} />
+                            <input type="text" className="form-control" id="inputNienKhoa" value={nienkhoa} onChange={(event) => onChangeInputSL(event, SetNienkhoa)} onBlur={() => checkdulieu(nienkhoa, SetCheckdulieuNienKhoa)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuNienKhoa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
                     {/* <div className="form-row">

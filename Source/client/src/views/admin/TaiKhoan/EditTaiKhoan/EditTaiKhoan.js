@@ -16,6 +16,14 @@ const EditTaiKhoan = () => {
         let changeValue = event.target.value;
         SetState(changeValue);
     }
+
+    // check dữ liệu
+    const [checkdulieuTenDN, SetCheckdulieuTenDN] = useState(true)
+    const [checkdulieuMatKhau, SetCheckdulieuMatKhau] = useState(true)
+    const checkdulieu = (value, SetDuLieu) => {
+        value === '' ? SetDuLieu(false) : SetDuLieu(true)
+    }
+
     const chucnangcuaTK = [
         { MaCN: 'khoaluan', TenChucNang: 'Khóa luận' },
         { MaCN: 'thuctap', TenChucNang: 'Thực tập' },
@@ -68,11 +76,13 @@ const EditTaiKhoan = () => {
                         <div className="form-row">
                             <div className="form-group col-md-6">
                                 <label className="inputTK" for="inputTenDN">Tên đăng nhập</label>
-                                <input type="text" className="form-control" id="inputTenDN" value={TenDangNhap} onChange={(event) => onChangeInputSL(event, SetTenDangNhap)} />
+                                <input type="text" className="form-control" id="inputTenDN" value={TenDangNhap} onChange={(event) => onChangeInputSL(event, SetTenDangNhap)} onBlur={() => checkdulieu(TenDangNhap, SetCheckdulieuTenDN)} />
+                                <div className="invalid-feedback" style={{ display: checkdulieuTenDN ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                             </div>
                             <div className="form-group col-md-6">
                                 <label className="inputTK" for="inputTenGV">Mật khẩu</label>
-                                <input type="text" className="form-control" id="inputTenDN" value={MatKhau} onChange={(event) => onChangeInputSL(event, SetMatKhau)} />
+                                <input type="text" className="form-control" id="inputTenDN" value={MatKhau} onChange={(event) => onChangeInputSL(event, SetMatKhau)} onBlur={() => checkdulieu(MatKhau, SetCheckdulieuMatKhau)} />
+                                <div className="invalid-feedback" style={{ display: checkdulieuMatKhau ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                             </div>
                         </div>
                         <div className="form-row">

@@ -14,6 +14,13 @@ const AddNganh = () => {
         SetSL(changeValue);
     }
 
+    // check dữ liệu
+    const [checkdulieuMa, SetCheckdulieuMa] = useState(true)
+    const [checkdulieuTen, SetCheckdulieuTen] = useState(true)
+    const checkdulieu = (value, SetDuLieu) => {
+        value === '' ? SetDuLieu(false) : SetDuLieu(true)
+    }
+
     return (
         <main className="main2">
             {/* <HeaderMain title={'Chuyên ngành'} /> */}
@@ -45,11 +52,13 @@ const AddNganh = () => {
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputNganh" for="inputMa">Mã ngành</label>
-                            <input type="text" className="form-control" id="inputMa" placeholder="Điền mã ngành ..." value={manganh} onChange={(event) => onChangeInputSL(event, SetMaNganh)} />
+                            <input type="text" className="form-control" id="inputMa" placeholder="Điền mã ngành ..." value={manganh} onChange={(event) => onChangeInputSL(event, SetMaNganh)} onBlur={() => checkdulieu(manganh, SetCheckdulieuMa)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuMa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputNganh" for="inputTen">Tên ngành</label>
-                            <input type="text" className="form-control" id="inputTen" placeholder="Điền tên ngành ..." value={tennganh} onChange={(event) => onChangeInputSL(event, SetTenNganh)} />
+                            <input type="text" className="form-control" id="inputTen" placeholder="Điền tên ngành ..." value={tennganh} onChange={(event) => onChangeInputSL(event, SetTenNganh)} onBlur={() => checkdulieu(tennganh, SetCheckdulieuTen)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
 
