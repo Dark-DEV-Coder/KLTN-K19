@@ -17,6 +17,13 @@ const AddThucTap = () => {
         SetSL(changeValue);
     }
 
+    // check dữ liệu
+    const [checkdulieuTen, SetCheckdulieuTen] = useState(true)
+    const [checkdulieuNienKhoa, SetCheckdulieuNienKhoa] = useState(true)
+    const checkdulieu = (value, SetDuLieu) => {
+        value === '' ? SetDuLieu(false) : SetDuLieu(true)
+    }
+
     return (
         <main className="main2">
             {/* <HeaderMain title={'Chuyên ngành'} /> */}
@@ -47,13 +54,15 @@ const AddThucTap = () => {
                 <div className="container-edit">
                     <div className="form-group">
                         <label className="inputKL" for="inputTen">Tên đợt đăng ký khóa luận</label>
-                        <input type="text" className="form-control" id="inputTen" placeholder="Điền tên đợt đăng ký khóa luận ..." value={Ten} onChange={(event) => onChangeInputSL(event, SetTen)} />
+                        <input type="text" className="form-control" id="inputTen" placeholder="Điền tên đợt đăng ký khóa luận ..." value={Ten} onChange={(event) => onChangeInputSL(event, SetTen)} onBlur={() => checkdulieu(Ten, SetCheckdulieuTen)} />
+                        <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                     </div>
                     <div className="form-row">
 
                         <div className="form-group col-md-6">
                             <label className="inputKL" for="inputNienKhoa">Niên khóa</label>
-                            <input type="text" className="form-control" id="inputNienKhoa" placeholder="Điền niên khóa ..." value={NienKhoa} onChange={(event) => onChangeInputSL(event, SetNienKhoa)} />
+                            <input type="text" className="form-control" id="inputNienKhoa" placeholder="Điền niên khóa ..." value={NienKhoa} onChange={(event) => onChangeInputSL(event, SetNienKhoa)} onBlur={() => checkdulieu(NienKhoa, SetCheckdulieuNienKhoa)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuNienKhoa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
                             <div className="custom-file">

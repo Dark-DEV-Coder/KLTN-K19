@@ -18,6 +18,13 @@ const EditNganh = () => {
         SetSL(changeValue);
     }
 
+    // check dữ liệu
+    const [checkdulieuMa, SetCheckdulieuMa] = useState(true)
+    const [checkdulieuTen, SetCheckdulieuTen] = useState(true)
+    const checkdulieu = (value, SetDuLieu) => {
+        value === '' ? SetDuLieu(false) : SetDuLieu(true)
+    }
+
     return (
         <main className="main2">
             {/* <HeaderMain title={'Chuyên ngành'} /> */}
@@ -49,14 +56,15 @@ const EditNganh = () => {
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputNganh" for="inputMa">Mã ngành</label>
-                            <input type="text" className="form-control" id="inputMa" value={manganh} onChange={(event) => onChangeInputSL(event, SetMaNganh)} />
+                            <input type="text" className="form-control" id="inputMa" value={manganh} onChange={(event) => onChangeInputSL(event, SetMaNganh)} onBlur={(event) => checkdulieu(manganh, SetCheckdulieuMa)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuMa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputNganh" for="inputTen">Tên ngành</label>
-                            <input type="text" className="form-control" id="inputTen" value={tennganh} onChange={(event) => onChangeInputSL(event, SetTenNganh)} />
+                            <input type="text" className="form-control" id="inputTen" value={tennganh} onChange={(event) => onChangeInputSL(event, SetTenNganh)} onBlur={(event) => checkdulieu(tennganh, SetCheckdulieuTen)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
-
 
                     <button className="btn" type="submit">Submit form</button>
                 </div>

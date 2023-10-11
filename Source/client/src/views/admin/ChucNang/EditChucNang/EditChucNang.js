@@ -14,6 +14,13 @@ const EditChucNang = () => {
         SetSL(changeValue);
     }
 
+    // check dữ liệu
+    const [checkdulieuMa, SetCheckdulieuMa] = useState(true)
+    const [checkdulieuTen, SetCheckdulieuTen] = useState(true)
+    const checkdulieu = (value, SetDuLieu) => {
+        value === '' ? SetDuLieu(false) : SetDuLieu(true)
+    }
+
     return (
         <main className="main2">
             {/* <HeaderMain title={'Chuyên ngành'} /> */}
@@ -45,11 +52,13 @@ const EditChucNang = () => {
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputNganh" for="inputMa">Mã chức năng</label>
-                            <input type="text" className="form-control" id="inputMa" value={MaCN} onChange={(event) => onChangeInputSL(event, SetMaCN)} />
+                            <input type="text" className="form-control" id="inputMa" value={MaCN} onChange={(event) => onChangeInputSL(event, SetMaCN)} onBlur={() => checkdulieu(MaCN, SetCheckdulieuMa)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuMa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputNganh" for="inputTen">Tên chức năng</label>
-                            <input type="text" className="form-control" id="inputTen" value={TenChucNang} onChange={(event) => onChangeInputSL(event, SetTenChucNang)} />
+                            <input type="text" className="form-control" id="inputTen" value={TenChucNang} onChange={(event) => onChangeInputSL(event, SetTenChucNang)} onBlur={() => checkdulieu(TenChucNang, SetCheckdulieuTen)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
 
