@@ -39,6 +39,15 @@ const AddDKCN = () => {
         SetSL(changeValue);
     }
 
+    // check dữ liệu
+    const [checkdulieuTen, SetCheckdulieuTen] = useState(true)
+    const [checkdulieuKhoa, SetCheckdulieuKhoa] = useState(true)
+    const [checkdulieuNienKhoa, SetCheckdulieuNienKhoa] = useState(true)
+    const [checkdulieuMatKhau, SetCheckdulieuNienMatKhau] = useState(true)
+    const checkdulieu = (value, SetDuLieu) => {
+        value === '' ? SetDuLieu(false) : SetDuLieu(true)
+    }
+
     return (
         <main className="main2">
             {/* <HeaderMain title={'Chuyên ngành'} /> */}
@@ -69,23 +78,22 @@ const AddDKCN = () => {
                 <div className="container-edit">
                     <div className="form-group">
                         <label className="inputDKCN" for="inputTenDKCN">Tên đợt đăng ký chyên ngành</label>
-                        <input type="text" className="form-control" id="inputTenDKCN" placeholder="Nhập tên ..." value={tenDKCN} onChange={(event) => onChangeInputSL(event, SetTenDKCN)} />
-                        {tenDKCN === '' ?
-                            <div className="invalid-feedback" style={{ display: 'block' }}>Example invalid custom file feedback</div>
-                            :
-                            <div class="valid-feedback">Looks good!</div>
-                        }
+                        <input type="text" className="form-control" id="inputTenDKCN" placeholder="Nhập tên ..." value={tenDKCN} onChange={(event) => onChangeInputSL(event, SetTenDKCN)} onBlur={() => checkdulieu(tenDKCN, SetCheckdulieuTen)} />
+                        <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputDKCN" for="inputKhoaDKCN">Khóa học</label>
-                            <input type="text" className="form-control" id="inputKhoaDKCN" placeholder="Điền khóa học" value={khoahocDKCN} onChange={(event) => onChangeInputSL(event, SetKhoahocDKCN)} />
-                            <div className="invalid-feedback">Example invalid custom file feedback</div>
+                            <input type="text" className="form-control" id="inputKhoaDKCN" placeholder="Điền khóa học" value={khoahocDKCN} onChange={(event) => onChangeInputSL(event, SetKhoahocDKCN)} onBlur={() => checkdulieu(khoahocDKCN, SetCheckdulieuKhoa)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuKhoa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputDKCN" for="inputNienKhoaDKCN">Niên khóa</label>
-                            <input type="text" className="form-control" id="inputNienKhoaDKCN" placeholder="Điền niên khóa" value={nienkhoaDKCN} onChange={(event) => onChangeInputSL(event, SetNienkhoaDKCN)} />
-                            <div className="invalid-feedback">Example invalid custom file feedback</div>
+                            <input type="text" className="form-control" id="inputNienKhoaDKCN" placeholder="Điền niên khóa" value={nienkhoaDKCN} onChange={(event) => onChangeInputSL(event, SetNienkhoaDKCN)} onBlur={() => checkdulieu(nienkhoaDKCN, SetCheckdulieuNienKhoa)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuNienKhoa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+
                         </div>
                     </div>
                     <div className="form-row">
@@ -93,13 +101,14 @@ const AddDKCN = () => {
                             <div className="custom-file">
                                 <label className="inputDKCN" for="inputDSSVDKCN">Danh sách sinh viên</label>
                                 <input type="file" className="form-control file" id="inputDSSVDKCN" placeholder="Điền niên khóa" onChange={(event) => onChangeInputSL(event, SetDanhsachSV)} />
-                                <div className="invalid-feedback">Example invalid custom file feedback</div>
+
                             </div>
                         </div>
 
                         <div className="form-group col-md-6">
                             <label className="inputDKCN" for="inputMatkhauDKCN">Mật khẩu</label>
-                            <input type="text" className="form-control" id="inputMatkhauDKCN" placeholder="******" onChange={(event) => onChangeInputSL(event, SetMatkhau)} />
+                            <input type="text" className="form-control" id="inputMatkhauDKCN" placeholder="******" value={matkhau} onChange={(event) => onChangeInputSL(event, SetMatkhau)} onBlur={() => checkdulieu(matkhau, SetCheckdulieuNienMatKhau)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuMatKhau ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
                     <div className="form-row">

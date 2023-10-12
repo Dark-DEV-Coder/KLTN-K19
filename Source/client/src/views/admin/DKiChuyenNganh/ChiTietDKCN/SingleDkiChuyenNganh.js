@@ -157,6 +157,59 @@ const SingleDkiChuyenNganh = () => {
         },
     ]
 
+
+    const data_CNKTPM = [
+        {
+            masv: '3119560010',
+            ho: 'Lê Thị Cẩm',
+            ten: 'Duyên',
+            diem: 2.97,
+            chuyennganh: 'Chưa đăng ký',
+            trangthai: 1,
+        },
+        {
+            masv: '3119560011',
+            ho: 'Lê Thị Cẩm',
+            ten: 'Duyên',
+            diem: 2.97,
+            chuyennganh: 'Lập trình web',
+            trangthai: 1,
+        },
+        {
+            masv: '3119560012',
+            ho: 'Lê Thị Cẩm',
+            ten: 'Duyên',
+            diem: 2.97,
+            chuyennganh: 'Lập trình ứng dụng',
+            trangthai: 1,
+        },
+        {
+            masv: '3119560010',
+            ho: 'Lê Thị Cẩm',
+            ten: 'Duyên',
+            diem: 2.97,
+            chuyennganh: 'Chưa đăng ký',
+            trangthai: 1,
+        },
+        {
+            masv: '3119560010',
+            ho: 'Lê Thị Cẩm',
+            ten: 'Duyên',
+            diem: 2.97,
+            chuyennganh: 'Chưa đăng ký',
+            trangthai: 1,
+        },
+        {
+            masv: '3119560010',
+            ho: 'Lê Thị Cẩm',
+            ten: 'Duyên',
+            diem: 2.97,
+            chuyennganh: 'Chưa đăng ký',
+            trangthai: 1,
+        },
+    ]
+
+
     const data_LTW = [
         {
             masv: '3119560010',
@@ -254,12 +307,16 @@ const SingleDkiChuyenNganh = () => {
     }
 
 
-    const [listData_KTPM, setListData_KTPM] = useState(data_LTW);
-    const [valueTableKTPM, setValueTableKTPM] = useState('ltw');
+    const [listData_KTPM, setListData_KTPM] = useState(data_CNKTPM);
+    const [valueTableKTPM, setValueTableKTPM] = useState('ktpm');
     const handleChangeKTPM = (event, newValue) => {
         setValueTableKTPM(newValue);
     };
     const handleChange_KTPM = (maCN) => {
+        if (maCN === "ktpm") {
+            setListData_KTPM(data_CNKTPM)
+            return
+        }
         if (maCN === "ltw") {
             setListData_KTPM(data_LTW)
             return
@@ -368,10 +425,20 @@ const SingleDkiChuyenNganh = () => {
                     <TabContext value={valueTableKTPM}>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                             <TabList onChange={handleChangeKTPM} aria-label="lab API tabs example">
+                                <Tab label="Kỹ thuật phần mềm" value="ktpm" onClick={() => handleChange_KTPM("ktpm")} />
                                 <Tab label="Lập trình web" value="ltw" onClick={() => handleChange_KTPM("ltw")} />
                                 <Tab label="Lập trình ứng dụng" value="ltud" onClick={() => handleChange_KTPM("ltud")} />
                             </TabList>
                         </Box>
+                        <TabPanel value="ktpm">
+                            <div className="table">
+                                <div className="card4">
+                                    <h6 className="card-header">Số lượng: {listData_KTPM.length}/75</h6>
+                                </div>
+                                <TableCTDKCN listData={listData_KTPM} />
+
+                            </div>
+                        </TabPanel>
                         <TabPanel value="ltw">
                             <div className="table">
                                 <div className="card4">
