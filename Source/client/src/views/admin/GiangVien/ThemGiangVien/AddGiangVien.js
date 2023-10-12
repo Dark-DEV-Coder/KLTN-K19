@@ -31,6 +31,18 @@ const AddGiangVien = () => {
         console.log("Select", changeValue)
         SetSelect(changeValue);
     }
+
+    // check dữ liệu
+    const [checkdulieuHo, SetCheckdulieuHo] = useState(true)
+    const [checkdulieuTen, SetCheckdulieuTen] = useState(true)
+    const [checkdulieuEmail, SetCheckdulieuEmail] = useState(true)
+    const [checkdulieuSDT, SetCheckdulieuSDT] = useState(true)
+    const [checkdulieuDVCT, SetCheckdulieuDVCT] = useState(true)
+    const [checkdulieuTrinhDo, SetCheckdulieuTrinhDo] = useState(true)
+    const checkdulieu = (value, SetDuLieu) => {
+        value === '' ? SetDuLieu(false) : SetDuLieu(true)
+    }
+
     return (
         <main className="main2">
             {/* <HeaderMain title={'Chuyên ngành'} /> */}
@@ -61,21 +73,25 @@ const AddGiangVien = () => {
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputGV" for="inputHoGV">Họ lót</label>
-                            <input type="text" className="form-control" id="inputHoGV" placeholder="Điền họ lót ..." value={hogv} onChange={(event) => onChangeInputSL(event, SetHogv)} />
+                            <input type="text" className="form-control" id="inputHoGV" placeholder="Điền họ lót ..." value={hogv} onChange={(event) => onChangeInputSL(event, SetHogv)} onBlur={() => checkdulieu(hogv, SetCheckdulieuHo)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuHo ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputGV" for="inputTenGV">Tên</label>
-                            <input type="text" className="form-control" id="inputTenGV" placeholder="Điền tên ..." value={tengv} onChange={(event) => onChangeInputSL(event, SetTengv)} />
+                            <input type="text" className="form-control" id="inputTenGV" placeholder="Điền tên ..." value={tengv} onChange={(event) => onChangeInputSL(event, SetTengv)} onBlur={() => checkdulieu(tengv, SetCheckdulieuTen)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputGV" for="inputEmailGV">Email</label>
-                            <input type="text" className="form-control" id="inputEmailGV" placeholder="abc...@gmail.com" value={email} onChange={(event) => onChangeInputSL(event, SetEmail)} />
+                            <input type="text" className="form-control" id="inputEmailGV" placeholder="abc...@gmail.com" value={email} onChange={(event) => onChangeInputSL(event, SetEmail)} onBlur={() => checkdulieu(email, SetCheckdulieuEmail)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuEmail ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputGV" for="inputSdtGV">Số điện thoại</label>
-                            <input type="text" className="form-control" id="inputSdtGV" placeholder="03899...." value={sdt} onChange={(event) => onChangeInputSL(event, SetSdt)} />
+                            <input type="text" className="form-control" id="inputSdtGV" placeholder="03899...." value={sdt} onChange={(event) => onChangeInputSL(event, SetSdt)} onBlur={() => checkdulieu(sdt, SetCheckdulieuSDT)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuSDT ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
                     <div className="form-row">
@@ -94,7 +110,8 @@ const AddGiangVien = () => {
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputGV" for="inputDonviCT">Đơn vị công tác</label>
-                            <input type="text" className="form-control" id="inputDonviCT" placeholder="Điền đơn vị ..." value={donvicongtac} onChange={(event) => onChangeInputSL(event, SetDonvicongtac)} />
+                            <input type="text" className="form-control" id="inputDonviCT" placeholder="Điền đơn vị ..." value={donvicongtac} onChange={(event) => onChangeInputSL(event, SetDonvicongtac)} onBlur={() => checkdulieu(donvicongtac, SetCheckdulieuDVCT)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuDVCT ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputGV" for="inputChuyennganh">Chuyên ngành</label>
@@ -112,7 +129,8 @@ const AddGiangVien = () => {
                     <div className="form-row">
                         <div className="form-group col-md-12">
                             <label className="inputGV" for="inputTrinhdo">Trình độ</label>
-                            <input type="text" className="form-control" id="inputTrinhdo" placeholder="Điền trình độ ..." value={trinhdo} onChange={(event) => onChangeInputSL(event, SetTrinhdo)} />
+                            <input type="text" className="form-control" id="inputTrinhdo" placeholder="Điền trình độ ..." value={trinhdo} onChange={(event) => onChangeInputSL(event, SetTrinhdo)} onBlur={() => checkdulieu(trinhdo, SetCheckdulieuTrinhDo)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuTrinhDo ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
 
                     </div>

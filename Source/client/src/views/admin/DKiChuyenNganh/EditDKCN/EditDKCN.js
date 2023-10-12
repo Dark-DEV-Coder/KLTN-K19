@@ -33,6 +33,15 @@ const EditDKCN = () => {
         SetSL(changeValue);
     }
 
+    // check dữ liệu
+    const [checkdulieuTen, SetCheckdulieuTen] = useState(true)
+    const [checkdulieuKhoa, SetCheckdulieuKhoa] = useState(true)
+    const [checkdulieuNienKhoa, SetCheckdulieuNienKhoa] = useState(true)
+    const [checkdulieuMatKhau, SetCheckdulieuNienMatKhau] = useState(true)
+    const checkdulieu = (value, SetDuLieu) => {
+        value === '' ? SetDuLieu(false) : SetDuLieu(true)
+    }
+
     return (
         <main className="main2">
             {/* <HeaderMain title={'Chuyên ngành'} /> */}
@@ -63,16 +72,19 @@ const EditDKCN = () => {
                 <div className="container-edit">
                     <div className="form-group">
                         <label className="inputDKCN" for="inputTenDKCN">Tên đợt đăng ký chyên ngành</label>
-                        <input type="text" className="form-control" id="inputTenDKCN" value={tenDKCN} onChange={(event) => onChangeInputSL(event, SetTenDKCN)} />
+                        <input type="text" className="form-control" id="inputTenDKCN" value={tenDKCN} onChange={(event) => onChangeInputSL(event, SetTenDKCN)} onBlur={() => checkdulieu(tenDKCN, SetCheckdulieuTen)} />
+                        <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputDKCN" for="inputKhoaDKCN">Khóa học</label>
-                            <input type="text" className="form-control" id="inputKhoaDKCN" value={khoahocDKCN} onChange={(event) => onChangeInputSL(event, SetKhoahocDKCN)} />
+                            <input type="text" className="form-control" id="inputKhoaDKCN" value={khoahocDKCN} onChange={(event) => onChangeInputSL(event, SetKhoahocDKCN)} onBlur={() => checkdulieu(khoahocDKCN, SetCheckdulieuKhoa)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuKhoa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputDKCN" for="inputNienKhoaDKCN">Niên khóa</label>
-                            <input type="text" className="form-control" id="inputNienKhoaDKCN" value={nienkhoaDKCN} onChange={(event) => onChangeInputSL(event, SetNienkhoaDKCN)} />
+                            <input type="text" className="form-control" id="inputNienKhoaDKCN" value={nienkhoaDKCN} onChange={(event) => onChangeInputSL(event, SetNienkhoaDKCN)} onBlur={() => checkdulieu(nienkhoaDKCN, SetCheckdulieuNienKhoa)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuNienKhoa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
                     <div className="form-row">

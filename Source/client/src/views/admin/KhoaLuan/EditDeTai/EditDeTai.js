@@ -43,6 +43,15 @@ const EditDeTai = () => {
         SetSelect(changeValue);
     }
 
+    // check dữ liệu
+    const [checkdulieuGVHD, SetCheckdulieuGVHD] = useState(true)
+    const [checkdulieuTen, SetCheckdulieuTen] = useState(true)
+    const [checkdulieuDVCT, SetCheckdulieuDVCT] = useState(true)
+
+    const checkdulieu = (value, SetDuLieu) => {
+        value === '' ? SetDuLieu(false) : SetDuLieu(true)
+    }
+
     return (
         <main className="main2">
             <div className="head-title">
@@ -75,18 +84,21 @@ const EditDeTai = () => {
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputDT" for="inputTenDT">Tên đề tài</label>
-                            <input type="text" className="form-control" id="inputTenDT" value={ten} onChange={(event) => onChangeInput(event, SetTen)} />
+                            <input type="text" className="form-control" id="inputTenDT" value={ten} onChange={(event) => onChangeInput(event, SetTen)} onBlur={() => checkdulieu(ten, SetCheckdulieuTen)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputDT" for="inputGiangvienhuongdan">Giảng viên hướng dẫn</label>
-                            <input type="text" className="form-control" id="inputGiangvienhuongdan" value={giangvienhuongdan} onChange={(event) => onChangeInput(event, SetGiangvienhuongdan)} />
+                            <input type="text" className="form-control" id="inputGiangvienhuongdan" value={giangvienhuongdan} onChange={(event) => onChangeInput(event, SetGiangvienhuongdan)} onBlur={() => checkdulieu(giangvienhuongdan, SetCheckdulieuGVHD)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuGVHD ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
 
                     <div className="form-row">
                         <div className="form-group col-md-12">
                             <label className="inputDT" for="inputDonviCT">Đơn vị công tác</label>
-                            <input type="text" className="form-control" id="inputDonviCT" value={donvi} onChange={(event) => onChangeInput(event, SetDonvi)} />
+                            <input type="text" className="form-control" id="inputDonviCT" value={donvi} onChange={(event) => onChangeInput(event, SetDonvi)} onBlur={() => checkdulieu(donvi, SetCheckdulieuDVCT)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuDVCT ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
 
@@ -107,7 +119,7 @@ const EditDeTai = () => {
                         </div>
                         <div className="form-group col-md-2">
                             <label className="inputDT" for="inputSTCSV1">Số tín chỉ tích lũy</label>
-                            <input type="text" className="form-control" id="inputSTCSV1" value={stcsinhvien1} onChange={(event) => onChangeInput(event, SetStcsinhvien1)} />
+                            <input type="number" className="form-control" id="inputSTCSV1" value={stcsinhvien1} onChange={(event) => onChangeInput(event, SetStcsinhvien1)} />
                         </div>
                         <div className="form-group col-md-2">
                             <label className="inputDT" for="inputDTB1">Điểm TB tích lũy hệ 4</label>
@@ -130,7 +142,7 @@ const EditDeTai = () => {
                         </div>
                         <div className="form-group col-md-2">
                             <label className="inputDT" for="inputSTCSV2">Số tín chỉ tích lũy</label>
-                            <input type="text" className="form-control" id="inputSTCSV2" value={stcsinhvien2} onChange={(event) => onChangeInput(event, SetStcsinhvien2)} />
+                            <input type="number " className="form-control" id="inputSTCSV2" value={stcsinhvien2} onChange={(event) => onChangeInput(event, SetStcsinhvien2)} />
                         </div>
                         <div className="form-group col-md-2">
                             <label className="inputDT" for="inputDTB2">Điểm TB tích lũy hệ 4</label>

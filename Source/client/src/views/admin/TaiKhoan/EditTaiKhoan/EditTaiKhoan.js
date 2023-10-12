@@ -9,12 +9,27 @@ const EditTaiKhoan = () => {
         MatKhau: 'admin',
         trangthai: 1,
     }
+
+    const chucnangcuaTK = [
+        { MaCN: 'khoaluan', TenChucNang: 'Khóa luận' },
+        { MaCN: 'thuctap', TenChucNang: 'Thực tập' },
+        { MaCN: 'totnghiep', TenChucNang: 'Tốt nghiệp' },
+        { MaCN: 'sinhvien', TenChucNang: 'Sinh viên' },
+    ]
     const [TenDangNhap, SetTenDangNhap] = useState(dulieutest.TenDangNhap)
     const [MatKhau, SetMatKhau] = useState(dulieutest.MatKhau)
 
+    const [CNTaiKhoan, SetCNTaiKhoan] = useState(chucnangcuaTK)
     const onChangeInputSL = (event, SetState) => {
         let changeValue = event.target.value;
         SetState(changeValue);
+    }
+
+    const onChangeChucNang = (chucnang) => {
+        let current = CNTaiKhoan;
+        let check = current.filter(item => item.MaCN === chucnang.MaCN).length;
+        check === 1 ? current = current.filter(item => item.MaCN !== chucnang.MaCN) : current = [...current, chucnang]
+        SetCNTaiKhoan(current)
     }
 
     // check dữ liệu
@@ -24,12 +39,7 @@ const EditTaiKhoan = () => {
         value === '' ? SetDuLieu(false) : SetDuLieu(true)
     }
 
-    const chucnangcuaTK = [
-        { MaCN: 'khoaluan', TenChucNang: 'Khóa luận' },
-        { MaCN: 'thuctap', TenChucNang: 'Thực tập' },
-        { MaCN: 'totnghiep', TenChucNang: 'Tốt nghiệp' },
-        { MaCN: 'sinhvien', TenChucNang: 'Sinh viên' },
-    ]
+
 
     const listchucnang = [
         { MaCN: 'home', TenChucNang: 'Dashboard', },
@@ -96,7 +106,7 @@ const EditTaiKhoan = () => {
 
                                     return (
                                         <div className="form-check form-check-inline" key={item.MaCN}>
-                                            <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value={item.MaCN} defaultChecked={chucnangcuaTK.filter(item2 => item2.MaCN == item.MaCN).length > 0 ? true : false} />
+                                            <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value={item.MaCN} defaultChecked={chucnangcuaTK.filter(item2 => item2.MaCN == item.MaCN).length > 0 ? true : false} onClick={(event) => onChangeChucNang(item)} />
                                             <label className="inputTKK" for="inlineCheckbox1">{item.TenChucNang}</label>
                                         </div>
                                     )

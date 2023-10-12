@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import * as React from 'react';
 
 const AddSinhVien = () => {
-    const [hogv, SetHogv] = useState('')
-    const [tengv, SetTengv] = useState('')
+    const [hosv, SetHosv] = useState('')
+    const [tensv, SetTensv] = useState('')
     const [email, SetEmail] = useState('')
     const [sdt, SetSdt] = useState('')
     const [gioitinh, SetGioitinh] = useState('Nam')
@@ -32,6 +32,17 @@ const AddSinhVien = () => {
         let changeValue = event.target.value;
         SetSelect(changeValue);
     }
+
+    // check dữ liệu
+    const [checkdulieuHo, SetCheckdulieuHo] = useState(true)
+    const [checkdulieuTen, SetCheckdulieuTen] = useState(true)
+    const [checkdulieuEmail, SetCheckdulieuEmail] = useState(true)
+    const [checkdulieuSDT, SetCheckdulieuSDT] = useState(true)
+    const [checkdulieuKhoa, SetCheckdulieuKhoa] = useState(true)
+    const checkdulieu = (value, SetDuLieu) => {
+        value === '' ? SetDuLieu(false) : SetDuLieu(true)
+    }
+
     return (
         <main className="main2">
             {/* <HeaderMain title={'Chuyên ngành'} /> */}
@@ -63,21 +74,25 @@ const AddSinhVien = () => {
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputSV" for="inputHoGV">Họ lót</label>
-                            <input type="text" className="form-control" id="inputHoGV" placeholder="Điền họ lót ..." value={hogv} onChange={(event) => onChangeInputSL(event, SetHogv)} />
+                            <input type="text" className="form-control" id="inputHoGV" placeholder="Điền họ lót ..." value={hosv} onChange={(event) => onChangeInputSL(event, SetHosv)} onBlur={() => checkdulieu(hosv, SetCheckdulieuHo)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuHo ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputSV" for="inputTenGV">Tên</label>
-                            <input type="text" className="form-control" id="inputTenGV" placeholder="Điền tên ..." value={tengv} onChange={(event) => onChangeInputSL(event, SetTengv)} />
+                            <input type="text" className="form-control" id="inputTenGV" placeholder="Điền tên ..." value={tensv} onChange={(event) => onChangeInputSL(event, SetTensv)} onBlur={() => checkdulieu(tensv, SetCheckdulieuTen)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputSV" for="inputEmailGV">Email</label>
-                            <input type="text" className="form-control" id="inputEmailGV" placeholder="abc...@gmail.com" value={email} onChange={(event) => onChangeInputSL(event, SetEmail)} />
+                            <input type="text" className="form-control" id="inputEmailGV" placeholder="abc...@gmail.com" value={email} onChange={(event) => onChangeInputSL(event, SetEmail)} onBlur={() => checkdulieu(email, SetCheckdulieuEmail)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuEmail ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputSV" for="inputSdtGV">Số điện thoại</label>
-                            <input type="text" className="form-control" id="inputSdtGV" placeholder="03899...." value={sdt} onChange={(event) => onChangeInputSL(event, SetSdt)} />
+                            <input type="text" className="form-control" id="inputSdtGV" placeholder="03899...." value={sdt} onChange={(event) => onChangeInputSL(event, SetSdt)} onBlur={() => checkdulieu(sdt, SetCheckdulieuSDT)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuSDT ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
                     <div className="form-row">
@@ -136,7 +151,8 @@ const AddSinhVien = () => {
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputSV" for="inputKhoa">Khóa</label>
-                            <input type="text" className="form-control" id="inputKhoa" placeholder="Điền khóa ..." value={khoa} onChange={(event) => onChangeInputSL(event, SetKhoa)} />
+                            <input type="text" className="form-control" id="inputKhoa" placeholder="Điền khóa ..." value={khoa} onChange={(event) => onChangeInputSL(event, SetKhoa)} onBlur={() => checkdulieu(khoa, SetCheckdulieuKhoa)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuKhoa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
 
                     </div>
