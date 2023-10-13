@@ -64,7 +64,7 @@ const ViTriThucTap = () => {
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputGV" for="inputTenGV">Vị Trí</label>
-                            <textarea class="form-control" id="inputTenGV" value={ViTri} rows="10"></textarea>
+                            <textarea className="form-control" id="inputTenGV" value={ViTri} rows="10"></textarea>
                         </div>
                         <div className="form-group col-md-2">
                             <label className="inputGV" for="inputTenGV">Số lượng</label>

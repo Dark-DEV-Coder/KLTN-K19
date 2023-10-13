@@ -624,7 +624,7 @@ pre code {
 
 @media (min-width: 992px) {
   .container {
-    max-width: 960px;
+    max-width: 1300px;
   }
 }
 
@@ -12071,7 +12071,7 @@ h5,
 
 .ftco-navbar-light .navbar-nav>.nav-item .dropdown-menu {
   border            : none;
-  background        : #fff;
+  background        : #202C45;
   -webkit-box-shadow: 0px 10px 34px -20px rgba(0, 0, 0, 0.41);
   -moz-box-shadow   : 0px 10px 34px -20px rgba(0, 0, 0, 0.41);
   box-shadow        : 0px 10px 34px -20px rgba(0, 0, 0, 0.41);
@@ -12079,7 +12079,7 @@ h5,
 }
 
 .ftco-navbar-light .navbar-nav>.nav-item .dropdown-menu .dropdown-item {
-  font-size   : 12px;
+  font-size   : 16px;
   /* color    : #000; */
 }
 
@@ -12105,12 +12105,12 @@ h5,
 }
 
 .ftco-navbar-light .navbar-nav>.nav-item.cta {
-  margin-left  : 10px;
-  padding-top  : 12px;
-  height       : 45px;
-  margin-top   : 5px;
-  margin-bottom: 8px;
-  border-radius: 0px;
+  margin-left     : 10px;
+  padding-top     : 12px;
+  /* height       : 45px; */
+  margin-top      : 5px;
+  margin-bottom   : 8px;
+  border-radius   : 0px;
 }
 
 .ftco-navbar-light .navbar-nav>.nav-item.cta:hover {
@@ -12437,7 +12437,7 @@ h5,
   }
 
   .container {
-    max-width: 1140px;
+    max-width: 1300px;
 
   }
 }
