@@ -1,0 +1,34 @@
+.container-khoaluan {
+    font-family        : 'Montserrat';
+    // background-color: red;
+    width              : 90%;
+    margin             : auto;
+
+    .breadcrumb {
+        font-family: 'Montserrat';
+    }
+
+    .container-tb-update {
+        padding-bottom: 1rem;
+
+        h3,
+        h6 {
+            font-family: 'Montserrat';
+            text-align : start;
+
+        }
+    }
+
+    h5 {
+        font-family: 'Montserrat';
+        text-align : start;
+
+    }
+
+    .content-table {
+        h6 {
+            font-family: 'Montserrat';
+            text-align : start;
+        }
+    }
+}

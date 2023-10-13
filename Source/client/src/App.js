@@ -19,45 +19,12 @@ function App() {
   ]);
   return (
     <BrowserRouter>
-
-      {/* Client */}
-
-      {/* <div className="App">
-        <Client />
-      </div> */}
-
-
-      {/* <Nav />
-        <Nav2 />
-        <Routes>
-          <Route index path='/' element={<TrangChu />} exact></Route>
-          <Route path='/login' element={<Login />}></Route>
-          <Route path='/todo'></Route>
-          <Route path='/about' ></Route>
-          <Route path='/user' exact ></Route>
-          <Route path='/users/:id'></Route>
-        </Routes>
-        <Footer /> */}
-
-      {/* ////////Client */}
-
-
-
       {/* Admin */}
       <div className='App'>
-        {/* <Client /> */}
-        <Admin />
+        {/* <Admin /> */}
+        <Client />
       </div>
-
-      {/* <Routes>
-          <Route index path='/admin' element={<Admin />} exact></Route>
-        </Routes> */}
-
-      {/* ////////Admin */}
-
     </BrowserRouter >
-
-
   );
 }
 

@@ -118,7 +118,7 @@ const EditCongTyThucTap = () => {
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputGV" for="inputTenGV">Vị Trí</label>
-                            <textarea class="form-control" id="inputTenGV" value={ViTri} onChange={(event) => onChangeInputSL(event, SetViTri)} onBlur={() => checkdulieu(ViTri, SetCheckdulieuVitri)} rows="10"></textarea>
+                            <textarea className="form-control" id="inputTenGV" value={ViTri} onChange={(event) => onChangeInputSL(event, SetViTri)} onBlur={() => checkdulieu(ViTri, SetCheckdulieuVitri)} rows="10"></textarea>
                             <div className="invalid-feedback" style={{ display: checkdulieuVitri ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-2">
