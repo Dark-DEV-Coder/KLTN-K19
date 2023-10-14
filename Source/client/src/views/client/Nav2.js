@@ -35,7 +35,7 @@ const Nav2 = (props) => {
                                 <div className="dropdown-menu" aria-labelledby="dropdown04">
                                     <Link to="/khoaluan" className="dropdown-item" >Danh sách đề tài khóa luận</Link>
                                     <Link to="/khoaluan/dieukiendkykhoaluan" className="dropdown-item" >Điều kiện đăng ký</Link>
-                                    <Link className="dropdown-item" >Hướng dẫn đăng ký</Link>
+                                    <Link to="/khoaluan/huongdandky" className="dropdown-item" >Hướng dẫn đăng ký</Link>
                                 </div>
                             </li>
                             <NavLink to="/thuctap" className={({ isActive }) => isActive ? "active nav-link nav-item cta" : 'nav-link nav-item cta'}>

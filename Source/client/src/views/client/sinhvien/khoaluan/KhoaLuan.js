@@ -1,4 +1,5 @@
 import "./KhoaLuan.scss"
+import { Link } from "react-router-dom";
 import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
 const KhoaLuan = () => {
     const dulieutest = [
@@ -123,8 +124,14 @@ const KhoaLuan = () => {
                 <h3>Khóa luận học kỳ 1 năm học 2023-2024</h3>
                 <h6>Ngày cập nhật : 10/09/2023</h6>
             </div>
+            <div className="container-dky">
+                <h5>Danh sách đề tài được công bố</h5>
+                <Link to="/khoaluan/dky-khoaluan">
+                    <button type="button" className="btn btn-outline-primary">Đăng ký</button>
+                </Link>
 
-            <h5>Danh sách đề tài được công bố</h5>
+            </div>
+
             <div className="content-table">
                 <table className="table table-bordered">
                     <thead>

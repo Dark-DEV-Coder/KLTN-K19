@@ -12,7 +12,8 @@ import {
 } from "react-router-dom";
 import KhoaLuan from "./sinhvien/khoaluan/KhoaLuan";
 import DieuKien from "./sinhvien/khoaluan/DieuKien/DieuKien";
-
+import HuongDanDK from "./sinhvien/khoaluan/HuongDanDK/HuongDanDK";
+import DangKy from "./sinhvien/khoaluan/DangKy/DangKy";
 const Client = () => {
     const aaa = true
     const danhmucSV = [
@@ -45,7 +46,9 @@ const Client = () => {
                         <Route path='thuctap' element={<Error />} ></Route>
                         <Route path='khoaluan' >
                             <Route index element={<KhoaLuan />}></Route>
+                            <Route path='dky-khoaluan' element={<DangKy />}></Route >
                             <Route path='dieukiendkykhoaluan' element={<DieuKien />}></Route>
+                            <Route path='huongdandky' element={<HuongDanDK />}></Route>
                         </Route>
                         <Route path='chuyennganh' exact ></Route>
                         <Route path='chatbox'></Route>
