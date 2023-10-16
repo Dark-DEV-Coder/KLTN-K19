@@ -11993,9 +11993,9 @@ h5,
 }
 
 .ftco-navbar-light {
-  background: #202C45 !important;
-  z-index   : 3;
-  padding   : 0;
+  background   : #202C45 !important;
+  /* z-index   : 3; */
+  padding      : 0;
 }
 
 @media (max-width: 991.98px) {

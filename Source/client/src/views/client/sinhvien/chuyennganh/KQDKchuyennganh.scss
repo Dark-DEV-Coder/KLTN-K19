@@ -1,7 +1,7 @@
 .container-chuyennganh {
     font-family        : 'Montserrat';
     // background-color: red;
-    width              : 80%;
+    width              : 85%;
     margin             : auto;
 
     .breadcrumb {
@@ -11,7 +11,12 @@
     .container-tb-update {
         padding-bottom: 1rem;
 
-        h3,
+        h3 {
+            font-family: 'Montserrat';
+            text-align : start;
+            font-weight: 600;
+        }
+
         h6 {
             font-family: 'Montserrat';
             text-align : start;
@@ -30,5 +35,9 @@
         font-family: 'Montserrat';
         text-align : start;
 
+    }
+
+    .content-table {
+        margin-top: -1.5rem;
     }
 }

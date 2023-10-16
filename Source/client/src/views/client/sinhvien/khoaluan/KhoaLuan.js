@@ -123,6 +123,7 @@ const KhoaLuan = () => {
             <div className="container-tb-update">
                 <h3>Khóa luận học kỳ 1 năm học 2023-2024</h3>
                 <h6>Ngày cập nhật : 10/09/2023</h6>
+                <h6 className="time-line">Thời gian đăng ký : [ 10/09/2023 - 22/10/2023 ] </h6>
             </div>
             <div className="container-dky">
                 <h5>Danh sách đề tài được công bố</h5>

@@ -38,9 +38,16 @@ const Nav2 = (props) => {
                                     <Link to="/khoaluan/huongdandky" className="dropdown-item" >Hướng dẫn đăng ký</Link>
                                 </div>
                             </li>
-                            <NavLink to="/thuctap" className={({ isActive }) => isActive ? "active nav-link nav-item cta" : 'nav-link nav-item cta'}>
-                                THỰC TẬP
-                            </NavLink>
+
+                            <li className="nav-item dropdown dropdown1">
+                                <Link className="nav-link dropdown-toggle" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">THỰC TẬP</Link>
+                                <div className="dropdown-menu" aria-labelledby="dropdown04">
+                                    <Link to="/thuctap" className="dropdown-item" >Đăng ký thực tập</Link>
+                                    <Link to="/thuctap/dieukiendkythuctap" className="dropdown-item" >Điều kiện đăng ký</Link>
+                                    <Link to="/thuctap/huongdandkythuctap" className="dropdown-item" >Hướng dẫn đăng ký</Link>
+                                </div>
+                            </li>
+
                             <li className="nav-item dropdown dropdown1">
                                 <Link className="nav-link dropdown-toggle" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">CHUYÊN NGÀNH</Link>
                                 <div className="dropdown-menu" aria-labelledby="dropdown04">
@@ -52,9 +59,9 @@ const Nav2 = (props) => {
                             {/* <NavLink to="/chuyennganh" className={({ isActive }) => isActive ? "active nav-link nav-item cta" : 'nav-link nav-item cta'}>
                                 ĐĂNG KÝ CHUYÊN NGÀNH
                             </NavLink> */}
-                            <NavLink to="/chatbox" className={({ isActive }) => isActive ? "active nav-link nav-item cta" : 'nav-link nav-item cta'}>
+                            {/* <NavLink to="/chatbox" className={({ isActive }) => isActive ? "active nav-link nav-item cta" : 'nav-link nav-item cta'}>
                                 CHATBOX
-                            </NavLink>
+                            </NavLink> */}
                             <NavLink to="/contract" className={({ isActive }) => isActive ? "active nav-link nav-item cta" : 'nav-link nav-item cta'}>
                                 LIÊN HỆ
                             </NavLink>

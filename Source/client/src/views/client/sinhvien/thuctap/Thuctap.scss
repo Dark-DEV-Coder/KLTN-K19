@@ -1,7 +1,11 @@
-.container-khoaluan {
+.time-line {
+    color: red;
+}
+
+.container-thuctap {
     font-family        : 'Montserrat';
     // background-color: red;
-    width              : 90%;
+    width              : 85%;
     margin             : auto;
 
     .breadcrumb {
@@ -12,10 +16,9 @@
         padding-bottom: 1rem;
 
         h3 {
-            font-weight: 600;
             font-family: 'Montserrat';
             text-align : start;
-
+            font-weight: 600;
         }
 
         h6 {
@@ -38,10 +41,4 @@
 
     }
 
-    .content-table {
-        h6 {
-            font-family: 'Montserrat';
-            text-align : start;
-        }
-    }
 }
