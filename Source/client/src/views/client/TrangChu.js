@@ -4,7 +4,8 @@ import Nav2 from './Nav2'
 import Slideshow from './Slideshow/Slideshow'
 import BaCatalog from './BaCatalog/BaCatalog'
 import Notification from './Notification/Notification'
-
+import ChatBox from './sinhvien/Chat/ChatBox'
+import "./Trangchu.scss"
 
 const TrangChu = () => {
     return (

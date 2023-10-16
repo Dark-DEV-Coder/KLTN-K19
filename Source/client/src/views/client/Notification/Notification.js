@@ -1,6 +1,7 @@
 import './Notification.scss'
 import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
 import SearchIcon from '@mui/icons-material/Search';
+import { Link } from "react-router-dom";
 import React, { useState } from 'react';
 const Notification = () => {
     const [thongbao, useThongbao] = useState([
@@ -53,9 +54,9 @@ const Notification = () => {
                 <div className='container-search'>
                     <div className="input-group">
                         <input type="text" className="form-control" placeholder="Tìm kiếm ..." aria-label="Recipient's username" aria-describedby="button-addon2" />
-                        <div className="input-group-append">
+                        {/* <div className="input-group-append">
                             <button className="btn btn-outline-secondary" type="button" id="button-addon2"><SearchIcon sx={{ fontSize: '21px' }} /></button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className='container-container-list-notification'>
@@ -63,17 +64,26 @@ const Notification = () => {
                         {
                             thongbao.map((item, index) => {
                                 return (
-                                    <div className="card card2 w-100" key={item.id} >
-                                        <div className="card-body2">
-                                            <h4 className="card-title">{item.title}</h4>
+                                    <Link className='notifi' to="/thongbao/chitiet">
+
+                                        <div className="card card2 w-100" key={item.id} >
+                                            <div className="card-body2">
+                                                <h4 className="card-title">{item.title}</h4>
+                                            </div>
+                                            <div className="card-body2">
+                                                <p className="card-text">{item.text}</p>
+                                            </div>
+                                            <div className="card-body2">
+                                                <h6 className="card-text">{item.date}</h6>
+                                            </div>
+                                            <div className='space'></div>
                                         </div>
-                                        <div className="card-body2">
-                                            <p className="card-text">{item.text}</p>
-                                        </div>
-                                        <div className="card-body2">
-                                            <h6 className="card-text">{item.date}</h6>
-                                        </div>
-                                    </div>
+
+
+                                    </Link>
+
+
+
                                 )
                             })
                         }
