@@ -595,8 +595,8 @@ pre code {
 
 @media (min-width: 768px) {
   .container-tb-login h5 {
-    margin-top   : 3px;
-    font-size    : 18px;
+    margin-top   : 0.5rem;
+    font-size    : 20px;
     margin-left  : 0.7%;
     font-family  : 'Montserrat';
     font-weight  : 600;
@@ -607,13 +607,13 @@ pre code {
 
   .container-tb-login {
     padding-bottom: 0%;
-    margin-top    : 0%;
-    height        : 40px;
+    margin-top    : 0.5rem;
+    height        : 50px;
   }
 
   .container-tb-login .icon-login {
 
-    font-size : 35px;
+    font-size : 45px;
     margin-top: 3px
   }
 
@@ -2298,6 +2298,7 @@ pre code {
 }
 
 @media (max-width: 767.98px) {
+
   .table-responsive-md {
     display                   : block;
     width                     : 100%;
@@ -11536,7 +11537,7 @@ button.bg-dark:focus {
   form .btn {
     margin-top         : 1%;
     background-color   : #202C45;
-    font-size          : 14px;
+    font-size          : 17px;
     color              : white;
     border             : 0;
     width              : 30%;
@@ -11583,6 +11584,13 @@ button.bg-dark:focus {
 }
 
 @media (min-width: 768px) {
+
+  /* .container-infor {
+    margin-top     : 1%;
+    display        : flex;
+    justify-content: start;
+  } */
+
   .login {
     width        : 50%;
     margin-bottom: 2%;
@@ -11595,11 +11603,11 @@ button.bg-dark:focus {
 
   .container2 img {
     margin-top: -2%;
-    height    : 60px;
+    height    : 6rem;
   }
 
   .container2 h6 {
-    font-size: 13px;
+    font-size: 16px;
   }
 
 
@@ -11621,6 +11629,73 @@ button.bg-dark:focus {
 }
 
 @media (min-width: 992px) {
+  .container-infor {
+    margin-top     : 1%;
+    display        : flex;
+    justify-content: start;
+
+  }
+
+  .container-left {
+    margin-top: 1rem;
+    width     : 50%;
+  }
+
+  .container-left .left-left {
+    width          : 100%;
+    display        : flex;
+    justify-content: start;
+    padding-top    : 0.5%;
+  }
+
+  .container-left .left-left h6 {
+    padding-left: 2%;
+
+  }
+
+  .container-left h6 {
+    font-size    : 18px;
+    font-family  : 'Montserrat';
+    font-weight  : 500;
+    padding      : 0;
+    text-align   : start;
+    white-space  : nowrap;
+    overflow     : hidden;
+    text-overflow: ellipsis;
+  }
+
+
+  .container-right {
+    margin-top: 1rem;
+    width     : 50%;
+  }
+
+  .container-right .right-right {
+    width          : 100%;
+    display        : flex;
+    justify-content: start;
+    padding-top    : 0.5%;
+  }
+
+  .container-right .right-right h6 {
+    padding-left : 2%;
+    padding-left : 10%;
+    white-space  : nowrap;
+    overflow     : hidden;
+    text-overflow: ellipsis;
+  }
+
+  .container-right h6 {
+    font-size   : 18px;
+    font-family : 'Montserrat';
+    font-weight : 500;
+    padding     : 0;
+    padding-left: 10%;
+    text-align  : start;
+
+  }
+
+
 
 
   .container-list-nofication {
@@ -11646,10 +11721,10 @@ button.bg-dark:focus {
     height    : 100px;
   }
 
-  .container2 h6 {
+  /* .container2 h6 {
     font-size  : 16px;
     font-weight: 500;
-  }
+  } */
 
   .container-list-nofication {
     margin-bottom: 3%;
@@ -12200,26 +12275,93 @@ h5,
 
 
 @media (max-width: 991.98px) {
+  .container-infor {
+    margin-top        : 1%;
+    /* display        : flex;
+    justify-content   : start; */
+
+  }
+
+  .container-left {
+    margin-top: 1rem;
+    width     : 100%;
+  }
+
+  .container-left .left-left {
+    width          : 100%;
+    display        : flex;
+    justify-content: start;
+    padding-top    : 0.5rem;
+  }
+
+  .container-left .left-left h6 {
+    padding-left: 2%;
+
+  }
+
+  .container-left h6 {
+    font-size       : 18px;
+    font-family     : 'Montserrat';
+    font-weight     : 500;
+    padding         : 0;
+    text-align      : start;
+    /* white-space  : nowrap;
+    overflow        : hidden;
+    text-overflow   : ellipsis; */
+  }
+
+
+  .container-right {
+    width     : 100%;
+    margin-top: 1.5rem;
+  }
+
+  .container-right .right-right {
+    width          : 100%;
+    display        : flex;
+    justify-content: start;
+    padding-top    : 0.5%;
+  }
+
+  .container-right .right-right h6 {
+    /* padding-left : 2%; */
+    /* padding-left : 10%; */
+    white-space  : nowrap;
+    overflow     : hidden;
+    text-overflow: ellipsis;
+  }
+
+  .container-right h6 {
+    font-size      : 18px;
+    font-family    : 'Montserrat';
+    font-weight    : 500;
+    padding        : 0;
+    /* padding-left: 10%; */
+    text-align     : start;
+
+  }
+
+
   .container-tb-login h5 {
-    margin-top   : 3px;
-    font-size    : 13px;
+    margin-top   : 0.5rem;
+    font-size    : 18px;
     margin-left  : 0.7%;
     font-family  : 'Montserrat';
     font-weight  : 600;
     border-bottom: solid 3px #202C45;
-    height       : 20px;
+    height       : 30px;
 
   }
 
   .container-tb-login {
     padding-bottom: 0%;
-    margin-top    : 0%;
-    height        : 30px;
+    margin-top    : 0.5rem;
+    height        : 50px;
   }
 
   .container-tb-login .icon-login {
 
-    font-size : 23px;
+    font-size : 45px;
     margin-top: 3px
   }
 
@@ -12244,7 +12386,7 @@ h5,
   form .btn {
     margin-top         : 1%;
     background-color   : #202C45;
-    font-size          : 8px;
+    font-size          : 15px;
     color              : white;
     border             : 0;
     width              : 30%;
@@ -12260,15 +12402,11 @@ h5,
 
   .container2 img {
     margin-top: -5%;
-    height    : 60px;
+    height    : 5.5rem;
   }
 
   .continue2 a {
     font-size: 15px;
-  }
-
-  .container2 h6 {
-    font-size: 8px;
   }
 
   /* không có login right */

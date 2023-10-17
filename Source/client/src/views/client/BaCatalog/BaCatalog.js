@@ -8,7 +8,6 @@ const BaCatalog = () => {
     return (
         <div className='container-catalog'>
             <div className="card" >
-
                 <div className="card-body">
                     <CollectionsBookmarkIcon sx={{ fontSize: 40, color: 'white' }} />
                     <h5 className="card-title">ĐĂNG KÝ KHÓA LUẬN</h5>
@@ -17,7 +16,6 @@ const BaCatalog = () => {
                 </div>
             </div>
             <div className="card card2" >
-
                 <div className="card-body">
                     <SchoolIcon sx={{ fontSize: 40, color: 'white' }} />
                     <h5 className="card-title">ĐĂNG KÝ CHUYÊN NGÀNH</h5>
@@ -26,7 +24,6 @@ const BaCatalog = () => {
                 </div>
             </div>
             <div className="card card2" >
-
                 <div className="card-body">
                     <WorkHistoryIcon sx={{ fontSize: 40, color: 'white' }} />
                     <h5 className="card-title">ĐĂNG KÝ THỰC TẬP</h5>

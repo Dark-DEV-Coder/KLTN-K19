@@ -88,9 +88,9 @@ const Notification = () => {
                             })
                         }
 
-                        <div className='continue'>
+                        {/* <div className='continue'>
                             <div className='continue2'><a href='#'>Xem thêm</a></div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
