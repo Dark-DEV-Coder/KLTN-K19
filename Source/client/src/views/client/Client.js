@@ -22,6 +22,7 @@ import Thuctap from "./sinhvien/thuctap/Thuctap";
 import DieuKienDK_TT from "./sinhvien/thuctap/DieuKien/DieuKienDK_TT";
 import HuongDanDK_TT from "./sinhvien/thuctap/HuongDanDK/HuongDanDK_TT";
 import ChatBox from "./sinhvien/Chat/ChatBox";
+import Contact from "./sinhvien/Contact/Contact";
 const Client = () => {
     const aaa = true
     const danhmucSV = [
@@ -71,6 +72,7 @@ const Client = () => {
                             <Route path='huongdandkychuyennganh' element={<HuongDanDK_CN />}></Route>
                         </Route>
 
+                        <Route path='contract' element={<Contact />}></Route>
                         {/* <Route path='thongbao/chitiet' element={<DetailNotification />}></Route> */}
                         <Route path='*' element={<Error />}></Route>
                     </Route>
