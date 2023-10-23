@@ -45,14 +45,16 @@ const ViTriThucTap = () => {
                         </li>
                         <li><i className='bx bx-chevron-right'></i></li>
                         <li>
+                            <Link>Thực tập tốt nghiệp</Link>
+                        </li>
+                        <li><i className='bx bx-chevron-right'></i></li>
+                        <li>
                             <Link>{ctythuctap.TenCongTy}</Link>
                         </li>
                         <li><i className='bx bx-chevron-right'></i></li>
                         <li>
                             <Link className="active" >Danh sách vị trí của {ctythuctap.TenCongTy}</Link>
                         </li>
-
-
                     </ul>
                 </div>
 

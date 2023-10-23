@@ -24,21 +24,29 @@
         h6 {
             font-family: 'Montserrat';
             text-align : start;
-
         }
     }
 
-    .container-dky {
-        display        : flex;
-        justify-content: space-between;
-        margin-bottom  : 1rem;
-
+    .inputDK {
+        width : 100% !important;
+        margin: 0 !important;
     }
 
     h5 {
-        font-family: 'Montserrat';
-        text-align : start;
-
+        text-align: start;
     }
 
+    h3 {
+        text-align : start;
+        font-family: 'Montserrat';
+        text-align : start;
+        font-weight: 600;
+    }
+
+    .content-dkythuctap {
+        label {
+            text-align : start;
+            // font-weight: 400;
+        }
+    }
 }
