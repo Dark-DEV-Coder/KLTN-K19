@@ -11,48 +11,14 @@ import {
 } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
 
-const data = [
-    {
-        TenCongTy: 'Công ty A',
-        Website: 'http:///A.com',
-        SoDienThoai: '098888888',
-        Email: 'A@gmail.com',
-        DiaChi: '12/1,Bình Chánh, Nhà Bè, TP.Thủ Đức',
-        trangthai: 1,
-    },
-    {
-        TenCongTy: 'Công ty B',
-        Website: 'http:///B.com',
-        SoDienThoai: '098888888',
-        Email: 'B@gmail.com',
-        DiaChi: '12/1,Bình Chánh, Nhà Bè, TP.Thủ Đức',
-        trangthai: 1,
-    },
-    {
-        TenCongTy: 'Công ty C',
-        Website: 'http:///C.com',
-        SoDienThoai: '098888888',
-        Email: 'C@gmail.com',
-        DiaChi: '12/1,Bình Chánh, Nhà Bè, TP.Thủ Đức',
-        trangthai: 1,
-    },
-    {
-        TenCongTy: 'Công ty D',
-        Website: 'http:///D.com',
-        SoDienThoai: '098888888',
-        Email: 'D@gmail.com',
-        DiaChi: '12/1,Bình Chánh, Nhà Bè, TP.Thủ Đức',
-        trangthai: 1,
-    },
-]
-
 const csvConfig = mkConfig({
     fieldSeparator: ',',
     decimalSeparator: '.',
     useKeysAsHeaders: true,
 });
 
-const TableDSCtyThucTap = () => {
+const TableDSCtyThucTap = (props) => {
+    const listDSCty = props.listDSCty;
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
         const csv = generateCsv(csvConfig)(rowData);
@@ -60,7 +26,7 @@ const TableDSCtyThucTap = () => {
     };
 
     const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(data);
+        const csv = generateCsv(csvConfig)(listDSCty);
         download(csvConfig)(csv);
     };
     const columns = useMemo(
@@ -105,7 +71,7 @@ const TableDSCtyThucTap = () => {
 
     const table = useMantineReactTable({
         columns,
-        data,
+        data: listDSCty,
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',

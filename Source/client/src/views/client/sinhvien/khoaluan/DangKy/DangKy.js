@@ -217,7 +217,6 @@ const DangKy = () => {
                                                     <label className="inputDK" htmlFor="gridRadios1">{item.ten}</label>
                                                     <label className="inputDK" htmlFor="gridRadios1">- GVHD : {item.giangvienhuongdan}</label>
                                                 </div>
-
                                             </>
                                         )
                                     })
