@@ -16,7 +16,7 @@ const EditSinhVien = () => {
         khoa: 'K19',
         chuyennganh: 'khmt',
         nganh: 'ktpm',
-        lop: 'mmt',
+        lop: 'DKP1191',
         trangthaitotnghiep: 'Chưa tốt nghiệp',
         trangthai: 1,
     }
@@ -57,6 +57,7 @@ const EditSinhVien = () => {
     const [checkdulieuEmail, SetCheckdulieuEmail] = useState(true)
     const [checkdulieuSDT, SetCheckdulieuSDT] = useState(true)
     const [checkdulieuKhoa, SetCheckdulieuKhoa] = useState(true)
+    const [checkdulieuLop, SetCheckdulieuLop] = useState(true)
     const checkdulieu = (value, SetDuLieu) => {
         value === '' ? SetDuLieu(false) : SetDuLieu(true)
     }
@@ -156,16 +157,9 @@ const EditSinhVien = () => {
 
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label className="inputSV" for="inputLop">Lớp</label>
-                            <select value={lop} onChange={(event) => onChangeSelect(event, SetLop)} id="inputLop" className="form-control">
-                                {nganh && nganh.length > 0 &&
-                                    nganh.map((item, index) => {
-                                        return (
-                                            <option key={item.id} value={item.id}>{item.ten}</option>
-                                        )
-                                    })
-                                }
-                            </select>
+                            <label className="inputSV" for="inputKhoa">Lớp</label>
+                            <input type="text" className="form-control" id="inputKhoa" placeholder="Điền khóa ..." value={lop} onChange={(event) => onChangeInputSL(event, SetLop)} onBlur={() => checkdulieu(lop, SetCheckdulieuLop)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuLop ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputSV" for="inputKhoa">Khóa</label>

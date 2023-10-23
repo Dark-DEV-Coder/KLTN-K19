@@ -3,47 +3,14 @@ import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from "react-router-dom";
 import React, { useState } from 'react';
+import { eventWrapper } from '@testing-library/user-event/dist/utils';
+import { data_thongbao } from "../data.js"
 const Notification = () => {
-    const [thongbao, useThongbao] = useState([
-        {
-            id: 1,
-            date: '21/08/2023',
-            title: 'THÔNG BÁO VỀ VIỆC TỔ CHỨC HỘI NGHỊ ĐẠI BIỂU VIÊN CHỨC, NGƯỜI LAO ĐỘNG NĂM 2023-2024',
-            text: 'Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại.Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại ',
-        },
-        {
-            id: 2,
-            date: '21/08/2023',
-            title: '2THÔNG BÁO VỀ VIỆC TỔ CHỨC HỘI NGHỊ ĐẠI BIỂU VIÊN CHỨC, NGƯỜI LAO ĐỘNG NĂM 2023-2024',
-            text: 'Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại.Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại ',
-        },
-        {
-            id: 3,
-            date: '21/08/2023',
-            title: '3THÔNG BÁO VỀ VIỆC TỔ CHỨC HỘI NGHỊ ĐẠI BIỂU VIÊN CHỨC, NGƯỜI LAO ĐỘNG NĂM 2023-2024',
-            text: 'Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại.Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại ',
-        },
-        {
-            id: 4,
-            date: '21/08/2023',
-            title: '4THÔNG BÁO VỀ VIỆC TỔ CHỨC HỘI NGHỊ ĐẠI BIỂU VIÊN CHỨC, NGƯỜI LAO ĐỘNG NĂM 2023-2024',
-            text: 'Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại.Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại ',
-        },
-        {
-            id: 5,
-            date: '21/08/2023',
-            title: '5THÔNG BÁO VỀ VIỆC TỔ CHỨC HỘI NGHỊ ĐẠI BIỂU VIÊN CHỨC, NGƯỜI LAO ĐỘNG NĂM 2023-2024',
-            text: 'Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại.Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại ',
-        },
-        {
-            id: 6,
-            date: '21/08/2023',
-            title: '6THÔNG BÁO VỀ VIỆC TỔ CHỨC HỘI NGHỊ ĐẠI BIỂU VIÊN CHỨC, NGƯỜI LAO ĐỘNG NĂM 2023-2024',
-            text: 'Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại.Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại biểu viên chức, người lao động năm 2023-2024 Nội dung và văn bản về việc tổ chức hội nghị đại ',
-        }
-    ]
-
-    );
+    const [search, SetSearch] = useState('')
+    const onChangSearch = (event) => {
+        let result = event.target.value;
+        SetSearch(result);
+    }
     return (
         <>
             <div className='container-list-nofication'>
@@ -53,7 +20,7 @@ const Notification = () => {
                 </div>
                 <div className='container-search'>
                     <div className="input-group">
-                        <input type="text" className="form-control" placeholder="Tìm kiếm ..." aria-label="Recipient's username" aria-describedby="button-addon2" />
+                        <input type="text" className="form-control" placeholder="Tìm kiếm ..." aria-label="Recipient's username" aria-describedby="button-addon2" onChange={(event) => onChangSearch(event)} />
                         {/* <div className="input-group-append">
                             <button className="btn btn-outline-secondary" type="button" id="button-addon2"><SearchIcon sx={{ fontSize: '21px' }} /></button>
                         </div> */}
@@ -62,7 +29,9 @@ const Notification = () => {
                 <div className='container-container-list-notification'>
                     <div className='container-list-notification'>
                         {
-                            thongbao.map((item, index) => {
+                            data_thongbao.filter((item) => {
+                                return search.toLocaleLowerCase() === '' ? item : item.title.toLocaleLowerCase().includes(search)
+                            }).map((item, index) => {
                                 return (
                                     <Link className='notifi' to="/thongbao/chitiet">
 
@@ -78,19 +47,10 @@ const Notification = () => {
                                             </div>
                                             <div className='space'></div>
                                         </div>
-
-
                                     </Link>
-
-
-
                                 )
                             })
                         }
-
-                        {/* <div className='continue'>
-                            <div className='continue2'><a href='#'>Xem thêm</a></div>
-                        </div> */}
                     </div>
                 </div>
             </div>

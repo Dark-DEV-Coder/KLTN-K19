@@ -1,118 +1,10 @@
 import "./KhoaLuan.scss"
 import { Link } from "react-router-dom";
 import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
+import { data_khoaluan } from "../../data"
+import { useState } from "react";
 const KhoaLuan = () => {
-    const dulieutest = [
-        {
-            ten: 'Phần mềm quản lý ghi chú cá nhân với tính năng nhận dạng tiếng nói',
-            giangvienhuongdan: 'Nguyễn Tuấn Đăng',
-            donvi: 'Khoa CNTT',
-            sinhvien1: 'Lê Thị Cẩm Duyên',
-            MSSV1: '3119560010',
-            TC1: '152',
-            TB1: '2.99',
-            Email1: 'tupinkyy@gmail.com',
-            Sdt1: '386260727',
-            sinhvien2: 'Lê Thị Cẩm Duyên 2',
-            MSSV2: '3119560018',
-            TC2: '156',
-            TB2: '3.3',
-            Email2: 'hoanghavy0207@gmail',
-            Sdt2: '386260727',
-            trangthai: 1,
-        },
-        {
-            ten: 'Phần mềm quản lý ghi chú cá nhân với tính năng nhận dạng tiếng nói',
-            giangvienhuongdan: 'Nguyễn Tuấn Đăng',
-            donvi: 'Khoa CNTT',
-            sinhvien1: '',
-            MSSV1: '',
-            TC1: '',
-            TB1: '',
-            Email1: '',
-            Sdt1: '',
-            sinhvien2: '',
-            MSSV2: '',
-            TC2: '',
-            TB2: '',
-            Email2: '',
-            Sdt2: '',
-            trangthai: 1,
-        },
-        {
-            ten: 'Phần mềm quản lý ghi chú cá nhân với tính năng nhận dạng tiếng nói',
-            giangvienhuongdan: 'Nguyễn Tuấn Đăng',
-            donvi: 'Khoa CNTT',
-            sinhvien1: 'Lê Thị Cẩm Duyên',
-            MSSV1: '3119560010',
-            TC1: '152',
-            TB1: '2.99',
-            Email1: 'tupinkyy@gmail.com',
-            Sdt1: '386260727',
-            sinhvien2: 'Lê Thị Cẩm Duyên 2',
-            MSSV2: '3119560018',
-            TC2: '156',
-            TB2: '3.3',
-            Email2: 'hoanghavy0207@gmail',
-            Sdt2: '386260727',
-            trangthai: 1,
-        },
-        {
-            ten: 'Phần mềm quản lý ghi chú cá nhân với tính năng nhận dạng tiếng nói',
-            giangvienhuongdan: 'Nguyễn Tuấn Đăng',
-            donvi: 'Khoa CNTT',
-            sinhvien1: 'Lê Thị Cẩm Duyên',
-            MSSV1: '3119560010',
-            TC1: '152',
-            TB1: '2.99',
-            Email1: 'tupinkyy@gmail.com',
-            Sdt1: '386260727',
-            sinhvien2: '',
-            MSSV2: '',
-            TC2: '',
-            TB2: '',
-            Email2: '',
-            Sdt2: '',
-            trangthai: 1,
-        },
-        {
-            ten: 'Phần mềm quản lý ghi chú cá nhân với tính năng nhận dạng tiếng nói',
-            giangvienhuongdan: 'Nguyễn Tuấn Đăng',
-            donvi: 'Khoa CNTT',
-            sinhvien1: '',
-            MSSV1: '',
-            TC1: '',
-            TB1: '',
-            Email1: '',
-            Sdt1: '',
-            sinhvien2: '',
-            MSSV2: '',
-            TC2: '',
-            TB2: '',
-            Email2: '',
-            Sdt2: '',
-            trangthai: 1,
-        },
-        {
-            ten: 'Xây dựng website đánh giá nhân viên hàng năm',
-            giangvienhuongdan: 'Phạm Thi Vương',
-            donvi: 'Viện KHDL - TTNT',
-            sinhvien1: 'Lê Thị Cẩm Duyên',
-            MSSV1: '3119560010',
-            TC1: '152',
-            TB1: '2.99',
-            Email1: 'tupinkyy@gmail.com',
-            Sdt1: '386260727',
-            sinhvien2: 'Lê Thị Cẩm Duyên 2',
-            MSSV2: '3119560018',
-            TC2: '156',
-            TB2: '3.3',
-            Email2: 'hoanghavy0207@gmail',
-            Sdt2: '386260727',
-            trangthai: 1,
-        },
-    ];
-
+    const [khoaluan, SetKhoaluan] = useState(data_khoaluan)
     return (
         <div className="container-khoaluan">
             <ol className="breadcrumb" >
@@ -155,8 +47,8 @@ const KhoaLuan = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {dulieutest && dulieutest.length > 0 &&
-                            dulieutest.map((item, index) => {
+                        {khoaluan && khoaluan.length > 0 &&
+                            khoaluan.map((item, index) => {
                                 return (
                                     <>
                                         <tr key={index}>

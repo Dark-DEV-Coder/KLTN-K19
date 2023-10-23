@@ -2,7 +2,7 @@ import './Login.scss'
 import Slideshow from '../Slideshow/Slideshow'
 import LoginIcon from '@mui/icons-material/Login';
 import Nav from '../Nav';
-import Nav2 from '../Nav2';
+import Nav2 from '../sinhvien/Nav2';
 const Login = () => {
 
     return (
