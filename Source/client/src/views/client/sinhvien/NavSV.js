@@ -5,11 +5,8 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import PasswordOutlinedIcon from '@mui/icons-material/PasswordOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { useState } from "react";
-import "./Nav2.scss"
-const Nav2 = (props) => {
-
-
-
+import "./NavSV.scss"
+const NavSV = (props) => {
     const [checkLogin, SetCheckLogin] = useState(true)
     const [hiddenInfor, SetHiddenInfor] = useState(false)
     const danhmuc = props.danhmuc;
@@ -126,15 +123,8 @@ const Nav2 = (props) => {
                         </div>
                     </div>
                 </nav >
-
             </section >
-
         </>
-
-
-
-
-
     )
 }
-export default Nav2;
+export default NavSV;
