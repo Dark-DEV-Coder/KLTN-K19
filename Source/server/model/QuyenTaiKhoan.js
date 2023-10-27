@@ -2,20 +2,25 @@ import mongoose from "mongoose";
 import { TrangThaiTonTai } from "../constant.js";
 const { Schema } = mongoose;
 
-const ChucNangSchema = new Schema(
+const ChiTietQuyenSchema = new Schema(
     {
-        MaCN: {
+        MaQTK: {
             type: String,
             required: true,
         },
-        TenChucNang: {
+        TenQuyenTK: {
             type: String,
             required: true,
         },
-        Hinh: {
-            type: String,
-            required: true,
-        },
+        ChucNang: [
+            {
+                MaCN: {
+                    type: String,
+                    required: true,
+                },
+                ChucNangCon: [String],
+            }
+        ],
         TrangThai: {
             type: String,
             enum: Object.values(TrangThaiTonTai),
@@ -26,4 +31,4 @@ const ChucNangSchema = new Schema(
     { timestamps: true }
 )
 
-export default mongoose.model("ChucNang", ChucNangSchema);
+export default mongoose.model("QuyenTaiKhoans", ChiTietQuyenSchema);

@@ -7,7 +7,7 @@ import YAML from 'yamljs'
 // import { Server } from 'socket.io'
 import session from "express-session"
 import swaggerUi from 'swagger-ui-express'
-// import { verifyAdmin, verifyToken } from "./middleware/verify.js"
+import { verifyAdmin, verifyToken } from "./middleware/verify.js"
 // import { clearTokenList } from "./service/jwt.js"
 // import { NOTIFY_EVENT, SESSION_AGE } from "./constant.js"
 // import { addSocketSession, handleDisconnect, sendNotify } from "./socket/handle.js"
@@ -16,6 +16,7 @@ import morgan from "morgan"
 import compression from "compression"
 import { checkOverload } from "./helper/checkConnectdb.js"
 import { SESSION_AGE } from "./constant.js"
+import adminRoute from "./router/admin/index.js"
 
 const swaggerDocument = YAML.load('./swagger.yaml')
 
@@ -63,6 +64,7 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+    .use('/api/admin', adminRoute) // tạm tắt verify Token
 
 app.use('/*', async (req, res) => {
     res.status(501).send("Don't implement.")

@@ -12,41 +12,497 @@ schemes:
 - "http"
 - "https"
 tags:
-- name: "auth"
-  description: "Endpoint Authentication"
+- name: "ChucNang"
+  description: "Các API của model ChucNang"
+- name: "QuyenTaiKhoan"
+  description: "Các API của model QuyenTaiKhoan"
 paths:
-  # /admin/staff/get-login-offline-code:
-  #   get: 
-  #     tags:
-  #       - "staff"
-  #     summary: Admin get login offine code of staff
-  #     produces:
-  #       - application/json     
-  #     parameters:
-  #     - in: query
-  #       name: staffCode
-  #       type: string
-  #       required: true
-  #       description: staff code
-  #     responses:
-  #       200: 
-  #         description: get login offine code of staff successfully,
-  #         schema:
-  #           type: object
-  #           example: {
-  #             "success": true,
-  #             "message": "get login offine code of staff successfully",
-  #             "data": {
-  #               "code": "string",
-  #             }
-  #           }
-  #       400:
-  #         description: get login offine code of staff failed,
-  #         schema:
-  #           type: object
-  #           example: {
-  #             "success": false,
-  #             "message": "string",
-  #           }
-  #     security:
-  #     - ApiKeyAuth: []
+  /admin/chuc-nang/DanhSachChucNang:
+    get: 
+      tags:
+        - "ChucNang"
+      summary: Admin lấy danh sách chức năng
+      produces:
+        - application/json     
+      parameters:
+      - in: query
+        name: page
+        type: integer
+        required: true
+        description: số trang (ví dụ trang 1, trang 2), giá trị > 0
+      - in: query
+        name: pageSize
+        type: integer
+        required: true
+        description: giới hạn số lượng 1 trang, giá trị > 0
+      - in: query
+        name: keyword
+        type: string
+        required: true
+        description: mã chức năng hoặc tên chức năng
+      responses:
+        200: 
+          description: Lấy danh sách chức năng thành công
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Lấy danh sách chức năng thành công",
+            }
+        400:
+          description: Lấy danh sách chức năng thất bại
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Lấy danh sách chức năng thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
+  /admin/chuc-nang/Them:
+    post: 
+      tags:
+        - "ChucNang"
+      summary: Thêm chức năng
+      produces:
+        - multipart/form-data    
+      parameters:
+        - in: formData
+          name: MaCN
+          type: string
+          description: Mã chức năng
+          required: true
+        - in: formData
+          name: TenChucNang
+          type: string
+          description: Tên chức năng
+          required: true
+        - in: formData
+          name: Hinh
+          type: file
+          description: Hình icon chức năng
+          required: true
+      responses:
+        200:
+          description: Thêm chức năng thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Thêm chức năng thành công.",
+            }          
+        400:
+          description: Thêm chức năng thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Thêm chức năng thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/chuc-nang/ChinhSua/{MaCN}:
+    put: 
+      tags:
+        - "ChucNang"
+      summary: Chỉnh sửa thông tin chức năng
+      produces:
+        - multipart/form-data    
+      parameters:
+        - in: path
+          name: MaCN
+          type: string
+          required: true
+          description: Mã chức năng
+        - in: formData
+          name: TenChucNang
+          type: string
+          description: Tên chức năng
+          required: true
+        - in: formData
+          name: Hinh
+          type: file
+          description: Hình icon chức năng
+          required: true
+      responses:
+        200:
+          description: Chỉnh sửa thông tin chức năng thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Chỉnh sửa thông tin chức năng thành công.",
+            }          
+        400:
+          description: Chỉnh sửa thông tin chức năng thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Chỉnh sửa thông tin chức năng thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/chuc-nang/Xoa/{MaCN}:
+    delete:
+      tags:
+        - "ChucNang"
+      summary: "Xóa thông tin chức năng"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaCN
+          type: string
+          required: true
+          description: Mã chức năng
+      responses:
+        200:
+          description: Xóa thông tin chức năng thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Xóa thông tin chức năng thành công.",
+            }
+        400:
+          description: Xóa thông tin chức năng thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message" : "Xóa thông tin chức năng thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/quyen-tai-khoan/DanhSachQuyenTK:
+    get: 
+      tags:
+        - "QuyenTaiKhoan"
+      summary: Admin lấy danh sách quyền tài khoản
+      produces:
+        - application/json     
+      parameters:
+      - in: query
+        name: page
+        type: integer
+        required: true
+        description: số trang (ví dụ trang 1, trang 2), giá trị > 0
+      - in: query
+        name: pageSize
+        type: integer
+        required: true
+        description: giới hạn số lượng 1 trang, giá trị > 0
+      - in: query
+        name: keyword
+        type: string
+        required: true
+        description: mã quyền tài khoản hoặc tên quyền tài khoản
+      responses:
+        200: 
+          description: Lấy danh sách quyền tài khoản thành công
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Lấy danh sách quyền tài khoản thành công",
+            }
+        400:
+          description: Lấy danh sách quyền tài khoản thất bại
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Lấy danh sách quyền tài khoản thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
+  /admin/quyen-tai-khoan/Them:
+    post: 
+      tags:
+        - "QuyenTaiKhoan"
+      summary: Thêm quyền tài khoản
+      produces:
+        - application/json     
+      parameters:
+        - in: body
+          name: MaQTK
+          type: string
+          required: true
+          description: Mã quyền tài khoản
+        - in: body
+          name: TenQuyenTK
+          type: string
+          required: true
+          description: Tên quyền tài khoản
+        - in: body
+          name: MaCN
+          type: string
+          description: Mảng các mã chức năng con được cách nhau bởi dấu ";". Ví dụ (CN;TK;CHNG)
+        - in: body
+          name: ChucNangCon
+          type: string
+          description: Mảng các tên chức năng con được cách nhau bởi dấu ";" ứng với mã chức năng, các tên cách nhau bởi dấu ",". Ví dụ (Thêm,Sửa,Xóa;Sửa,Xóa;Xem danh sách)
+      responses:
+        200:
+          description: Thêm quyền tài khoản thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Thêm quyền tài khoản thành công.",
+            }          
+        400:
+          description: Thêm quyền tài khoản thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Thêm quyền tài khoản thất bại.",
+            }
+      security:
+        - ApiKeyAuth: [] 
+  /admin/quyen-tai-khoan/ChinhSua/{MaQTK}:
+    put: 
+      tags:
+        - "QuyenTaiKhoan"
+      summary: Chỉnh sửa quyền tài khoản
+      produces:
+        - application/json     
+      parameters:
+        - in: path
+          name: MaQTK
+          type: string
+          required: true
+          description: Mã quyền tài khoản
+        - in: body
+          name: TenQuyenTK
+          type: string
+          required: true
+          description: Tên quyền tài khoản
+        - in: body
+          name: MaCN
+          type: string
+          description: Mảng các mã chức năng con được cách nhau bởi dấu ";". Ví dụ (CN;TK;CHNG)
+        - in: body
+          name: ChucNangCon
+          type: string
+          description: Mảng các tên chức năng con được cách nhau bởi dấu ";" ứng với mã chức năng, các tên cách nhau bởi dấu ",". Ví dụ (Thêm,Sửa,Xóa;Sửa,Xóa;Xem danh sách)
+      responses:
+        200:
+          description: Chỉnh sửa quyền tài khoản thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Chỉnh sửa quyền tài khoản thành công.",
+            }          
+        400:
+          description: Chỉnh sửa quyền tài khoản thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Chỉnh sửa quyền tài khoản thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []     
+  /admin/quyen-tai-khoan/Xoa/{MaQTK}:
+    delete:
+      tags:
+        - "QuyenTaiKhoan"
+      summary: "Xóa thông tin quyền tài khoản"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaQTK
+          type: string
+          required: true
+          description: Mã quyền tài khoản
+      responses:
+        200:
+          description: Xóa thông tin quyền tài khoản thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Xóa thông tin quyền tài khoản thành công.",
+            }
+        400:
+          description: Xóa thông tin quyền tài khoản thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message" : "Xóa thông tin quyền tài khoản thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/tai-khoan/DanhSachTK:
+    get: 
+      tags:
+        - "TaiKhoan"
+      summary: Admin lấy danh sách tài khoản
+      produces:
+        - application/json     
+      parameters:
+      - in: query
+        name: page
+        type: integer
+        required: true
+        description: số trang (ví dụ trang 1, trang 2), giá trị > 0
+      - in: query
+        name: pageSize
+        type: integer
+        required: true
+        description: giới hạn số lượng 1 trang, giá trị > 0
+      - in: query
+        name: keyword
+        type: string
+        required: true
+        description: mã tài khoản hoặc tên đăng nhập hoặc mã quyền tài khoản
+      responses:
+        200: 
+          description: Lấy danh sách tài khoản thành công
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Lấy danh sách tài khoản thành công",
+            }
+        400:
+          description: Lấy danh sách tài khoản thất bại
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Lấy danh sách tài khoản thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
+  /admin/tai-khoan/Them:
+    post: 
+      tags:
+        - "TaiKhoan"
+      summary: Thêm tài khoản
+      produces:
+        - application/json     
+      parameters:
+        - in: body
+          name: MaTK
+          type: string
+          required: true
+          description: Mã tài khoản
+        - in: body
+          name: MaQTK
+          type: string
+          required: true
+          description: Mã quyền tài khoản
+        - in: body
+          name: TenDangNhap
+          type: string
+          required: true
+          description: Tên đăng nhập
+        - in: body
+          name: MatKhau
+          type: string
+          description: Mật khẩu đăng nhập
+      responses:
+        200:
+          description: Thêm tài khoản thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Thêm tài khoản thành công.",
+            }          
+        400:
+          description: Thêm tài khoản thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Thêm tài khoản thất bại.",
+            }
+      security:
+        - ApiKeyAuth: [] 
+  /admin/tai-khoan/ChinhSua/{MaTK}:
+    put: 
+      tags:
+        - "TaiKhoan"
+      summary: Chỉnh sửa tài khoản
+      produces:
+        - application/json     
+      parameters:
+        - in: path
+          name: MaTK
+          type: string
+          required: true
+          description: Mã tài khoản
+        - in: body
+          name: MaQTK
+          type: string
+          required: true
+          description: Mã quyền tài khoản
+        - in: body
+          name: TenDangNhap
+          type: string
+          required: true
+          description: Tên đăng nhập
+      responses:
+        200:
+          description: Chỉnh sửa tài khoản thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Chỉnh sửa tài khoản thành công.",
+            }          
+        400:
+          description: Chỉnh sửa tài khoản thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Chỉnh sửa tài khoản thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []     
+  /admin/tai-khoan/Xoa/{MaTK}:
+    delete:
+      tags:
+        - "TaiKhoan"
+      summary: "Xóa thông tin tài khoản"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaTK
+          type: string
+          required: true
+          description: Mã tài khoản
+      responses:
+        200:
+          description: Xóa thông tin tài khoản thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Xóa thông tin tài khoản thành công.",
+            }
+        400:
+          description: Xóa thông tin tài khoản thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message" : "Xóa thông tin tài khoản thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+securityDefinitions:
+  ApiKeyAuth:
+    type: apiKey
+    in: headers
+    name: x-access-token
