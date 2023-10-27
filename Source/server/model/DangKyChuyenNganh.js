@@ -60,4 +60,4 @@ const DangKyChuyenNganhSchema = new Schema(
     { timestamps: true }
 )
 
-export default mongoose.model("DangKyChuyenNganh", DangKyChuyenNganhSchema);
+export default mongoose.model("dangkychuyennganhs", DangKyChuyenNganhSchema);

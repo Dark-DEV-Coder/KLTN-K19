@@ -36,4 +36,4 @@ const CanhBaoHocTapSchema = new Schema(
     { timestamps: true }
 )
 
-export default mongoose.model("CanhBaoHocTap", CanhBaoHocTapSchema);
+export default mongoose.model("canhbaohoctaps", CanhBaoHocTapSchema);

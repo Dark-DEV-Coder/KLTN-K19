@@ -50,4 +50,4 @@ const GiangVienSchema = new Schema(
     { timestamps: true }
 )
 
-export default mongoose.model("GiangVien", GiangVienSchema);
+export default mongoose.model("giangviens", GiangVienSchema);

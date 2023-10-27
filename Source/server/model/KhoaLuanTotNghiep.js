@@ -57,4 +57,4 @@ const KhoaLuanTotNghiepSchema = new Schema(
     { timestamps: true }
 )
 
-export default mongoose.model("KhoaLuanTotNghiep", KhoaLuanTotNghiepSchema);
+export default mongoose.model("khoaluantotnghieps", KhoaLuanTotNghiepSchema);

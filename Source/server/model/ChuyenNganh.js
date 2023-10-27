@@ -2,18 +2,19 @@ import mongoose from "mongoose";
 import { TrangThaiTonTai } from "../constant.js";
 const { Schema } = mongoose;
 
-const ChucNangSchema = new Schema(
+const ChuyenNganhSchema = new Schema(
     {
-        MaCN: {
+        MaChuyenNganh: {
             type: String,
             unique: true,
             required: true,
         },
-        TenChucNang: {
-            type: String,
+        MaNganh: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'nganhs',
             required: true,
         },
-        Hinh: {
+        TenChuyenNganh: {
             type: String,
             required: true,
         },
@@ -26,4 +27,4 @@ const ChucNangSchema = new Schema(
     { timestamps: true }
 )
 
-export default mongoose.model("chucnangs", ChucNangSchema);
+export default mongoose.model("chuyennganhs", ChuyenNganhSchema);

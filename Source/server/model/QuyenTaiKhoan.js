@@ -6,6 +6,7 @@ const ChiTietQuyenSchema = new Schema(
     {
         MaQTK: {
             type: String,
+            unique: true,
             required: true,
         },
         TenQuyenTK: {
@@ -15,7 +16,8 @@ const ChiTietQuyenSchema = new Schema(
         ChucNang: [
             {
                 MaCN: {
-                    type: String,
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'chucnangs',
                     required: true,
                 },
                 ChucNangCon: [String],
@@ -25,10 +27,9 @@ const ChiTietQuyenSchema = new Schema(
             type: String,
             enum: Object.values(TrangThaiTonTai),
             default: TrangThaiTonTai.ChuaXoa,
-            required: true,
         },
     },
     { timestamps: true }
 )
 
-export default mongoose.model("QuyenTaiKhoans", ChiTietQuyenSchema);
+export default mongoose.model("quyentaikhoans", ChiTietQuyenSchema);

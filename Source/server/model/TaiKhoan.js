@@ -6,10 +6,12 @@ const TaiKhoanSchema = new Schema(
     {
         MaTK: {
             type: String,
+            unique: true,
             required: true,
         },
         MaQTK: {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'quyentaikhoans',
             required: true,
         },
         TenDangNhap: {
@@ -29,4 +31,4 @@ const TaiKhoanSchema = new Schema(
     { timestamps: true }
 )
 
-export default mongoose.model("TaiKhoans", TaiKhoanSchema);
+export default mongoose.model("taikhoans", TaiKhoanSchema);
