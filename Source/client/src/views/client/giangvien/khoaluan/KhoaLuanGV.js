@@ -47,8 +47,10 @@ const KhoaLuanGV = () => {
                             <th scope="col">Họ tên sinh viên</th>
                             <th scope="col">Mã số sinh viên</th>
 
-                            <th scope="col"></th>
-                            <th scope="col"></th>
+                            <th scope="col" colSpan="2">
+                                <button type="button" className="btn btn-outline-dark">Xóa tất cả</button>
+                            </th>
+
                         </tr>
                     </thead>
                     <tbody>
