@@ -1,18 +1,21 @@
-// import Error from "../helper/error.js"
-// import { VERIFY_OP } from "../constant.js"
+import Error from "../helper/error.js"
 
-// export const staffRegisterValidate = data => {
-//     const error = new Error()
+export const KtraDuLieuChucNangKhiThem = data => {
+    const error = new Error()
 
-//     error.isRequired(data.name, "name")
-//         .isRequired(data.email, "email")
-//         .isRequired(data.phone, 'phone')
-//         .isRequired(data.password, "password")
-//         .isRequired(data.staff_type, "staff_type")
-//         .isRequired(data.staff_position, "staff_position")
+    error.isRequired(data.MaCN, "MaCN")
+        .isRequired(data.TenChucNang, "TenChucNang")
 
-//     return error.get()
-// }
+    return error.get()
+}
+
+export const KtraDuLieuChucNangKhiChinhSua = data => {
+    const error = new Error()
+
+    error.isRequired(data.TenChucNang, "TenChucNang")
+
+    return error.get()
+}
 
 // export const customerRegisterValidate = data => {
 //     const error = new Error()

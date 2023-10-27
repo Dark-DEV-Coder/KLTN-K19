@@ -1,9 +1,14 @@
 import mongoose from "mongoose";
+import { TrangThaiTaiKhoan } from "../constant.js";
 const { Schema } = mongoose;
 
 const TaiKhoanSchema = new Schema(
     {
         MaTK: {
+            type: String,
+            required: true,
+        },
+        MaQTK: {
             type: String,
             required: true,
         },
@@ -17,10 +22,11 @@ const TaiKhoanSchema = new Schema(
         },
         TrangThai: {
             type: String,
-            required: true,
+            enum: Object.values(TrangThaiTaiKhoan),
+            default: TrangThaiTaiKhoan.DaKichHoat,
         },
     },
     { timestamps: true }
 )
 
-export default mongoose.model("TaiKhoan", TaiKhoanSchema);
+export default mongoose.model("TaiKhoans", TaiKhoanSchema);
