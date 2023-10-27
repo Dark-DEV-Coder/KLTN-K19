@@ -80,4 +80,4 @@ const DangKyThucTapSchema = new Schema(
     { timestamps: true }
 )
 
-export default mongoose.model("DangKyThucTap", DangKyThucTapSchema);
+export default mongoose.model("dangkythuctaps", DangKyThucTapSchema);

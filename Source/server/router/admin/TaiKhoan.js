@@ -1,15 +1,16 @@
 import express from "express"
 import argon2 from "argon2"
 import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
-import { TrangThaiTonTai } from "../../constant.js"
+import { TrangThaiTaiKhoan } from "../../constant.js"
 import { KtraDuLieuTaiKhoanKhiChinhSua, KtraDuLieuTaiKhoanKhiThem } from "../../validation/TaiKhoan.js"
 import TaiKhoan from "../../model/TaiKhoan.js"
+import QuyenTaiKhoan from "../../model/QuyenTaiKhoan.js"
 
 const TaiKhoanAdminRoute = express.Router()
 
 /**
  * @route GET /api/admin/tai-khoan/DanhSachTK
- * @description Lấy danh sách quyền tài khoản
+ * @description Lấy danh sách tài khoản
  * @access public
  */
 TaiKhoanAdminRoute.get('/DanhSachTK', async (req, res) => {
@@ -17,7 +18,6 @@ TaiKhoanAdminRoute.get('/DanhSachTK', async (req, res) => {
         const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0
         const page = req.query.page ? parseInt(req.query.page) : 0
         const { keyword} = req.query
-        var query = {trangthai: TrangThaiTonTai.ChuaXoa}
         var keywordCondition = keyword
             ? {
                 $or: [
@@ -26,8 +26,13 @@ TaiKhoanAdminRoute.get('/DanhSachTK', async (req, res) => {
                     { TenDangNhap: { $regex: keyword, $options: "i" } },
                 ],
             } : {};
-        const taikhoans = await TaiKhoan.find({ $and: [query, keywordCondition] }).limit(pageSize).skip(pageSize * page)
-        const length = await TaiKhoan.find({ $and: [query, keywordCondition] }).count();
+        const taikhoans = await TaiKhoan.find({ $and: [keywordCondition], TrangThai: { $in: [TrangThaiTaiKhoan.ChuaKichHoat, TrangThaiTaiKhoan.DaKichHoat]} })
+                                        .limit(pageSize).skip(pageSize * page)
+                                        .populate({
+                                                    path: "MaQTK",
+                                                    select: "MaQTK TenQuyenTK",
+                                                })
+        const length = await TaiKhoan.find({ $and: [keywordCondition], TrangThai: { $in: [TrangThaiTaiKhoan.ChuaKichHoat, TrangThaiTaiKhoan.DaKichHoat]} }).count();
 
         if (taikhoans.length == 0) 
             return sendError(res, "Không tìm thấy danh sách tài khoản.")
@@ -38,7 +43,31 @@ TaiKhoanAdminRoute.get('/DanhSachTK', async (req, res) => {
                 DanhSach: taikhoans
             })
 
-        return sendError(res, "Không tìm thấy danh sách quyền tài khoản.")
+        return sendError(res, "Không tìm thấy danh sách tài khoản.")
+    }
+    catch (error) {
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route GET /api/admin/tai-khoan/ChiTietTaiKhoan/{MaTK}
+ * @description Lấy chi tiết tài khoản
+ * @access public
+ */
+TaiKhoanAdminRoute.get('/ChiTietTaiKhoan/:MaTK', async (req, res) => {
+    try {
+        const { MaTK } = req.params;
+        const isExist = await TaiKhoan.findOne({ MaTK: MaTK })
+                                    .populate({
+                                        path: "MaQTK",
+                                        select: "MaQTK TenQuyenTK",
+                                    }).lean();
+        if (!isExist)
+            return sendError(res, "Tài khoản không tồn tại");
+
+        return sendSuccess(res, "Chi tiết tài khoản.", isExist);
     }
     catch (error) {
         console.log(error)
@@ -61,9 +90,16 @@ TaiKhoanAdminRoute.post('/Them', async (req, res) => {
         const isExistMa = await TaiKhoan.findOne({ MaTK: MaTK }).lean();
         if (isExistMa)
             return sendError(res, "Mã tài khoản đã tồn tại");
+        const isExistTen = await TaiKhoan.findOne({ TenDangNhap: TenDangNhap }).lean();
+        if (isExistTen)
+            return sendError(res, "Tên đăng nhập đã tồn tại");
+
+        const isExistMaQuyenTK = await QuyenTaiKhoan.findOne({ MaQTK: MaQTK });
+        if (!isExistMaQuyenTK)
+            return sendError(res, "Quyền tài khoản không tồn tại");
 
         let password = await argon2.hash(MatKhau)
-        const taikhoan = await TaiKhoan.create({ MaTK: MaTK, MaQTK: MaQTK, TenDangNhap: TenDangNhap, MatKhau: password });
+        const taikhoan = await TaiKhoan.create({ MaTK: MaTK, MaQTK: isExistMaQuyenTK._id, TenDangNhap: TenDangNhap, MatKhau: password });
 
         return sendSuccess(res, "Thêm tài khoản thành công", taikhoan);
     }
@@ -86,7 +122,20 @@ TaiKhoanAdminRoute.put('/ChinhSua/:MaTK', async (req, res) => {
         const { MaQTK, TenDangNhap } = req.body;
         const { MaTK } = req.params;
 
-        await TaiKhoan.findOneAndUpdate({ MaTK: MaTK },{ MaQTK: MaQTK, TenDangNhap: TenDangNhap });
+        const isExistMa = await TaiKhoan.findOne({ MaTK: MaTK }).lean();
+        if (!isExistMa)
+            return sendError(res, "Tài khoản không tồn tại");
+        const isExistTen = await TaiKhoan.findOne({ TenDangNhap: TenDangNhap }).lean();
+        if (isExistTen){
+            if (isExistTen.MaTK != isExistMa.MaTK)
+                return sendError(res, "Tên đăng nhập đã tồn tại");
+        }
+
+        const isExistMaQuyenTK = await QuyenTaiKhoan.findOne({ MaQTK: MaQTK });
+        if (!isExistMaQuyenTK)
+            return sendError(res, "Quyền tài khoản không tồn tại");
+
+        await TaiKhoan.findOneAndUpdate({ MaTK: MaTK },{ MaQTK: isExistMaQuyenTK._id, TenDangNhap: TenDangNhap });
 
         return sendSuccess(res, "Chỉnh sửa tài khoản thành công");
     }

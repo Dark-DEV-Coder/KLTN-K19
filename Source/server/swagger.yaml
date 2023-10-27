@@ -16,6 +16,12 @@ tags:
   description: "Các API của model ChucNang"
 - name: "QuyenTaiKhoan"
   description: "Các API của model QuyenTaiKhoan"
+- name: "TaiKhoan"
+  description: "Các API của model TaiKhoan"
+- name: "Nganh"
+  description: "Các API của model Nganh"
+- name: "ChuyenNganh"
+  description: "Các API của model ChuyenNganh"
 paths:
   /admin/chuc-nang/DanhSachChucNang:
     get: 
@@ -59,6 +65,38 @@ paths:
             }
       security:
       - ApiKeyAuth: []
+  /admin/chuc-nang/ChiTietChucNang/{MaCN}:
+    get:
+      tags:
+        - "ChucNang"
+      summary: "Xem chi tiết thông tin chức năng"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaCN
+          type: string
+          required: true
+          description: Mã chức năng
+      responses:
+        200:
+          description: Xem chi tiết thông tin chức năng thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Xem chi tiết thông tin chức năng thành công.",
+            }
+        400:
+          description: Xem chi tiết thông tin chức năng thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message" : "Xem chi tiết thông tin chức năng thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
   /admin/chuc-nang/Them:
     post: 
       tags:
@@ -217,6 +255,38 @@ paths:
             }
       security:
       - ApiKeyAuth: []
+  /admin/quyen-tai-khoan/ChiTietQuyenTK/{MaQTK}:
+    delete:
+      tags:
+        - "QuyenTaiKhoan"
+      summary: "Chi tiết thông tin quyền tài khoản"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaQTK
+          type: string
+          required: true
+          description: Mã quyền tài khoản
+      responses:
+        200:
+          description: Chi tiết thông tin quyền tài khoản thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Chi tiết thông tin quyền tài khoản thành công.",
+            }
+        400:
+          description: Chi tiết thông tin quyền tài khoản thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message" : "Chi tiết thông tin quyền tài khoản thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
   /admin/quyen-tai-khoan/Them:
     post: 
       tags:
@@ -381,6 +451,38 @@ paths:
             }
       security:
       - ApiKeyAuth: []
+  /admin/tai-khoan/ChiTietTaiKhoan/{MaTK}:
+    get:
+      tags:
+        - "TaiKhoan"
+      summary: "Chi tiết thông tin tài khoản"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaTK
+          type: string
+          required: true
+          description: Mã tài khoản
+      responses:
+        200:
+          description: Chi tiết thông tin tài khoản thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Chi tiết thông tin tài khoản thành công.",
+            }
+        400:
+          description: Chi tiết thông tin tài khoản thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message" : "Chi tiết thông tin tài khoản thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
   /admin/tai-khoan/Them:
     post: 
       tags:
@@ -498,6 +600,376 @@ paths:
             example: {
               "success": false,
               "message" : "Xóa thông tin tài khoản thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/nganh/DanhSachNganh:
+    get: 
+      tags:
+        - "Nganh"
+      summary: Admin lấy danh sách ngành
+      produces:
+        - application/json     
+      parameters:
+      - in: query
+        name: page
+        type: integer
+        required: true
+        description: số trang (ví dụ trang 1, trang 2), giá trị > 0
+      - in: query
+        name: pageSize
+        type: integer
+        required: true
+        description: giới hạn số lượng 1 trang, giá trị > 0
+      - in: query
+        name: keyword
+        type: string
+        required: true
+        description: mã ngành hoặc tên ngành
+      responses:
+        200: 
+          description: Lấy danh sách ngành thành công
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Lấy danh sách ngành thành công",
+            }
+        400:
+          description: Lấy danh sách ngành thất bại
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Lấy danh sách ngành thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
+  /admin/nganh/ChiTietNganh/{MaNganh}:
+    get:
+      tags:
+        - "Nganh"
+      summary: "Chi tiết thông tin ngành"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaNganh
+          type: string
+          required: true
+          description: Mã ngành
+      responses:
+        200:
+          description: Chi tiết thông tin ngành thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Chi tiết thông tin ngành thành công.",
+            }
+        400:
+          description: Chi tiết thông tin ngành thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message" : "Chi tiết thông tin ngành thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/nganh/Them:
+    post: 
+      tags:
+        - "Nganh"
+      summary: Thêm ngành
+      produces:
+        - application/json     
+      parameters:
+        - in: body
+          name: MaNganh
+          type: string
+          required: true
+          description: Mã ngành
+        - in: body
+          name: TenNganh
+          type: string
+          required: true
+          description: Tên ngành
+      responses:
+        200:
+          description: Thêm ngành thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Thêm ngành thành công.",
+            }          
+        400:
+          description: Thêm ngành thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Thêm ngành thất bại.",
+            }
+      security:
+        - ApiKeyAuth: [] 
+  /admin/nganh/ChinhSua/{MaNganh}:
+    put: 
+      tags:
+        - "Nganh"
+      summary: Chỉnh sửa ngành
+      produces:
+        - application/json     
+      parameters:
+        - in: path
+          name: MaNganh
+          type: string
+          required: true
+          description: Mã ngành
+        - in: body
+          name: TenNganh
+          type: string
+          required: true
+          description: Tên ngành
+      responses:
+        200:
+          description: Chỉnh sửa ngành thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Chỉnh sửa ngành thành công.",
+            }          
+        400:
+          description: Chỉnh sửa ngành thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Chỉnh sửa ngành thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []     
+  /admin/nganh/Xoa/{MaNganh}:
+    delete:
+      tags:
+        - "Nganh"
+      summary: "Xóa thông tin ngành"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaNganh
+          type: string
+          required: true
+          description: Mã ngành
+      responses:
+        200:
+          description: Xóa thông tin ngành thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Xóa thông tin ngành thành công.",
+            }
+        400:
+          description: Xóa thông tin ngành thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message" : "Xóa thông tin ngành thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/chuyen-nganh/DanhSachChuyenNganh:
+    get: 
+      tags:
+        - "ChuyenNganh"
+      summary: Admin lấy danh sách chuyên ngành
+      produces:
+        - application/json     
+      parameters:
+      - in: query
+        name: page
+        type: integer
+        required: true
+        description: số trang (ví dụ trang 1, trang 2), giá trị > 0
+      - in: query
+        name: pageSize
+        type: integer
+        required: true
+        description: giới hạn số lượng 1 trang, giá trị > 0
+      - in: query
+        name: keyword
+        type: string
+        required: true
+        description: mã chuyên ngành hoặc tên chuyên ngành
+      responses:
+        200: 
+          description: Lấy danh sách chuyên ngành thành công
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Lấy danh sách chuyên ngành thành công",
+            }
+        400:
+          description: Lấy danh sách chuyên ngành thất bại
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Lấy danh sách chuyên ngành thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
+  /admin/chuyen-nganh/ChiTietChuyenNganh/{MaChuyenNganh}:
+    get:
+      tags:
+        - "ChuyenNganh"
+      summary: "Chi tiết thông tin chuyên ngành"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaChuyenNganh
+          type: string
+          required: true
+          description: Mã chuyên ngành
+      responses:
+        200:
+          description: Chi tiết thông tin chuyên ngành thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Chi tiết thông tin chuyên ngành thành công.",
+            }
+        400:
+          description: Chi tiết thông tin chuyên ngành thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message" : "Chi tiết thông tin chuyên ngành thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/chuyen-nganh/Them:
+    post: 
+      tags:
+        - "ChuyenNganh"
+      summary: Thêm chuyên ngành
+      produces:
+        - application/json     
+      parameters:
+        - in: body
+          name: MaChuyenNganh
+          type: string
+          required: true
+          description: Mã chuyên ngành
+        - in: body
+          name: MaNganh
+          type: string
+          required: true
+          description: Mã ngành
+        - in: body
+          name: TenChuyenNganh
+          type: string
+          required: true
+          description: Tên chuyên ngành
+      responses:
+        200:
+          description: Thêm chuyên ngành thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Thêm chuyên ngành thành công.",
+            }          
+        400:
+          description: Thêm chuyên ngành thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Thêm chuyên ngành thất bại.",
+            }
+      security:
+        - ApiKeyAuth: [] 
+  /admin/chuyen-nganh/ChinhSua/{MaChuyenNganh}:
+    put: 
+      tags:
+        - "ChuyenNganh"
+      summary: Chỉnh sửa chuyên ngành
+      produces:
+        - application/json     
+      parameters:
+        - in: path
+          name: MaChuyenNganh
+          type: string
+          required: true
+          description: Mã chuyên ngành
+        - in: body
+          name: MaNganh
+          type: string
+          required: true
+          description: Mã ngành
+        - in: body
+          name: TenChuyenNganh
+          type: string
+          required: true
+          description: Tên chuyên ngành
+      responses:
+        200:
+          description: Chỉnh sửa chuyên ngành thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Chỉnh sửa chuyên ngành thành công.",
+            }          
+        400:
+          description: Chỉnh sửa chuyên ngành thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Chỉnh sửa chuyên ngành thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []     
+  /admin/chuyen-nganh/Xoa/{MaChuyenNganh}:
+    delete:
+      tags:
+        - "ChuyenNganh"
+      summary: "Xóa thông tin chuyên ngành"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaChuyenNganh
+          type: string
+          required: true
+          description: Mã chuyên ngành
+      responses:
+        200:
+          description: Xóa thông tin chuyên ngành thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Xóa thông tin chuyên ngành thành công.",
+            }
+        400:
+          description: Xóa thông tin chuyên ngành thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message" : "Xóa thông tin chuyên ngành thất bại.",
             }
       security:
         - ApiKeyAuth: []

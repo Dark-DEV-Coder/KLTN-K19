@@ -32,4 +32,4 @@ const TotNghiepSchema = new Schema(
     { timestamps: true }
 )
 
-export default mongoose.model("TotNghiep", TotNghiepSchema);
+export default mongoose.model("totnghieps", TotNghiepSchema);

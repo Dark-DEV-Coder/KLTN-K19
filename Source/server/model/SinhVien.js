@@ -57,4 +57,4 @@ const SinhVienSchema = new Schema(
     { timestamps: true }
 )
 
-export default mongoose.model("SinhVien", SinhVienSchema);
+export default mongoose.model("sinhviens", SinhVienSchema);

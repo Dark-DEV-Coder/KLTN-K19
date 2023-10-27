@@ -7,6 +7,7 @@ import { createChucNangDir } from "../../middleware/createDir.js"
 import { uploadImg } from "../../middleware/storage.js"
 import { DeleteHinhTrenCloudinary, UploadHinhLenCloudinary } from "../../helper/connectCloudinary.js"
 import { KtraDuLieuChucNangKhiChinhSua, KtraDuLieuChucNangKhiThem } from "../../validation/ChucNang.js"
+import QuyenTaiKhoan from "../../model/QuyenTaiKhoan.js"
 
 const ChucNangAdminRoute = express.Router()
 
@@ -20,7 +21,6 @@ ChucNangAdminRoute.get('/DanhSachChucNang', async (req, res) => {
         const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0
         const page = req.query.page ? parseInt(req.query.page) : 0
         const { keyword} = req.query
-        var query = {trangthai: TrangThaiTonTai.ChuaXoa}
         var keywordCondition = keyword
             ? {
                 $or: [
@@ -28,8 +28,8 @@ ChucNangAdminRoute.get('/DanhSachChucNang', async (req, res) => {
                     { TenChucNang: { $regex: keyword, $options: "i" } },
                 ],
             } : {};
-        const chucnangs = await ChucNang.find({ $and: [query, keywordCondition] }).limit(pageSize).skip(pageSize * page)
-        const length = await ChucNang.find({ $and: [query, keywordCondition] }).count();
+        const chucnangs = await ChucNang.find({ $and: [keywordCondition], TrangThai: TrangThaiTonTai.ChuaXoa }).limit(pageSize).skip(pageSize * page)
+        const length = await ChucNang.find({ $and: [keywordCondition], TrangThai: TrangThaiTonTai.ChuaXoa }).count();
 
         if (chucnangs.length == 0) 
             return sendError(res, "Không tìm thấy danh sách chức năng.")
@@ -41,6 +41,26 @@ ChucNangAdminRoute.get('/DanhSachChucNang', async (req, res) => {
             })
 
         return sendError(res, "Không tìm thấy danh sách chức năng.")
+    }
+    catch (error) {
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route GET /api/admin/chuc-nang/ChiTietChucNang/{MaCN}
+ * @description Lấy thông tin chi tiết chức năng
+ * @access public
+ */
+ChucNangAdminRoute.get('/ChiTietChucNang/:MaCN', async (req, res) => {
+    try {
+        const { MaCN } = req.params
+        const isExist = await ChucNang.findOne({ MaCN: MaCN }).lean();
+        if (!isExist)
+            return sendError(res, "Chức năng không tồn tại"); 
+
+        return sendSuccess(res, "Chi tiết thông tin chức năng.", isExist)
     }
     catch (error) {
         console.log(error)
@@ -133,6 +153,9 @@ ChucNangAdminRoute.delete('/Xoa/:MaCN', async (req, res) => {
         const isExist = await ChucNang.findOne({ MaCN: MaCN })
         if (!isExist) 
             return sendError(res, "Chức năng này không tồn tại");
+        const KtraQuyen = await QuyenTaiKhoan.find({"ChucNang.MaCN": MaCN}).lean();
+        if (KtraQuyen.length > 0)
+            return sendError(res, "Đang còn vướng dữ liệu quyền tài khoản nên không thể xóa")
         let splitUrl = await isExist.Hinh.split('/');
         let file = await `${splitUrl[splitUrl.length - 2]}/${splitUrl[splitUrl.length - 1].split('.')[0]}`;
         await DeleteHinhTrenCloudinary(file);
