@@ -1,9 +1,22 @@
 import "./Nganh.scss"
 import { Link } from "react-router-dom";
 import TableNganh from "./TableNganh";
-
+import { useState, useEffect } from 'react';
+import axios from "axios";
 
 const Nganh = () => {
+    // component didmount
+
+    // get danh sach nganh
+    const [listData_nganh, SetListData_nganh] = useState([]);
+    // useEffect(() => {
+    //     axios.get('https://reqres.in/api/users?page=2').then(
+    //         res => {
+    //             let data = res && res.data && res.data.data ? res.data.data : [];
+    //             SetListData_nganh(data)
+    //         }
+    //     )
+    // }, []);
     return (
         <>
             <main className="main2">
@@ -26,7 +39,7 @@ const Nganh = () => {
                         <span className="text">Create Data</span>
                     </Link>
                 </div>
-                <TableNganh />
+                <TableNganh listData_nganh={listData_nganh} />
 
             </main >
         </>

@@ -68,7 +68,7 @@ const ChiTietThucTap = () => {
                 {/* <HeaderMain title={'Chuyên ngành'} /> */}
                 <div className="head-title">
                     <div className="left">
-                        <h1>DANH SÁCH CÔNG TY THỰC TẬP</h1>
+                        <h1>DANH SÁCH </h1>
                         <ul className="breadcrumb">
                             <li>
                                 <Link>Dashboard</Link>
