@@ -1,30 +1,26 @@
 import "./TableNganh.scss"
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import { Box, Button } from '@mantine/core';
 import { IconDownload, IconUpload } from '@tabler/icons-react';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
 import { Link } from "react-router-dom";
-import {
-    IconButton,
-} from '@mui/material';
+import { IconButton } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
-
-
 const data = [
     {
-        manganhhoc: 'CNTT',
-        tennganh: 'Công nghệ thông tin',
+        MaNganh: 'CNTT',
+        TenNganh: 'Công nghệ thông tin',
         trangthai: 1,
     },
     {
-        manganhhoc: 'KTPM',
-        tennganh: 'Kỹ thuật phần mềm',
+        MaNganh: 'KTPM',
+        TenNganh: 'Kỹ thuật phần mềm',
         trangthai: 1,
     },
     {
-        manganhhoc: 'CNTT_CLC',
-        tennganh: 'Công nghệ thông tin CLC',
+        MaNganh: 'CNTT_CLC',
+        TenNganh: 'Công nghệ thông tin CLC',
         trangthai: 1,
     },
 ]
@@ -35,9 +31,8 @@ const csvConfig = mkConfig({
     useKeysAsHeaders: true,
 });
 
-const TableNganh = () => {
-    const [checkdiv, setCheckdiv] = useState(false)
-
+const TableNganh = (props) => {
+    // const listData_nganh = props.listData_nganh;
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
         const csv = generateCsv(csvConfig)(rowData);
@@ -51,7 +46,7 @@ const TableNganh = () => {
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'manganhhoc',
+                accessorKey: 'MaNganh',
                 header: 'Mã ngành',
                 size: 100,
                 enableColumnOrdering: false,
@@ -60,7 +55,7 @@ const TableNganh = () => {
 
             },
             {
-                accessorKey: 'tennganh',
+                accessorKey: 'TenNganh',
                 header: 'Tên ngành',
                 size: 600,
                 enableEditing: false,
@@ -80,17 +75,14 @@ const TableNganh = () => {
         enableColumnActions: true,
         enableRowActions: true,
 
-
-
         renderRowActions: ({ row, table }) => (
             <Box sx={{ display: 'flex', gap: '0.3rem' }}>
-
-                <IconButton onClick={() => table.setEditingRow(row)}>
-                    <Visibility fontSize="small" />
-                </IconButton>
-
-
-                <Link to={"/admin/nganhhoc/edit/" + row.original.manganhhoc}>
+                <Link to={"/admin/nganhhoc/single/" + row.original.MaNganh}>
+                    <IconButton onClick={() => table.setEditingRow(row)}>
+                        <Visibility fontSize="small" />
+                    </IconButton>
+                </Link>
+                <Link to={"/admin/nganhhoc/edit/" + row.original.MaNganh}>
                     <IconButton  >
                         <Edit fontSize="small" />
                     </IconButton>

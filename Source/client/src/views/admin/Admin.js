@@ -49,6 +49,7 @@ import AddTaiKhoan from "./TaiKhoan/ThemTaiKhoan/AddTaiKhoan";
 import ChucNang from "./ChucNang/ChucNang";
 import EditChucNang from "./ChucNang/EditChucNang/EditChucNang";
 import AddChucNang from "./ChucNang/ThemChucNang/AddChucNang";
+import ChiTietNganh from "./Nganh/ChiTietNganh/ChiTietNganh";
 const Admin = () => {
 
     const [hiddenDB, setHiddenDB] = useState(false);
@@ -111,6 +112,7 @@ const Admin = () => {
                             <Route path='nganhhoc'  >
                                 <Route index element={<Nganh />}></Route>
                                 <Route path="new" element={<AddNganh />} ></Route>
+                                <Route path="single/:manganhhoc" element={<ChiTietNganh />} ></Route>
                                 <Route path="edit/:manganhhoc" element={<EditNganh />} ></Route>
                             </Route>
                             <Route path='chuyennganh'  >
