@@ -49,7 +49,6 @@ const data = [
         nganh: 'Kỹ thuật phần mềm',
         trangthai: 1,
     },
-
 ]
 
 const csvConfig = mkConfig({
