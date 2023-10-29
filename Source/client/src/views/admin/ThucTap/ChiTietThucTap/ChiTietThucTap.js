@@ -112,14 +112,7 @@ const ChiTietThucTap = () => {
 
                         </div>
                     </TabPanel>
-
-
                 </TabContext>
-
-
-
-
-
             </main >
         </>
     )

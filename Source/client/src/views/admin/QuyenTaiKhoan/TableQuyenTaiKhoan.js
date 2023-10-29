@@ -1,56 +1,30 @@
 
-
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Box, Button } from '@mantine/core';
 import { IconDownload, IconUpload } from '@tabler/icons-react';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
 import { Link } from "react-router-dom";
-import {
-    IconButton,
-} from '@mui/material';
+import { IconButton } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
 
 
 const data = [
     {
-        MaTK: 'TK1',
-        TenDangNhap: 'admin',
-        MatKhau: 'admin',
+        MaQuyen: 'admin',
+        TenQuyen: 'admin',
         trangthai: 1,
     },
     {
-        MaTK: 'TK2',
-        TenDangNhap: 'giangvien2',
-        MatKhau: 'admin',
+        MaQuyen: 'giangvien',
+        TenQuyen: 'giangvien',
         trangthai: 1,
     },
     {
-        MaTK: 'TK3',
-        TenDangNhap: 'giangvien3',
-        MatKhau: 'admin',
+        MaQuyen: 'sinhvien',
+        TenQuyen: 'sinhvien',
         trangthai: 1,
     },
-    {
-        MaTK: 'TK4',
-        TenDangNhap: 'giangvien4',
-        MatKhau: 'admin',
-        trangthai: 1,
-    },
-
-    {
-        MaTK: 'TK5',
-        TenDangNhap: 'giangvien5',
-        MatKhau: 'admin',
-        trangthai: 1,
-    },
-    {
-        MaTK: 'TK6',
-        TenDangNhap: 'giangvien6',
-        MatKhau: 'admin',
-        trangthai: 1,
-    },
-
 ]
 
 const csvConfig = mkConfig({
@@ -59,13 +33,7 @@ const csvConfig = mkConfig({
     useKeysAsHeaders: true,
 });
 
-const TableTaiKhoan = () => {
-    const [trangthaiTK, setTrangthaiTK] = useState('1')
-    const onChangeSelect = (event, SetSelect) => {
-        let changeValue = event.target.value;
-        SetSelect(changeValue);
-    }
-
+const TableQuyenTaiKhoan = () => {
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
         const csv = generateCsv(csvConfig)(rowData);
@@ -79,27 +47,18 @@ const TableTaiKhoan = () => {
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'MaTK',
-                header: 'Mã tài khoản',
+                accessorKey: 'MaQuyen',
+                header: 'Mã quyền',
                 size: 100,
                 enableColumnOrdering: false,
                 enableEditing: false, //disable editing on this column
                 enableSorting: false,
-
             },
             {
-                accessorKey: 'TenDangNhap',
-                header: 'Tên đăng nhập',
+                accessorKey: 'TenQuyen',
+                header: 'Tên quyền tài khoản',
                 size: 100,
                 enableEditing: false,
-
-            },
-            {
-                accessorKey: 'MatKhau',
-                header: 'Mật khẩu',
-                size: 100,
-                enableEditing: false,
-
             },
         ]
     );
@@ -118,29 +77,24 @@ const TableTaiKhoan = () => {
 
 
         renderRowActions: ({ row, table }) => (
-            trangthaiTK === '1' ?
-                <Box sx={{ display: 'flex', gap: '0.3rem' }}>
-                    <Link to={"/admin/taikhoan/single/" + row.original.MaTK}>
-                        <IconButton>
-                            <Visibility fontSize="small" />
-                        </IconButton>
-                    </Link>
-
-                    <Link to={"/admin/taikhoan/edit/" + row.original.MaTK}>
-                        <IconButton  >
-                            <Edit fontSize="small" />
-                        </IconButton>
-                    </Link>
-
-                    <IconButton onClick={() => console.log(row.original.name)}>
-                        <Delete fontSize="small" sx={{ color: 'red' }} />
+            <Box sx={{ display: 'flex', gap: '0.3rem' }}>
+                <Link to={"/admin/quyentaikhoan/single/" + row.original.MaQuyen}>
+                    <IconButton>
+                        <Visibility fontSize="small" />
                     </IconButton>
-                </Box >
-                :
-                <Box sx={{ display: 'flex', gap: '0.3rem' }}>
-                    <button type="button" className="btn btn-outline-success">Chấp nhận</button>
-                    <button type="button" className="btn btn-outline-danger">Từ chối</button>
-                </Box >
+                </Link>
+
+                <Link to={"/admin/quyentaikhoan/edit/" + row.original.MaQuyen}>
+                    <IconButton  >
+                        <Edit fontSize="small" />
+                    </IconButton>
+                </Link>
+
+                <IconButton onClick={() => console.log(row.original.name)}>
+                    <Delete fontSize="small" sx={{ color: 'red' }} />
+                </IconButton>
+            </Box >
+
         ),
 
 
@@ -152,12 +106,7 @@ const TableTaiKhoan = () => {
                     gap: '16px',
                     padding: '8px',
                     flexWrap: 'wrap',
-                }}
-            >
-                <select value={trangthaiTK} className="select-btn" onChange={(event) => onChangeSelect(event, setTrangthaiTK)} >
-                    <option value='1'>Đã kích hoạt</option>
-                    <option value='0'>Chưa kích hoạt</option>
-                </select>
+                }}>
                 <Button
                     color="lightblue"
                     //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
@@ -183,23 +132,20 @@ const TableTaiKhoan = () => {
                     //only export selected rows
                     // onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
                     leftIcon={<IconDownload />}
-                    variant="filled"
-                >
+                    variant="filled" >
                     Import Data
                 </Button>
-            </Box >
+            </Box>
 
         ),
     });
 
     return (
         <>
-
             <MantineReactTable table={table} />
-
         </>
     )
 
 };
 
-export default TableTaiKhoan;
+export default TableQuyenTaiKhoan;

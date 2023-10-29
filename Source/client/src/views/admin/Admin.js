@@ -50,6 +50,10 @@ import ChucNang from "./ChucNang/ChucNang";
 import EditChucNang from "./ChucNang/EditChucNang/EditChucNang";
 import AddChucNang from "./ChucNang/ThemChucNang/AddChucNang";
 import ChiTietNganh from "./Nganh/ChiTietNganh/ChiTietNganh";
+import QuyenTaiKhoan from "./QuyenTaiKhoan/QuyenTaiKhoan";
+import ThemQuyenTaiKhoan from "./QuyenTaiKhoan/ThemQuyenTaiKhoan/ThemQuyenTaiKhoan";
+import SingleQuyenTaiKhoan from "./QuyenTaiKhoan/SingleQuyenTaiKhoan/SingleQuyenTaiKhoan";
+import EditQuyenTaiKhoan from "./QuyenTaiKhoan/EditQuyenTaiKhoan/EditQuyenTaiKhoan";
 const Admin = () => {
 
     const [hiddenDB, setHiddenDB] = useState(false);
@@ -125,6 +129,12 @@ const Admin = () => {
                                 <Route path="new" element={<AddTaiKhoan />} ></Route>
                                 <Route path="single/:MaTK" element={<SingleTaiKhoan />} ></Route>
                                 <Route path="edit/:MaTK" element={<EditTaiKhoan />} ></Route>
+                            </Route>
+                            <Route path='quyentaikhoan'  >
+                                <Route index element={<QuyenTaiKhoan />}></Route>
+                                <Route path="new" element={<ThemQuyenTaiKhoan />} ></Route>
+                                <Route path="single/:MaQuyen" element={<SingleQuyenTaiKhoan />} ></Route>
+                                <Route path="edit/:MaQuyen" element={<EditQuyenTaiKhoan />} ></Route>
                             </Route>
                             <Route path='chucnang'  >
                                 <Route index element={<ChucNang />}></Route>
