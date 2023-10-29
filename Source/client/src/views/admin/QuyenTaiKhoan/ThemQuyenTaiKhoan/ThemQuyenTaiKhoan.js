@@ -3,42 +3,23 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 const AddTaiKhoan = () => {
 
-    const [TenDangNhap, SetTenDangNhap] = useState("")
-    const [MatKhau, SetMatKhau] = useState("")
-    const [QuyenTK, SetQuyenTK] = useState("sinhvien")
+    const [MaQuyen, SetMaQuyen] = useState("")
+    const [TenQuyen, SetTenQuyen] = useState("")
 
     const onChangeInputSL = (event, SetState) => {
         let changeValue = event.target.value;
         SetState(changeValue);
     }
-    const onChangeSelect = (event, SetSelect) => {
-        let changeValue = event.target.value;
-        SetSelect(changeValue);
-    }
 
     // check dữ liệu
-    const [checkdulieuTenDN, SetCheckdulieuTenDN] = useState(true)
-    const [checkdulieuMatKhau, SetCheckdulieuMatKhau] = useState(true)
+    const [checkdulieuMaQuyen, SetCheckdulieuMaQuyen] = useState(true)
+    const [checkdulieuTenQuyen, SetCheckdulieuTenQuyen] = useState(true)
     const checkdulieu = (value, SetDuLieu) => {
         value === '' ? SetDuLieu(false) : SetDuLieu(true)
     }
 
-    const quyenTK = [
-        {
-            MaQuyen: 'admin',
-            TenQuyen: 'Admin',
-            trangthai: 1,
-        },
-        {
-            MaQuyen: 'giangvien',
-            TenQuyen: 'Giảng viên',
-            trangthai: 1,
-        },
-        {
-            MaQuyen: 'sinhvien',
-            TenQuyen: 'Sinh Viên',
-            trangthai: 1,
-        },
+    const chucnangcuaTK = [
+
     ]
 
     const listchucnang = [
@@ -70,7 +51,7 @@ const AddTaiKhoan = () => {
                             </li>
                             <li><i className='bx bx-chevron-right'></i></li>
                             <li>
-                                <Link className="active" >Tài khoản</Link>
+                                <Link className="active" >Quyền tài khoản</Link>
                             </li>
                             <li><i className='bx bx-chevron-right'></i></li>
                             <li>
@@ -84,30 +65,33 @@ const AddTaiKhoan = () => {
                     <div className="container-edit">
                         <div className="form-row">
                             <div className="form-group col-md-6">
-                                <label className="inputTK" for="inputTenDN">Tên đăng nhập</label>
-                                <input type="text" className="form-control" id="inputTenDN" placeholder="Điền tên đăng nhập ..." value={TenDangNhap} onChange={(event) => onChangeInputSL(event, SetTenDangNhap)} onBlur={() => checkdulieu(TenDangNhap, SetCheckdulieuTenDN)} />
-                                <div className="invalid-feedback" style={{ display: checkdulieuTenDN ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+                                <label className="inputTK" for="inputTenDN">Mã quyền</label>
+                                <input type="text" className="form-control" id="inputTenDN" placeholder="Điền mã quyền ..." value={MaQuyen} onChange={(event) => onChangeInputSL(event, SetMaQuyen)} onBlur={() => checkdulieu(MaQuyen, SetCheckdulieuMaQuyen)} />
+                                <div className="invalid-feedback" style={{ display: checkdulieuMaQuyen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                             </div>
                             <div className="form-group col-md-6">
-                                <label className="inputTK" for="inputTenGV">Mật khẩu</label>
-                                <input type="text" className="form-control" id="inputTenDN" placeholder="Điền mật khẩu ..." value={MatKhau} onChange={(event) => onChangeInputSL(event, SetMatKhau)} onBlur={() => checkdulieu(MatKhau, SetCheckdulieuMatKhau)} />
-                                <div className="invalid-feedback" style={{ display: checkdulieuMatKhau ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+                                <label className="inputTK" for="inputTenGV">Tên quyền</label>
+                                <input type="text" className="form-control" id="inputTenDN" placeholder="Điền tên quyền ..." value={TenQuyen} onChange={(event) => onChangeInputSL(event, SetTenQuyen)} onBlur={() => checkdulieu(TenQuyen, SetCheckdulieuTenQuyen)} />
+                                <div className="invalid-feedback" style={{ display: checkdulieuTenQuyen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                             </div>
                         </div>
-                        <div className="form-row" >
+                        <div className="form-row">
                             <div className="form-group col-md-12">
-                                <label className="inputDT" htmlFor="inputTrangthai">Quyền tài khoản </label>
-                                <select defaultValue={QuyenTK} id="inputTrangthai" className="form-control" onChange={(event) => onChangeSelect(event, SetQuyenTK)} >
-                                    {quyenTK && quyenTK.length > 0 &&
-                                        quyenTK.map((item, index) => {
-                                            return (
-                                                <option value={item.MaQuyen} key={item.MaQuyen}>{item.TenQuyen}</option>
-                                            )
-                                        })
-                                    }
-
-                                </select>
+                                <label className="inputTK" for="inputTenGV">Danh sách chức năng</label>
                             </div>
+                        </div>
+                        <div className="form-row">
+                            {listchucnang && listchucnang.length > 0 &&
+                                listchucnang.map((item, index) => {
+
+                                    return (
+                                        <div className="form-check form-check-inline" key={item.MaCN}>
+                                            <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value={item.MaCN} defaultChecked={chucnangcuaTK.filter(item2 => item2.MaCN == item.MaCN).length > 0 ? true : false} />
+                                            <label className="inputTKK" for="inlineCheckbox1">{item.TenChucNang}</label>
+                                        </div>
+                                    )
+                                })
+                            }
                         </div>
                         <button className="btn" type="submit" style={{ marginTop: '2rem' }}>Submit form</button>
                     </div>
