@@ -17,6 +17,7 @@ import compression from "compression"
 import { checkOverload } from "./helper/checkConnectdb.js"
 import { SESSION_AGE } from "./constant.js"
 import adminRoute from "./router/admin/index.js"
+import TaiKhoanRoute from "./router/TaiKhoan.js"
 
 const swaggerDocument = YAML.load('./swagger.yaml')
 
@@ -65,6 +66,7 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/admin', adminRoute) // tạm tắt verify Token
+    .use('/api/tai-khoan', TaiKhoanRoute)
 
 app.use('/*', async (req, res) => {
     res.status(501).send("Don't implement.")

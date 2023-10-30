@@ -19,3 +19,12 @@ export const KtraDuLieuTaiKhoanKhiChinhSua = data => {
 
     return error.get()
 }
+
+export const KtraDuLieuTaiKhoanKhiDangNhap = data => {
+    const error = new Error()
+
+    error.isRequired(data.TenDangNhap, "TenDangNhap")
+        .isRequired(data.MatKhau, "MatKhau")
+
+    return error.get()
+}

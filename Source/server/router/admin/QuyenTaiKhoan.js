@@ -99,22 +99,27 @@ QuyenTaiKhoanAdminRoute.post('/Them', async (req, res) => {
         if (isExistMa)
             return sendError(res, "Mã quyền tài khoản đã tồn tại");
 
-        let maChucNang = MaCN.split(';');
-        let cnCon = ChucNangCon.split(';');
-        let chucnangs = [];
-        let dem = 0;
-        await maChucNang.forEach( async (element) => {
-            const layIDChucNang = await ChucNang.findOne({MaCN: element});
-            let object = {
-                MaCN: layIDChucNang._id,
-                ChucNangCon: cnCon[dem].split(','),
-            };
-            chucnangs.push(object);
-            dem++;
-            if (dem === maChucNang.length){
-                await QuyenTaiKhoan.create({ MaQTK: MaQTK, TenQuyenTK: TenQuyenTK, ChucNang: chucnangs });
-            }
-        });
+        if (MaCN != "" && ChucNangCon != ""){
+            let maChucNang = MaCN.split(';');
+            let cnCon = ChucNangCon.split(';');
+            let chucnangs = [];
+            let dem = 0;
+            await maChucNang.forEach( async (element) => {
+                const layIDChucNang = await ChucNang.findOne({MaCN: element});
+                let object = {
+                    MaCN: layIDChucNang._id,
+                    ChucNangCon: cnCon[dem].split(','),
+                };
+                chucnangs.push(object);
+                dem++;
+                if (dem === maChucNang.length){
+                    await QuyenTaiKhoan.create({ MaQTK: MaQTK, TenQuyenTK: TenQuyenTK, ChucNang: chucnangs });
+                }
+            });
+        }
+
+        await QuyenTaiKhoan.create({ MaQTK: MaQTK, TenQuyenTK: TenQuyenTK });
+        
         return sendSuccess(res, "Thêm quyền tài khoản thành công");
     }
     catch (error){
@@ -140,22 +145,26 @@ QuyenTaiKhoanAdminRoute.put('/ChinhSua/:MaQTK', async (req, res) => {
         if (!isExistMa)
             return sendError(res, "Quyền tài khoản không tồn tại");
 
-        let maChucNang = MaCN.split(';');
-        let cnCon = ChucNangCon.split(';');
-        let chucnangs = [];
-        let dem = 0;
-        await maChucNang.forEach( async (element) => {
-            const layIDChucNang = await ChucNang.findOne({MaCN: element});
-            let object = {
-                MaCN: layIDChucNang._id,
-                ChucNangCon: cnCon[dem].split(','),
-            };
-            chucnangs.push(object);
-            dem++;
-            if (dem === maChucNang.length){
-                await QuyenTaiKhoan.findOneAndUpdate({ MaQTK: MaQTK },{ TenQuyenTK: TenQuyenTK, ChucNang: chucnangs });
-            }
-        });
+        if (MaCN != "" && ChucNangCon != ""){
+            let maChucNang = MaCN.split(';');
+            let cnCon = ChucNangCon.split(';');
+            let chucnangs = [];
+            let dem = 0;
+            await maChucNang.forEach( async (element) => {
+                const layIDChucNang = await ChucNang.findOne({MaCN: element});
+                let object = {
+                    MaCN: layIDChucNang._id,
+                    ChucNangCon: cnCon[dem].split(','),
+                };
+                chucnangs.push(object);
+                dem++;
+                if (dem === maChucNang.length){
+                    await QuyenTaiKhoan.findOneAndUpdate({ MaQTK: MaQTK },{ TenQuyenTK: TenQuyenTK, ChucNang: chucnangs });
+                }
+            });
+        }
+
+        await QuyenTaiKhoan.findOneAndUpdate({ MaQTK: MaQTK },{ TenQuyenTK: TenQuyenTK });
         
         return sendSuccess(res, "Chỉnh sửa quyền tài khoản thành công");
     }

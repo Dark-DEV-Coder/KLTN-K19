@@ -7,6 +7,10 @@ const GiangVienSchema = new Schema(
             type: String,
             required: true,
         },
+        MaTK: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'taikhoans',
+        },
         HoGV: {
             type: String,
             required: true,
