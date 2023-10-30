@@ -54,7 +54,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
 app.use(cors(
     {
-        origin: process.env.DEV == 1 ? 'http://localhost:8000' : [`http://${process.env.HOST}`, `https://${process.env.HOST}`],
+        origin: process.env.DEV == 1 ? 'https://hotrodaotaok19sgu.vercel.app' : process.env.HOST,
         credentials: true
     }
 ))
