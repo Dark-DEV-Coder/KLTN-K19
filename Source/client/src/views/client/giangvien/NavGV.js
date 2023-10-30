@@ -86,7 +86,7 @@ const NavGV = (props) => {
                             </ul>
 
                             {/* Chưa đăng nhập */}
-                            <NavLink to="/login" style={checkLogin ? { display: 'none' } : { display: 'block' }} >
+                            <NavLink to="/dangnhap" style={checkLogin ? { display: 'none' } : { display: 'block' }} >
                                 <button type="button" className="btn btn-secondary btn-lg">ĐĂNG NHẬP</button>
                             </NavLink>
 

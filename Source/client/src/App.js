@@ -21,8 +21,8 @@ function App() {
     <BrowserRouter>
       {/* Admin */}
       <div className='App'>
-        <Admin />
-        {/* <Client /> */}
+        {/* <Admin /> */}
+        <Client />
       </div>
     </BrowserRouter >
   );
