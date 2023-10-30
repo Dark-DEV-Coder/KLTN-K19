@@ -2,9 +2,11 @@ import express from "express"
 import argon2 from "argon2"
 import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
 import { TrangThaiTaiKhoan } from "../../constant.js"
-import { KtraDuLieuTaiKhoanKhiChinhSua, KtraDuLieuTaiKhoanKhiThem } from "../../validation/TaiKhoan.js"
+import { KtraDuLieuTaiKhoanKhiChinhSua, KtraDuLieuTaiKhoanKhiDangNhap, KtraDuLieuTaiKhoanKhiThem } from "../../validation/TaiKhoan.js"
 import TaiKhoan from "../../model/TaiKhoan.js"
 import QuyenTaiKhoan from "../../model/QuyenTaiKhoan.js"
+import GiangVien from "../../model/GiangVien.js"
+import { createTokenPair } from "../../middleware/auth.js"
 
 const TaiKhoanAdminRoute = express.Router()
 
@@ -161,6 +163,60 @@ TaiKhoanAdminRoute.delete('/Xoa/:MaTK', async (req, res) => {
     } catch (error) {
         console.log(error)
         return sendServerError(res)
+    }
+})
+
+/**
+ * @route POST /api/admin/tai-khoan/DangNhap
+ * @description Đăng nhập trang admin
+ * @access private
+*/
+TaiKhoanAdminRoute.post('/DangNhap', async (req, res) => {
+    try{
+        const err = KtraDuLieuTaiKhoanKhiDangNhap(req.body);
+        if (err)
+            return sendError(res, err);
+        const { TenDangNhap, MatKhau } = req.body;
+
+        const taikhoan = await TaiKhoan.findOne({ TenDangNhap: TenDangNhap });
+        if (!taikhoan)
+            return sendError(res, "Tên đăng nhập hoặc mật khẩu của bạn sai");
+        const KtraMatKhau = await argon2.verify(taikhoan.MatKhau, MatKhau);
+        if (!KtraMatKhau)
+            return sendError(res, "Tên đăng nhập hoặc mật khẩu của bạn sai");
+        const quyentaikhoan = await QuyenTaiKhoan.findById(taikhoan.MaQTK);
+        if (quyentaikhoan.MaQTK == "SINHVIEN" || quyentaikhoan.MaQTK == "GIANGVIEN")
+            return sendError(res, "Bạn không có quyền truy cập vào trang admin");
+        // const thongtingiangvien = await GiangVien.findOne({ MaTK: taikhoan._id });
+        // if (!thongtingiangvien)
+        //     return sendError(res, "Bạn không có quyền truy cập vào trang admin");
+
+        const chucnang = await QuyenTaiKhoan.findOne({ MaQTK: quyentaikhoan.MaQTK }).populate([
+            {
+                path: "ChucNang",
+                select: "MaCN",
+                populate: {
+                    path: "MaCN",
+                    select: "MaCN TenChucNang Hinh"
+                }
+            },
+        ]).lean();
+        // const thongtin = {
+        //     "HoTen": thongtingiangvien.HoGV + " " + thongtingiangvien.TenGV,
+        //     "QuyenHan": chucnang
+        // }
+        const tokens = await createTokenPair({ MaTK: taikhoan.MaTK, QuyenTK: quyentaikhoan.MaQTK }, "publicKey", "privateKey");
+        const response = {
+            "accessToken": tokens.accessToken,
+            "refreshToken": tokens.refreshToken,
+            "ThongTin": chucnang
+        };
+        return sendSuccess(res, 'Đăng nhập thành công', response);
+        
+    }
+    catch (error){
+        console.log(error);
+        return sendServerError(res);
     }
 })
 
