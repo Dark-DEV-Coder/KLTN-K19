@@ -3,20 +3,24 @@ import { Link } from "react-router-dom";
 import TableNganh from "./TableNganh";
 import { useState, useEffect } from 'react';
 import axios from "axios";
-
+import { fetchAllNganh } from "./GetData"
 const Nganh = () => {
     // component didmount
 
     // get danh sach nganh
     const [listData_nganh, SetListData_nganh] = useState([]);
     // useEffect(() => {
-    //     axios.get('https://reqres.in/api/users?page=2').then(
-    //         res => {
-    //             let data = res && res.data && res.data.data ? res.data.data : [];
-    //             SetListData_nganh(data)
-    //         }
-    //     )
+    //     // getListNganh();
+    //     axios.get('https://hotrodaotao-api-k19-sgu.onrender.com/api/admin/nganh/DanhSachNganh').then((res) => {
+    //         console.log(res);
+    //     })
     // }, []);
+
+    // const getListNganh = async () => {
+    //     let res = await fetchAllNganh();
+    //     console.log("check API ngành >>>", res)
+    // }
+
     return (
         <>
             <main className="main2">
