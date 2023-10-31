@@ -7,7 +7,7 @@ import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { useState } from "react";
 import "./NavSV.scss"
 const NavSV = (props) => {
-    const [checkLogin, SetCheckLogin] = useState(true)
+    const [checkLogin, SetCheckLogin] = useState(false)
     const [hiddenInfor, SetHiddenInfor] = useState(false)
     const danhmuc = props.danhmuc;
     const onClickLogout = () => {
@@ -86,9 +86,22 @@ const NavSV = (props) => {
                             </ul>
 
                             {/* Chưa đăng nhập */}
-                            <NavLink to="/login" style={checkLogin ? { display: 'none' } : { display: 'block' }} >
+                            <NavLink to="/dangnhap" style={checkLogin ? { display: 'none' } : { display: 'block' }} >
                                 <button type="button" className="btn btn-secondary btn-lg">ĐĂNG NHẬP</button>
                             </NavLink>
+                            {/* <NavLink to="/login" style={checkLogin ? { display: 'none', marginLeft: '20px' } : { display: 'block', marginLeft: '20px' }} >
+                                <button type="button" className="btn btn-secondary btn-lg">ĐĂNG KÝ</button>
+                            </NavLink> */}
+
+                            {/* <div className='div-btn'>
+                                <NavLink to="/login" style={checkLogin ? { display: 'none' } : { display: 'block' }} >
+                                    <button type="button" className="btn btn-secondary btn-lg">ĐĂNG NHẬP</button>
+                                </NavLink>
+                                <NavLink to="/login" style={checkLogin ? { display: 'none', marginLeft: '20px' } : { display: 'block', marginLeft: '20px' }} >
+                                    <button type="button" className="btn btn-secondary btn-lg">ĐĂNG KÝ</button>
+                                </NavLink>
+                            </div> */}
+
 
                             {/* Đã đăng nhập */}
                             <div className='avt' onClick={() => onClickHiddenInfor()} onBlur={() => onClickHiddenInfor()} style={checkLogin ? { display: 'block' } : { display: 'none' }}>

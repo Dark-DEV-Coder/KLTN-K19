@@ -2,9 +2,18 @@
 
 import { Link } from "react-router-dom";
 import TableTaiKhoan from "./TableTaiKhoan";
-
+import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import { useState } from "react";
 
 const TaiKhoan = () => {
+    const [value, setValue] = useState('dstkgv');
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
     return (
         <>
             <main className="main2">
@@ -27,7 +36,34 @@ const TaiKhoan = () => {
                         <span className="text">Create Data</span>
                     </Link>
                 </div>
-                <TableTaiKhoan />
+                {/* Tab */}
+                <TabContext value={value}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                        <TabList onChange={handleChange} aria-label="lab API tabs example">
+                            <Tab label="Danh sách tài khoản giảng viên" value="dstkgv" />
+                            <Tab label="Danh sách tài khoản sinh viên" value="dstksv" />
+                        </TabList>
+                    </Box>
+
+                    <TabPanel value="dstkgv" >
+                        <div className="table">
+                            <div className="card4">
+                                <h6 className="card-header">Danh sách tài khoản giảng viên</h6>
+                            </div>
+                            <TableTaiKhoan />
+
+                        </div>
+                    </TabPanel>
+                    <TabPanel value="dstksv">
+                        <div className="table">
+                            <div className="card4">
+                                <h6 className="card-header">Danh sách tài khoản sinh viên</h6>
+                            </div>
+                            <TableTaiKhoan />
+
+                        </div>
+                    </TabPanel>
+                </TabContext>
 
             </main >
         </>

@@ -8,30 +8,25 @@ const SingleTaiKhoan = () => {
         MaTK: 'TK1',
         TenDangNhap: 'admin',
         MatKhau: 'admin',
+        MaQuyen: 'giangvien',
         trangthai: 1,
     }
-    const chucnangcuaTK = [
-        { MaCN: 'khoaluan', TenChucNang: 'Khóa luận' },
-        { MaCN: 'thuctap', TenChucNang: 'Thực tập' },
-        { MaCN: 'totnghiep', TenChucNang: 'Tốt nghiệp' },
-        { MaCN: 'sinhvien', TenChucNang: 'Sinh viên' },
-    ]
-
-    const listchucnang = [
-        { MaCN: 'home', TenChucNang: 'Dashboard', },
-        { MaCN: 'dkichuyennganh', TenChucNang: 'Đăng ký chuyên ngành' },
-        { MaCN: 'khoaluan', TenChucNang: 'Khóa luận' },
-        { MaCN: 'thuctap', TenChucNang: 'Thực tập' },
-        { MaCN: 'totnghiep', TenChucNang: 'Tốt nghiệp' },
-        { MaCN: 'canhbaohoctap', TenChucNang: 'Cảnh báo' },
-        { MaCN: 'giangvien', TenChucNang: 'Giảng viên' },
-        { MaCN: 'sinhvien', TenChucNang: 'Sinh viên' },
-        { MaCN: 'nganhhoc', TenChucNang: 'Ngành' },
-        { MaCN: 'chuyennganh', TenChucNang: 'Chuyên ngành' },
-        { MaCN: 'taikhoan', TenChucNang: 'Tài khoản' },
-        { MaCN: 'chucnang', TenChucNang: 'Chức năng' },
-        { MaCN: 'chat', TenChucNang: 'ChatBox' },
-
+    const quyenTK = [
+        {
+            MaQuyen: 'admin',
+            TenQuyen: 'Admin',
+            trangthai: 1,
+        },
+        {
+            MaQuyen: 'giangvien',
+            TenQuyen: 'Giảng viên',
+            trangthai: 1,
+        },
+        {
+            MaQuyen: 'sinhvien',
+            TenQuyen: 'Sinh Viên',
+            trangthai: 1,
+        },
     ]
     const taikhoan = useParams();
     return (
@@ -61,31 +56,29 @@ const SingleTaiKhoan = () => {
                     <div className="container-edit">
                         <div className="form-row">
                             <div className="form-group col-md-6">
-                                <label className="inputTK" for="inputTenDN">Tên đăng nhập</label>
+                                <label className="inputTK" htmlFor="inputTenDN">Tên đăng nhập</label>
                                 <input type="text" className="form-control" id="inputTenDN" value={dulieutest.TenDangNhap} disabled />
                             </div>
                             <div className="form-group col-md-6">
-                                <label className="inputTK" for="inputTenGV">Mật khẩu</label>
+                                <label className="inputTK" htmlFor="inputTenGV">Mật khẩu</label>
                                 <input type="text" className="form-control" id="inputTenDN" value={dulieutest.MatKhau} disabled />
                             </div>
                         </div>
-                        <div className="form-row">
+                        <div className="form-row" >
                             <div className="form-group col-md-12">
-                                <label className="inputTK" for="inputTenGV">Danh sách chức năng của tài khoản</label>
-                            </div>
-                        </div>
-                        <div className="form-row">
-                            {listchucnang && listchucnang.length > 0 &&
-                                listchucnang.map((item, index) => {
+                                <label className="inputDT" htmlFor="inputTrangthai">Quyền tài khoản </label>
+                                <select defaultValue={dulieutest.MaQuyen} id="inputTrangthai" className="form-control" disabled >
+                                    {quyenTK && quyenTK.length > 0 &&
+                                        quyenTK.map((item, index) => {
+                                            return (
+                                                <option value={item.MaQuyen} key={item.MaQuyen}>{item.TenQuyen}</option>
+                                            )
+                                        })
+                                    }
 
-                                    return (
-                                        <div className="form-check form-check-inline">
-                                            <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value={item.MaCN} defaultChecked={chucnangcuaTK.filter(item2 => item2.MaCN == item.MaCN).length > 0 ? true : false} disabled />
-                                            <label className="inputTKK" for="inlineCheckbox1">{item.TenChucNang}</label>
-                                        </div>
-                                    )
-                                })
-                            }
+                                </select>
+                            </div>
+
                         </div>
                     </div>
                 </form>

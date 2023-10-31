@@ -3,12 +3,11 @@ import Slideshow from '../Slideshow/Slideshow'
 import LoginIcon from '@mui/icons-material/Login';
 import Nav from '../Nav';
 import Nav2 from '../sinhvien/NavSV';
+import { Link } from 'react-router-dom';
 const Login = () => {
 
     return (
         <>
-            {/* <Nav />
-            <Nav2 /> */}
             <Slideshow />
             <div className='container-login-big' >
                 <div className='container-tb-login'>
@@ -26,7 +25,18 @@ const Login = () => {
                                 <div className="form-group">
                                     <label htmlFor="exampleInputPassword1">MẬT KHẨU</label>
                                     <input type="password" className="form-control" id="exampleInputPassword1" placeholder="" />
-                                    <div ><label className='pass-mk'><u>Quên mật khẩu</u></label></div>
+                                    <div className='label-dky' >
+                                        <label className='pass-mk'>
+                                            <Link to="/dangky">
+                                                <u>Đăng ký tài khoản</u>
+                                            </Link>
+                                        </label>
+                                        <label className='pass-mk' style={{ marginLeft: '25%' }}>
+                                            <Link to="/quenmatkhau">
+                                                <u>Quên mật khẩu</u>
+                                            </Link>
+                                        </label>
+                                    </div>
                                 </div>
 
 

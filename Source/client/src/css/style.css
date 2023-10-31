@@ -11550,19 +11550,19 @@ button.bg-dark:focus {
   }
 
   .form-group label {
-    margin-top       : 2%;
-    width            : 70%;
-    margin-left      : 7%;
-    margin-bottom    : 0%;
-    text-align       : start;
-    font-family      : 'Montserrat';
-    font-weight      : 200;
-    font-size        : 17px;
-    color            : #202C45;
-    padding-bottom   : 0px;
-    /* white-space   : nowrap;
-    overflow         : hidden;
-    text-overflow    : ellipsis; */
+    margin-top          : 2%;
+    width               : 70%;
+    margin-left         : 7%;
+    margin-bottom       : 0%;
+    text-align          : start;
+    font-family         : 'Montserrat';
+    font-weight         : 200;
+    /* font-size        : 17px; */
+    color               : #202C45;
+    padding-bottom      : 0px;
+    /* white-space      : nowrap;
+    overflow            : hidden;
+    text-overflow       : ellipsis; */
   }
 
 
@@ -12367,19 +12367,19 @@ h5,
 
 
   .form-group label {
-    margin-top       : 2%;
-    width            : 70%;
-    margin-left      : 7%;
-    margin-bottom    : 0%;
-    text-align       : start;
-    font-family      : 'Montserrat';
-    font-weight      : 200;
-    font-size        : 14px;
-    color            : #202C45;
-    padding-bottom   : 0px;
-    /* white-space   : nowrap;
-    overflow         : hidden;
-    text-overflow    : ellipsis; */
+    margin-top          : 2%;
+    width               : 70%;
+    margin-left         : 7%;
+    margin-bottom       : 0%;
+    text-align          : start;
+    font-family         : 'Montserrat';
+    font-weight         : 200;
+    /* font-size        : 14px; */
+    color               : #202C45;
+    padding-bottom      : 0px;
+    /* white-space      : nowrap;
+    overflow            : hidden;
+    text-overflow       : ellipsis; */
   }
 
 

@@ -27,6 +27,7 @@ const Dashboard = (props) => {
         { id: 'nganhhoc', title: 'Ngành', img: 'bx bxs-dashboard', link: 'nganhhoc' },
         { id: 'chuyennganh', title: 'Chuyên ngành', img: 'bx bxs-dashboard', link: 'chuyennganh' },
         { id: 'taikhoan', title: 'Tài khoản', img: 'bx bxs-dashboard', link: 'taikhoan' },
+        { id: 'quyentaikhoan', title: 'Quyền tài khoản', img: 'bx bxs-dashboard', link: 'quyentaikhoan' },
         { id: 'chucnang', title: 'Chức năng', img: 'bx bxs-dashboard', link: 'chucnang' },
         { id: 'chat', title: 'ChatBox', img: 'bx bxs-dashboard', link: 'chat' },
 
