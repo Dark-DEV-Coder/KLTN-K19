@@ -28,8 +28,6 @@ TaiKhoanRoute.post('/DangNhap', async (req, res) => {
         if (!KtraMatKhau)
             return sendError(res, "Tên đăng nhập hoặc mật khẩu của bạn sai");
         const quyentaikhoan = await QuyenTaiKhoan.findById(taikhoan.MaQTK);
-        if (quyentaikhoan.MaQTK != "SINHVIEN" && quyentaikhoan.MaQTK != "GIANGVIEN")
-            return sendError(res, "Bạn không có quyền đăng nhập vào trang này");
         // let chucvu = "";
         // let hoten = "";
         // let maso = "";
