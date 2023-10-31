@@ -53,19 +53,19 @@ app.use(session({
 }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
-app.use(cors(
-    {
-        origin: process.env.DEV == 1 ? 'https://hotrodaotaok19sgu.vercel.app' : process.env.HOST,
-        credentials: true
-    }
-))
+// app.use(cors(
+//     {
+//         origin: process.env.DEV == 1 ? 'https://hotrodaotaok19sgu.vercel.app' : process.env.HOST,
+//         credentials: true
+//     }
+// ))
 app.use(morgan("dev"))
 app.use(compression())
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
-    .use('/api/admin', adminRoute) // tạm tắt verify Token
+    .use('/api/admin', verifyToken, verifyAdmin, adminRoute)
     .use('/api/tai-khoan', TaiKhoanRoute)
 
 app.use('/*', async (req, res) => {

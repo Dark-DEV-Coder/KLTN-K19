@@ -22,6 +22,10 @@ tags:
   description: "Các API của model Nganh"
 - name: "ChuyenNganh"
   description: "Các API của model ChuyenNganh"
+- name: "SinhVien"
+  description: "Các API của model SinhVien"
+- name: "GiangVien"
+  description: "Các API của model GiangVien"
 paths:
   /admin/chuc-nang/DanhSachChucNang:
     get: 
@@ -973,7 +977,7 @@ paths:
             }
       security:
         - ApiKeyAuth: []
-  /admin/tai-khoan/DangNhap:
+  /tai-khoan/DangNhapAdmin:
     post: 
       tags:
         - "TaiKhoan"
@@ -1047,6 +1051,235 @@ paths:
             }
       security:
         - ApiKeyAuth: [] 
+  /admin/sinh-vien/DanhSachSinhVien:
+    get: 
+      tags:
+        - "SinhVien"
+      summary: Admin lấy danh sách sinh viên
+      produces:
+        - application/json     
+      parameters:
+      - in: query
+        name: page
+        type: integer
+        required: true
+        description: số trang (ví dụ trang 1, trang 2), giá trị > 0
+      - in: query
+        name: pageSize
+        type: integer
+        required: true
+        description: giới hạn số lượng 1 trang, giá trị > 0
+      - in: query
+        name: keyword
+        type: string
+        required: true
+        description: mã sinh viên, họ sinh viên, tên sinh viên, email hoặc số điện thoại
+      responses:
+        200: 
+          description: Lấy danh sách sinh viên thành công
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Lấy danh sách sinh viên thành công",
+            }
+        400:
+          description: Lấy danh sách sinh viên thất bại
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Lấy danh sách sinh viên thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
+  /admin/sinh-vien/ChiTietSinhVien/{MaSV}:
+    get:
+      tags:
+        - "SinhVien"
+      summary: "Chi tiết thông tin sinh viên"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaSV
+          type: string
+          required: true
+          description: Mã sinh viên
+      responses:
+        200:
+          description: Chi tiết thông tin sinh viên thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Chi tiết thông tin sinh viên thành công.",
+            }
+        400:
+          description: Chi tiết thông tin sinh viên thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message" : "Chi tiết thông tin sinh viên thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/sinh-vien/Them:
+    post: 
+      tags:
+        - "SinhVien"
+      summary: Thêm sinh viên
+      produces:
+        - multipart/form-data    
+      parameters:
+        - in: formData
+          name: MaSV
+          type: file
+          description: Mã sinh viên
+          required: true
+        - in: formData
+          name: HoSV
+          type: file
+          description: Họ sinh viên
+          required: true
+        - in: formData
+          name: TenSV
+          type: file
+          description: Tên sinh viên
+          required: true
+        - in: formData
+          name: Email
+          type: file
+          description: Email sinh viên
+          required: true
+        - in: formData
+          name: SoDienThoai
+          type: file
+          description: Số điện thoại sinh viên
+          required: true
+        - in: formData
+          name: GioiTinh
+          type: file
+          description: Giói tính sinh viên
+          required: true
+        - in: formData
+          name: NgaySinh
+          type: file
+          description: Ngày sinh sinh viên
+          required: true
+        - in: formData
+          name: Khoa
+          type: file
+          description: Khóa của sinh viên, ví dụ K19, K20
+          required: true
+        - in: formData
+          name: ChuyenNganh
+          type: file
+          description: Chuyên ngành của sinh viên
+          required: true
+        - in: formData
+          name: Nganh
+          type: file
+          description: Ngành sinh viên học
+          required: true
+        - in: formData
+          name: Lop
+          type: file
+          description: Lớp của sinh viên
+          required: true
+        - in: formData
+          name: Hinh
+          type: file
+          description: Hình đại diện sinh viên
+      responses:
+        200:
+          description: Thêm sinh viên thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Thêm sinh viên thành công.",
+            }          
+        400:
+          description: Thêm sinh viên thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Thêm sinh viên thất bại.",
+            }
+      security:
+        - ApiKeyAuth: [] 
+  # /admin/nganh/ChinhSua/{MaNganh}:
+  #   put: 
+  #     tags:
+  #       - "Nganh"
+  #     summary: Chỉnh sửa ngành
+  #     produces:
+  #       - application/json     
+  #     parameters:
+  #       - in: path
+  #         name: MaNganh
+  #         type: string
+  #         required: true
+  #         description: Mã ngành
+  #       - in: body
+  #         name: TenNganh
+  #         type: string
+  #         required: true
+  #         description: Tên ngành
+  #     responses:
+  #       200:
+  #         description: Chỉnh sửa ngành thành công.
+  #         schema:
+  #           type: object
+  #           example: {
+  #             "success": true,
+  #             "message": "Chỉnh sửa ngành thành công.",
+  #           }          
+  #       400:
+  #         description: Chỉnh sửa ngành thất bại.
+  #         schema:
+  #           type: object
+  #           example: {
+  #             "success": false,
+  #             "message": "Chỉnh sửa ngành thất bại.",
+  #           }
+  #     security:
+  #       - ApiKeyAuth: []     
+  # /admin/nganh/Xoa/{MaNganh}:
+  #   delete:
+  #     tags:
+  #       - "Nganh"
+  #     summary: "Xóa thông tin ngành"
+  #     produces:
+  #       - application/json
+  #     parameters:
+  #       - in: path
+  #         name: MaNganh
+  #         type: string
+  #         required: true
+  #         description: Mã ngành
+  #     responses:
+  #       200:
+  #         description: Xóa thông tin ngành thành công.
+  #         schema:
+  #           type: object
+  #           example: {
+  #             "success": true,
+  #             "message": "Xóa thông tin ngành thành công.",
+  #           }
+  #       400:
+  #         description: Xóa thông tin ngành thất bại.
+  #         schema:
+  #           type: object
+  #           example: {
+  #             "success": false,
+  #             "message" : "Xóa thông tin ngành thất bại.",
+  #           }
+  #     security:
+  #       - ApiKeyAuth: []
 securityDefinitions:
   ApiKeyAuth:
     type: apiKey

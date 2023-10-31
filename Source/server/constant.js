@@ -10,3 +10,14 @@ export const TrangThaiTaiKhoan = {
     DaKichHoat: 'Đã kích hoạt',
     DaXoa: 'Đã xóa'
 }
+
+export const TrangThaiSinhVien = {
+    ChuaCoTaiKhoan: 'Chưa có tài khoản',
+    DaCoTaiKhoan: 'Đã có tài khoản',
+    DaXoa: 'Đã xóa'
+}
+
+export const TrangThaiSinhVienTotNghiep = {
+    ChuaTotNghiep: 'Chưa tốt nghiệp',
+    DaTotNghiep: 'Đã tốt nghiệp'
+}

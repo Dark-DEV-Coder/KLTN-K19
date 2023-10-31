@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { TrangThaiSinhVien, TrangThaiSinhVienTotNghiep } from "../constant.js";
 const { Schema } = mongoose;
 
 const SinhVienSchema = new Schema(
@@ -32,7 +33,7 @@ const SinhVienSchema = new Schema(
             required: true,
         },
         NgaySinh: {
-            type: Date,
+            type: String,
             required: true,
         },
         Khoa: { // khóa (ví dụ: khóa 19, khóa 20)
@@ -50,12 +51,18 @@ const SinhVienSchema = new Schema(
             type: String,
             required: true,
         },
+        Hinh: {
+            type: String,
+        },
         TrangThaiTotNghiep: {
             type: String,
+            enum: Object.values(TrangThaiSinhVienTotNghiep),
+            default: TrangThaiSinhVienTotNghiep.ChuaTotNghiep,
         },
         TrangThai: {
             type: String,
-            required: true,
+            enum: Object.values(TrangThaiSinhVien),
+            default: TrangThaiSinhVien.ChuaCoTaiKhoan,
         },
     },
     { timestamps: true }

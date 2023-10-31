@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken"
-import { sendError, sendServerError } from "../helper/client.js"
-
+import { sendError, sendServerError, sendSuccess } from "../helper/client.js"
 
 /**
  * header contain
@@ -14,7 +13,10 @@ export const verifyToken = async (req, res, next) => {
             // verifies secret and checks exp
             jwt.verify(token, "publicKey", async function (err, decoded) {
                 if (err) {
-                    return sendError(res, 'jwt expired.', 401)
+                    return sendSuccess(res, 'Vui lòng đăng nhập lại.', {
+                        TrangThai: "Hết thời gian",
+                        ThongBao: "Bạn vui lòng đăng nhập lại."
+                    })
                 } else {
                     console.log(`decoded`, decoded);
                     req.decoded = decoded;
@@ -22,27 +24,23 @@ export const verifyToken = async (req, res, next) => {
                 }
             });
         } else {
-            return sendError(res, 'No token provided', 401)
+            return sendError(res, 'Bạn không được phép thực hiện chức năng này.', 401)
         }
     } catch (error) {
         console.log(error);
-        return sendError(res, 'No token provided.', 401)
+        return sendError(res, 'Bạn không được phép thực hiện chức năng này.', 401)
     }
 }
 
-export const verifyRefreshToken = async (refreshToken) => {
-
-}
-
 export const verifyAdmin = async (req, res, next) => {
-    const role = req.decoded.role;
+    const role = req.decoded.QuyenTK;
     if (role != null && role != undefined){
-        if (req.decoded.role !== 'admin') {
-            return sendError(res, 'Forbidden.', 403)
+        if (role == 'SINHVIEN' || role == 'GIANGVIEN') {
+            return sendError(res, 'Bạn không được phép thực hiện chức năng này.', 403)
         }  
     } 
     else {
-        return sendError(res, 'Forbidden.', 403)
+        return sendError(res, 'Bạn không được phép thực hiện chức năng này.', 403)
     }
     
     next()
