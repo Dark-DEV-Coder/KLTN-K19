@@ -46,7 +46,7 @@ NganhAdminRoute.get('/DanhSachNganh', async (req, res) => {
 
 /**
  * @route GET /api/admin/nganh/ChiTietNganh/{MaNganh}
- * @description Lấy danh sách ngành
+ * @description Lấy thông tin chi tiết ngành
  * @access public
  */
 NganhAdminRoute.get('/ChiTietNganh/:MaNganh', async (req, res) => {

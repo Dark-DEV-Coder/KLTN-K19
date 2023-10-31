@@ -1,0 +1,109 @@
+import express from "express"
+import fs from 'fs'
+import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
+import { TrangThaiSinhVien } from "../../constant.js"
+import SinhVien from "../../model/SinhVien.js"
+import { createSinhVienDir } from "../../middleware/createDir.js"
+import { uploadImg } from "../../middleware/storage.js"
+import { KtraDuLieuSinhVienKhiThem } from "../../validation/SinhVien.js"
+import { UploadHinhLenCloudinary } from "../../helper/connectCloudinary.js"
+
+const SinhVienAdminRoute = express.Router()
+
+/**
+ * @route GET /api/admin/sinh-vien/DanhSachSinhVien
+ * @description Lấy danh sách sinh viên
+ * @access public
+ */
+SinhVienAdminRoute.get('/DanhSachSinhVien', async (req, res) => {
+    try {
+        const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0
+        const page = req.query.page ? parseInt(req.query.page) : 0
+        const { keyword} = req.query
+        let trangthai = [TrangThaiSinhVien.ChuaCoTaiKhoan,TrangThaiSinhVien.DaCoTaiKhoan];
+        var keywordCondition = keyword
+            ? {
+                $or: [
+                    { MaSV: { $regex: keyword, $options: "i" } },
+                    { HoSV: { $regex: keyword, $options: "i" } },
+                    { TenSV: { $regex: keyword, $options: "i" } },
+                    { Email: { $regex: keyword, $options: "i" } },
+                    { SoDienThoai: { $regex: keyword, $options: "i" } },
+                ],
+            } : {};
+        const sinhviens = await SinhVien.find({ $and: [keywordCondition], TrangThai: trangthai }).limit(pageSize).skip(pageSize * page)
+        const length = await SinhVien.find({ $and: [keywordCondition], TrangThai: trangthai }).count();
+
+        if (sinhviens.length == 0) 
+            return sendError(res, "Không tìm thấy danh sách sinh viên.")
+        if (sinhviens) 
+            return sendSuccess(res, "Lấy danh sách sinh viên thành công.", { 
+                TrangThai: "Thành công",
+                SoLuong: length,
+                DanhSach: sinhviens
+            })
+
+        return sendError(res, "Không tìm thấy danh sách sinh viên.")
+    }
+    catch (error) {
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route GET /api/admin/sinh-vien/ChiTietSinhVien/{MaSV}
+ * @description Lấy thông tin chi tiết sinh viên
+ * @access public
+ */
+SinhVienAdminRoute.get('/ChiTietSinhVien/:MaSV', async (req, res) => {
+    try {
+        const { MaSV } = req.params;
+        const isExist = await SinhVien.findOne({ MaSV: MaSV }).lean();
+        if (!isExist)
+            return sendError(res, "Sinh viên không tồn tại");
+        return sendSuccess(res, "Chi tiết sinh viên.", isExist);
+    }
+    catch (error) {
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route POST /api/admin/sinh-vien/Them
+ * @description Thêm sinh viên
+ * @access public
+ */
+SinhVienAdminRoute.post('/Them', createSinhVienDir, uploadImg.single("Hinh"), async (req, res) => {
+    try{
+        const errors = KtraDuLieuSinhVienKhiThem(req.body)
+        if (errors)
+            return sendError(res, errors)
+        const { MaSV, HoSV, TenSV, Email, SoDienThoai, GioiTinh, NgaySinh, Khoa, ChuyenNganh, Nganh, Lop } = req.body;
+        const isExist = await SinhVien.findOne({ MaSV: MaSV }).lean();
+        if (isExist)
+            return sendError(res, "Mã sinh viên đã tồn tại");
+        let hoten = HoSV + " " + TenSV;
+        let fileImage = await `${req.file.destination}${req.file.filename}`;
+        let nameImage = await hoten.normalize('NFD')
+                                    .replace(/[\u0300-\u036f]/g, '')
+                                    .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+                                    .replace(/ /g, '') + Date.now();
+        let resultImage = await UploadHinhLenCloudinary(fileImage, "SinhVien", nameImage);
+        if (resultImage) {
+            fs.unlinkSync(fileImage, (err) => {
+                console.log(err);
+            })
+        }
+        const sinhvien = await SinhVien.create({ MaSV, HoSV, TenSV, Email, SoDienThoai, GioiTinh, NgaySinh, Khoa, ChuyenNganh, Nganh, Lop, Hinh: resultImage });
+
+        return sendSuccess(res, "Thêm sinh viên thành công", sinhvien);
+    }
+    catch (error){
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+export default SinhVienAdminRoute
