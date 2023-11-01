@@ -8,7 +8,7 @@ import YAML from 'yamljs'
 import session from "express-session"
 import swaggerUi from 'swagger-ui-express'
 import { verifyAdmin, verifyToken } from "./middleware/verify.js"
-// import { clearTokenList } from "./service/jwt.js"
+import { clearTokenList } from "./service/jwt.js"
 // import { NOTIFY_EVENT, SESSION_AGE } from "./constant.js"
 // import { addSocketSession, handleDisconnect, sendNotify } from "./socket/handle.js"
 import helmet from "helmet"
@@ -21,12 +21,11 @@ import TaiKhoanRoute from "./router/TaiKhoan.js"
 
 const swaggerDocument = YAML.load('./swagger.yaml')
 
-// dotevn config
 dotenv.config()
 
 /**
  * Connect MongoDB
- */
+*/
 mongoose.connect(process.env.MONGO_URI, { maxPoolSize: 100 })
 const db = mongoose.connection
 db.on('error', () => console.log('MongoDB connection error.'))
@@ -36,7 +35,6 @@ db.once('open', () => {
 checkOverload()
 
 const PORT = process.env.PORT || 8000
-const DEV = process.env.DEV == 1
 export const TOKEN_LIST = {}
 export const TOKEN_BLACKLIST = {}
 export const SOCKET_SESSIONS = []

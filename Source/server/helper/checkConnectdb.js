@@ -12,8 +12,8 @@ export const checkOverload = () => {
         const numCores = os.cpus().length
         const memoryUsage = process.memoryUsage().rss
         const maxConnection = numCores * 5
-        console.log(`Active connection: ${numConnection}`)
-        console.log(`Memory usage: ${memoryUsage / 1024 / 1024} MB`)
+        // console.log(`Active connection: ${numConnection}`)
+        // console.log(`Memory usage: ${memoryUsage / 1024 / 1024} MB`)
         if (numConnection + 2 > maxConnection) {
             console.log("Connection overload detected")
         }
