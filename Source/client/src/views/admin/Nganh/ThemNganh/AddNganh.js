@@ -1,13 +1,28 @@
 import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import * as React from 'react';
 import "./AddNganh.scss"
-const AddNganh = () => {
+import { fetchAddNganh } from "../../GetData"
+import { toast } from "react-toastify";
+const AddNganh = (props) => {
 
+    const accessToken = props.accessToken;
+    const [Manganh, SetMaNganh] = useState('')
+    const [TenNganh, SetTenNganh] = useState('')
 
-    const [manganh, SetMaNganh] = useState('')
-    const [tennganh, SetTenNganh] = useState('')
+    const handleAddNganh = async () => {
+        const headers = { 'x-access-token': { accessToken } };
+        let res = await fetchAddNganh(headers, Manganh, TenNganh)
+        console.log(res)
+        if (res.success === true) {
+            toast.success('Thêm ngành thành công !')
+            return;
+        }
+        if (res.success === false) {
+            toast.error("Thêm ngành thất bại !")
+            return;
+        }
+    }
 
     const onChangeInputSL = (event, SetSL) => {
         let changeValue = event.target.value;
@@ -52,18 +67,18 @@ const AddNganh = () => {
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputNganh" for="inputMa">Mã ngành</label>
-                            <input type="text" className="form-control" id="inputMa" placeholder="Điền mã ngành ..." value={manganh} onChange={(event) => onChangeInputSL(event, SetMaNganh)} onBlur={() => checkdulieu(manganh, SetCheckdulieuMa)} />
+                            <input type="text" className="form-control" id="inputMa" placeholder="Điền mã ngành ..." onChange={(event) => onChangeInputSL(event, SetMaNganh)} onBlur={() => checkdulieu(Manganh, SetCheckdulieuMa)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuMa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputNganh" for="inputTen">Tên ngành</label>
-                            <input type="text" className="form-control" id="inputTen" placeholder="Điền tên ngành ..." value={tennganh} onChange={(event) => onChangeInputSL(event, SetTenNganh)} onBlur={() => checkdulieu(tennganh, SetCheckdulieuTen)} />
+                            <input type="text" className="form-control" id="inputTen" placeholder="Điền tên ngành ..." onChange={(event) => onChangeInputSL(event, SetTenNganh)} onBlur={() => checkdulieu(TenNganh, SetCheckdulieuTen)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
 
 
-                    <button className="btn" type="submit">Submit form</button>
+                    <button className="btn" type="button" onClick={() => handleAddNganh()}>Lưu</button>
                 </div>
             </form>
         </main >

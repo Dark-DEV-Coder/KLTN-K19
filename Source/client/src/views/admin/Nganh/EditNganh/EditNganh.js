@@ -3,16 +3,48 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import * as React from 'react';
 import "./EditNganh.scss"
-import TableChuyenNganh from "../EditNganh/TableChuyenNganh/TableChuyenNganh";
-const EditNganh = () => {
-    const dulieutest = {
-        manganhhoc: 'CNTT',
-        tennganh: 'Công nghệ thông tin',
-        trangthai: 1,
-    };
+import TableChuyenNganh from "../ChiTietNganh/TableChuyenNganh/TableChuyenNganh";
+import { fetchDetailNganh, fetchEditNganh } from "../../GetData"
+import { toast } from "react-toastify";
+const EditNganh = (props) => {
+    const accessToken = props.accessToken;
     const nganh = useParams();
-    const [manganh, SetMaNganh] = useState(dulieutest.manganhhoc)
-    const [tennganh, SetTenNganh] = useState(dulieutest.tennganh)
+
+    // get chi tiết ngành 
+    const [detailNganh, SetDetailNganh] = useState({});
+    const [chuyennganh, SetChuyennganh] = useState([]);
+    const [MaNganh, SetMaNganh] = useState("");
+    const [TenNganh, SetTenNganh] = useState("");
+
+    // component didmount
+    useEffect(() => {
+        getDetailNganh();
+
+    }, []);
+
+    const getDetailNganh = async () => {
+        const headers = { 'x-access-token': { accessToken } };
+        let res = await fetchDetailNganh(headers, nganh.MaNganh);
+        if (res && res.data && res.data.Nganh) {
+            SetDetailNganh(res.data.Nganh)
+            SetChuyennganh(res.data.ChuyenNganh)
+            SetMaNganh(res.data.Nganh.MaNganh)
+            SetTenNganh(res.data.Nganh.TenNganh)
+        }
+    }
+    const handleEditNganh = async () => {
+        const headers = { 'x-access-token': { accessToken } };
+        let res = await fetchEditNganh(headers, MaNganh, TenNganh)
+        console.log(res)
+        if (res.success === true) {
+            toast.success('Cập nhật thông tin thành công !')
+            return;
+        }
+        if (res.success === false) {
+            toast.error("Cập nhật thông tin thất bại !")
+            return;
+        }
+    }
 
     const onChangeInputSL = (event, SetSL) => {
         let changeValue = event.target.value;
@@ -42,7 +74,7 @@ const EditNganh = () => {
                         </li>
                         <li><i className='bx bx-chevron-right'></i></li>
                         <li>
-                            <Link className="active" >{tennganh}</Link>
+                            <Link className="active" >{TenNganh}</Link>
                         </li>
 
 
@@ -57,18 +89,18 @@ const EditNganh = () => {
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputNganh" for="inputMa">Mã ngành</label>
-                            <input type="text" className="form-control" id="inputMa" value={manganh} onChange={(event) => onChangeInputSL(event, SetMaNganh)} onBlur={(event) => checkdulieu(manganh, SetCheckdulieuMa)} />
+                            <input type="text" className="form-control" id="inputMa" value={MaNganh} onChange={(event) => onChangeInputSL(event, SetMaNganh)} onBlur={(event) => checkdulieu(MaNganh, SetCheckdulieuMa)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuMa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputNganh" for="inputTen">Tên ngành</label>
-                            <input type="text" className="form-control" id="inputTen" value={tennganh} onChange={(event) => onChangeInputSL(event, SetTenNganh)} onBlur={(event) => checkdulieu(tennganh, SetCheckdulieuTen)} />
+                            <input type="text" className="form-control" id="inputTen" value={TenNganh} onChange={(event) => onChangeInputSL(event, SetTenNganh)} onBlur={(event) => checkdulieu(TenNganh, SetCheckdulieuTen)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
-                    <TableChuyenNganh />
+                    <TableChuyenNganh listData_chuyennganh={chuyennganh} />
 
-                    <button className="btn" type="submit">Submit form</button>
+                    <button className="btn" type="button" onClick={() => handleEditNganh()}>Lưu</button>
                 </div>
 
 

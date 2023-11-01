@@ -4,6 +4,7 @@ import {
     Route,
     useParams,
 } from "react-router-dom";
+
 import Dashboard from "./Dashboard/Dashboard"
 import Tongquan from "./Tongquan/Tongquan";
 import { useEffect, useState } from "react";
@@ -54,15 +55,25 @@ import QuyenTaiKhoan from "./QuyenTaiKhoan/QuyenTaiKhoan";
 import ThemQuyenTaiKhoan from "./QuyenTaiKhoan/ThemQuyenTaiKhoan/ThemQuyenTaiKhoan";
 import SingleQuyenTaiKhoan from "./QuyenTaiKhoan/SingleQuyenTaiKhoan/SingleQuyenTaiKhoan";
 import EditQuyenTaiKhoan from "./QuyenTaiKhoan/EditQuyenTaiKhoan/EditQuyenTaiKhoan";
+import { fetchLogin } from "./GetData"
 const Admin = () => {
 
     const [hiddenDB, setHiddenDB] = useState(false);
     const [switchmode, setSwitchmode] = useState(false);
+    const [accessToken, SetAccessToken] = useState("");
     const changleHidden = () => {
         setHiddenDB(!hiddenDB);
     }
     const changleSwitchMode = () => {
         setSwitchmode(!switchmode);
+    }
+    useEffect(() => {
+        getLogin();
+    }, []);
+    const getLogin = async () => {
+        let res = await fetchLogin();
+        SetAccessToken(res.data.accessToken)
+        // console.log(res)
     }
     return (
         <>
@@ -114,10 +125,10 @@ const Admin = () => {
                                 <Route path="edit/:masv" element={<EditSinhVien />} ></Route>
                             </Route>
                             <Route path='nganhhoc'  >
-                                <Route index element={<Nganh />}></Route>
-                                <Route path="new" element={<AddNganh />} ></Route>
-                                <Route path="single/:manganhhoc" element={<ChiTietNganh />} ></Route>
-                                <Route path="edit/:manganhhoc" element={<EditNganh />} ></Route>
+                                <Route index element={<Nganh accessToken={accessToken} />}></Route>
+                                <Route path="new" element={<AddNganh accessToken={accessToken} />} ></Route>
+                                <Route path="single/:MaNganh" element={<ChiTietNganh accessToken={accessToken} />} ></Route>
+                                <Route path="edit/:MaNganh" element={<EditNganh accessToken={accessToken} />} ></Route>
                             </Route>
                             <Route path='chuyennganh'  >
                                 <Route index element={<ChuyenNganh />}></Route>
