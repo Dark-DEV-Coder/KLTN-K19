@@ -1,30 +1,14 @@
 import "./TableNganh.scss"
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
-import React, { useCallback, useMemo, useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { Box, Button } from '@mantine/core';
 import { IconDownload, IconUpload } from '@tabler/icons-react';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
 import { Link } from "react-router-dom";
 import { IconButton } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
-const data = [
-    {
-        MaNganh: 'CNTT',
-        TenNganh: 'Công nghệ thông tin',
-        trangthai: 1,
-    },
-    {
-        MaNganh: 'KTPM',
-        TenNganh: 'Kỹ thuật phần mềm',
-        trangthai: 1,
-    },
-    {
-        MaNganh: 'CNTT_CLC',
-        TenNganh: 'Công nghệ thông tin CLC',
-        trangthai: 1,
-    },
-]
-
+import { fetchDeleteNganh } from "../GetData"
+import { toast } from "react-toastify";
 const csvConfig = mkConfig({
     fieldSeparator: ',',
     decimalSeparator: '.',
@@ -32,7 +16,24 @@ const csvConfig = mkConfig({
 });
 
 const TableNganh = (props) => {
-    // const listData_nganh = props.listData_nganh;
+    const listData_nganh = props.listData_nganh;
+    const accessToken = props.accessToken;
+
+    const handleDeleteNganh = async (Manganh) => {
+        console.log(Manganh)
+        const headers = { 'x-access-token': { accessToken } };
+        let res = await fetchDeleteNganh(headers, Manganh)
+        console.log(res)
+        if (res.success === true) {
+            toast.success('Xóa thông tin ngành thành công !')
+            return;
+        }
+        if (res.success === false) {
+            toast.error("Xóa thông tin ngành thất bại !")
+            return;
+        }
+    }
+
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
         const csv = generateCsv(csvConfig)(rowData);
@@ -40,7 +41,7 @@ const TableNganh = (props) => {
     };
 
     const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(data);
+        const csv = generateCsv(csvConfig)(listData_nganh);
         download(csvConfig)(csv);
     };
     const columns = useMemo(
@@ -48,7 +49,7 @@ const TableNganh = (props) => {
             {
                 accessorKey: 'MaNganh',
                 header: 'Mã ngành',
-                size: 100,
+                size: 200,
                 enableColumnOrdering: false,
                 enableEditing: false, //disable editing on this column
                 enableSorting: false,
@@ -57,7 +58,7 @@ const TableNganh = (props) => {
             {
                 accessorKey: 'TenNganh',
                 header: 'Tên ngành',
-                size: 600,
+                size: 400,
                 enableEditing: false,
 
             },
@@ -66,7 +67,7 @@ const TableNganh = (props) => {
 
     const table = useMantineReactTable({
         columns,
-        data,
+        data: listData_nganh,
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',
@@ -88,7 +89,7 @@ const TableNganh = (props) => {
                     </IconButton>
                 </Link>
 
-                <IconButton onClick={() => console.log(row.original.name)}>
+                <IconButton onClick={() => handleDeleteNganh(row.original.MaNganh)}>
                     <Delete fontSize="small" sx={{ color: 'red' }} />
                 </IconButton>
             </Box >
@@ -139,15 +140,9 @@ const TableNganh = (props) => {
 
         ),
     });
-
     return (
-        <>
-
-            <MantineReactTable table={table} />
-
-        </>
+        <MantineReactTable table={table} />
     )
-
 };
 
 export default TableNganh;

@@ -8,32 +8,6 @@ import {
 } from '@mui/material';
 import { Delete, Edit, Label, Visibility } from '@mui/icons-material';
 import "./TableChuyenNganh.scss"
-const data = [
-    {
-        machuyennganh: 'HTTT',
-        tenchuyennganh: 'Hệ Thống Thông Tin',
-        nganh: 'Công nghệ thông tin',
-        trangthai: 1,
-    },
-    {
-        machuyennganh: 'KHMT',
-        tenchuyennganh: 'Khoa Học Máy Tính',
-        nganh: 'Công nghệ thông tin',
-        trangthai: 1,
-    },
-    {
-        machuyennganh: 'KTPM',
-        tenchuyennganh: 'Kỹ Thuật Phần Mềm',
-        nganh: 'Công nghệ thông tin',
-        trangthai: 1,
-    },
-    {
-        machuyennganh: 'MMT',
-        tenchuyennganh: 'Mạng Máy Tính',
-        nganh: 'Công nghệ thông tin',
-        trangthai: 1,
-    },
-]
 
 const csvConfig = mkConfig({
     fieldSeparator: ',',
@@ -41,7 +15,8 @@ const csvConfig = mkConfig({
     useKeysAsHeaders: true,
 });
 
-const TableChuyenNganh = () => {
+const TableChuyenNganh = (props) => {
+    const listData_chuyennganh = props.listData_chuyennganh;
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
         const csv = generateCsv(csvConfig)(rowData);
@@ -49,13 +24,13 @@ const TableChuyenNganh = () => {
     };
 
     const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(data);
+        const csv = generateCsv(csvConfig)(listData_chuyennganh);
         download(csvConfig)(csv);
     };
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'machuyennganh',
+                accessorKey: 'MaChuyenNganh',
                 header: 'Mã chuyên ngành',
                 size: 100,
                 enableColumnOrdering: false,
@@ -63,7 +38,7 @@ const TableChuyenNganh = () => {
                 enableSorting: false,
             },
             {
-                accessorKey: 'tenchuyennganh',
+                accessorKey: 'TenChuyenNganh',
                 header: 'Tên chuyên ngành',
                 size: 100,
                 enableEditing: false,
@@ -73,7 +48,7 @@ const TableChuyenNganh = () => {
 
     const table = useMantineReactTable({
         columns,
-        data,
+        data: listData_chuyennganh,
         enableRowSelection: false,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',
@@ -83,7 +58,7 @@ const TableChuyenNganh = () => {
         // enableRowActions: true,
 
         renderTopToolbarCustomActions: ({ table }) => (
-            <label className="ds-cn" for="inputTen">Danh sách chuyên ngành</label>
+            <label className="ds-cn" htmlFor="inputTen">Danh sách chuyên ngành</label>
 
         ),
 

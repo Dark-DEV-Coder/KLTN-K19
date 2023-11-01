@@ -5,7 +5,13 @@ import {
 import { useState } from 'react';
 import Admin from "./views/admin/Admin"
 import Client from './views/client/Client';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {
+  Routes,
+  Route,
+  useParams,
+} from "react-router-dom";
 
 function App() {
   const [catalog, setCatalog] = useState([
@@ -20,9 +26,22 @@ function App() {
   return (
     <BrowserRouter>
       {/* Admin */}
+
       <div className='App'>
         <Admin />
         {/* <Client /> */}
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </div>
     </BrowserRouter >
   );
