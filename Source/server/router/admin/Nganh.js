@@ -55,7 +55,11 @@ NganhAdminRoute.get('/ChiTietNganh/:MaNganh', async (req, res) => {
         const isExist = await Nganh.findOne({ MaNganh: MaNganh }).lean();
         if (!isExist)
             return sendError(res, "Ngành không tồn tại");
-        return sendSuccess(res, "Chi tiết ngành.", isExist);
+        const chuyennganh = await ChuyenNganh.find({ MaNganh: isExist._id });
+        return sendSuccess(res, "Chi tiết ngành.", {
+            Nganh: isExist,
+            ChuyenNganh: chuyennganh
+        });
     }
     catch (error) {
         console.log(error)
