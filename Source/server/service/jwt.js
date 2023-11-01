@@ -1,4 +1,7 @@
 import jwt from "jsonwebtoken"
+import dotenv from "dotenv"
+
+dotenv.config()
 
 export const clearTokenList = (tokenlist) => {
     for (let key in tokenlist) {
