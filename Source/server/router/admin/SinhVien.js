@@ -84,17 +84,20 @@ SinhVienAdminRoute.post('/Them', createSinhVienDir, uploadImg.single("Hinh"), as
         const isExist = await SinhVien.findOne({ MaSV: MaSV }).lean();
         if (isExist)
             return sendError(res, "Mã sinh viên đã tồn tại");
-        let hoten = HoSV + " " + TenSV;
-        let fileImage = await `${req.file.destination}${req.file.filename}`;
-        let nameImage = await hoten.normalize('NFD')
-                                    .replace(/[\u0300-\u036f]/g, '')
-                                    .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-                                    .replace(/ /g, '') + Date.now();
-        let resultImage = await UploadHinhLenCloudinary(fileImage, "SinhVien", nameImage);
-        if (resultImage) {
-            fs.unlinkSync(fileImage, (err) => {
-                console.log(err);
-            })
+        let resultImage = '';
+        if (req.file){
+            let hoten = HoSV + " " + TenSV;
+            let fileImage = await `${req.file.destination}${req.file.filename}`;
+            let nameImage = await hoten.normalize('NFD')
+                                        .replace(/[\u0300-\u036f]/g, '')
+                                        .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+                                        .replace(/ /g, '') + Date.now();
+            resultImage = await UploadHinhLenCloudinary(fileImage, "SinhVien", nameImage);
+            if (resultImage) {
+                fs.unlinkSync(fileImage, (err) => {
+                    console.log(err);
+                })
+            }
         }
         const sinhvien = await SinhVien.create({ MaSV, HoSV, TenSV, Email, SoDienThoai, GioiTinh, NgaySinh, Khoa, ChuyenNganh, Nganh, Lop, Hinh: resultImage });
 
@@ -121,22 +124,26 @@ SinhVienAdminRoute.put('/ChinhSua/:MaSV', createSinhVienDir, uploadImg.single("H
         const sinhvien = await SinhVien.findOne({ MaSV: MaSV }).lean();
         if (!sinhvien)
             return sendError(res, "Mã sinh viên không tồn tại");
+        if (sinhvien.Hinh != ''){
+            let splitUrl = await sinhvien.Hinh.split('/');
+            let file = await `${splitUrl[splitUrl.length - 2]}/${splitUrl[splitUrl.length - 1].split('.')[0]}`;
+            await DeleteHinhTrenCloudinary(file);
+        }
         
-        let splitUrl = await sinhvien.Hinh.split('/');
-        let file = await `${splitUrl[splitUrl.length - 2]}/${splitUrl[splitUrl.length - 1].split('.')[0]}`;
-        await DeleteHinhTrenCloudinary(file);
-        
-        let hoten = HoSV + " " + TenSV;
-        let fileImage = await `${req.file.destination}${req.file.filename}`;
-        let nameImage = await hoten.normalize('NFD')
-                                    .replace(/[\u0300-\u036f]/g, '')
-                                    .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-                                    .replace(/ /g, '') + Date.now();
-        let resultImage = await UploadHinhLenCloudinary(fileImage, "SinhVien", nameImage);
-        if (resultImage) {
-            fs.unlinkSync(fileImage, (err) => {
-                console.log(err);
-            })
+        let resultImage = '';
+        if (req.file){
+            let hoten = HoSV + " " + TenSV;
+            let fileImage = await `${req.file.destination}${req.file.filename}`;
+            let nameImage = await hoten.normalize('NFD')
+                                        .replace(/[\u0300-\u036f]/g, '')
+                                        .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+                                        .replace(/ /g, '') + Date.now();
+            resultImage = await UploadHinhLenCloudinary(fileImage, "SinhVien", nameImage);
+            if (resultImage) {
+                fs.unlinkSync(fileImage, (err) => {
+                    console.log(err);
+                })
+            }
         }
         await SinhVien.findOneAndUpdate({ MaSV: MaSV },{ HoSV, TenSV, Email, SoDienThoai, GioiTinh, NgaySinh, Khoa, ChuyenNganh, Nganh, Lop, Hinh: resultImage });
 
@@ -159,11 +166,11 @@ SinhVienAdminRoute.delete('/Xoa/:MaSV', async (req, res) => {
         const isExist = await SinhVien.findOne({ MaSV: MaSV })
         if (!isExist) 
             return sendError(res, "Sinh viên này không tồn tại");
-
-        let splitUrl = await isExist.Hinh.split('/');
-        let file = await `${splitUrl[splitUrl.length - 2]}/${splitUrl[splitUrl.length - 1].split('.')[0]}`;
-        await DeleteHinhTrenCloudinary(file);
-
+        if (isExist.Hinh != ''){
+            let splitUrl = await isExist.Hinh.split('/');
+            let file = await `${splitUrl[splitUrl.length - 2]}/${splitUrl[splitUrl.length - 1].split('.')[0]}`;
+            await DeleteHinhTrenCloudinary(file);
+        }
         await SinhVien.findOneAndDelete({ MaSV: MaSV });
         return sendSuccess(res, "Xóa sinh viên thành công.")
     } catch (error) {

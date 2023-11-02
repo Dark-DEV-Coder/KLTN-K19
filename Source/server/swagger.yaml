@@ -1329,6 +1329,274 @@ paths:
             }
       security:
         - ApiKeyAuth: []
+  /admin/giang-vien/DanhSachGiangVien:
+    get: 
+      tags:
+        - "GiangVien"
+      summary: Admin lấy danh sách giảng viên
+      produces:
+        - application/json     
+      parameters:
+      - in: query
+        name: page
+        type: integer
+        required: true
+        description: số trang (ví dụ trang 1, trang 2), giá trị > 0
+      - in: query
+        name: pageSize
+        type: integer
+        required: true
+        description: giới hạn số lượng 1 trang, giá trị > 0
+      - in: query
+        name: keyword
+        type: string
+        required: true
+        description: mã giảng viên, họ giảng viên, tên giảng viên, email hoặc số điện thoại
+      responses:
+        200: 
+          description: Lấy danh sách giảng viên thành công
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Lấy danh sách giảng viên thành công",
+            }
+        400:
+          description: Lấy danh sách giảng viên thất bại
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Lấy danh sách giảng viên thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
+  /admin/giang-vien/ChiTietGiangVien/{MaSV}:
+    get:
+      tags:
+        - "GiangVien"
+      summary: "Chi tiết thông tin giảng viên"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaGV
+          type: string
+          required: true
+          description: Mã giảng viên
+      responses:
+        200:
+          description: Chi tiết thông tin giảng viên thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Chi tiết thông tin giảng viên thành công.",
+            }
+        400:
+          description: Chi tiết thông tin giảng viên thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message" : "Chi tiết thông tin giảng viên thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/giang-vien/Them:
+    post: 
+      tags:
+        - "GiangVien"
+      summary: Thêm giảng viên
+      produces:
+        - multipart/form-data    
+      parameters:
+        - in: formData
+          name: MaGV
+          type: file
+          description: Mã giảng viên
+          required: true
+        - in: formData
+          name: HoGV
+          type: file
+          description: Họ giảng viên
+          required: true
+        - in: formData
+          name: TenGV
+          type: file
+          description: Tên giảng viên
+          required: true
+        - in: formData
+          name: Email
+          type: file
+          description: Email giảng viên
+          required: true
+        - in: formData
+          name: SoDienThoai
+          type: file
+          description: Số điện thoại giảng viên
+          required: true
+        - in: formData
+          name: GioiTinh
+          type: file
+          description: Giói tính giảng viên
+          required: true
+        - in: formData
+          name: NgaySinh
+          type: file
+          description: Ngày sinh giảng viên
+          required: true
+        - in: formData
+          name: DonViCongTac
+          type: file
+          description: Đơn vị công tác
+          required: true
+        - in: formData
+          name: ChuyenNganh
+          type: file
+          description: Chuyên ngành của giảng viên
+          required: true
+        - in: formData
+          name: TrinhDo
+          type: file
+          description: Trình độ giảng viên
+          required: true
+        - in: formData
+          name: Hinh
+          type: file
+          description: Hình đại diện giảng viên
+      responses:
+        200:
+          description: Thêm giảng viên thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Thêm giảng viên thành công.",
+            }          
+        400:
+          description: Thêm giảng viên thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Thêm giảng viên thất bại.",
+            }
+      security:
+        - ApiKeyAuth: [] 
+  /admin/giang-vien/ChinhSua/{MaGV}:
+    put: 
+      tags:
+        - "GiangVien"
+      summary: Chỉnh sửa thông tin giảng viên
+      produces:
+        - application/json     
+      parameters:
+        - in: path
+          name: MaGV
+          type: string
+          required: true
+          description: Mã giảng viên
+        - in: formData
+          name: HoGV
+          type: file
+          description: Họ giảng viên
+          required: true
+        - in: formData
+          name: TenGV
+          type: file
+          description: Tên giảng viên
+          required: true
+        - in: formData
+          name: Email
+          type: file
+          description: Email giảng viên
+          required: true
+        - in: formData
+          name: SoDienThoai
+          type: file
+          description: Số điện thoại giảng viên
+          required: true
+        - in: formData
+          name: GioiTinh
+          type: file
+          description: Giói tính giảng viên
+          required: true
+        - in: formData
+          name: NgaySinh
+          type: file
+          description: Ngày sinh giảng viên
+          required: true
+        - in: formData
+          name: DonViCongTac
+          type: file
+          description: Đơn vị công tác
+          required: true
+        - in: formData
+          name: ChuyenNganh
+          type: file
+          description: Chuyên ngành của giảng viên
+          required: true
+        - in: formData
+          name: TrinhDo
+          type: file
+          description: Trình độ giảng viên
+          required: true
+        - in: formData
+          name: Hinh
+          type: file
+          description: Hình đại diện giảng viên
+      responses:
+        200:
+          description: Chỉnh sửa thông tin giảng viên thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Chỉnh sửa thông tin giảng viên thành công.",
+            }          
+        400:
+          description: Chỉnh sửa thông tin giảng viên thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Chỉnh sửa thông tin giảng viên thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []     
+  /admin/giang-vien/Xoa/{MaGV}:
+    delete:
+      tags:
+        - "GiangVien"
+      summary: "Xóa thông tin giảng viên"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaGV
+          type: string
+          required: true
+          description: Mã giảng viên
+      responses:
+        200:
+          description: Xóa thông tin giảng viên thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Xóa thông tin giảng viên thành công.",
+            }
+        400:
+          description: Xóa thông tin giảng viên thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message" : "Xóa thông tin giảng viên thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
 securityDefinitions:
   ApiKeyAuth:
     type: apiKey
