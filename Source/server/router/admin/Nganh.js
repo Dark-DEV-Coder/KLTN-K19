@@ -136,7 +136,7 @@ NganhAdminRoute.delete('/Xoa/:MaNganh', async (req, res) => {
         const isExist = await Nganh.findOne({ MaNganh: MaNganh })
         if (!isExist) 
             return sendError(res, "Ngành này không tồn tại");
-        const KtraChuyenNganh = await ChuyenNganh.find({ MaNganh: MaNganh });
+        const KtraChuyenNganh = await ChuyenNganh.find({ MaNganh: isExist._id });
         if (KtraChuyenNganh)
             return sendError(res, "Ngành này không thể xóa vì còn chuyên ngành liên quan.")
         await Nganh.findOneAndDelete({ MaNganh: MaNganh });
