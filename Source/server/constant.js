@@ -21,3 +21,9 @@ export const TrangThaiSinhVienTotNghiep = {
     ChuaTotNghiep: 'Chưa tốt nghiệp',
     DaTotNghiep: 'Đã tốt nghiệp'
 }
+
+export const TrangThaiGiangVien = {
+    ChuaCoTaiKhoan: 'Chưa có tài khoản',
+    DaCoTaiKhoan: 'Đã có tài khoản',
+    DaXoa: 'Đã xóa'
+}

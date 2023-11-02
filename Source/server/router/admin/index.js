@@ -5,6 +5,7 @@ import TaiKhoanAdminRoute from "./TaiKhoan.js";
 import NganhAdminRoute from "./Nganh.js"
 import ChuyenNganhAdminRoute from "./ChuyenNganh.js";
 import SinhVienAdminRoute from "./SinhVien.js";
+import GiangVienAdminRoute from "./GiangVien.js";
 
 const adminRoute = express.Router();
 
@@ -14,6 +15,7 @@ adminRoute.use('/chuc-nang', ChucNangAdminRoute)
         .use('/nganh', NganhAdminRoute)
         .use('/chuyen-nganh', ChuyenNganhAdminRoute)
         .use('/sinh-vien', SinhVienAdminRoute)
+        .use('/giang-vien', GiangVienAdminRoute)
 
 export default adminRoute
 
