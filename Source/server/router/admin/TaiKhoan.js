@@ -151,7 +151,7 @@ TaiKhoanAdminRoute.put('/ChinhSua/:MaTK', async (req, res) => {
  * @route DELETE /api/admin/tai-khoan/Xoa/{MaTK}
  * @description Xóa tài khoản
  * @access private
- */
+*/
 TaiKhoanAdminRoute.delete('/Xoa/:MaTK', async (req, res) => {
     try {
         const { MaTK } = req.params

@@ -11,6 +11,7 @@ const GiangVienSchema = new Schema(
         MaTK: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'taikhoans',
+            default: null,
         },
         HoGV: {
             type: String,
