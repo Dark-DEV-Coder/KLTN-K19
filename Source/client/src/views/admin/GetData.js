@@ -17,24 +17,23 @@ export { fetchDetailNganh };
 //Sửa thông tin Ngành
 const fetchEditNganh = (headers, MaNganh, TenNganh) => {
     return axios.put(`admin/nganh/ChinhSua/${MaNganh}`, {
-        headers,
         TenNganh: TenNganh,
-    });
+    }, { headers });
 }
 export { fetchEditNganh };
 
 //Thêm thông tin Ngành
 const fetchAddNganh = (headers, MaNganh, TenNganh) => {
     return axios.post(`admin/nganh/Them`, {
-        headers,
         MaNganh: MaNganh,
         TenNganh: TenNganh,
-    });
+    }, { headers });
 }
 export { fetchAddNganh };
 
 //Xóa  Ngành
 const fetchDeleteNganh = (headers, MaNganh) => {
+    console.log("Delete: ", MaNganh)
     return axios.delete(`admin/nganh/Xoa/${MaNganh}`, { headers });
 }
 export { fetchDeleteNganh };
