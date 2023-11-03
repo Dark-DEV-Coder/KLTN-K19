@@ -73,7 +73,7 @@ const Admin = () => {
     const getLogin = async () => {
         let res = await fetchLogin();
         SetAccessToken(res.data.accessToken)
-        // console.log(res)
+        console.log(res)
     }
     return (
         <>

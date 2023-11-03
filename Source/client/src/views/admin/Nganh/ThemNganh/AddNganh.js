@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import * as React from 'react';
 import "./AddNganh.scss"
@@ -7,15 +7,17 @@ import { toast } from "react-toastify";
 const AddNganh = (props) => {
 
     const accessToken = props.accessToken;
+    let navigate = useNavigate();
     const [Manganh, SetMaNganh] = useState('')
     const [TenNganh, SetTenNganh] = useState('')
 
     const handleAddNganh = async () => {
-        const headers = { 'x-access-token': { accessToken } };
+        const headers = { 'x-access-token': accessToken };
         let res = await fetchAddNganh(headers, Manganh, TenNganh)
         console.log(res)
         if (res.success === true) {
             toast.success('Thêm ngành thành công !')
+            navigate("/admin/nganhhoc")
             return;
         }
         if (res.success === false) {
@@ -66,12 +68,12 @@ const AddNganh = (props) => {
                 <div className="container-edit">
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label className="inputNganh" for="inputMa">Mã ngành</label>
+                            <label className="inputNganh" htmlFor="inputMa">Mã ngành</label>
                             <input type="text" className="form-control" id="inputMa" placeholder="Điền mã ngành ..." onChange={(event) => onChangeInputSL(event, SetMaNganh)} onBlur={() => checkdulieu(Manganh, SetCheckdulieuMa)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuMa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
-                            <label className="inputNganh" for="inputTen">Tên ngành</label>
+                            <label className="inputNganh" htmlFor="inputTen">Tên ngành</label>
                             <input type="text" className="form-control" id="inputTen" placeholder="Điền tên ngành ..." onChange={(event) => onChangeInputSL(event, SetTenNganh)} onBlur={() => checkdulieu(TenNganh, SetCheckdulieuTen)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>

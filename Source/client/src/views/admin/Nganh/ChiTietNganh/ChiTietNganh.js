@@ -24,7 +24,7 @@ const ChiTietNganh = (props) => {
     }, []);
 
     const getDetailNganh = async () => {
-        const headers = { 'x-access-token': { accessToken } };
+        const headers = { 'x-access-token': accessToken };
         let res = await fetchDetailNganh(headers, nganh.MaNganh);
         if (res && res.data && res.data.Nganh) {
             SetDetailNganh(res.data.Nganh)

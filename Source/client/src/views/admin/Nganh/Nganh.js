@@ -1,26 +1,11 @@
 import "./Nganh.scss"
 import { Link } from "react-router-dom";
 import TableNganh from "./TableNganh";
-import { useState, useEffect } from 'react';
-import { fetchAllNganh } from "../GetData"
+
 const Nganh = (props) => {
 
     const accessToken = props.accessToken;
     // get danh sach nganh
-    const [listData_nganh, SetListData_nganh] = useState([]);
-
-    // component didmount
-    useEffect(() => {
-        getListNganh();
-    }, []);
-
-    const getListNganh = async () => {
-        const headers = { 'x-access-token': { accessToken } };
-        let res = await fetchAllNganh(headers);
-        if (res && res.data && res.data.DanhSach) {
-            SetListData_nganh(res.data.DanhSach)
-        }
-    }
     return (
         <>
             <main className="main2">
@@ -43,7 +28,7 @@ const Nganh = (props) => {
                         <span className="text">Tạo mới</span>
                     </Link>
                 </div>
-                <TableNganh listData_nganh={listData_nganh} accessToken={accessToken} />
+                <TableNganh accessToken={accessToken} />
 
             </main >
         </>

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import * as React from 'react';
@@ -6,9 +6,11 @@ import "./EditNganh.scss"
 import TableChuyenNganh from "../ChiTietNganh/TableChuyenNganh/TableChuyenNganh";
 import { fetchDetailNganh, fetchEditNganh } from "../../GetData"
 import { toast } from "react-toastify";
+import axios from "../../../custom-axios"
 const EditNganh = (props) => {
     const accessToken = props.accessToken;
     const nganh = useParams();
+    let navigate = useNavigate();
 
     // get chi tiết ngành 
     const [detailNganh, SetDetailNganh] = useState({});
@@ -23,7 +25,8 @@ const EditNganh = (props) => {
     }, []);
 
     const getDetailNganh = async () => {
-        const headers = { 'x-access-token': { accessToken } };
+        const headers = { 'x-access-token': accessToken };
+
         let res = await fetchDetailNganh(headers, nganh.MaNganh);
         if (res && res.data && res.data.Nganh) {
             SetDetailNganh(res.data.Nganh)
@@ -33,11 +36,12 @@ const EditNganh = (props) => {
         }
     }
     const handleEditNganh = async () => {
-        const headers = { 'x-access-token': { accessToken } };
+        const headers = { 'x-access-token': accessToken };
         let res = await fetchEditNganh(headers, MaNganh, TenNganh)
         console.log(res)
         if (res.success === true) {
             toast.success('Cập nhật thông tin thành công !')
+            navigate("/admin/nganhhoc")
             return;
         }
         if (res.success === false) {
@@ -88,12 +92,12 @@ const EditNganh = (props) => {
                 <div className="container-edit">
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label className="inputNganh" for="inputMa">Mã ngành</label>
+                            <label className="inputNganh" htmlFor="inputMa">Mã ngành</label>
                             <input type="text" className="form-control" id="inputMa" value={MaNganh} onChange={(event) => onChangeInputSL(event, SetMaNganh)} onBlur={(event) => checkdulieu(MaNganh, SetCheckdulieuMa)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuMa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
-                            <label className="inputNganh" for="inputTen">Tên ngành</label>
+                            <label className="inputNganh" htmlFor="inputTen">Tên ngành</label>
                             <input type="text" className="form-control" id="inputTen" value={TenNganh} onChange={(event) => onChangeInputSL(event, SetTenNganh)} onBlur={(event) => checkdulieu(TenNganh, SetCheckdulieuTen)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>

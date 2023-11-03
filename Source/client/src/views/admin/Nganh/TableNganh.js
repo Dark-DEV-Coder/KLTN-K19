@@ -9,6 +9,8 @@ import { IconButton } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
 import { fetchDeleteNganh } from "../GetData"
 import { toast } from "react-toastify";
+import { useState, useEffect } from 'react';
+import { fetchAllNganh } from "../GetData"
 const csvConfig = mkConfig({
     fieldSeparator: ',',
     decimalSeparator: '.',
@@ -16,14 +18,24 @@ const csvConfig = mkConfig({
 });
 
 const TableNganh = (props) => {
-    const listData_nganh = props.listData_nganh;
     const accessToken = props.accessToken;
+    const [listData_nganh, SetListData_nganh] = useState([]);
 
-    const handleDeleteNganh = async (Manganh) => {
-        console.log(Manganh)
-        const headers = { 'x-access-token': { accessToken } };
-        let res = await fetchDeleteNganh(headers, Manganh)
-        console.log(res)
+    // component didmount
+    useEffect(() => {
+        getListNganh();
+    }, []);
+
+    const getListNganh = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchAllNganh(headers);
+        if (res && res.data && res.data.DanhSach) {
+            SetListData_nganh(res.data.DanhSach)
+        }
+    }
+    const handleDeleteRows = async (row) => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDeleteNganh(headers, row.original.MaNganh)
         if (res.success === true) {
             toast.success('Xóa thông tin ngành thành công !')
             return;
@@ -88,8 +100,7 @@ const TableNganh = (props) => {
                         <Edit fontSize="small" />
                     </IconButton>
                 </Link>
-
-                <IconButton onClick={() => handleDeleteNganh(row.original.MaNganh)}>
+                <IconButton onClick={() => handleDeleteRows(row)}>
                     <Delete fontSize="small" sx={{ color: 'red' }} />
                 </IconButton>
             </Box >
