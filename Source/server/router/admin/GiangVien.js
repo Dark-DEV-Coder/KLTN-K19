@@ -83,7 +83,7 @@ GiangVienAdminRoute.post('/Them', createGiangVienDir, uploadImg.single("Hinh"), 
         const { MaGV, HoGV, TenGV, Email, SoDienThoai, GioiTinh, NgaySinh, DonViCongTac, ChuyenNganh, TrinhDo } = req.body;
         const isExist = await GiangVien.findOne({ MaGV: MaGV }).lean();
         if (isExist)
-            return sendError(res, "Mã sinh viên đã tồn tại");
+            return sendError(res, "Mã giảng viên đã tồn tại");
         let hoten = HoGV + " " + TenGV;
         let resultImage = ''
         if (req.file){
