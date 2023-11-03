@@ -154,7 +154,7 @@ ChucNangAdminRoute.delete('/Xoa/:MaCN', async (req, res) => {
         if (!isExist) 
             return sendError(res, "Chức năng này không tồn tại");
         const KtraQuyen = await QuyenTaiKhoan.find({"ChucNang.MaCN": isExist._id}).lean();
-        if (KtraQuyen && KtraQuyen.length > 0)
+        if (KtraQuyen.length > 0)
             return sendError(res, "Đang còn vướng dữ liệu quyền tài khoản nên không thể xóa")
         let splitUrl = await isExist.Hinh.split('/');
         let file = await `${splitUrl[splitUrl.length - 2]}/${splitUrl[splitUrl.length - 1].split('.')[0]}`;

@@ -11,6 +11,7 @@ const SinhVienSchema = new Schema(
         MaTK: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'taikhoans',
+            default: null,
         },
         HoSV: {
             type: String,

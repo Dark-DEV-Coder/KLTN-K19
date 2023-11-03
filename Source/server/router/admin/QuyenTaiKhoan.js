@@ -186,7 +186,7 @@ QuyenTaiKhoanAdminRoute.delete('/Xoa/:MaQTK', async (req, res) => {
         if (!isExist) 
             return sendError(res, "Quyền tài khoản này không tồn tại");
         const KtraTaiKhoan = await TaiKhoan.find({ MaQTK: isExist._id }).lean();
-        if (KtraTaiKhoan && KtraTaiKhoan.length > 0)
+        if (KtraTaiKhoan.length > 0)
             return sendError(res, "Quyền tài khoản này đang còn được phân quyền cho các tài khoản khác.")
         await QuyenTaiKhoan.findOneAndDelete({ MaQTK: MaQTK });
         return sendSuccess(res, "Xóa quyền tài khoản thành công.")
