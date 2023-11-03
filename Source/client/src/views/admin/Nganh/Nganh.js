@@ -1,26 +1,11 @@
 import "./Nganh.scss"
 import { Link } from "react-router-dom";
 import TableNganh from "./TableNganh";
-import { useState, useEffect } from 'react';
-import axios from "axios";
-import { fetchAllNganh } from "./GetData"
-const Nganh = () => {
-    // component didmount
 
+const Nganh = (props) => {
+
+    const accessToken = props.accessToken;
     // get danh sach nganh
-    const [listData_nganh, SetListData_nganh] = useState([]);
-    // useEffect(() => {
-    //     // getListNganh();
-    //     axios.get('https://hotrodaotao-api-k19-sgu.onrender.com/api/admin/nganh/DanhSachNganh').then((res) => {
-    //         console.log(res);
-    //     })
-    // }, []);
-
-    // const getListNganh = async () => {
-    //     let res = await fetchAllNganh();
-    //     console.log("check API ngành >>>", res)
-    // }
-
     return (
         <>
             <main className="main2">
@@ -40,10 +25,10 @@ const Nganh = () => {
                     </div>
                     <Link to={"/admin/nganhhoc/new"} className="btn-download">
                         <i className='bx bxs-cloud-download'></i>
-                        <span className="text">Create Data</span>
+                        <span className="text">Tạo mới</span>
                     </Link>
                 </div>
-                <TableNganh listData_nganh={listData_nganh} />
+                <TableNganh accessToken={accessToken} />
 
             </main >
         </>

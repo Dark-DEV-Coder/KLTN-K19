@@ -6,15 +6,35 @@ import { useEffect, useState } from "react";
 import * as React from 'react';
 import "./ChiTietNganh.scss"
 import TableChuyenNganh from "./TableChuyenNganh/TableChuyenNganh";
-const ChiTietNganh = () => {
-    const dulieutest = {
-        MaNganh: 'CNTT',
-        TenNganh: 'Công nghệ thông tin',
-        trangthai: 1,
-    };
+import { fetchDetailNganh } from "../../GetData"
+const ChiTietNganh = (props) => {
+    const accessToken = props.accessToken;
     const nganh = useParams();
-    const [manganh, SetMaNganh] = useState(dulieutest.MaNganh)
-    const [tennganh, SetTenNganh] = useState(dulieutest.TenNganh)
+
+    // get chi tiết ngành 
+    const [detailNganh, SetDetailNganh] = useState({});
+    const [chuyennganh, SetChuyennganh] = useState([]);
+    const [manganh, SetManganh] = useState("");
+    const [tennganh, SetTennganh] = useState("");
+
+    // component didmount
+    useEffect(() => {
+        getDetailNganh();
+
+    }, []);
+
+    const getDetailNganh = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDetailNganh(headers, nganh.MaNganh);
+        if (res && res.data && res.data.Nganh) {
+            SetDetailNganh(res.data.Nganh)
+            SetChuyennganh(res.data.ChuyenNganh)
+            SetManganh(res.data.Nganh.MaNganh)
+            SetTennganh(res.data.Nganh.TenNganh)
+        }
+    }
+
+
 
     const onChangeInputSL = (event, SetSL) => {
         let changeValue = event.target.value;
@@ -38,8 +58,6 @@ const ChiTietNganh = () => {
                         <li>
                             <Link className="active" >{tennganh}</Link>
                         </li>
-
-
                     </ul>
                 </div>
 
@@ -50,16 +68,16 @@ const ChiTietNganh = () => {
                 <div className="container-edit">
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label className="inputNganh" for="inputMa">Mã ngành</label>
+                            <label className="inputNganh" htmlFor="inputMa">Mã ngành</label>
                             <input type="text" className="form-control" id="inputMa" value={manganh} disabled />
                         </div>
                         <div className="form-group col-md-6">
-                            <label className="inputNganh" for="inputTen">Tên ngành</label>
+                            <label className="inputNganh" htmlFor="inputTen">Tên ngành</label>
                             <input type="text" className="form-control" id="inputTen" value={tennganh} disabled />
                         </div>
                     </div>
 
-                    <TableChuyenNganh />
+                    <TableChuyenNganh listData_chuyennganh={chuyennganh} />
                     {/* <button className="btn" type="submit">Submit form</button> */}
                 </div>
             </form>
