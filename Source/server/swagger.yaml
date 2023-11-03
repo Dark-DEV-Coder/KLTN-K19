@@ -1012,8 +1012,6 @@ paths:
               "success": false,
               "message": "Đăng nhập thất bại.",
             }
-      security:
-        - ApiKeyAuth: []
   /tai-khoan/DangNhap:
     post: 
       tags:
@@ -1049,8 +1047,6 @@ paths:
               "success": false,
               "message": "Đăng nhập thất bại.",
             }
-      security:
-        - ApiKeyAuth: [] 
   /admin/sinh-vien/DanhSachSinhVien:
     get: 
       tags:
@@ -1594,6 +1590,53 @@ paths:
             example: {
               "success": false,
               "message" : "Xóa thông tin giảng viên thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /tai-khoan/DoiMatKhau:
+    post: 
+      tags:
+        - "TaiKhoan"
+      summary: Đổi mật khẩu
+      produces:
+        - application/json     
+      parameters:
+        - in: body
+          name: MaSo
+          type: string
+          required: true
+          description: Mã số sinh viên hoặc mã giảng viên
+        - in: body
+          name: MatKhauCu
+          type: string
+          required: true
+          description: Mật khẩu cũ
+        - in: body
+          name: MatKhauMoi
+          type: string
+          required: true
+          description: Mật khẩu mới
+        - in: body
+          name: NhapLaiMatKhauMoi
+          type: string
+          required: true
+          description: Nhập lại mật khẩu mới
+      responses:
+        200:
+          description: Thay đổi mật khẩu thành công.
+          schema:
+            type: object
+            example: {
+              "success": true,
+              "message": "Thay đổi mật khẩu thành công.",
+            }          
+        400:
+          description: Thay đổi mật khẩu thất bại.
+          schema:
+            type: object
+            example: {
+              "success": false,
+              "message": "Thay đổi mật khẩu thất bại.",
             }
       security:
         - ApiKeyAuth: []

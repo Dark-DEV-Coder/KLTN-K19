@@ -6,6 +6,7 @@ import { KtraDuLieuTaiKhoanKhiChinhSua, KtraDuLieuTaiKhoanKhiDangNhap, KtraDuLie
 import TaiKhoan from "../../model/TaiKhoan.js"
 import QuyenTaiKhoan from "../../model/QuyenTaiKhoan.js"
 import GiangVien from "../../model/GiangVien.js"
+import SinhVien from "../../model/SinhVien.js"
 import { createTokenPair } from "../../middleware/auth.js"
 
 const TaiKhoanAdminRoute = express.Router()
@@ -95,13 +96,30 @@ TaiKhoanAdminRoute.post('/Them', async (req, res) => {
         const isExistTen = await TaiKhoan.findOne({ TenDangNhap: TenDangNhap }).lean();
         if (isExistTen)
             return sendError(res, "Tên đăng nhập đã tồn tại");
+        const isExistSV = await SinhVien.findOne({ MaSV: TenDangNhap });
+        const isExistGV = await GiangVien.findOne({ MaGV: TenDangNhap });
+        if (!isExistSV && !isExistGV)
+            return sendError(res, "Tên đăng nhập phải là mã sinh viên hoặc là mã giảng viên")
+        if (isExistSV && isExistSV.MaTK != null)
+            return sendError(res, "Sinh viên này đã có tài khoản");
+        if (isExistGV && isExistGV.MaTK != null)
+            return sendError(res, "Giảng viên này đã có tài khoản");
 
         const isExistMaQuyenTK = await QuyenTaiKhoan.findOne({ MaQTK: MaQTK });
         if (!isExistMaQuyenTK)
             return sendError(res, "Quyền tài khoản không tồn tại");
+        
 
         let password = await argon2.hash(MatKhau)
         const taikhoan = await TaiKhoan.create({ MaTK: MaTK, MaQTK: isExistMaQuyenTK._id, TenDangNhap: TenDangNhap, MatKhau: password });
+        if (isExistSV){
+            await SinhVien.findOneAndUpdate({ MaSV: isExistSV.MaSV },{ MaTK: taikhoan._id });
+        }
+        else{
+            if (isExistGV)
+                await GiangVien.findOneAndUpdate({ MaGV: isExistGV.MaGV },{ MaTK: taikhoan._id });
+            
+        }
 
         return sendSuccess(res, "Thêm tài khoản thành công", taikhoan);
     }
