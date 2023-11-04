@@ -12,7 +12,7 @@ export const sendSuccess = (res, message, data = null, total = null) => {
     return res.status(200).json(responseJson)
 }
 
-export const sendError = (res, message, code = 400) => {
+export const sendError = (res, message, code = 200) => {
     return res.status(code).json({
         status: false,
         message: message
