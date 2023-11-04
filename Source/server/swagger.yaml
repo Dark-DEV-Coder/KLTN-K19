@@ -56,7 +56,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Lấy danh sách chức năng thành công",
             }
         400:
@@ -64,7 +64,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Lấy danh sách chức năng thất bại",
             }
       security:
@@ -88,7 +88,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Xem chi tiết thông tin chức năng thành công.",
             }
         400:
@@ -96,7 +96,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message" : "Xem chi tiết thông tin chức năng thất bại.",
             }
       security:
@@ -130,7 +130,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Thêm chức năng thành công.",
             }          
         400:
@@ -138,7 +138,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Thêm chức năng thất bại.",
             }
       security:
@@ -172,7 +172,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Chỉnh sửa thông tin chức năng thành công.",
             }          
         400:
@@ -180,7 +180,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Chỉnh sửa thông tin chức năng thất bại.",
             }
       security:
@@ -204,7 +204,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Xóa thông tin chức năng thành công.",
             }
         400:
@@ -212,7 +212,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message" : "Xóa thông tin chức năng thất bại.",
             }
       security:
@@ -246,7 +246,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Lấy danh sách quyền tài khoản thành công",
             }
         400:
@@ -254,7 +254,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Lấy danh sách quyền tài khoản thất bại",
             }
       security:
@@ -278,7 +278,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Chi tiết thông tin quyền tài khoản thành công.",
             }
         400:
@@ -286,7 +286,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message" : "Chi tiết thông tin quyền tài khoản thất bại.",
             }
       security:
@@ -323,7 +323,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Thêm quyền tài khoản thành công.",
             }          
         400:
@@ -331,7 +331,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Thêm quyền tài khoản thất bại.",
             }
       security:
@@ -368,7 +368,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Chỉnh sửa quyền tài khoản thành công.",
             }          
         400:
@@ -376,7 +376,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Chỉnh sửa quyền tài khoản thất bại.",
             }
       security:
@@ -400,7 +400,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Xóa thông tin quyền tài khoản thành công.",
             }
         400:
@@ -408,7 +408,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message" : "Xóa thông tin quyền tài khoản thất bại.",
             }
       security:
@@ -442,7 +442,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Lấy danh sách tài khoản thành công",
             }
         400:
@@ -450,7 +450,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Lấy danh sách tài khoản thất bại",
             }
       security:
@@ -474,7 +474,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Chi tiết thông tin tài khoản thành công.",
             }
         400:
@@ -482,7 +482,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message" : "Chi tiết thông tin tài khoản thất bại.",
             }
       security:
@@ -520,7 +520,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Thêm tài khoản thành công.",
             }          
         400:
@@ -528,7 +528,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Thêm tài khoản thất bại.",
             }
       security:
@@ -562,7 +562,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Chỉnh sửa tài khoản thành công.",
             }          
         400:
@@ -570,7 +570,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Chỉnh sửa tài khoản thất bại.",
             }
       security:
@@ -594,7 +594,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Xóa thông tin tài khoản thành công.",
             }
         400:
@@ -602,7 +602,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message" : "Xóa thông tin tài khoản thất bại.",
             }
       security:
@@ -636,7 +636,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Lấy danh sách ngành thành công",
             }
         400:
@@ -644,7 +644,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Lấy danh sách ngành thất bại",
             }
       security:
@@ -668,7 +668,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Chi tiết thông tin ngành thành công.",
             }
         400:
@@ -676,7 +676,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message" : "Chi tiết thông tin ngành thất bại.",
             }
       security:
@@ -705,7 +705,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Thêm ngành thành công.",
             }          
         400:
@@ -713,7 +713,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Thêm ngành thất bại.",
             }
       security:
@@ -742,7 +742,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Chỉnh sửa ngành thành công.",
             }          
         400:
@@ -750,7 +750,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Chỉnh sửa ngành thất bại.",
             }
       security:
@@ -774,7 +774,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Xóa thông tin ngành thành công.",
             }
         400:
@@ -782,7 +782,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message" : "Xóa thông tin ngành thất bại.",
             }
       security:
@@ -816,7 +816,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Lấy danh sách chuyên ngành thành công",
             }
         400:
@@ -824,7 +824,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Lấy danh sách chuyên ngành thất bại",
             }
       security:
@@ -848,7 +848,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Chi tiết thông tin chuyên ngành thành công.",
             }
         400:
@@ -856,7 +856,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message" : "Chi tiết thông tin chuyên ngành thất bại.",
             }
       security:
@@ -890,7 +890,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Thêm chuyên ngành thành công.",
             }          
         400:
@@ -898,7 +898,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Thêm chuyên ngành thất bại.",
             }
       security:
@@ -932,7 +932,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Chỉnh sửa chuyên ngành thành công.",
             }          
         400:
@@ -940,7 +940,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Chỉnh sửa chuyên ngành thất bại.",
             }
       security:
@@ -964,7 +964,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Xóa thông tin chuyên ngành thành công.",
             }
         400:
@@ -972,7 +972,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message" : "Xóa thông tin chuyên ngành thất bại.",
             }
       security:
@@ -1001,7 +1001,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Đăng nhập thành công.",
             }          
         400:
@@ -1009,7 +1009,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Đăng nhập thất bại.",
             }
   /tai-khoan/DangNhap:
@@ -1036,7 +1036,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Đăng nhập thành công.",
             }          
         400:
@@ -1044,7 +1044,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Đăng nhập thất bại.",
             }
   /admin/sinh-vien/DanhSachSinhVien:
@@ -1076,7 +1076,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Lấy danh sách sinh viên thành công",
             }
         400:
@@ -1084,7 +1084,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Lấy danh sách sinh viên thất bại",
             }
       security:
@@ -1108,7 +1108,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Chi tiết thông tin sinh viên thành công.",
             }
         400:
@@ -1116,7 +1116,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message" : "Chi tiết thông tin sinh viên thất bại.",
             }
       security:
@@ -1194,7 +1194,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Thêm sinh viên thành công.",
             }          
         400:
@@ -1202,7 +1202,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Thêm sinh viên thất bại.",
             }
       security:
@@ -1280,7 +1280,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Chỉnh sửa thông tin sinh viên thành công.",
             }          
         400:
@@ -1288,7 +1288,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Chỉnh sửa thông tin sinh viên thất bại.",
             }
       security:
@@ -1312,7 +1312,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Xóa thông tin sinh viên thành công.",
             }
         400:
@@ -1320,7 +1320,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message" : "Xóa thông tin sinh viên thất bại.",
             }
       security:
@@ -1354,7 +1354,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Lấy danh sách giảng viên thành công",
             }
         400:
@@ -1362,7 +1362,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Lấy danh sách giảng viên thất bại",
             }
       security:
@@ -1386,7 +1386,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Chi tiết thông tin giảng viên thành công.",
             }
         400:
@@ -1394,7 +1394,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message" : "Chi tiết thông tin giảng viên thất bại.",
             }
       security:
@@ -1467,7 +1467,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Thêm giảng viên thành công.",
             }          
         400:
@@ -1475,7 +1475,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Thêm giảng viên thất bại.",
             }
       security:
@@ -1548,7 +1548,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Chỉnh sửa thông tin giảng viên thành công.",
             }          
         400:
@@ -1556,7 +1556,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Chỉnh sửa thông tin giảng viên thất bại.",
             }
       security:
@@ -1580,7 +1580,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Xóa thông tin giảng viên thành công.",
             }
         400:
@@ -1588,7 +1588,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message" : "Xóa thông tin giảng viên thất bại.",
             }
       security:
@@ -1627,7 +1627,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": true,
+              "status": true,
               "message": "Thay đổi mật khẩu thành công.",
             }          
         400:
@@ -1635,7 +1635,7 @@ paths:
           schema:
             type: object
             example: {
-              "success": false,
+              "status": false,
               "message": "Thay đổi mật khẩu thất bại.",
             }
       security:
