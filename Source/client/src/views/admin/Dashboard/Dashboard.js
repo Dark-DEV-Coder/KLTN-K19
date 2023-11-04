@@ -4,7 +4,7 @@ import logo from "./logo.png"
 import { NavLink } from "react-router-dom";
 const Dashboard = (props) => {
 
-    const { hiddenDB } = props;
+    const { hiddenDB, loggedIn } = props;
     // const [hiddenDB2, setHiddenDB2] = useState(true)
 
     // useEffect(() => {

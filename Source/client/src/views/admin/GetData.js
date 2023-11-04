@@ -1,5 +1,16 @@
 import axios from "../custom-axios"
 
+// // GetLogin Admin
+const fetchLoginAdmin = (TenDangNhap, MatKhau) => {
+    return axios.post('tai-khoan/DangNhapAdmin', {
+        TenDangNhap: TenDangNhap,
+        MatKhau: MatKhau,
+    })
+}
+export { fetchLoginAdmin };
+
+
+
 
 // Ngành
 //Get List Ngành
@@ -38,16 +49,6 @@ const fetchDeleteNganh = (headers, MaNganh) => {
 }
 export { fetchDeleteNganh };
 // Ngành
-
-
-// // GetLogin
-const fetchLogin = () => {
-    return axios.post('tai-khoan/DangNhapAdmin', {
-        TenDangNhap: "admin",
-        MatKhau: "admin",
-    });
-}
-export { fetchLogin };
 
 // // GetToken
 const fetchToken = async () => {

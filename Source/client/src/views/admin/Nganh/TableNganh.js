@@ -20,7 +20,6 @@ const csvConfig = mkConfig({
 const TableNganh = (props) => {
     const accessToken = props.accessToken;
     const [listData_nganh, SetListData_nganh] = useState([]);
-
     // component didmount
     useEffect(() => {
         getListNganh();
@@ -36,12 +35,13 @@ const TableNganh = (props) => {
     const handleDeleteRows = async (row) => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDeleteNganh(headers, row.original.MaNganh)
-        if (res.success === true) {
-            toast.success('Xóa thông tin ngành thành công !')
+        if (res.status === true) {
+            toast.success(res.message)
+            getListNganh()
             return;
         }
         if (res.success === false) {
-            toast.error("Xóa thông tin ngành thất bại !")
+            toast.error(res.message)
             return;
         }
     }

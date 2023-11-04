@@ -4,9 +4,9 @@ import * as React from 'react';
 import "./AddNganh.scss"
 import { fetchAddNganh } from "../../GetData"
 import { toast } from "react-toastify";
-const AddNganh = (props) => {
+const AddNganh = () => {
 
-    const accessToken = props.accessToken;
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     let navigate = useNavigate();
     const [Manganh, SetMaNganh] = useState('')
     const [TenNganh, SetTenNganh] = useState('')
@@ -14,14 +14,13 @@ const AddNganh = (props) => {
     const handleAddNganh = async () => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchAddNganh(headers, Manganh, TenNganh)
-        console.log(res)
-        if (res.success === true) {
-            toast.success('Thêm ngành thành công !')
+        if (res.status === true) {
+            toast.success(res.message)
             navigate("/admin/nganhhoc")
             return;
         }
-        if (res.success === false) {
-            toast.error("Thêm ngành thất bại !")
+        if (res.status === false) {
+            toast.error(res.message)
             return;
         }
     }
