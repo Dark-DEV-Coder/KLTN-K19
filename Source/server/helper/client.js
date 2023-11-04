@@ -4,7 +4,7 @@ import axios from 'axios'
 
 export const sendSuccess = (res, message, data = null, total = null) => {
     let responseJson = {
-        success: true,
+        status: true,
         message: message
     }
     if (total) responseJson.total = total
@@ -14,14 +14,14 @@ export const sendSuccess = (res, message, data = null, total = null) => {
 
 export const sendError = (res, message, code = 400) => {
     return res.status(code).json({
-        success: false,
+        status: false,
         message: message
     })
 }
 
 export const sendServerError = res =>
     res.status(500).json({
-        success: false,
+        status: false,
         message: 'Server Interval Error.'
     })
 
