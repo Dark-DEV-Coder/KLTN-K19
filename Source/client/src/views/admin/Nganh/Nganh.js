@@ -1,10 +1,12 @@
 import "./Nganh.scss"
 import { Link } from "react-router-dom";
 import TableNganh from "./TableNganh";
+import { useState } from "react";
 
-const Nganh = (props) => {
+const Nganh = () => {
 
-    const accessToken = props.accessToken;
+
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     // get danh sach nganh
     return (
         <>

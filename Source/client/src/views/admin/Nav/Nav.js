@@ -2,7 +2,7 @@ import "./Nav3.scss"
 import avt from "../da.png"
 
 const Nav = (props) => {
-    const { changleHidden, changleSwitchMode } = props;
+    const { changleHidden, changleSwitchMode, loggedIn } = props;
 
     const onChangleHidden = () => {
         changleHidden();

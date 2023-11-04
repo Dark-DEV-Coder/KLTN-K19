@@ -7,8 +7,8 @@ import * as React from 'react';
 import "./ChiTietNganh.scss"
 import TableChuyenNganh from "./TableChuyenNganh/TableChuyenNganh";
 import { fetchDetailNganh } from "../../GetData"
-const ChiTietNganh = (props) => {
-    const accessToken = props.accessToken;
+const ChiTietNganh = () => {
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     const nganh = useParams();
 
     // get chi tiết ngành 

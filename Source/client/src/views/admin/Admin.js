@@ -3,6 +3,7 @@ import {
     Routes,
     Route,
     useParams,
+    Navigate
 } from "react-router-dom";
 
 import Dashboard from "./Dashboard/Dashboard"
@@ -55,25 +56,17 @@ import QuyenTaiKhoan from "./QuyenTaiKhoan/QuyenTaiKhoan";
 import ThemQuyenTaiKhoan from "./QuyenTaiKhoan/ThemQuyenTaiKhoan/ThemQuyenTaiKhoan";
 import SingleQuyenTaiKhoan from "./QuyenTaiKhoan/SingleQuyenTaiKhoan/SingleQuyenTaiKhoan";
 import EditQuyenTaiKhoan from "./QuyenTaiKhoan/EditQuyenTaiKhoan/EditQuyenTaiKhoan";
-import { fetchLogin } from "./GetData"
+import LoginAdmin from "./Login/LoginAdmin";
 const Admin = () => {
 
     const [hiddenDB, setHiddenDB] = useState(false);
     const [switchmode, setSwitchmode] = useState(false);
-    const [accessToken, SetAccessToken] = useState("");
+    // const [accessToken, SetAccessToken] = useState("");
     const changleHidden = () => {
         setHiddenDB(!hiddenDB);
     }
     const changleSwitchMode = () => {
         setSwitchmode(!switchmode);
-    }
-    useEffect(() => {
-        getLogin();
-    }, []);
-    const getLogin = async () => {
-        let res = await fetchLogin();
-        SetAccessToken(res.data.accessToken)
-        console.log(res)
     }
     return (
         <>
@@ -82,88 +75,84 @@ const Admin = () => {
                 <section id="content">
                     <Nav changleHidden={changleHidden} changleSwitchMode={changleSwitchMode} />
                     <Routes >
-                        <Route path="/admin" exact>
-                            <Route index element={<Tongquan />}></Route>
-                            <Route path='dkichuyennganh'  >
-                                <Route index element={<DkiChuyenNganh />}></Route>
-                                <Route path="new" element={<AddDKCN />}></Route>
-                                <Route path="single/:madkcn" element={<SingleDkiChuyenNganh />}></Route>
-                                <Route path="edit/:madkcn" element={<EditDKCN />}></Route>
-                            </Route>
-                            <Route path='khoaluan'  >
-                                <Route index element={<KhoaLuan />}></Route>
-                                <Route path="new" element={<AddKhoaLuan />}></Route>
-                                <Route path="single/:makl" element={<SingleKhoaLuan />}></Route>
-                                <Route path="edit/:makl" element={<EditKhoaLuan />}></Route>
-
-                                <Route path="detai/:ten" element={<ChiTietDeTai />}></Route>
-                                <Route path="detai/edit/:ten" element={<EditDeTai />}></Route>
-                            </Route>
-                            <Route path='thuctap'  >
-                                <Route index element={<ThucTap />}></Route>
-                                <Route path="new" element={<AddThucTap />}></Route>
-                                <Route path="single/:MaDKTT" element={<ChiTietThucTap />}></Route>
-                                <Route path="edit/:MaDKTT" element={<EditThucTap />}></Route>
-
-                                <Route path="vitri/:TenCongTy" element={<ViTriThucTap />}></Route>
-                                <Route path="cty/edit/:TenCongTy" element={<EditCongTyThucTap />}></Route>
-                            </Route>
-                            <Route path='canhbaohoctap'  >
-                                <Route index element={<CanhBaoHocTap />}></Route>
-                                <Route path="new" element={<AddCBHT />}></Route>
-                                <Route path="single/:MaCBHT" element={<ChiTietCBHT />}></Route>
-                                <Route path="edit/:MaCBHT" element={<EditCBHT />}></Route>
-                            </Route>
-                            <Route path='giangvien'  >
-                                <Route index element={<GiangVien />}></Route>
-                                <Route path="new" element={<AddGiangVien />} ></Route>
-                                <Route path="edit/:magv" element={<EditGiangVien />} ></Route>
-                            </Route>
-                            <Route path='sinhvien'  >
-                                <Route index element={<SinhVien />}></Route>
-                                <Route path="new" element={<AddSinhVien />} ></Route>
-                                <Route path="edit/:masv" element={<EditSinhVien />} ></Route>
-                            </Route>
-                            <Route path='nganhhoc'  >
-                                <Route index element={<Nganh accessToken={accessToken} />}></Route>
-                                <Route path="new" element={<AddNganh accessToken={accessToken} />} ></Route>
-                                <Route path="single/:MaNganh" element={<ChiTietNganh accessToken={accessToken} />} ></Route>
-                                <Route path="edit/:MaNganh" element={<EditNganh accessToken={accessToken} />} ></Route>
-                            </Route>
-                            <Route path='chuyennganh'  >
-                                <Route index element={<ChuyenNganh />}></Route>
-                                <Route path="new" element={<AddChuyenNganh />} ></Route>
-                                <Route path="edit/:machuyennganh" element={<EditChuyenNganh />} ></Route>
-                            </Route>
-                            <Route path='taikhoan'  >
-                                <Route index element={<TaiKhoan />}></Route>
-                                <Route path="new" element={<AddTaiKhoan />} ></Route>
-                                <Route path="single/:MaTK" element={<SingleTaiKhoan />} ></Route>
-                                <Route path="edit/:MaTK" element={<EditTaiKhoan />} ></Route>
-                            </Route>
-                            <Route path='quyentaikhoan'  >
-                                <Route index element={<QuyenTaiKhoan />}></Route>
-                                <Route path="new" element={<ThemQuyenTaiKhoan />} ></Route>
-                                <Route path="single/:MaQuyen" element={<SingleQuyenTaiKhoan />} ></Route>
-                                <Route path="edit/:MaQuyen" element={<EditQuyenTaiKhoan />} ></Route>
-                            </Route>
-                            <Route path='chucnang'  >
-                                <Route index element={<ChucNang />}></Route>
-                                <Route path="new" element={<AddChucNang />} ></Route>
-                                <Route path="edit/:MaCN" element={<EditChucNang />} ></Route>
-                            </Route>
+                        {/* <Route path="/admin/"> */}
+                        <Route index element={<Tongquan />}></Route>
+                        <Route path='dkichuyennganh'  >
+                            <Route index element={<DkiChuyenNganh />}></Route>
+                            <Route path="new" element={<AddDKCN />}></Route>
+                            <Route path="single/:madkcn" element={<SingleDkiChuyenNganh />}></Route>
+                            <Route path="edit/:madkcn" element={<EditDKCN />}></Route>
                         </Route>
+                        <Route path='khoaluan'  >
+                            <Route index element={<KhoaLuan />}></Route>
+                            <Route path="new" element={<AddKhoaLuan />}></Route>
+                            <Route path="single/:makl" element={<SingleKhoaLuan />}></Route>
+                            <Route path="edit/:makl" element={<EditKhoaLuan />}></Route>
+
+                            <Route path="detai/:ten" element={<ChiTietDeTai />}></Route>
+                            <Route path="detai/edit/:ten" element={<EditDeTai />}></Route>
+                        </Route>
+                        <Route path='thuctap'  >
+                            <Route index element={<ThucTap />}></Route>
+                            <Route path="new" element={<AddThucTap />}></Route>
+                            <Route path="single/:MaDKTT" element={<ChiTietThucTap />}></Route>
+                            <Route path="edit/:MaDKTT" element={<EditThucTap />}></Route>
+
+                            <Route path="vitri/:TenCongTy" element={<ViTriThucTap />}></Route>
+                            <Route path="cty/edit/:TenCongTy" element={<EditCongTyThucTap />}></Route>
+                        </Route>
+                        <Route path='canhbaohoctap'  >
+                            <Route index element={<CanhBaoHocTap />}></Route>
+                            <Route path="new" element={<AddCBHT />}></Route>
+                            <Route path="single/:MaCBHT" element={<ChiTietCBHT />}></Route>
+                            <Route path="edit/:MaCBHT" element={<EditCBHT />}></Route>
+                        </Route>
+                        <Route path='giangvien'  >
+                            <Route index element={<GiangVien />}></Route>
+                            <Route path="new" element={<AddGiangVien />} ></Route>
+                            <Route path="edit/:magv" element={<EditGiangVien />} ></Route>
+                        </Route>
+                        <Route path='sinhvien'  >
+                            <Route index element={<SinhVien />}></Route>
+                            <Route path="new" element={<AddSinhVien />} ></Route>
+                            <Route path="edit/:masv" element={<EditSinhVien />} ></Route>
+                        </Route>
+                        <Route path='nganhhoc'  >
+                            <Route index element={<Nganh />}></Route>
+                            <Route path="new" element={<AddNganh />} ></Route>
+                            <Route path="single/:MaNganh" element={<ChiTietNganh />} ></Route>
+                            <Route path="edit/:MaNganh" element={<EditNganh />} ></Route>
+                        </Route>
+                        <Route path='chuyennganh'  >
+                            <Route index element={<ChuyenNganh />}></Route>
+                            <Route path="new" element={<AddChuyenNganh />} ></Route>
+                            <Route path="edit/:machuyennganh" element={<EditChuyenNganh />} ></Route>
+                        </Route>
+                        <Route path='taikhoan'  >
+                            <Route index element={<TaiKhoan />}></Route>
+                            <Route path="new" element={<AddTaiKhoan />} ></Route>
+                            <Route path="single/:MaTK" element={<SingleTaiKhoan />} ></Route>
+                            <Route path="edit/:MaTK" element={<EditTaiKhoan />} ></Route>
+                        </Route>
+                        <Route path='quyentaikhoan'  >
+                            <Route index element={<QuyenTaiKhoan />}></Route>
+                            <Route path="new" element={<ThemQuyenTaiKhoan />} ></Route>
+                            <Route path="single/:MaQuyen" element={<SingleQuyenTaiKhoan />} ></Route>
+                            <Route path="edit/:MaQuyen" element={<EditQuyenTaiKhoan />} ></Route>
+                        </Route>
+                        <Route path='chucnang'  >
+                            <Route index element={<ChucNang />}></Route>
+                            <Route path="new" element={<AddChucNang />} ></Route>
+                            <Route path="edit/:MaCN" element={<EditChucNang />} ></Route>
+                        </Route>
+                        {/* <Route path='login' element={<LoginAdmin loggedIn={loggedIn} CheckLogin={() => CheckLogin()} />}></Route> */}
+                        {/* </Route> */}
 
                     </Routes >
                 </section>
-
             </div >
-
-
-
-
         </>
     )
 }
 
-export default Admin;
+export default Admin

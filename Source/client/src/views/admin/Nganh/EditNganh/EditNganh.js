@@ -7,8 +7,8 @@ import TableChuyenNganh from "../ChiTietNganh/TableChuyenNganh/TableChuyenNganh"
 import { fetchDetailNganh, fetchEditNganh } from "../../GetData"
 import { toast } from "react-toastify";
 import axios from "../../../custom-axios"
-const EditNganh = (props) => {
-    const accessToken = props.accessToken;
+const EditNganh = () => {
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     const nganh = useParams();
     let navigate = useNavigate();
 
@@ -38,14 +38,13 @@ const EditNganh = (props) => {
     const handleEditNganh = async () => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchEditNganh(headers, MaNganh, TenNganh)
-        console.log(res)
-        if (res.success === true) {
-            toast.success('Cập nhật thông tin thành công !')
+        if (res.status === true) {
+            toast.success(res.message)
             navigate("/admin/nganhhoc")
             return;
         }
-        if (res.success === false) {
-            toast.error("Cập nhật thông tin thất bại !")
+        if (res.status === false) {
+            toast.error(res.message)
             return;
         }
     }
