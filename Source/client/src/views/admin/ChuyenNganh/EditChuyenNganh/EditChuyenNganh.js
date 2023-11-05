@@ -1,26 +1,47 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import * as React from 'react';
-import "./EditChuyenNganh.scss"
+import "./EditChuyenNganh.scss";
+import { fetchDetailChuyenNganh, fetchEditChuyenNganh, fetchAllNganh } from "../../GetData"
+import { toast } from "react-toastify";
 const EditChuyenNganh = () => {
-    const dulieutest = {
-        machuyennganh: 'HTTT',
-        tenchuyennganh: 'Hệ Thống Thông Tin',
-        nganh: 'cntt',
-        trangthai: 1,
-    };
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     const chuyennganh = useParams();
-    const [manchuyenganh, SetMachuyennganh] = useState(dulieutest.machuyennganh)
-    const [tenchuyennganh, SetTenchuyennganh] = useState(dulieutest.tenchuyennganh)
-    const [nganhhoc, SetNganhhoc] = useState(dulieutest.nganh)
+    let navigate = useNavigate();
+    const [listData_nganh, SetListData_nganh] = useState([]);
+    const [manchuyenganh, SetMachuyennganh] = useState("")
+    const [tenchuyennganh, SetTenchuyennganh] = useState("")
+    const [nganhhoc, SetNganhhoc] = useState("")
     const onChangeInputSL = (event, SetSL) => {
         let changeValue = event.target.value;
         SetSL(changeValue);
     }
+
+    useEffect(() => {
+        getDetailChuyenNganh();
+        getListNganh();
+
+    }, []);
+    const getListNganh = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchAllNganh(headers);
+        if (res && res.data && res.data.DanhSach) {
+            SetListData_nganh(res.data.DanhSach)
+        }
+    }
+    const getDetailChuyenNganh = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDetailChuyenNganh(headers, chuyennganh.MaChuyenNganh);
+        if (res && res.data) {
+            SetMachuyennganh(res.data.MaChuyenNganh)
+            SetTenchuyennganh(res.data.TenChuyenNganh)
+            SetNganhhoc(res.data.MaNganh.MaNganh)
+        }
+    }
+
     const onChangeSelect = (event, SetSelect) => {
         let changeValue = event.target.value;
-        console.log('select', changeValue)
         SetSelect(changeValue);
     }
 
@@ -30,13 +51,6 @@ const EditChuyenNganh = () => {
     const checkdulieu = (value, SetDuLieu) => {
         value === '' ? SetDuLieu(false) : SetDuLieu(true)
     }
-
-    const nganh = [
-        { id: 'CNTT', ten: 'Công nghệ thông tin' },
-        { id: 'CNTT_CLC', ten: 'Công nghệ thông tin CLC' },
-        { id: 'KTPM', ten: 'Kỹ thuật phần mềm' },
-
-    ]
 
     return (
         <main className="main2">
@@ -54,7 +68,7 @@ const EditChuyenNganh = () => {
                         </li>
                         <li><i className='bx bx-chevron-right'></i></li>
                         <li>
-                            <Link className="active" >{chuyennganh.machuyennganh}</Link>
+                            <Link className="active" >{chuyennganh.MaChuyenNganh}</Link>
                         </li>
                     </ul>
                 </div>
@@ -77,13 +91,13 @@ const EditChuyenNganh = () => {
                         </div>
                     </div>
                     <div className="form-row">
-                        <div className="form-group col-md-6">
+                        <div className="form-group col-md-12">
                             <label className="inputNganh" for="inputNganh">Ngành</label>
                             <select value={nganhhoc} onChange={(event) => onChangeSelect(event, SetNganhhoc)} id="inputNganh" className="form-control">
-                                {nganh && nganh.length > 0 &&
-                                    nganh.map((item, index) => {
+                                {listData_nganh && listData_nganh.length > 0 &&
+                                    listData_nganh.map((item, index) => {
                                         return (
-                                            <option key={item.id} value={item.id}>{item.ten}</option>
+                                            <option key={item.MaNganh} value={item.MaNganh}>{item.TenNganh}</option>
                                         )
                                     })
                                 }

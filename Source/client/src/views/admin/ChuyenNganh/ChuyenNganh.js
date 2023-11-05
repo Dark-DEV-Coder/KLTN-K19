@@ -1,9 +1,9 @@
 import "./ChuyenNganh.scss"
 import { Link } from "react-router-dom";
 import TableChuyenNganh from "./TableChuyenNganh";
-
-
+import { useState } from 'react';
 const ChuyenNganh = () => {
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     return (
         <>
             <main className="main2">
@@ -26,7 +26,7 @@ const ChuyenNganh = () => {
                         <span className="text">Create Data</span>
                     </Link>
                 </div>
-                <TableChuyenNganh />
+                <TableChuyenNganh accessToken={accessToken} />
 
             </main >
         </>

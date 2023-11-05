@@ -4,8 +4,6 @@ import TableNganh from "./TableNganh";
 import { useState } from "react";
 
 const Nganh = () => {
-
-
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     // get danh sach nganh
     return (

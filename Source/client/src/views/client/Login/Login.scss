@@ -89,7 +89,8 @@
                     }
 
                     .label-dky {
-                        margin: auto;
+                        margin    : auto;
+                        margin-top: -2%;
 
                         .pass-mk:first-child {
                             margin-left     : 2%;
@@ -105,6 +106,8 @@
                             text-align      : start;
                             font-family     : 'Montserrat';
                             font-weight     : 200;
+                            font-style      : italic;
+                            font-size       : 17px;
                             // white-space  : nowrap;
                             // overflow     : hidden;
                             // text-overflow: ellipsis;
@@ -120,8 +123,8 @@
                     // margin-bottom : 0%;
                     text-align       : start;
                     font-family      : 'Montserrat';
-                    font-weight      : 400;
-                    // font-size     : 17px;
+                    font-weight      : 600;
+                    font-size        : 18px;
                     // color         : #202C45;
                     // padding-bottom: 0px;
                     // white-space   : nowrap;

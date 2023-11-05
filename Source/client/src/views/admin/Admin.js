@@ -110,7 +110,7 @@ const Admin = () => {
                         <Route path='giangvien'  >
                             <Route index element={<GiangVien />}></Route>
                             <Route path="new" element={<AddGiangVien />} ></Route>
-                            <Route path="edit/:magv" element={<EditGiangVien />} ></Route>
+                            <Route path="edit/:MaGV" element={<EditGiangVien />} ></Route>
                         </Route>
                         <Route path='sinhvien'  >
                             <Route index element={<SinhVien />}></Route>
@@ -126,7 +126,7 @@ const Admin = () => {
                         <Route path='chuyennganh'  >
                             <Route index element={<ChuyenNganh />}></Route>
                             <Route path="new" element={<AddChuyenNganh />} ></Route>
-                            <Route path="edit/:machuyennganh" element={<EditChuyenNganh />} ></Route>
+                            <Route path="edit/:MaChuyenNganh" element={<EditChuyenNganh />} ></Route>
                         </Route>
                         <Route path='taikhoan'  >
                             <Route index element={<TaiKhoan />}></Route>

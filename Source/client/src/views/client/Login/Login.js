@@ -66,32 +66,35 @@ const Login = () => {
                                     <label htmlFor="exampleInputEmail1">TÊN ĐĂNG NHẬP</label>
                                     <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={TenDangNhap} placeholder="Điền tài khoản ..." onChange={(event) => onChangeInputSL(event, setTenDangNhap)} onBlur={() => checkdulieu(TenDangNhap, setCheckTenDangNhap)} />
                                 </div>
-                                <div className="form-group">
-                                    <label htmlFor="exampleInputPassword1">MẬT KHẨU</label>
-                                    <input type={isShowPass === true ? "text" : "password"} className="form-control" id="exampleInputPassword1" placeholder="Điền mật khẩu ..." value={MatKhau} onChange={(event) => onChangeInputSL(event, setMatKhau)} onBlur={() => checkdulieu(MatKhau, setCheckMatKhau)} />
-                                    <div onClick={() => setIsShowPass(!isShowPass)}>
-                                        {isShowPass === true ?
-                                            <VisibilityIcon style={{ color: '#1E3050', position: 'absolute', right: '22%', top: '61%' }} />
-                                            :
-                                            <VisibilityOffIcon style={{ color: '#1E3050', position: 'absolute', right: '22%', top: '61%' }} />
-                                        }
-
-                                    </div>
-                                    <div className='label-dky' >
-                                        <label className='pass-mk'>
-                                            <Link to="/dangky">
-                                                <u>Đăng ký tài khoản</u>
-                                            </Link>
-                                        </label>
-                                        <label className='pass-mk' style={{ marginLeft: '25%' }}>
-                                            <Link to="/quenmatkhau">
-                                                <u>Quên mật khẩu</u>
-                                            </Link>
-                                        </label>
+                                <div className="form-row">
+                                    <div className="form-group col-md-12">
+                                        <label htmlFor="exampleInputPassword1">MẬT KHẨU</label>
+                                        <input type={isShowPass === true ? "text" : "password"} className="form-control" id="exampleInputPassword1" placeholder="Điền mật khẩu ..." value={MatKhau} onChange={(event) => onChangeInputSL(event, setMatKhau)} onBlur={() => checkdulieu(MatKhau, setCheckMatKhau)} />
+                                        <div style={{ width: '50px', background: 'red' }} onClick={() => setIsShowPass(!isShowPass)}>
+                                            {isShowPass === true ?
+                                                <VisibilityIcon style={{ color: '#1E3050', position: 'absolute', right: '22%', top: '63%' }} />
+                                                :
+                                                <VisibilityOffIcon style={{ color: '#1E3050', position: 'absolute', right: '22%', top: '63%' }} />
+                                            }
+                                        </div>
                                     </div>
                                 </div>
-
-
+                                <div className="form-row">
+                                    <div className="form-group col-md-12">
+                                        <div className='label-dky' >
+                                            <label className='pass-mk'>
+                                                <Link to="/dangky">
+                                                    <u>Đăng ký tài khoản</u>
+                                                </Link>
+                                            </label>
+                                            <label className='pass-mk' style={{ marginLeft: '25%' }}>
+                                                <Link to="/quenmatkhau">
+                                                    <u>Quên mật khẩu</u>
+                                                </Link>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <button type="button" className={TenDangNhap && MatKhau ? "active btn2 btn-primary" : "btn2 btn-primary"} disabled={TenDangNhap && MatKhau ? false : true} onClick={() => handleLogin()}><i className="fa-solid fa-sync fa-spin"></i>{loadingAPI ? "Loading ..." : "ĐĂNG NHẬP"}</button>
                             </form>
                         </div>
