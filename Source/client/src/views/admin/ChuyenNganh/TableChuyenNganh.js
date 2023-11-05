@@ -9,7 +9,9 @@ import {
     IconButton,
 } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
-
+import { toast } from "react-toastify";
+import { useEffect } from 'react';
+import { fetchAllChuyenNganh } from "../GetData"
 
 const data = [
     {
@@ -57,8 +59,21 @@ const csvConfig = mkConfig({
     useKeysAsHeaders: true,
 });
 
-const TableChuyenNganh = () => {
-    const [checkdiv, setCheckdiv] = useState(false)
+const TableChuyenNganh = (props) => {
+    const accessToken = props.accessToken;
+    const [listData_chuyennganh, SetListData_chuyennganh] = useState([]);
+    // component didmount
+    useEffect(() => {
+        getListChuyenNganh();
+    }, []);
+
+    const getListChuyenNganh = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchAllChuyenNganh(headers);
+        if (res && res.data && res.data.DanhSach) {
+            SetListData_chuyennganh(res.data.DanhSach)
+        }
+    }
 
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
@@ -67,13 +82,13 @@ const TableChuyenNganh = () => {
     };
 
     const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(data);
+        const csv = generateCsv(csvConfig)(listData_chuyennganh);
         download(csvConfig)(csv);
     };
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'machuyennganh',
+                accessorKey: 'MaChuyenNganh',
                 header: 'Mã Chuyên Ngành',
                 size: 100,
                 enableColumnOrdering: false,
@@ -82,14 +97,14 @@ const TableChuyenNganh = () => {
 
             },
             {
-                accessorKey: 'tenchuyennganh',
+                accessorKey: 'TenChuyenNganh',
                 header: 'Tên Chuyên Ngành',
                 size: 100,
                 enableEditing: false,
 
             },
             {
-                accessorKey: 'nganh',
+                accessorKey: 'MaNganh.TenNganh',
                 header: 'Ngành học',
                 size: 100,
                 enableEditing: false,
@@ -100,7 +115,7 @@ const TableChuyenNganh = () => {
 
     const table = useMantineReactTable({
         columns,
-        data,
+        data: listData_chuyennganh,
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',
@@ -108,9 +123,6 @@ const TableChuyenNganh = () => {
         positionActionsColumn: 'last',
         enableColumnActions: true,
         enableRowActions: true,
-
-
-
         renderRowActions: ({ row, table }) => (
             <Box sx={{ display: 'flex', gap: '0.3rem' }}>
 
@@ -118,8 +130,7 @@ const TableChuyenNganh = () => {
                     <Visibility fontSize="small" />
                 </IconButton>
 
-
-                <Link to={"/admin/chuyennganh/edit/" + row.original.machuyennganh}>
+                <Link to={"/admin/chuyennganh/edit/" + row.original.MaChuyenNganh}>
                     <IconButton  >
                         <Edit fontSize="small" />
                     </IconButton>

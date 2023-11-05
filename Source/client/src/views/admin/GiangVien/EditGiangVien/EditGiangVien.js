@@ -1,43 +1,79 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { fetchAllNganh, fetchDetailGiangVien, fetchEditGiangVien } from "../../GetData"
 import * as React from 'react';
+import { toast } from "react-toastify";
+import moment from "moment";
 import "./EditGiangVien.scss"
 
 const EditGiangVien = () => {
-    const dulieutest = {
-        magv: 'GV1',
-        hogv: 'Nguyễn Thanh',
-        tengv: 'Sang',
-        email: 'sang@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'Nam',
-        ngaysinh: '1990-08-12',
-        donvicongtac: 'CNTT',
-        chuyennganh: 'ktpm',
-        trinhdo: 'Thạc Sĩ',
-        trangthai: 1,
-
-    };
-    const nganh = [
-        { id: 'httt', ten: 'Hệ thống thông tin' },
-        { id: 'khmt', ten: 'Khoa học máy tính' },
-        { id: 'ktpm', ten: 'Kỹ thuật phần mềm' },
-        { id: 'mmt', ten: 'Mạng máy tính' },
-    ]
-
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+    let navigate = useNavigate();
     const giangvien = useParams();
+    const [listNganh, setListNganh] = useState([]);
+    const [magv, SetMagv] = useState("")
+    const [hogv, SetHogv] = useState("")
+    const [tengv, SetTengv] = useState("")
+    const [email, SetEmail] = useState("")
+    const [sdt, SetSdt] = useState("")
+    const [gioitinh, SetGioitinh] = useState("")
+    const [ngaysinh, SetNgaysinh] = useState("")
+    const [donvicongtac, SetDonvicongtac] = useState("")
+    const [chuyennganh, SetChuyennganh] = useState("")
+    const [trinhdo, SetTrinhdo] = useState("")
+    const [giangvienEdit, setGiangvienEdit] = useState({ MaGV: "", HoGV: "", TenGV: "", Email: "", SoDienThoai: "", GioiTinh: "", NgaySinh: "", DonViCongTac: "", ChuyenNganh: "", TrinhDo: "" });
 
-    const [hogv, SetHogv] = useState(dulieutest.hogv)
-    const [tengv, SetTengv] = useState(dulieutest.tengv)
-    const [email, SetEmail] = useState(dulieutest.email)
-    const [sdt, SetSdt] = useState(dulieutest.sdt)
-    const [gioitinh, SetGioitinh] = useState(dulieutest.gioitinh)
-    const [ngaysinh, SetNgaysinh] = useState(dulieutest.ngaysinh)
-    const [donvicongtac, SetDonvicongtac] = useState(dulieutest.donvicongtac)
-    const [chuyennganh, SetChuyennganh] = useState(dulieutest.chuyennganh)
-    const [trinhdo, SetTrinhdo] = useState(dulieutest.trinhdo)
+    // component didmount
+    useEffect(() => {
+        getListNganh();
+        getDetailGiangVien();
+    }, []);
 
+    const getListNganh = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchAllNganh(headers);
+        if (res && res.data && res.data.DanhSach) {
+            setListNganh(res.data.DanhSach)
+        }
+    }
+
+    const getDetailGiangVien = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDetailGiangVien(headers, giangvien.MaGV);
+        if (res && res.data) {
+            SetMagv(res.data.MaGV)
+            SetHogv(res.data.HoGV)
+            SetTengv(res.data.TenGV)
+            SetEmail(res.data.Email)
+            SetSdt(res.data.SoDienThoai)
+            SetGioitinh(res.data.GioiTinh)
+            SetNgaysinh(moment(res.data.NgaySinh).format("YYYY-MM-DD"))
+            console.log(ngaysinh)
+            SetDonvicongtac(res.data.DonViCongTac)
+            SetChuyennganh(res.data.ChuyenNganh)
+            SetTrinhdo(res.data.TrinhDo)
+        }
+    }
+    const handleEditGiangVien = async () => {
+        const headers = { 'x-access-token': accessToken };
+        if (!headers || !magv || !hogv || !tengv || !email || !sdt || !gioitinh || !ngaysinh || !donvicongtac || !chuyennganh || !trinhdo) {
+            toast.error("Vui lòng điền đầy đủ dữ liệu")
+            return
+        }
+
+        let res = await fetchEditGiangVien(headers, magv, hogv, tengv, email, sdt, gioitinh, moment(ngaysinh).format("DD-MM-YYYY"), donvicongtac, chuyennganh, trinhdo)
+        if (res.status === true) {
+            toast.success(res.message)
+            navigate("/admin/giangvien")
+            return;
+        }
+        if (res.status === false) {
+            toast.error(res.message)
+            return;
+
+        }
+    }
 
     const onChangeInputSL = (event, SetState) => {
         let changeValue = event.target.value;
@@ -46,7 +82,6 @@ const EditGiangVien = () => {
 
     const onChangeSelect = (event, SetSelect) => {
         let changeValue = event.target.value;
-        console.log("Select", changeValue)
         SetSelect(changeValue);
     }
 
@@ -60,7 +95,6 @@ const EditGiangVien = () => {
     const checkdulieu = (value, SetDuLieu) => {
         value === '' ? SetDuLieu(false) : SetDuLieu(true)
     }
-
     return (
         <main className="main2">
             {/* <HeaderMain title={'Chuyên ngành'} /> */}
@@ -77,10 +111,8 @@ const EditGiangVien = () => {
                         </li>
                         <li><i className='bx bx-chevron-right'></i></li>
                         <li>
-                            <Link className="active" >{giangvien.magv}</Link>
+                            <Link className="active" >{magv}</Link>
                         </li>
-
-
                     </ul>
                 </div>
 
@@ -91,54 +123,54 @@ const EditGiangVien = () => {
                 <div className="container-edit">
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label className="inputGV" for="inputHoGV">Họ lót</label>
+                            <label className="inputGV" htmlFor="inputHoGV">Họ lót</label>
                             <input type="text" className="form-control" id="inputHoGV" value={hogv} onChange={(event) => onChangeInputSL(event, SetHogv)} onBlur={() => checkdulieu(hogv, SetCheckdulieuHo)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuHo ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
-                            <label className="inputGV" for="inputTenGV">Tên</label>
+                            <label className="inputGV" htmlFor="inputTenGV">Tên</label>
                             <input type="text" className="form-control" id="inputTenGV" value={tengv} onChange={(event) => onChangeInputSL(event, SetTengv)} onBlur={() => checkdulieu(tengv, SetCheckdulieuTen)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label className="inputGV" for="inputEmailGV">Email</label>
+                            <label className="inputGV" htmlFor="inputEmailGV">Email</label>
                             <input type="text" className="form-control" id="inputEmailGV" value={email} onChange={(event) => onChangeInputSL(event, SetEmail)} onBlur={() => checkdulieu(email, SetCheckdulieuEmail)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuEmail ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
-                            <label className="inputGV" for="inputSdtGV">Số điện thoại</label>
+                            <label className="inputGV" htmlFor="inputSdtGV">Số điện thoại</label>
                             <input type="text" className="form-control" id="inputSdtGV" value={sdt} onChange={(event) => onChangeInputSL(event, SetSdt)} onBlur={() => checkdulieu(sdt, SetCheckdulieuSDT)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuSDT ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label className="inputGV" for="inputGioitinhGV">Giới tính</label>
+                            <label className="inputGV" htmlFor="inputGioitinhGV">Giới tính</label>
                             <select value={gioitinh} onChange={(event) => onChangeSelect(event, SetGioitinh)} id="inputGioitinhGV" className="form-control">
                                 <option value='Nam'>Nam</option>
                                 <option value='Nữ'>Nữ</option>
                             </select>
                         </div>
                         <div className="form-group col-md-6">
-                            <label className="inputGV" for="inputNgaysinh">Ngày sinh</label>
+                            <label className="inputGV" htmlFor="inputNgaysinh">Ngày sinh</label>
                             <input type="date" className="form-control" id="inputNgaysinh" value={ngaysinh} onChange={(event) => onChangeInputSL(event, SetNgaysinh)} />
                         </div>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label className="inputGV" for="inputDonviCT">Đơn vị công tác</label>
+                            <label className="inputGV" htmlFor="inputDonviCT">Đơn vị công tác</label>
                             <input type="text" className="form-control" id="inputDonviCT" value={donvicongtac} onChange={(event) => onChangeInputSL(event, SetDonvicongtac)} onBlur={() => checkdulieu(donvicongtac, SetCheckdulieuDVCT)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuDVCT ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
-                            <label className="inputGV" for="inputChuyennganh">Chuyên ngành</label>
+                            <label className="inputGV" htmlFor="inputChuyennganh">Chuyên ngành</label>
                             <select value={chuyennganh} onChange={(event) => onChangeSelect(event, SetChuyennganh)} id="inputChuyennganh" className="form-control">
-                                {nganh && nganh.length > 0 &&
-                                    nganh.map((item, index) => {
+                                {listNganh && listNganh.length > 0 &&
+                                    listNganh.map((item, index) => {
                                         return (
-                                            <option key={item.id} value={item.id}>{item.ten}</option>
+                                            <option key={item.MaNganh} value={item.MaNganh}>{item.TenNganh}</option>
                                         )
                                     })
                                 }
@@ -147,13 +179,13 @@ const EditGiangVien = () => {
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-12">
-                            <label className="inputGV" for="inputTrinhdo">Trình độ</label>
+                            <label className="inputGV" htmlFor="inputTrinhdo">Trình độ</label>
                             <input type="text" className="form-control" id="inputTrinhdo" value={trinhdo} onChange={(event) => onChangeInputSL(event, SetTrinhdo)} onBlur={() => checkdulieu(trinhdo, SetCheckdulieuTrinhDo)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuTrinhDo ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
 
                     </div>
-                    <button className="btn" type="submit">Submit form</button>
+                    <button className="btn" type="button" onClick={() => handleEditGiangVien()}>Lưu</button>
                 </div>
 
 

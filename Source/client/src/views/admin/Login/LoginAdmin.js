@@ -46,7 +46,7 @@ const LoginAdmin = (props) => {
             }
             OnCheckLogin();
             toast.success(res.message)
-            navigate("/admin")
+            navigate("/admin/")
             return
         }
         if (!res.status) {
@@ -79,7 +79,6 @@ const LoginAdmin = (props) => {
                                                 :
                                                 <VisibilityOffIcon style={{ color: '#1E3050', position: 'absolute', right: '22%', top: '61%' }} />
                                             }
-
                                         </div>
 
                                         {/* <div className="invalid-feedback2" style={{ display: checkMatKhau ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div> */}

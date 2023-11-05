@@ -1,183 +1,54 @@
 
 import "./TableGiangVien.scss";
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
-import React, { useCallback, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Box, Button } from '@mantine/core';
 import { IconDownload, IconUpload } from '@tabler/icons-react';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
 import { Link } from "react-router-dom";
-import {
-    IconButton,
-} from '@mui/material';
+import { IconButton } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
-
-const data = [
-    {
-        magv: 'GV1',
-        hogv: 'Nguyễn Thanh',
-        tengv: 'Sang',
-        email: 'sang@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nam',
-        ngaysinh: '1990-08-12',
-        donvicongtac: 'CNTT',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        trinhdo: 'Thạc Sĩ',
-        trangthai: 1,
-    },
-    {
-        magv: 'GV2',
-        hogv: 'Nguyễn Thanh',
-        tengv: 'Sang',
-        email: 'sang@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nam',
-        ngaysinh: '1990-08-12',
-        donvicongtac: 'CNTT',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        trinhdo: 'Thạc Sĩ',
-        trangthai: 1,
-    },
-    {
-        magv: 'GV3',
-        hogv: 'Nguyễn Thanh',
-        tengv: 'Sang',
-        email: 'sang@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nam',
-        ngaysinh: '1990-08-12',
-        donvicongtac: 'CNTT',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        trinhdo: 'Thạc Sĩ',
-        trangthai: 1,
-    },
-    {
-        magv: 'GV4',
-        hogv: 'Nguyễn Thanh',
-        tengv: 'Sang',
-        email: 'sang@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nam',
-        ngaysinh: '1990-08-12',
-        donvicongtac: 'CNTT',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        trinhdo: 'Thạc Sĩ',
-        trangthai: 1,
-    },
-    {
-        magv: 'GV5',
-        hogv: 'Nguyễn Thanh',
-        tengv: 'Sang',
-        email: 'sang@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nam',
-        ngaysinh: '1990-08-12',
-        donvicongtac: 'CNTT',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        trinhdo: 'Thạc Sĩ',
-        trangthai: 1,
-    },
-    {
-        magv: 'GV6',
-        hogv: 'Nguyễn Thanh',
-        tengv: 'Sang',
-        email: 'sang@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nam',
-        ngaysinh: '1990-08-12',
-        donvicongtac: 'CNTT',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        trinhdo: 'Thạc Sĩ',
-        trangthai: 1,
-    },
-    {
-        magv: 'GV7',
-        hogv: 'Nguyễn Thanh',
-        tengv: 'Sang',
-        email: 'sang@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nam',
-        ngaysinh: '1990-08-12',
-        donvicongtac: 'CNTT',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        trinhdo: 'Thạc Sĩ',
-        trangthai: 1,
-    },
-    {
-        magv: 'GV8',
-        hogv: 'Nguyễn Thanh',
-        tengv: 'Sang',
-        email: 'sang@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nam',
-        ngaysinh: '1990-08-12',
-        donvicongtac: 'CNTT',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        trinhdo: 'Thạc Sĩ',
-        trangthai: 1,
-    },
-    {
-        magv: 'GV9',
-        hogv: 'Nguyễn Thanh',
-        tengv: 'Sang',
-        email: 'sang@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nam',
-        ngaysinh: '1990-08-12',
-        donvicongtac: 'CNTT',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        trinhdo: 'Thạc Sĩ',
-        trangthai: 1,
-    },
-    {
-        magv: 'GV10',
-        hogv: 'Nguyễn Thanh',
-        tengv: 'Sang',
-        email: 'sang@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nam',
-        ngaysinh: '1990-08-12',
-        donvicongtac: 'CNTT',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        trinhdo: 'Thạc Sĩ',
-        trangthai: 1,
-    },
-    {
-        magv: 'GV11',
-        hogv: 'Nguyễn Thanh',
-        tengv: 'Sang',
-        email: 'sang@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nam',
-        ngaysinh: '1990-08-12',
-        donvicongtac: 'CNTT',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        trinhdo: 'Thạc Sĩ',
-        trangthai: 1,
-    },
-    {
-        magv: 'GV12',
-        hogv: 'Nguyễn Thanh',
-        tengv: 'Sang',
-        email: 'sang@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nam',
-        ngaysinh: '1990-08-12',
-        donvicongtac: 'CNTT',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        trinhdo: 'Thạc Sĩ',
-        trangthai: 1,
-    },
-]
-
+import { fetchAllGiangVien, fetchDeleteGiangVien } from "../GetData"
+import { toast } from "react-toastify";
+import { useState, useEffect } from 'react';
+import moment from "moment";
 const csvConfig = mkConfig({
     fieldSeparator: ',',
     decimalSeparator: '.',
     useKeysAsHeaders: true,
 });
 
-const TableGiangVien = () => {
-    const [checkdiv, setCheckdiv] = useState(false)
+const TableGiangVien = (props) => {
+    const accessToken = props.accessToken;
+    const [listData_giangvien, SetListData_giangvien] = useState([]);
+
+    // component didmount
+    useEffect(() => {
+        getListGiangVien();
+    }, []);
+
+    const getListGiangVien = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchAllGiangVien(headers);
+        if (res && res.data && res.data.DanhSach) {
+            SetListData_giangvien(res.data.DanhSach)
+        }
+    }
+
+    const handleDeleteRows = async (row) => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDeleteGiangVien(headers, row.original.MaGV)
+        if (res.status === true) {
+            toast.success(res.message)
+            getListGiangVien()
+            return;
+        }
+        if (res.success === false) {
+            toast.error(res.message)
+            return;
+        }
+    }
+
 
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
@@ -186,13 +57,13 @@ const TableGiangVien = () => {
     };
 
     const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(data);
+        const csv = generateCsv(csvConfig)(listData_giangvien);
         download(csvConfig)(csv);
     };
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'magv',
+                accessorKey: 'MaGV',
                 header: 'Mã',
                 size: 100,
                 enableColumnOrdering: false,
@@ -200,7 +71,7 @@ const TableGiangVien = () => {
                 enableSorting: false,
             },
             {
-                accessorKey: 'hogv',
+                accessorKey: 'HoGV',
                 header: 'Họ',
                 size: 150,
                 enableEditing: false,
@@ -208,14 +79,14 @@ const TableGiangVien = () => {
 
             },
             {
-                accessorKey: 'tengv',
+                accessorKey: 'TenGV',
                 header: 'Tên',
                 size: 100,
                 enableEditing: false,
             },
             {
 
-                accessorKey: 'email',
+                accessorKey: 'Email',
                 header: 'Email',
                 size: 160,
                 enableEditing: false,
@@ -223,35 +94,34 @@ const TableGiangVien = () => {
 
             },
             {
-                accessorKey: 'sdt',
+                accessorKey: 'SoDienThoai',
                 header: 'Số điện thoại',
                 size: 100,
                 enableEditing: false,
             },
             {
-                accessorKey: 'gioitinh',
+                accessorKey: 'GioiTinh',
                 header: 'Giới Tính',
                 size: 100,
                 enableEditing: false,
             },
             {
 
-                accessorKey: 'ngaysinh',
+                accessorKey: 'NgaySinh',
                 header: 'Ngày sinh',
+                accessorFn: (dataRow) => moment(dataRow.NgaySinh).format("DD-MM-YYYY"),
                 size: 100,
                 enableEditing: false,
-
-
             },
             {
-                accessorKey: 'donvicongtac',
+                accessorKey: 'DonViCongTac',
                 header: 'Đơn vị công tác',
                 size: 150,
                 enableEditing: false,
             },
             {
 
-                accessorKey: 'chuyennganh',
+                accessorKey: 'ChuyenNganh',
                 header: 'Chuyên ngành',
                 size: 150,
                 enableEditing: false,
@@ -259,7 +129,7 @@ const TableGiangVien = () => {
 
             },
             {
-                accessorKey: 'trinhdo',
+                accessorKey: 'TrinhDo',
                 header: 'Trình độ',
                 size: 150,
                 enableEditing: false,
@@ -269,7 +139,7 @@ const TableGiangVien = () => {
 
     const table = useMantineReactTable({
         columns,
-        data,
+        data: listData_giangvien,
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',
@@ -289,13 +159,13 @@ const TableGiangVien = () => {
                 </Link>
 
 
-                <Link to={"/admin/giangvien/edit/" + row.original.magv}>
+                <Link to={"/admin/giangvien/edit/" + row.original.MaGV}>
                     <IconButton onClick={() => table.setEditingRow(row)}>
                         <Edit fontSize="small" />
                     </IconButton>
                 </Link>
 
-                <IconButton onClick={() => console.log(row.original.name)}>
+                <IconButton onClick={() => handleDeleteRows(row)}>
                     <Delete fontSize="small" sx={{ color: 'red' }} />
                 </IconButton>
             </Box >
