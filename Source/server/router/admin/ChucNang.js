@@ -73,27 +73,27 @@ ChucNangAdminRoute.get('/ChiTietChucNang/:MaCN', async (req, res) => {
  * @description Thêm chức năng
  * @access public
  */
-ChucNangAdminRoute.post('/Them', async (req, res) => {
+ChucNangAdminRoute.post('/Them', createChucNangDir, uploadImg.single('Hinh'), async (req, res) => {
     try{
         const errors = KtraDuLieuChucNangKhiThem(req.body)
         if (errors)
             return sendError(res, errors)
-        const { MaCN, TenChucNang, Hinh } = req.body;
+        const { MaCN, TenChucNang } = req.body;
         const isExist = await ChucNang.findOne({ MaCN: MaCN }).lean();
         if (isExist)
             return sendError(res, "Mã chức năng đã tồn tại");
-        // let fileImage = await `${req.file.destination}${req.file.filename}`;
-        // let nameImage = await req.file.filename + TenChucNang.normalize('NFD')
-        //                                                     .replace(/[\u0300-\u036f]/g, '')
-        //                                                     .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-        //                                                     .replace(/ /g, '');
-        // let resultImage = await UploadHinhLenCloudinary(fileImage, "ChucNang", nameImage);
-        // if (resultImage) {
-        //     fs.unlinkSync(fileImage, (err) => {
-        //         console.log(err);
-        //     })
-        // }
-        const chucnang = await ChucNang.create({ MaCN: MaCN, TenChucNang: TenChucNang, Hinh: Hinh });
+        let fileImage = await `${req.file.destination}${req.file.filename}`;
+        let nameImage = await req.file.filename + TenChucNang.normalize('NFD')
+                                                            .replace(/[\u0300-\u036f]/g, '')
+                                                            .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+                                                            .replace(/ /g, '');
+        let resultImage = await UploadHinhLenCloudinary(fileImage, "ChucNang", nameImage);
+        if (resultImage) {
+            fs.unlinkSync(fileImage, (err) => {
+                console.log(err);
+            })
+        }
+        const chucnang = await ChucNang.create({ MaCN: MaCN, TenChucNang: TenChucNang, Hinh: resultImage });
 
         return sendSuccess(res, "Thêm chức năng thành công", chucnang);
     }
@@ -108,33 +108,33 @@ ChucNangAdminRoute.post('/Them', async (req, res) => {
  * @description Chỉnh sửa thông tin chức năng
  * @access public
  */
-ChucNangAdminRoute.put('/ChinhSua/:MaCN', async (req, res) => {
+ChucNangAdminRoute.put('/ChinhSua/:MaCN', createChucNangDir, uploadImg.single('Hinh'), async (req, res) => {
     try{
         const errors = KtraDuLieuChucNangKhiChinhSua(req.body)
         if (errors)
             return sendError(res, errors)
-        const { TenChucNang, Hinh } = req.body;
+        const { TenChucNang } = req.body;
         const { MaCN } = req.params;
         const isExist = await ChucNang.findOne({ MaCN: MaCN }).lean();
-        // if (isExist){
-        //     let splitUrl = await isExist.Hinh.split('/');
-        //     let file = await `${splitUrl[splitUrl.length - 2]}/${splitUrl[splitUrl.length - 1].split('.')[0]}`;
-        //     await DeleteHinhTrenCloudinary(file);
-        // }
+        if (isExist){
+            let splitUrl = await isExist.Hinh.split('/');
+            let file = await `${splitUrl[splitUrl.length - 2]}/${splitUrl[splitUrl.length - 1].split('.')[0]}`;
+            await DeleteHinhTrenCloudinary(file);
+        }
 
-        // let fileImage = await `${req.file.destination}${req.file.filename}`;
-        // let nameImage = await req.file.filename + TenChucNang.normalize('NFD')
-        //                                                     .replace(/[\u0300-\u036f]/g, '')
-        //                                                     .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-        //                                                     .replace(/ /g, '');
-        // let resultImage = await UploadHinhLenCloudinary(fileImage, "ChucNang", nameImage);
-        // if (resultImage) {
-        //     fs.unlinkSync(fileImage, (err) => {
-        //         console.log(err)
-        //     })
-        // }
+        let fileImage = await `${req.file.destination}${req.file.filename}`;
+        let nameImage = await req.file.filename + TenChucNang.normalize('NFD')
+                                                            .replace(/[\u0300-\u036f]/g, '')
+                                                            .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+                                                            .replace(/ /g, '');
+        let resultImage = await UploadHinhLenCloudinary(fileImage, "ChucNang", nameImage);
+        if (resultImage) {
+            fs.unlinkSync(fileImage, (err) => {
+                console.log(err)
+            })
+        }
 
-        await ChucNang.findOneAndUpdate({ MaCN: MaCN },{ TenChucNang: TenChucNang, Hinh: Hinh });
+        await ChucNang.findOneAndUpdate({ MaCN: MaCN },{ TenChucNang: TenChucNang, Hinh: resultImage });
 
         return sendSuccess(res, "Chỉnh sửa thông tin chức năng thành công");
     }
@@ -159,9 +159,9 @@ ChucNangAdminRoute.delete('/Xoa/:MaCN', async (req, res) => {
         if (KtraQuyen.length > 0)
             return sendError(res, "Đang còn vướng dữ liệu quyền tài khoản nên không thể xóa")
 
-        // let splitUrl = await isExist.Hinh.split('/');
-        // let file = await `${splitUrl[splitUrl.length - 2]}/${splitUrl[splitUrl.length - 1].split('.')[0]}`;
-        // await DeleteHinhTrenCloudinary(file);
+        let splitUrl = await isExist.Hinh.split('/');
+        let file = await `${splitUrl[splitUrl.length - 2]}/${splitUrl[splitUrl.length - 1].split('.')[0]}`;
+        await DeleteHinhTrenCloudinary(file);
 
         await ChucNang.findOneAndDelete({ MaCN: MaCN });
         return sendSuccess(res, "Xóa chức năng thành công.")
