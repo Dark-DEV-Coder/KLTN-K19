@@ -5,6 +5,7 @@ export const KtraDuLieuChucNangKhiThem = data => {
 
     error.isRequired(data.MaCN, "MaCN")
         .isRequired(data.TenChucNang, "TenChucNang")
+        .isRequired(data.Hinh, "Hinh")
 
     return error.get()
 }
@@ -13,6 +14,7 @@ export const KtraDuLieuChucNangKhiChinhSua = data => {
     const error = new Error()
 
     error.isRequired(data.TenChucNang, "TenChucNang")
+        .isRequired(data.Hinh, "Hinh")
 
     return error.get()
 }
