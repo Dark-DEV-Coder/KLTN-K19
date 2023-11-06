@@ -24,3 +24,11 @@ export const createGiangVienDir = (req, res, next) => {
     req.dirName = 'GiangVien'
     next()
 }
+
+export const createCanhBaoHocTapDir = (req, res, next) => {
+    mkdir(`public/CanhBaoHocTap`, { recursive: true }, (err) => {
+        if (err) return sendError(res, 'Không thể tải tập tin lên.')
+    })
+    req.dirName = 'CanhBaoHocTap'
+    next()
+}
