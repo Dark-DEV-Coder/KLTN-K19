@@ -10,7 +10,7 @@ const EditChuyenNganh = () => {
     const chuyennganh = useParams();
     let navigate = useNavigate();
     const [listData_nganh, SetListData_nganh] = useState([]);
-    const [manchuyenganh, SetMachuyennganh] = useState("")
+    const [machuyenganh, SetMachuyennganh] = useState("")
     const [tenchuyennganh, SetTenchuyennganh] = useState("")
     const [nganhhoc, SetNganhhoc] = useState("")
     const onChangeInputSL = (event, SetSL) => {
@@ -37,6 +37,25 @@ const EditChuyenNganh = () => {
             SetMachuyennganh(res.data.MaChuyenNganh)
             SetTenchuyennganh(res.data.TenChuyenNganh)
             SetNganhhoc(res.data.MaNganh.MaNganh)
+        }
+    }
+
+
+    const handleEditChuyenNganh = async () => {
+        const headers = { 'x-access-token': accessToken };
+        if (!machuyenganh || !tenchuyennganh) {
+            toast.error("Vui lòng điền đầy đủ dữ liệu !")
+            return
+        }
+        let res = await fetchEditChuyenNganh(headers, machuyenganh, nganhhoc, tenchuyennganh)
+        if (res.status === true) {
+            toast.success(res.message)
+            navigate("/admin/chuyennganh")
+            return;
+        }
+        if (res.status === false) {
+            toast.error(res.message)
+            return;
         }
     }
 
@@ -80,19 +99,19 @@ const EditChuyenNganh = () => {
                 <div className="container-edit">
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label className="inputNganh" for="inputMa">Mã chuyên ngành</label>
-                            <input type="text" className="form-control" id="inputMa" value={manchuyenganh} onChange={(event) => onChangeInputSL(event, SetMachuyennganh)} onBlur={(event) => checkdulieu(manchuyenganh, SetCheckdulieuMa)} />
+                            <label className="inputNganh" htmlFor="inputMa">Mã chuyên ngành</label>
+                            <input type="text" className="form-control" id="inputMa" value={machuyenganh} onChange={(event) => onChangeInputSL(event, SetMachuyennganh)} onBlur={(event) => checkdulieu(machuyenganh, SetCheckdulieuMa)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuMa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
-                            <label className="inputNganh" for="inputTen">Tên chuyên ngành</label>
+                            <label className="inputNganh" htmlFor="inputTen">Tên chuyên ngành</label>
                             <input type="text" className="form-control" id="inputTen" value={tenchuyennganh} onChange={(event) => onChangeInputSL(event, SetTenchuyennganh)} onBlur={(event) => checkdulieu(tenchuyennganh, SetCheckdulieuTen)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-12">
-                            <label className="inputNganh" for="inputNganh">Ngành</label>
+                            <label className="inputNganh" htmlFor="inputNganh">Ngành</label>
                             <select value={nganhhoc} onChange={(event) => onChangeSelect(event, SetNganhhoc)} id="inputNganh" className="form-control">
                                 {listData_nganh && listData_nganh.length > 0 &&
                                     listData_nganh.map((item, index) => {
@@ -106,7 +125,7 @@ const EditChuyenNganh = () => {
                     </div>
 
 
-                    <button className="btn" type="submit">Submit form</button>
+                    <button className="btn" type="button" onClick={() => handleEditChuyenNganh()}>Lưu</button>
                 </div>
 
 

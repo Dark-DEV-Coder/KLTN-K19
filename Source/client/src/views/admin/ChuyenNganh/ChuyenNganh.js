@@ -23,7 +23,7 @@ const ChuyenNganh = () => {
                     </div>
                     <Link to={"/admin/chuyennganh/new"} className="btn-download">
                         <i className='bx bxs-cloud-download'></i>
-                        <span className="text">Create Data</span>
+                        <span className="text">Tạo mới</span>
                     </Link>
                 </div>
                 <TableChuyenNganh accessToken={accessToken} />

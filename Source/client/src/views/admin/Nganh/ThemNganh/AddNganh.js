@@ -10,7 +10,6 @@ const AddNganh = () => {
     let navigate = useNavigate();
     const [Manganh, SetMaNganh] = useState('')
     const [TenNganh, SetTenNganh] = useState('')
-
     const handleAddNganh = async () => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchAddNganh(headers, Manganh, TenNganh)
