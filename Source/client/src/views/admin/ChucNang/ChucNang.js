@@ -1,9 +1,10 @@
 
 import { Link } from "react-router-dom";
 import TableChucNang from "./TableChucNang";
-
+import { useState } from "react";
 
 const ChucNang = () => {
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     return (
         <>
             <main className="main2">
@@ -23,10 +24,10 @@ const ChucNang = () => {
                     </div>
                     <Link to={"/admin/chucnang/new"} className="btn-download">
                         <i className='bx bxs-cloud-download'></i>
-                        <span className="text">Create Data</span>
+                        <span className="text">Tạo mới</span>
                     </Link>
                 </div>
-                <TableChucNang />
+                <TableChucNang accessToken={accessToken} />
 
             </main >
         </>

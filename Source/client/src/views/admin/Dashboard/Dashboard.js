@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Dashboard.scss"
 import logo from "./logo.png"
+import dia from "./dia.png"
 import { NavLink } from "react-router-dom";
 const Dashboard = (props) => {
 
@@ -44,25 +45,18 @@ const Dashboard = (props) => {
             <ul className="side-menu top">
 
                 {catalog && catalog.length > 0 && catalog.map((item, index) => {
-
                     return (
-
                         <li key={item.id} >
                             <NavLink to={"/admin/" + item.link} className={({ isActive }) => isActive ? "active" : ''}>
-                                <i className={item.img}></i>
+                                {/* <i className={item.img}></i> */}
+                                <img style={{ objectFit: 'cover', height: '20px', width: '20px', marginRight: '10px', marginLeft: '10px' }} src={dia} />
                                 <span className="text">{item.title}</span>
                             </NavLink>
                         </li>
 
                     )
                 })}
-
-
-
             </ul>
-
-
-
             <ul className="side-menu">
                 <li>
 

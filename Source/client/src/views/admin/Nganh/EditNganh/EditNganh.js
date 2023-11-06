@@ -37,6 +37,10 @@ const EditNganh = () => {
     }
     const handleEditNganh = async () => {
         const headers = { 'x-access-token': accessToken };
+        if (!MaNganh || !TenNganh) {
+            toast.error("Vui lòng điền đầy đủ dữ liệu !")
+            return
+        }
         let res = await fetchEditNganh(headers, MaNganh, TenNganh)
         if (res.status === true) {
             toast.success(res.message)

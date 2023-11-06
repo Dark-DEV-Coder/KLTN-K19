@@ -1,7 +1,7 @@
 
 
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Box, Button } from '@mantine/core';
 import { IconDownload, IconUpload } from '@tabler/icons-react';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
@@ -10,23 +10,9 @@ import {
     IconButton,
 } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
-
-
-const data = [
-    { MaCN: 'home', TenChucNang: 'Dashboard', },
-    { MaCN: 'dkichuyennganh', TenChucNang: 'Đăng ký chuyên ngành' },
-    { MaCN: 'khoaluan', TenChucNang: 'Khóa luận' },
-    { MaCN: 'thuctap', TenChucNang: 'Thực tập' },
-    { MaCN: 'totnghiep', TenChucNang: 'Tốt nghiệp' },
-    { MaCN: 'canhbaohoctap', TenChucNang: 'Cảnh báo' },
-    { MaCN: 'giangvien', TenChucNang: 'Giảng viên' },
-    { MaCN: 'sinhvien', TenChucNang: 'Sinh viên' },
-    { MaCN: 'nganhhoc', TenChucNang: 'Ngành' },
-    { MaCN: 'chuyennganh', TenChucNang: 'Chuyên ngành' },
-    { MaCN: 'taikhoan', TenChucNang: 'Tài khoản' },
-    { MaCN: 'chucnang', TenChucNang: 'Chức năng' },
-    { MaCN: 'chat', TenChucNang: 'ChatBox' },
-]
+import { toast } from "react-toastify";
+import { useState, useEffect } from 'react';
+import { fetchAllChucNang } from "../GetData"
 
 const csvConfig = mkConfig({
     fieldSeparator: ',',
@@ -34,8 +20,21 @@ const csvConfig = mkConfig({
     useKeysAsHeaders: true,
 });
 
-const TableChucNang = () => {
-    const [checkdiv, setCheckdiv] = useState(false)
+const TableChucNang = (props) => {
+    const accessToken = props.accessToken;
+    const [listData_chucnang, SetListData_chucnang] = useState([]);
+    // component didmount
+    useEffect(() => {
+        getListChucNang();
+    }, []);
+
+    const getListChucNang = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchAllChucNang(headers);
+        if (res && res.data && res.data.DanhSach) {
+            SetListData_chucnang(res.data.DanhSach)
+        }
+    }
 
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
@@ -44,7 +43,7 @@ const TableChucNang = () => {
     };
 
     const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(data);
+        const csv = generateCsv(csvConfig)(listData_chucnang);
         download(csvConfig)(csv);
     };
     const columns = useMemo(
@@ -71,7 +70,7 @@ const TableChucNang = () => {
 
     const table = useMantineReactTable({
         columns,
-        data,
+        data: listData_chucnang,
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',
@@ -79,7 +78,6 @@ const TableChucNang = () => {
         positionActionsColumn: 'last',
         enableColumnActions: true,
         enableRowActions: true,
-
 
 
         renderRowActions: ({ row, table }) => (

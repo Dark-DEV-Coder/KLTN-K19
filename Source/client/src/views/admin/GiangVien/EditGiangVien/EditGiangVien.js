@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { fetchAllNganh, fetchDetailGiangVien, fetchEditGiangVien } from "../../GetData"
+import { fetchAllChuyenNganh, fetchDetailGiangVien, fetchEditGiangVien } from "../../GetData"
 import * as React from 'react';
 import { toast } from "react-toastify";
 import moment from "moment";
@@ -11,7 +11,7 @@ const EditGiangVien = () => {
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     let navigate = useNavigate();
     const giangvien = useParams();
-    const [listNganh, setListNganh] = useState([]);
+    const [listChuyenNganh, setListChuyenNganh] = useState([]);
     const [magv, SetMagv] = useState("")
     const [hogv, SetHogv] = useState("")
     const [tengv, SetTengv] = useState("")
@@ -26,15 +26,14 @@ const EditGiangVien = () => {
 
     // component didmount
     useEffect(() => {
-        getListNganh();
+        getListChuyenNganh();
         getDetailGiangVien();
     }, []);
-
-    const getListNganh = async () => {
+    const getListChuyenNganh = async () => {
         const headers = { 'x-access-token': accessToken };
-        let res = await fetchAllNganh(headers);
+        let res = await fetchAllChuyenNganh(headers);
         if (res && res.data && res.data.DanhSach) {
-            setListNganh(res.data.DanhSach)
+            setListChuyenNganh(res.data.DanhSach)
         }
     }
 
@@ -48,8 +47,7 @@ const EditGiangVien = () => {
             SetEmail(res.data.Email)
             SetSdt(res.data.SoDienThoai)
             SetGioitinh(res.data.GioiTinh)
-            SetNgaysinh(moment(res.data.NgaySinh).format("YYYY-MM-DD"))
-            console.log(ngaysinh)
+            SetNgaysinh(res.data.NgaySinh)
             SetDonvicongtac(res.data.DonViCongTac)
             SetChuyennganh(res.data.ChuyenNganh)
             SetTrinhdo(res.data.TrinhDo)
@@ -62,7 +60,7 @@ const EditGiangVien = () => {
             return
         }
 
-        let res = await fetchEditGiangVien(headers, magv, hogv, tengv, email, sdt, gioitinh, moment(ngaysinh).format("DD-MM-YYYY"), donvicongtac, chuyennganh, trinhdo)
+        let res = await fetchEditGiangVien(headers, magv, hogv, tengv, email, sdt, gioitinh, ngaysinh, donvicongtac, chuyennganh, trinhdo)
         if (res.status === true) {
             toast.success(res.message)
             navigate("/admin/giangvien")
@@ -167,10 +165,10 @@ const EditGiangVien = () => {
                         <div className="form-group col-md-6">
                             <label className="inputGV" htmlFor="inputChuyennganh">Chuyên ngành</label>
                             <select value={chuyennganh} onChange={(event) => onChangeSelect(event, SetChuyennganh)} id="inputChuyennganh" className="form-control">
-                                {listNganh && listNganh.length > 0 &&
-                                    listNganh.map((item, index) => {
+                                {listChuyenNganh && listChuyenNganh.length > 0 &&
+                                    listChuyenNganh.map((item, index) => {
                                         return (
-                                            <option key={item.MaNganh} value={item.MaNganh}>{item.TenNganh}</option>
+                                            <option key={item.MaChuyenNganh} value={item.TenChuyenNganh}>{item.TenChuyenNganh}</option>
                                         )
                                     })
                                 }
