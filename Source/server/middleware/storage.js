@@ -32,4 +32,15 @@ const storage = multer.diskStorage({
     }
 })
 
+const storageFile = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, `./public/${req.dirName}/`)
+    },
+    filename: (req, file, cb) => {
+        let part = file.originalname
+        cb(null, part)
+    }
+})
+
 export const uploadImg = multer({ storage: storage })
+export const uploadFile = multer({ storage: storageFile })

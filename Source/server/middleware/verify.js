@@ -18,7 +18,6 @@ export const verifyToken = async (req, res, next) => {
                         ThongBao: "Bạn vui lòng đăng nhập lại."
                     })
                 } else {
-                    console.log(`decoded`, decoded);
                     req.decoded = decoded;
                     next();
                 }

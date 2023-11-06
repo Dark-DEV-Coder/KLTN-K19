@@ -1131,57 +1131,57 @@ paths:
       parameters:
         - in: formData
           name: MaSV
-          type: file
+          type: string
           description: Mã sinh viên
           required: true
         - in: formData
           name: HoSV
-          type: file
+          type: string
           description: Họ sinh viên
           required: true
         - in: formData
           name: TenSV
-          type: file
+          type: string
           description: Tên sinh viên
           required: true
         - in: formData
           name: Email
-          type: file
+          type: string
           description: Email sinh viên
           required: true
         - in: formData
           name: SoDienThoai
-          type: file
+          type: string
           description: Số điện thoại sinh viên
           required: true
         - in: formData
           name: GioiTinh
-          type: file
+          type: string
           description: Giói tính sinh viên
           required: true
         - in: formData
           name: NgaySinh
-          type: file
+          type: string
           description: Ngày sinh sinh viên
           required: true
         - in: formData
           name: Khoa
-          type: file
+          type: string
           description: Khóa của sinh viên, ví dụ K19, K20
           required: true
         - in: formData
           name: ChuyenNganh
-          type: file
+          type: string
           description: Chuyên ngành của sinh viên
           required: true
         - in: formData
           name: Nganh
-          type: file
+          type: string
           description: Ngành sinh viên học
           required: true
         - in: formData
           name: Lop
-          type: file
+          type: string
           description: Lớp của sinh viên
           required: true
         - in: formData
@@ -1222,52 +1222,52 @@ paths:
           description: Mã sinh viên
         - in: formData
           name: HoSV
-          type: file
+          type: string
           description: Họ sinh viên
           required: true
         - in: formData
           name: TenSV
-          type: file
+          type: string
           description: Tên sinh viên
           required: true
         - in: formData
           name: Email
-          type: file
+          type: string
           description: Email sinh viên
           required: true
         - in: formData
           name: SoDienThoai
-          type: file
+          type: string
           description: Số điện thoại sinh viên
           required: true
         - in: formData
           name: GioiTinh
-          type: file
+          type: string
           description: Giói tính sinh viên
           required: true
         - in: formData
           name: NgaySinh
-          type: file
+          type: string
           description: Ngày sinh sinh viên
           required: true
         - in: formData
           name: Khoa
-          type: file
+          type: string
           description: Khóa của sinh viên, ví dụ K19, K20
           required: true
         - in: formData
           name: ChuyenNganh
-          type: file
+          type: string
           description: Chuyên ngành của sinh viên
           required: true
         - in: formData
           name: Nganh
-          type: file
+          type: string
           description: Ngành sinh viên học
           required: true
         - in: formData
           name: Lop
-          type: file
+          type: string
           description: Lớp của sinh viên
           required: true
         - in: formData
@@ -1409,52 +1409,52 @@ paths:
       parameters:
         - in: formData
           name: MaGV
-          type: file
+          type: string
           description: Mã giảng viên
           required: true
         - in: formData
           name: HoGV
-          type: file
+          type: string
           description: Họ giảng viên
           required: true
         - in: formData
           name: TenGV
-          type: file
+          type: string
           description: Tên giảng viên
           required: true
         - in: formData
           name: Email
-          type: file
+          type: string
           description: Email giảng viên
           required: true
         - in: formData
           name: SoDienThoai
-          type: file
+          type: string
           description: Số điện thoại giảng viên
           required: true
         - in: formData
           name: GioiTinh
-          type: file
+          type: string
           description: Giói tính giảng viên
           required: true
         - in: formData
           name: NgaySinh
-          type: file
+          type: string
           description: Ngày sinh giảng viên
           required: true
         - in: formData
           name: DonViCongTac
-          type: file
+          type: string
           description: Đơn vị công tác
           required: true
         - in: formData
           name: ChuyenNganh
-          type: file
+          type: string
           description: Chuyên ngành của giảng viên
           required: true
         - in: formData
           name: TrinhDo
-          type: file
+          type: string
           description: Trình độ giảng viên
           required: true
         - in: formData
@@ -1495,47 +1495,47 @@ paths:
           description: Mã giảng viên
         - in: formData
           name: HoGV
-          type: file
+          type: string
           description: Họ giảng viên
           required: true
         - in: formData
           name: TenGV
-          type: file
+          type: string
           description: Tên giảng viên
           required: true
         - in: formData
           name: Email
-          type: file
+          type: string
           description: Email giảng viên
           required: true
         - in: formData
           name: SoDienThoai
-          type: file
+          type: string
           description: Số điện thoại giảng viên
           required: true
         - in: formData
           name: GioiTinh
-          type: file
+          type: string
           description: Giói tính giảng viên
           required: true
         - in: formData
           name: NgaySinh
-          type: file
+          type: string
           description: Ngày sinh giảng viên
           required: true
         - in: formData
           name: DonViCongTac
-          type: file
+          type: string
           description: Đơn vị công tác
           required: true
         - in: formData
           name: ChuyenNganh
-          type: file
+          type: string
           description: Chuyên ngành của giảng viên
           required: true
         - in: formData
           name: TrinhDo
-          type: file
+          type: string
           description: Trình độ giảng viên
           required: true
         - in: formData
@@ -1640,6 +1640,58 @@ paths:
             }
       security:
         - ApiKeyAuth: []
+  /admin/canh-bao-hoc-tap/Them:
+    post: 
+      tags:
+        - "CanhBaoHocTap"
+      summary: Thêm đợt cảnh báo học tập
+      produces:
+        - multipart/form-data    
+      parameters:
+        - in: formData
+          name: MaCBHT
+          type: string
+          description: Mã cảnh báo học tập
+          required: true
+        - in: formData
+          name: Ten
+          type: string
+          description: Tên đợt cảnh báo học tập
+          required: true
+        - in: formData
+          name: Dot
+          type: string
+          description: Đợt thứ mấy
+          required: true
+        - in: formData
+          name: NienKhoa
+          type: string
+          description: Niên khóa
+          required: true
+        - in: formData
+          name: FileExcel
+          type: file
+          description: file excel
+          required: true
+      responses:
+        200:
+          description: Thêm đợt cảnh báo học tập thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Thêm đợt cảnh báo học tập thành công.",
+            }          
+        400:
+          description: Thêm đợt cảnh báo học tập thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Thêm đợt cảnh báo học tập thất bại.",
+            }
+      security:
+        - ApiKeyAuth: [] 
 securityDefinitions:
   ApiKeyAuth:
     type: apiKey
