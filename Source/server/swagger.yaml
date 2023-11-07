@@ -1640,7 +1640,7 @@ paths:
             }
       security:
         - ApiKeyAuth: []
-  /admin/canh-bao-hoc-tap/Them:
+  /admin/canh-bao-hoc-tap/importExcel:
     post: 
       tags:
         - "CanhBaoHocTap"

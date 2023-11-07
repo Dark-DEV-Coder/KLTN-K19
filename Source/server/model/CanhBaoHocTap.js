@@ -22,70 +22,54 @@ const CanhBaoHocTapSchema = new Schema(
         },
         ThongTin: [
             {
-                Nganh: {
+                MaSV: {
                     type: String,
                     required: true,
                 },
-                KhoaHoc: {
+                HoSV: {
                     type: String,
                     required: true,
+                },
+                TenSV: {
+                    type: String,
+                    required: true,
+                },
+                NgaySinh: {
+                    type: String,
+                },
+                NamThu: {
+                    type: Number,
+                },
+                HocKyThu: {
+                    type: Number,
+                },
+                SoLanCBLienTiep: {
+                    type: Number,
+                },
+                TongSoLanCB: {
+                    type: Number,
+                },
+                DTBCHK: {
+                    type: Number,
+                },
+                DTBCTL: {
+                    type: Number,
+                },
+                KQ: {
+                    type: String,
+                },
+                GhiChu: {
+                    type: String,
                 },
                 Lop: {
                     type: String,
-                    required: true,
                 },
-                SinhVien: [
-                    {
-                        MaSV: {
-                            type: String,
-                            required: true,
-                        },
-                        HoSV: {
-                            type: String,
-                            required: true,
-                        },
-                        TenSV: {
-                            type: String,
-                            required: true,
-                        },
-                        NgaySinh: {
-                            type: String,
-                            required: true,
-                        },
-                        NamThu: {
-                            type: Number,
-                            required: true,
-                        },
-                        HocKyThu: {
-                            type: Number,
-                            required: true,
-                        },
-                        SoLanCBLienTiep: {
-                            type: Number,
-                            required: true,
-                        },
-                        TongSoLanCB: {
-                            type: Number,
-                            required: true,
-                        },
-                        DTBCHK: {
-                            type: Number,
-                            required: true,
-                        },
-                        DTBCTL: {
-                            type: Number,
-                            required: true,
-                        },
-                        KQ: {
-                            type: String,
-                            required: true,
-                        },
-                        GhiChu: {
-                            type: String,
-                            required: true,
-                        },
-                    }
-                ],
+                Nganh: {
+                    type: String,
+                },
+                Khoa: {
+                    type: String,
+                },
             }
         ],
         TrangThai: {
