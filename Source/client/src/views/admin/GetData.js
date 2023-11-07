@@ -157,17 +157,20 @@ const fetchDetailChucNang = (headers, MaCN) => {
 export { fetchDetailChucNang };
 
 //Sửa  Chức Năng
-const fetchEditChucNang = (headers, MaCN, TenChucNang, Hinh) => {
-    return axios.put(`admin/chuc-nang/ChinhSua/${MaCN}`, {
-        TenChucNang: TenChucNang,
-        Hinh: Hinh,
+const fetchEditChucNang = (headers, MaCN, data) => {
+    // for (const pair of data.entries()) {
+    //     console.log(pair[0] + ": " + pair[1]);
+    // }
+    console.log(data.TenChucNang)
+    return axios.post(`admin/chuc-nang/ChinhSua/${MaCN}`, {
+        data: data
     }, { headers });
 }
 export { fetchEditChucNang };
 
 //Thêm Chức Năng
 const fetchAddChucNang = (headers, MaCN, TenChucNang, Hinh) => {
-    return axios.post(`admin/chuyen-nganh/Them`, {
+    return axios.post(`admin/chuc-nang/Them`, {
         MaCN: MaCN,
         TenChucNang: TenChucNang,
         Hinh: Hinh,
