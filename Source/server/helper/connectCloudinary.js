@@ -23,6 +23,5 @@ export const UploadHinhLenCloudinary = async (filePath, folder, name) => {
 
 export const DeleteHinhTrenCloudinary = async (file) => {
     const result = await cloudinary.uploader.destroy(file)
-    console.log("result:", result)
     return result ? result : null
 }

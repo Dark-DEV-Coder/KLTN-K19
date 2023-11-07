@@ -116,12 +116,12 @@ ChucNangAdminRoute.put('/ChinhSua/:MaCN', createChucNangDir, uploadImg.single('H
         const { TenChucNang } = req.body;
         const { MaCN } = req.params;
         const isExist = await ChucNang.findOne({ MaCN: MaCN }).lean();
+        console.log(req.file);
         if (isExist){
             let splitUrl = await isExist.Hinh.split('/');
             let file = await `${splitUrl[splitUrl.length - 2]}/${splitUrl[splitUrl.length - 1].split('.')[0]}`;
             await DeleteHinhTrenCloudinary(file);
         }
-
         let fileImage = await `${req.file.destination}${req.file.filename}`;
         let nameImage = await req.file.filename + TenChucNang.normalize('NFD')
                                                             .replace(/[\u0300-\u036f]/g, '')
