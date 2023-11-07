@@ -144,7 +144,7 @@ paths:
       security:
         - ApiKeyAuth: []
   /admin/chuc-nang/ChinhSua/{MaCN}:
-    put: 
+    post: 
       tags:
         - "ChucNang"
       summary: Chỉnh sửa thông tin chức năng
@@ -1208,7 +1208,7 @@ paths:
       security:
         - ApiKeyAuth: [] 
   /admin/sinh-vien/ChinhSua/{MaSV}:
-    put: 
+    post: 
       tags:
         - "SinhVien"
       summary: Chỉnh sửa thông tin sinh viên
@@ -1481,7 +1481,7 @@ paths:
       security:
         - ApiKeyAuth: [] 
   /admin/giang-vien/ChinhSua/{MaGV}:
-    put: 
+    post: 
       tags:
         - "GiangVien"
       summary: Chỉnh sửa thông tin giảng viên
