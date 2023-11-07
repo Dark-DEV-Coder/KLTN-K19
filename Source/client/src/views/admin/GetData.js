@@ -162,9 +162,7 @@ const fetchEditChucNang = (headers, MaCN, data) => {
     //     console.log(pair[0] + ": " + pair[1]);
     // }
     console.log(data.TenChucNang)
-    return axios.post(`admin/chuc-nang/ChinhSua/${MaCN}`, {
-        data: data
-    }, { headers });
+    return axios.post(`admin/chuc-nang/ChinhSua/${MaCN}`, data, { headers });
 }
 export { fetchEditChucNang };
 
