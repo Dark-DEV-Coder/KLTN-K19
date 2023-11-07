@@ -11,36 +11,36 @@ const EditChucNang = () => {
     let navigate = useNavigate();
     const [MaCN, setMaCN] = useState("")
     const [TenChucNang, setTenChucNang] = useState("")
-    const [Hinh, setHinh] = useState("")
+    const [Hinh, setHinh] = useState(null)
 
     useEffect(() => {
         getDetailChucNang();
 
     }, []);
 
-    const convertBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.readAsDataURL(file);
+    // const convertBase64 = (file) => {
+    //     return new Promise((resolve, reject) => {
+    //         const fileReader = new FileReader();
+    //         fileReader.readAsDataURL(file);
 
-            fileReader.onload = () => {
-                resolve(fileReader.result);
-            };
+    //         fileReader.onload = () => {
+    //             resolve(fileReader.result);
+    //         };
 
-            fileReader.onerror = (error) => {
-                reject(error);
-            };
-        });
-    };
+    //         fileReader.onerror = (error) => {
+    //             reject(error);
+    //         };
+    //     });
+    // };
 
-    const uploadImage = async (event) => {
-        const files = event.target.files;
-        if (files.length === 1) {
-            const base64 = await convertBase64(files[0]);
-            setHinh(base64)
-            return;
-        }
-    };
+    // const uploadImage = async (event) => {
+    //     const files = event.target.files;
+    //     if (files.length === 1) {
+    //         const base64 = await convertBase64(files[0]);
+    //         setHinh(base64)
+    //         return;
+    //     }
+    // };
 
     const getDetailChucNang = async () => {
         const headers = { 'x-access-token': accessToken };
@@ -57,9 +57,14 @@ const EditChucNang = () => {
             toast.error("Vui lòng điền đầy đủ dữ liệu !")
             return
         }
-        // const formData = new FormData()
-        // formData.append('Hinh', Hinh)
-        let res = await fetchEditChucNang(headers, MaCN, TenChucNang, Hinh)
+        let value_img = new FormData();
+        // value_img.TenChucNang = TenChucNang;
+        value_img.append("TenChucNang", TenChucNang);
+        value_img.append("Hinh", Hinh);
+        console.log(value_img);
+
+        let res = await fetchEditChucNang(headers, MaCN, value_img)
+        console.log("Eror: ", res)
         if (res.status === true) {
             toast.success(res.message)
             navigate("/admin/chucnang")
@@ -71,8 +76,9 @@ const EditChucNang = () => {
         }
     }
     const onChangeFile = (event, setSL) => {
-        setSL(event.target.files[0])
-        console.log(event.target.files[0])
+        const img = event.target.files[0];
+        img.preview = URL.createObjectURL(img)
+        setSL(img)
     }
 
     const onChangeInputSL = (event, setSL) => {
@@ -129,7 +135,7 @@ const EditChucNang = () => {
                         <div className="form-group col-md-12">
                             <div className="custom-file">
                                 <label className="inputKL" htmlFor="inputDSDT">Icon chức năng  <a href="https://boxicons.com/" target="_blank" rel="noopener" style={{ fontWeight: '400' }}>(Link lấy icon)</a></label>
-                                <input type="file" accept=".png" className="form-control file" id="inputDSDT" onChange={(event) => uploadImage(event)} />
+                                <input type="file" accept=".png" className="form-control file" id="inputDSDT" onChange={(event) => onChangeFile(event, setHinh)} />
                             </div>
                             <div className="invalid-feedback" style={{ display: 'block' }}>Chỉ chấp nhận các file có đuôi là png, ...</div>
                         </div>
