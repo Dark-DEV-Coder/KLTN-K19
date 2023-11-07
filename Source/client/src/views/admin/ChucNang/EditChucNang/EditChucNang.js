@@ -11,7 +11,7 @@ const EditChucNang = () => {
     let navigate = useNavigate();
     const [MaCN, setMaCN] = useState("")
     const [TenChucNang, setTenChucNang] = useState("")
-    const [Hinh, setHinh] = useState(null)
+    const [Hinh, setHinh] = useState("")
 
     useEffect(() => {
         getDetailChucNang();

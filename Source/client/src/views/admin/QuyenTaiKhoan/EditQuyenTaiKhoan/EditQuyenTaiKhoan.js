@@ -2,7 +2,8 @@
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-const EditTaiKhoan = () => {
+import "./EditQuyenTaiKhoan.scss"
+const EditQuyenTaiKhoan = () => {
     const dulieutest = {
         MaQuyen: 'admin',
         TenQuyen: 'admin',
@@ -51,6 +52,8 @@ const EditTaiKhoan = () => {
     // check dữ liệu
     const [checkdulieuMaQuyen, SetCheckdulieuMaQuyen] = useState(true)
     const [checkdulieuTenQuyen, SetCheckdulieuTenQuyen] = useState(true)
+
+    
     const checkdulieu = (value, SetDuLieu) => {
         value === '' ? SetDuLieu(false) : SetDuLieu(true)
     }
@@ -86,19 +89,19 @@ const EditTaiKhoan = () => {
                     <div className="container-edit">
                         <div className="form-row">
                             <div className="form-group col-md-6">
-                                <label className="inputTK" for="inputMaQuyen">Mã quyền</label>
+                                <label className="inputTK" htmlFor="inputMaQuyen">Mã quyền</label>
                                 <input type="text" className="form-control" id="inputTenDN" value={MaQuyen} onChange={(event) => onChangeInputSL(event, SetMaQuyen)} onBlur={() => checkdulieu(MaQuyen, SetCheckdulieuMaQuyen)} />
                                 <div className="invalid-feedback" style={{ display: checkdulieuMaQuyen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                             </div>
                             <div className="form-group col-md-6">
-                                <label className="inputTK" for="inputTenQuyen">Tên quyền</label>
+                                <label className="inputTK" htmlFor="inputTenQuyen">Tên quyền</label>
                                 <input type="text" className="form-control" id="inputTenDN" value={TenQuyen} onChange={(event) => onChangeInputSL(event, SetTenQuyen)} onBlur={() => checkdulieu(TenQuyen, SetCheckdulieuTenQuyen)} />
                                 <div className="invalid-feedback" style={{ display: checkdulieuTenQuyen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                             </div>
                         </div>
                         <div className="form-row">
                             <div className="form-group col-md-12">
-                                <label className="inputTK" for="inputTenGV">Danh sách chức năng của tài khoản</label>
+                                <label className="inputTK" htmlFor="inputTenGV">Danh sách chức năng của tài khoản</label>
                             </div>
                         </div>
                         <div className="form-row">
@@ -106,9 +109,31 @@ const EditTaiKhoan = () => {
                                 listchucnang.map((item, index) => {
 
                                     return (
-                                        <div className="form-check form-check-inline" key={item.MaCN}>
-                                            <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value={item.MaCN} defaultChecked={chucnangcuaTK.filter(item2 => item2.MaCN == item.MaCN).length > 0 ? true : false} onClick={(event) => onChangeChucNang(item)} />
-                                            <label className="inputTKK" for="inlineCheckbox1">{item.TenChucNang}</label>
+                                        <div key={item.MaCN} >
+                                            <div className="form-check form-check-inline" key={item.MaCN}>
+                                                <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value={item.MaCN} defaultChecked={chucnangcuaTK.filter(item2 => item2.MaCN == item.MaCN).length > 0 ? true : false} onClick={(event) => onChangeChucNang(item)} />
+                                                <label className="inputTKK" htmlFor="inlineCheckbox1">{item.TenChucNang}</label>
+                                            </div>
+
+                                            <div className="div-CN-con">
+                                                <div className="form-check them">
+                                                    <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value="Thêm" />
+                                                    <label className="inputTKK" htmlFor="inlineCheckbox1">Thêm</label>
+                                                </div>
+                                                <div className="form-check sua">
+                                                    <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value="Sửa" />
+                                                    <label className="inputTKK" htmlFor="inlineCheckbox1">Sửa</label>
+                                                </div>
+                                                <div className="form-check xoa">
+                                                    <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value="Xóa" />
+                                                    <label className="inputTKK" htmlFor="inlineCheckbox1">Xóa</label>
+                                                </div>
+                                                <div className="form-check xem-ds">
+                                                    <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value="Xem danh sách" />
+                                                    <label className="inputTKK" htmlFor="inlineCheckbox1">Xem danh sách</label>
+                                                </div>
+
+                                            </div>
                                         </div>
                                     )
                                 })
@@ -123,4 +148,4 @@ const EditTaiKhoan = () => {
         </>
     )
 }
-export default EditTaiKhoan;
+export default EditQuyenTaiKhoan;

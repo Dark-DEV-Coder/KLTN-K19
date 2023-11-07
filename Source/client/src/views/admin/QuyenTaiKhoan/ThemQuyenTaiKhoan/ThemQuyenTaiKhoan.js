@@ -1,7 +1,7 @@
 
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-const AddTaiKhoan = () => {
+const AddQuyenTaiKhoan = () => {
 
     const [MaQuyen, SetMaQuyen] = useState("")
     const [TenQuyen, SetTenQuyen] = useState("")
@@ -102,4 +102,4 @@ const AddTaiKhoan = () => {
         </>
     )
 }
-export default AddTaiKhoan;
+export default AddQuyenTaiKhoan;
