@@ -11,7 +11,7 @@ export const KtraDuLieuChucNangKhiThem = data => {
 
 export const KtraDuLieuChucNangKhiChinhSua = data => {
     const error = new Error()
-    console.log(data);
+    
     error.isRequired(data.TenChucNang, "TenChucNang")
 
     return error.get()

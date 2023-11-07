@@ -114,7 +114,7 @@ SinhVienAdminRoute.post('/Them', createSinhVienDir, uploadImg.single("Hinh"), as
  * @description Chỉnh sửa thông tin sinh viên
  * @access public
 */
-SinhVienAdminRoute.put('/ChinhSua/:MaSV', createSinhVienDir, uploadImg.single("Hinh"), async (req, res) => {
+SinhVienAdminRoute.post('/ChinhSua/:MaSV', createSinhVienDir, uploadImg.single("Hinh"), async (req, res) => {
     try{
         const errors = KtraDuLieuSinhVienKhiChinhSua(req.body)
         if (errors)

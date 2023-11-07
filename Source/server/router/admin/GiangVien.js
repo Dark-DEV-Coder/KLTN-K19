@@ -114,7 +114,7 @@ GiangVienAdminRoute.post('/Them', createGiangVienDir, uploadImg.single("Hinh"), 
  * @description Chỉnh sửa thông tin giảng viên
  * @access public
 */
-GiangVienAdminRoute.put('/ChinhSua/:MaGV', createGiangVienDir, uploadImg.single("Hinh"), async (req, res) => {
+GiangVienAdminRoute.post('/ChinhSua/:MaGV', createGiangVienDir, uploadImg.single("Hinh"), async (req, res) => {
     try{
         const errors = KtraDuLieuGiangVienKhiChinhSua(req.body)
         if (errors)

@@ -104,12 +104,15 @@ ChucNangAdminRoute.post('/Them', createChucNangDir, uploadImg.single('Hinh'), as
 })
 
 /**
- * @route PUT /api/admin/chuc-nang/ChinhSua/{MaCN}
+ * @route POST /api/admin/chuc-nang/ChinhSua/{MaCN}
  * @description Chỉnh sửa thông tin chức năng
  * @access public
  */
-ChucNangAdminRoute.put('/ChinhSua/:MaCN', createChucNangDir, uploadImg.single('Hinh'), async (req, res) => {
+ChucNangAdminRoute.post('/ChinhSua/:MaCN', createChucNangDir, uploadImg.single('Hinh'), async (req, res) => {
     try{
+        const errors = KtraDuLieuChucNangKhiChinhSua(req.body)
+        if (errors)
+            return sendError(res, errors)
         const { TenChucNang } = req.body;
         const { MaCN } = req.params;
         const isExist = await ChucNang.findOne({ MaCN: MaCN }).lean();
