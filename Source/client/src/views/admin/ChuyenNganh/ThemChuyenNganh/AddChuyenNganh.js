@@ -1,14 +1,47 @@
-import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import * as React from 'react';
 import "./AddChuyenNganh.scss"
+import { fetchAddChuyenNganh, fetchAllNganh } from "../../GetData"
+import { toast } from "react-toastify";
 const AddChuyenNganh = () => {
-
-
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+    let navigate = useNavigate();
+    const [listData_nganh, SetListData_nganh] = useState([]);
     const [machuyennganh, SetMachuyennganh] = useState('')
     const [tenchuyennganh, SetTenchuyennganh] = useState('')
-    const [nganhhoc, SetNganhhoc] = useState('cntt')
+    const [nganhhoc, SetNganhhoc] = useState('CNTT')
+
+    useEffect(() => {
+        getListNganh();
+
+    }, []);
+    const getListNganh = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchAllNganh(headers);
+        if (res && res.data && res.data.DanhSach) {
+            SetListData_nganh(res.data.DanhSach)
+        }
+    }
+    const handleAddChuyenNganh = async () => {
+        const headers = { 'x-access-token': accessToken };
+        if (!machuyennganh || !tenchuyennganh) {
+            toast.error("Vui lòng điền đầy đủ dữ liệu !")
+            return
+        }
+
+        let res = await fetchAddChuyenNganh(headers, machuyennganh, nganhhoc, tenchuyennganh)
+        console.log(res)
+        if (res.status === true) {
+            toast.success(res.message)
+            navigate("/admin/chuyennganh")
+            return;
+        }
+        if (res.status === false) {
+            toast.error(res.message)
+            return;
+        }
+    }
 
     const onChangeInputSL = (event, SetSL) => {
         let changeValue = event.target.value;
@@ -16,7 +49,6 @@ const AddChuyenNganh = () => {
     }
     const onChangeSelect = (event, SetSelect) => {
         let changeValue = event.target.value;
-        console.log('select', changeValue)
         SetSelect(changeValue);
     }
 
@@ -27,14 +59,6 @@ const AddChuyenNganh = () => {
     const checkdulieu = (value, SetDuLieu) => {
         value === '' ? SetDuLieu(false) : SetDuLieu(true)
     }
-    const nganh = [
-        { id: 'CNTT', ten: 'Công nghệ thông tin' },
-        { id: 'CNTT_CLC', ten: 'Công nghệ thông tin CLC' },
-        { id: 'KTPM', ten: 'Kỹ thuật phần mềm' },
-
-    ]
-
-
     return (
         <main className="main2">
             {/* <HeaderMain title={'Chuyên ngành'} /> */}
@@ -65,24 +89,24 @@ const AddChuyenNganh = () => {
                 <div className="container-edit">
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label className="inputNganh" for="inputMa">Mã chuyên ngành</label>
+                            <label className="inputNganh" htmlFor="inputMa">Mã chuyên ngành</label>
                             <input type="text" className="form-control" id="inputMa" placeholder="Điền mã chuyên ngành ..." value={machuyennganh} onChange={(event) => onChangeInputSL(event, SetMachuyennganh)} onBlur={() => checkdulieu(machuyennganh, SetCheckdulieuMa)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuMa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
-                            <label className="inputNganh" for="inputTen">Tên chuyên ngành</label>
+                            <label className="inputNganh" htmlFor="inputTen">Tên chuyên ngành</label>
                             <input type="text" className="form-control" id="inputTen" placeholder="Điền tên chuyên ngành ..." value={tenchuyennganh} onChange={(event) => onChangeInputSL(event, SetTenchuyennganh)} onBlur={() => checkdulieu(tenchuyennganh, SetCheckdulieuTen)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label className="inputNganh" for="inputNganh">Ngành</label>
+                            <label className="inputNganh" htmlFor="inputNganh">Ngành</label>
                             <select value={nganhhoc} onChange={(event) => onChangeSelect(event, SetNganhhoc)} id="inputNganh" className="form-control">
-                                {nganh && nganh.length > 0 &&
-                                    nganh.map((item, index) => {
+                                {listData_nganh && listData_nganh.length > 0 &&
+                                    listData_nganh.map((item, index) => {
                                         return (
-                                            <option key={item.id} value={item.id}>{item.ten}</option>
+                                            <option key={item.MaNganh} value={item.MaNganh}>{item.TenNganh}</option>
                                         )
                                     })
                                 }
@@ -91,7 +115,7 @@ const AddChuyenNganh = () => {
                     </div>
 
 
-                    <button className="btn" type="submit">Submit form</button>
+                    <button className="btn" type="button" onClick={() => handleAddChuyenNganh()}>Lưu</button>
                 </div>
             </form>
         </main >

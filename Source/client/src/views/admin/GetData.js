@@ -117,18 +117,60 @@ const fetchDetailChuyenNganh = (headers, MaChuyenNganh) => {
 export { fetchDetailChuyenNganh };
 
 //Sửa thông tin Chuyên ngành
-const fetchEditChuyenNganh = (headers, MaChuyenNganh, HoGV, TenGV, Email, SoDienThoai, GioiTinh, NgaySinh, DonViCongTac, ChuyenNganh, TrinhDo) => {
+const fetchEditChuyenNganh = (headers, MaChuyenNganh, MaNganh, TenChuyenNganh) => {
     return axios.put(`admin/chuyen-nganh/ChinhSua/${MaChuyenNganh}`, {
-        MaGV: MaChuyenNganh,
-        HoGV: HoGV,
-        TenGV: TenGV,
-        Email: Email,
-        SoDienThoai: SoDienThoai,
-        GioiTinh: GioiTinh,
-        NgaySinh: NgaySinh,
-        DonViCongTac: DonViCongTac,
-        ChuyenNganh: ChuyenNganh,
-        TrinhDo: TrinhDo
+        MaChuyenNganh: MaChuyenNganh,
+        MaNganh: MaNganh,
+        TenChuyenNganh: TenChuyenNganh,
     }, { headers });
 }
 export { fetchEditChuyenNganh };
+
+//thêm Chuyên ngành
+const fetchAddChuyenNganh = (headers, MaChuyenNganh, MaNganh, TenChuyenNganh) => {
+    return axios.post(`admin/chuyen-nganh/Them`, {
+        MaChuyenNganh: MaChuyenNganh,
+        MaNganh: MaNganh,
+        TenChuyenNganh: TenChuyenNganh,
+    }, { headers });
+}
+export { fetchAddChuyenNganh };
+
+//Xóa  Chuyên ngành
+const fetchDeleteChuyenNganh = (headers, MaChuyenNganh) => {
+    return axios.delete(`admin/chuyen-nganh/Xoa/${MaChuyenNganh}`, { headers });
+}
+export { fetchDeleteChuyenNganh };
+//Chuyên ngành
+
+//Chức năng
+//Get List Chức năng
+const fetchAllChucNang = (headers) => {
+    return axios.get('admin/chuc-nang/DanhSachChucNang', { headers });
+}
+export { fetchAllChucNang };
+
+//Get Chi Tiết Chức năng
+const fetchDetailChucNang = (headers, MaCN) => {
+    return axios.get(`admin/chuc-nang/ChiTietChucNang/${MaCN}`, { headers });
+}
+export { fetchDetailChucNang };
+
+//Sửa  Chức Năng
+const fetchEditChucNang = (headers, MaCN, TenChucNang, Hinh) => {
+    return axios.put(`admin/chuc-nang/ChinhSua/${MaCN}`, {
+        TenChucNang: TenChucNang,
+        Hinh: Hinh,
+    }, { headers });
+}
+export { fetchEditChucNang };
+
+//Thêm Chức Năng
+const fetchAddChucNang = (headers, MaCN, TenChucNang, Hinh) => {
+    return axios.post(`admin/chuyen-nganh/Them`, {
+        MaCN: MaCN,
+        TenChucNang: TenChucNang,
+        Hinh: Hinh,
+    }, { headers });
+}
+export { fetchAddChucNang };

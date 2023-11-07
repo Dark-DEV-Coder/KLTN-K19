@@ -11,47 +11,8 @@ import {
 import { Delete, Edit, Visibility } from '@mui/icons-material';
 import { toast } from "react-toastify";
 import { useEffect } from 'react';
-import { fetchAllChuyenNganh } from "../GetData"
+import { fetchAllChuyenNganh, fetchDeleteChuyenNganh } from "../GetData"
 
-const data = [
-    {
-        machuyennganh: 'HTTT',
-        tenchuyennganh: 'Hệ Thống Thông Tin',
-        nganh: 'Công nghệ thông tin',
-        trangthai: 1,
-    },
-    {
-        machuyennganh: 'KHMT',
-        tenchuyennganh: 'Khoa Học Máy Tính',
-        nganh: 'Công nghệ thông tin',
-        trangthai: 1,
-    },
-    {
-        machuyennganh: 'KTPM',
-        tenchuyennganh: 'Kỹ Thuật Phần Mềm',
-        nganh: 'Công nghệ thông tin',
-        trangthai: 1,
-    },
-    {
-        machuyennganh: 'MMT',
-        tenchuyennganh: 'Mạng Máy Tính',
-        nganh: 'Công nghệ thông tin',
-        trangthai: 1,
-    },
-
-    {
-        machuyennganh: 'LTUD',
-        tenchuyennganh: 'Lập trình ứng dụng',
-        nganh: 'Kỹ thuật phần mềm',
-        trangthai: 1,
-    },
-    {
-        machuyennganh: 'LTW',
-        tenchuyennganh: 'Lập trình Web',
-        nganh: 'Kỹ thuật phần mềm',
-        trangthai: 1,
-    },
-]
 
 const csvConfig = mkConfig({
     fieldSeparator: ',',
@@ -72,6 +33,19 @@ const TableChuyenNganh = (props) => {
         let res = await fetchAllChuyenNganh(headers);
         if (res && res.data && res.data.DanhSach) {
             SetListData_chuyennganh(res.data.DanhSach)
+        }
+    }
+    const handleDeleteRows = async (row) => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDeleteChuyenNganh(headers, row.original.MaChuyenNganh)
+        if (res.status === true) {
+            toast.success(res.message)
+            getListChuyenNganh()
+            return;
+        }
+        if (res.success === false) {
+            toast.error(res.message)
+            return;
         }
     }
 
@@ -136,7 +110,7 @@ const TableChuyenNganh = (props) => {
                     </IconButton>
                 </Link>
 
-                <IconButton onClick={() => console.log(row.original.name)}>
+                <IconButton onClick={() => handleDeleteRows(row)}>
                     <Delete fontSize="small" sx={{ color: 'red' }} />
                 </IconButton>
             </Box >

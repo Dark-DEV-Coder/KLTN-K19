@@ -2,7 +2,7 @@ import "./AddGiangVien.scss"
 import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { fetchAddGiangVien, fetchAllNganh } from "../../GetData"
+import { fetchAddGiangVien, fetchAllChuyenNganh } from "../../GetData"
 import * as React from 'react';
 import { toast } from "react-toastify";
 import moment from "moment";
@@ -14,7 +14,7 @@ const AddGiangVien = () => {
     const [hogv, SetHogv] = useState('')
     const [tengv, SetTengv] = useState('')
     const [email, SetEmail] = useState('')
-    const [listNganh, setListNganh] = useState([]);
+    const [listChuyenNganh, setListChuyenNganh] = useState([]);
     const [sdt, SetSdt] = useState('')
     const [gioitinh, SetGioitinh] = useState('Nam')
     const [ngaysinh, SetNgaysinh] = useState('1970-01-01')
@@ -24,14 +24,14 @@ const AddGiangVien = () => {
 
     // component didmount
     useEffect(() => {
-        getListNganh();
+        getListChuyenNganh();
     }, []);
 
-    const getListNganh = async () => {
+    const getListChuyenNganh = async () => {
         const headers = { 'x-access-token': accessToken };
-        let res = await fetchAllNganh(headers);
+        let res = await fetchAllChuyenNganh(headers);
         if (res && res.data && res.data.DanhSach) {
-            setListNganh(res.data.DanhSach)
+            setListChuyenNganh(res.data.DanhSach)
         }
     }
 
@@ -41,7 +41,7 @@ const AddGiangVien = () => {
             toast.error("Vui lòng điền đầy đủ dữ liệu")
             return
         }
-        let res = await fetchAddGiangVien(headers, magv, hogv, tengv, email, sdt, gioitinh, moment(ngaysinh).format("DD-MM-YYYY"), donvicongtac, chuyennganh, trinhdo)
+        let res = await fetchAddGiangVien(headers, magv, hogv, tengv, email, sdt, gioitinh, ngaysinh, donvicongtac, chuyennganh, trinhdo)
         if (res.status === true) {
             toast.success(res.message)
             navigate("/admin/giangvien")
@@ -59,7 +59,6 @@ const AddGiangVien = () => {
 
     const onChangeSelect = (event, SetSelect) => {
         let changeValue = event.target.value;
-        console.log("Select", changeValue)
         SetSelect(changeValue);
     }
 
@@ -153,10 +152,10 @@ const AddGiangVien = () => {
                         <div className="form-group col-md-6">
                             <label className="inputGV" htmlFor="inputChuyennganh">Chuyên ngành</label>
                             <select value={chuyennganh} onChange={(event) => onChangeSelect(event, SetChuyennganh)} id="inputChuyennganh" className="form-control">
-                                {listNganh && listNganh.length > 0 &&
-                                    listNganh.map((item, index) => {
+                                {listChuyenNganh && listChuyenNganh.length > 0 &&
+                                    listChuyenNganh.map((item, index) => {
                                         return (
-                                            <option key={item.MaNganh} value={item.MaNganh}>{item.TenNganh}</option>
+                                            <option key={item.MaChuyenNganh} value={item.TenChuyenNganh}>{item.TenChuyenNganh}</option>
                                         )
                                     })
                                 }

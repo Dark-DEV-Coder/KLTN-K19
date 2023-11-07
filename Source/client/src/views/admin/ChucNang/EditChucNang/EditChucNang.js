@@ -1,24 +1,90 @@
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import * as React from 'react';
+import { fetchDetailChucNang, fetchEditChucNang } from "../../GetData"
+import { toast } from "react-toastify";
 const EditChucNang = () => {
-    const dulieutest = { MaCN: 'dkichuyennganh', TenChucNang: 'Đăng ký chuyên ngành' }
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     const chucnang = useParams();
-    const [MaCN, SetMaCN] = useState(dulieutest.MaCN)
-    const [TenChucNang, SetTenChucNang] = useState(dulieutest.TenChucNang)
+    let navigate = useNavigate();
+    const [MaCN, setMaCN] = useState("")
+    const [TenChucNang, setTenChucNang] = useState("")
+    const [Hinh, setHinh] = useState("")
 
-    const onChangeInputSL = (event, SetSL) => {
+    useEffect(() => {
+        getDetailChucNang();
+
+    }, []);
+
+    const convertBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            };
+
+            fileReader.onerror = (error) => {
+                reject(error);
+            };
+        });
+    };
+
+    const uploadImage = async (event) => {
+        const files = event.target.files;
+        if (files.length === 1) {
+            const base64 = await convertBase64(files[0]);
+            setHinh(base64)
+            return;
+        }
+    };
+
+    const getDetailChucNang = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDetailChucNang(headers, chucnang.MaCN);
+        if (res && res.data) {
+            setMaCN(res.data.MaCN)
+            setTenChucNang(res.data.TenChucNang)
+            setHinh(res.data.Hinh)
+        }
+    }
+    const handleEditChucNang = async () => {
+        const headers = { 'x-access-token': accessToken };
+        if (!TenChucNang || !Hinh) {
+            toast.error("Vui lòng điền đầy đủ dữ liệu !")
+            return
+        }
+        // const formData = new FormData()
+        // formData.append('Hinh', Hinh)
+        let res = await fetchEditChucNang(headers, MaCN, TenChucNang, Hinh)
+        if (res.status === true) {
+            toast.success(res.message)
+            navigate("/admin/chucnang")
+            return;
+        }
+        if (res.status === false) {
+            toast.error(res.message)
+            return;
+        }
+    }
+    const onChangeFile = (event, setSL) => {
+        setSL(event.target.files[0])
+        console.log(event.target.files[0])
+    }
+
+    const onChangeInputSL = (event, setSL) => {
         let changeValue = event.target.value;
-        SetSL(changeValue);
+        setSL(changeValue);
     }
 
     // check dữ liệu
-    const [checkdulieuMa, SetCheckdulieuMa] = useState(true)
-    const [checkdulieuTen, SetCheckdulieuTen] = useState(true)
-    const checkdulieu = (value, SetDuLieu) => {
-        value === '' ? SetDuLieu(false) : SetDuLieu(true)
+    const [checkdulieuMa, setCheckdulieuMa] = useState(true)
+    const [checkdulieuTen, setCheckdulieuTen] = useState(true)
+    const checkdulieu = (value, setDuLieu) => {
+        value === '' ? setDuLieu(false) : setDuLieu(true)
     }
 
     return (
@@ -39,8 +105,6 @@ const EditChucNang = () => {
                         <li>
                             <Link className="active" >{chucnang.MaCN}</Link>
                         </li>
-
-
                     </ul>
                 </div>
 
@@ -51,19 +115,28 @@ const EditChucNang = () => {
                 <div className="container-edit">
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label className="inputNganh" for="inputMa">Mã chức năng</label>
-                            <input type="text" className="form-control" id="inputMa" value={MaCN} onChange={(event) => onChangeInputSL(event, SetMaCN)} onBlur={() => checkdulieu(MaCN, SetCheckdulieuMa)} />
+                            <label className="inputNganh" htmlFor="inputMa">Mã chức năng</label>
+                            <input type="text" className="form-control" id="inputMa" value={MaCN} disabled={true} />
                             <div className="invalid-feedback" style={{ display: checkdulieuMa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
-                            <label className="inputNganh" for="inputTen">Tên chức năng</label>
-                            <input type="text" className="form-control" id="inputTen" value={TenChucNang} onChange={(event) => onChangeInputSL(event, SetTenChucNang)} onBlur={() => checkdulieu(TenChucNang, SetCheckdulieuTen)} />
+                            <label className="inputNganh" htmlFor="inputTen">Tên chức năng</label>
+                            <input type="text" className="form-control" id="inputTen" value={TenChucNang} onChange={(event) => onChangeInputSL(event, setTenChucNang)} onBlur={() => checkdulieu(TenChucNang, setCheckdulieuTen)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+                        </div>
+                    </div>
+                    <div className="form-row">
+                        <div className="form-group col-md-12">
+                            <div className="custom-file">
+                                <label className="inputKL" htmlFor="inputDSDT">Icon chức năng  <a href="https://boxicons.com/" target="_blank" rel="noopener" style={{ fontWeight: '400' }}>(Link lấy icon)</a></label>
+                                <input type="file" accept=".png" className="form-control file" id="inputDSDT" onChange={(event) => uploadImage(event)} />
+                            </div>
+                            <div className="invalid-feedback" style={{ display: 'block' }}>Chỉ chấp nhận các file có đuôi là png, ...</div>
                         </div>
                     </div>
 
 
-                    <button className="btn" type="submit">Submit form</button>
+                    <button className="btn" type="button" onClick={() => handleEditChucNang()}>Lưu</button>
                 </div>
 
 
