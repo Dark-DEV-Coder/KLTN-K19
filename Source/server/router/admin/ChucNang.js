@@ -110,9 +110,6 @@ ChucNangAdminRoute.post('/Them', createChucNangDir, uploadImg.single('Hinh'), as
  */
 ChucNangAdminRoute.put('/ChinhSua/:MaCN', createChucNangDir, uploadImg.single('Hinh'), async (req, res) => {
     try{
-        const errors = KtraDuLieuChucNangKhiChinhSua(req.body)
-        if (errors)
-            return sendError(res, errors)
         const { TenChucNang } = req.body;
         const { MaCN } = req.params;
         const isExist = await ChucNang.findOne({ MaCN: MaCN }).lean();
