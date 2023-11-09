@@ -1,7 +1,12 @@
+.label-TCN {
+    color: var(--primary);
+}
+
 .div-CN-con {
-    height          : 120px;
-    width           : 100%;
-    background-color: red;
+    width              : 100%;
+    // background-color: red;
+    margin-left        : 15px;
+    margin-bottom      : 10px;
 
     .form-check {
         input {

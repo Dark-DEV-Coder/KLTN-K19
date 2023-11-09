@@ -53,7 +53,7 @@ const EditChucNang = () => {
     }
     const handleEditChucNang = async () => {
         const headers = { 'x-access-token': accessToken };
-        if (!TenChucNang || !Hinh) {
+        if (!TenChucNang) {
             toast.error("Vui lòng điền đầy đủ dữ liệu !")
             return
         }
