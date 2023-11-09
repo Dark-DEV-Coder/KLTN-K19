@@ -1,7 +1,7 @@
 import express from "express"
 import argon2 from "argon2"
 import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
-import { TrangThaiTaiKhoan } from "../../constant.js"
+import { TrangThaiGiangVien, TrangThaiSinhVien, TrangThaiTaiKhoan, TrangThaiTonTai } from "../../constant.js"
 import { KtraDuLieuTaiKhoanKhiChinhSua, KtraDuLieuTaiKhoanKhiDangNhap, KtraDuLieuTaiKhoanKhiThem } from "../../validation/TaiKhoan.js"
 import TaiKhoan from "../../model/TaiKhoan.js"
 import QuyenTaiKhoan from "../../model/QuyenTaiKhoan.js"
@@ -113,11 +113,11 @@ TaiKhoanAdminRoute.post('/Them', async (req, res) => {
         let password = await argon2.hash(MatKhau)
         const taikhoan = await TaiKhoan.create({ MaTK: MaTK, MaQTK: isExistMaQuyenTK._id, TenDangNhap: TenDangNhap, MatKhau: password });
         if (isExistSV){
-            await SinhVien.findOneAndUpdate({ MaSV: isExistSV.MaSV },{ MaTK: taikhoan._id });
+            await SinhVien.findOneAndUpdate({ MaSV: isExistSV.MaSV },{ MaTK: taikhoan._id, TrangThai: TrangThaiSinhVien.DaCoTaiKhoan });
         }
         else{
             if (isExistGV)
-                await GiangVien.findOneAndUpdate({ MaGV: isExistGV.MaGV },{ MaTK: taikhoan._id });
+                await GiangVien.findOneAndUpdate({ MaGV: isExistGV.MaGV },{ MaTK: taikhoan._id, TrangThai: TrangThaiGiangVien.DaCoTaiKhoan });
             
         }
 
@@ -179,6 +179,90 @@ TaiKhoanAdminRoute.delete('/Xoa/:MaTK', async (req, res) => {
         await TaiKhoan.findOneAndDelete({ MaTK: MaTK });
         return sendSuccess(res, "Xóa tài khoản thành công.")
     } catch (error) {
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route GET /api/admin/tai-khoan/DanhSachTKGiangVien
+ * @description Lấy danh sách tài khoản giảng viên
+ * @access public
+ */
+TaiKhoanAdminRoute.get('/DanhSachTKGiangVien', async (req, res) => {
+    try {
+        const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0
+        const page = req.query.page ? parseInt(req.query.page) : 0
+        const taikhoangvs = await GiangVien.find({ TrangThai: TrangThaiGiangVien.DaCoTaiKhoan })
+                                        .limit(pageSize).skip(pageSize * page)
+                                        .populate({
+                                                    path: "MaTK",
+                                                    select: "MaTK TenDangNhap MaQTK TrangThai",
+                                                    populate: {
+                                                        path: "MaQTK",
+                                                        select: "MaQTK TenQuyenTK"
+                                                    }
+                                                    
+                                                })
+        let taikhoans = []
+        taikhoangvs.forEach((data) => {
+            taikhoans.push(data.MaTK);
+        });
+
+        if (taikhoangvs.length == 0) 
+            return sendError(res, "Không tìm thấy danh sách tài khoản giảng viên.")
+        if (taikhoangvs) 
+            return sendSuccess(res, "Lấy danh sách tài khoản giảng viên thành công.", { 
+                TrangThai: "Thành công",
+                SoLuong: taikhoans.length,
+                DanhSach: taikhoans
+            })
+
+        return sendError(res, "Không tìm thấy danh sách tài khoản giảng viên.")
+    }
+    catch (error) {
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route GET /api/admin/tai-khoan/DanhSachTKSinhVien
+ * @description Lấy danh sách tài khoản sinh viên
+ * @access public
+ */
+TaiKhoanAdminRoute.get('/DanhSachTKSinhVien', async (req, res) => {
+    try {
+        const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0
+        const page = req.query.page ? parseInt(req.query.page) : 0
+        const taikhoangvs = await SinhVien.find({ TrangThai: TrangThaiSinhVien.DaCoTaiKhoan })
+                                        .limit(pageSize).skip(pageSize * page)
+                                        .populate({
+                                                    path: "MaTK",
+                                                    select: "MaTK TenDangNhap MaQTK TrangThai",
+                                                    populate: {
+                                                        path: "MaQTK",
+                                                        select: "MaQTK TenQuyenTK"
+                                                    }
+                                                    
+                                                })
+        let taikhoans = []
+        taikhoangvs.forEach((data) => {
+            taikhoans.push(data.MaTK);
+        });
+
+        if (taikhoangvs.length == 0) 
+            return sendError(res, "Không tìm thấy danh sách tài khoản sinh viên.")
+        if (taikhoangvs) 
+            return sendSuccess(res, "Lấy danh sách tài khoản sinh viên thành công.", { 
+                TrangThai: "Thành công",
+                SoLuong: taikhoans.length,
+                DanhSach: taikhoans
+            })
+
+        return sendError(res, "Không tìm thấy danh sách tài khoản sinh viên.")
+    }
+    catch (error) {
         console.log(error)
         return sendServerError(res)
     }
