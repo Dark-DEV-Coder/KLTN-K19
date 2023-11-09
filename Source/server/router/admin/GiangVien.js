@@ -138,7 +138,7 @@ GiangVienAdminRoute.post('/ChinhSua/:MaGV', createGiangVienDir, uploadImg.single
                                         .replace(/[\u0300-\u036f]/g, '')
                                         .replace(/đ/g, 'd').replace(/Đ/g, 'D')
                                         .replace(/ /g, '') + Date.now();
-            let resultImage = await UploadHinhLenCloudinary(fileImage, "GiangVien", nameImage);
+            resultImage = await UploadHinhLenCloudinary(fileImage, "GiangVien", nameImage);
             if (resultImage) {
                 fs.unlinkSync(fileImage, (err) => {
                     console.log(err);

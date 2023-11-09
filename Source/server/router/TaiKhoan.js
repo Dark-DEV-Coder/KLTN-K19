@@ -23,10 +23,10 @@ TaiKhoanRoute.post('/DangNhap', async (req, res) => {
 
         const taikhoan = await TaiKhoan.findOne({ TenDangNhap: TenDangNhap });
         if (!taikhoan)
-            return sendError(res, "Tên đăng nhập hoặc mật khẩu của bạn sai");
+            return sendError(res, "Tên đăng nhập hoặc mật khẩu không chính xác");
         const KtraMatKhau = await argon2.verify(taikhoan.MatKhau, MatKhau);
         if (!KtraMatKhau)
-            return sendError(res, "Tên đăng nhập hoặc mật khẩu của bạn sai");
+            return sendError(res, "Tên đăng nhập hoặc mật khẩu không chính xác");
         const quyentaikhoan = await QuyenTaiKhoan.findById(taikhoan.MaQTK);
         let chucvu = "";
         let hoten = "";
@@ -80,10 +80,10 @@ TaiKhoanRoute.post('/DangNhapAdmin', async (req, res) => {
 
         const taikhoan = await TaiKhoan.findOne({ TenDangNhap: TenDangNhap });
         if (!taikhoan)
-            return sendError(res, "Tên đăng nhập hoặc mật khẩu của bạn sai");
+            return sendError(res, "Tên đăng nhập hoặc mật khẩu không chính xác");
         const KtraMatKhau = await argon2.verify(taikhoan.MatKhau, MatKhau);
         if (!KtraMatKhau)
-            return sendError(res, "Tên đăng nhập hoặc mật khẩu của bạn sai");
+            return sendError(res, "Tên đăng nhập hoặc mật khẩu không chính xác");
         const quyentaikhoan = await QuyenTaiKhoan.findById(taikhoan.MaQTK);
         if (quyentaikhoan.MaQTK == "SINHVIEN" || quyentaikhoan.MaQTK == "GIANGVIEN")
             return sendError(res, "Bạn không có quyền truy cập vào trang admin");

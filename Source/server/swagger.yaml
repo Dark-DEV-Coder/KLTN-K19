@@ -1640,7 +1640,7 @@ paths:
             }
       security:
         - ApiKeyAuth: []
-  /admin/canh-bao-hoc-tap/importExcel:
+  /admin/canh-bao-hoc-tap/importFile:
     post: 
       tags:
         - "CanhBaoHocTap"
@@ -1669,7 +1669,19 @@ paths:
           description: Niên khóa
           required: true
         - in: formData
-          name: FileExcel
+          name: KieuCanhBao
+          type: string
+          enum : ['Điểm học tập','Điểm rèn luyện']
+          description: Kiểu cảnh báo chỉ có 2 kiểu là Điểm học tập hoặc Điểm rèn luyện
+          required: true
+        - in: formData
+          name: KetQuaDRL
+          type: string
+          enum : ['Cảnh báo','Tạm dừng','Buộc thôi học']
+          description: Kết quả điểm rèn luyện
+          required: true
+        - in: formData
+          name: FileExcelPDF
           type: file
           description: file excel
           required: true
