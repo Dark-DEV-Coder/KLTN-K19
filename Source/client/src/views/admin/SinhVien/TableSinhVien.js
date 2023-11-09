@@ -1,206 +1,40 @@
 
 import "./TableSinhVien.scss";
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Box, Button } from '@mantine/core';
 import { IconDownload, IconUpload } from '@tabler/icons-react';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
 import { Link } from "react-router-dom";
-import {
-    IconButton,
-} from '@mui/material';
+import { IconButton } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
-
-const data = [
-    {
-        masv: 'SV1',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        email: 'abc@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nữ',
-        ngaysinh: '2002-08-12',
-        khoa: 'K19',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        nganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1192',
-        trangthaitotnghiep: 'Chưa tốt nghiệp',
-        trangthai: 1,
-    },
-    {
-        masv: 'SV2',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        email: 'abc@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nữ',
-        ngaysinh: '2002-08-12',
-        khoa: 'K19',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        nganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1192',
-        trangthaitotnghiep: 'Chưa tốt nghiệp',
-        trangthai: 1,
-    },
-    {
-        masv: 'SV3',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        email: 'abc@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nữ',
-        ngaysinh: '2002-08-12',
-        khoa: 'K19',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        nganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1192',
-        trangthaitotnghiep: 'Chưa tốt nghiệp',
-        trangthai: 1,
-    },
-    {
-        masv: 'SV4',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        email: 'abc@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nữ',
-        ngaysinh: '2002-08-12',
-        khoa: 'K19',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        nganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1192',
-        trangthaitotnghiep: 'Chưa tốt nghiệp',
-        trangthai: 1,
-    },
-    {
-        masv: 'SV5',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        email: 'abc@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nữ',
-        ngaysinh: '2002-08-12',
-        khoa: 'K20',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        nganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1192',
-        trangthaitotnghiep: 'Chưa tốt nghiệp',
-        trangthai: 1,
-    },
-    {
-        masv: 'SV6',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        email: 'abc@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nữ',
-        ngaysinh: '2002-08-12',
-        khoa: 'K19',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        nganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1192',
-        trangthaitotnghiep: 'Chưa tốt nghiệp',
-        trangthai: 1,
-    },
-    {
-        masv: 'SV7',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        email: 'abc@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nữ',
-        ngaysinh: '2002-08-12',
-        khoa: 'K19',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        nganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1192',
-        trangthaitotnghiep: 'Chưa tốt nghiệp',
-        trangthai: 1,
-    },
-    {
-        masv: 'SV8',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        email: 'abc@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nữ',
-        ngaysinh: '2002-08-12',
-        khoa: 'K19',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        nganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1192',
-        trangthaitotnghiep: 'Chưa tốt nghiệp',
-        trangthai: 1,
-    },
-    {
-        masv: 'SV9',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        email: 'abc@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nữ',
-        ngaysinh: '2002-08-12',
-        khoa: 'K19',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        nganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1192',
-        trangthaitotnghiep: 'Chưa tốt nghiệp',
-        trangthai: 1,
-    },
-    {
-        masv: 'SV10',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        email: 'abc@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nữ',
-        ngaysinh: '2002-08-12',
-        khoa: 'K19',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        nganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1192',
-        trangthaitotnghiep: 'Chưa tốt nghiệp',
-        trangthai: 1,
-    },
-    {
-        masv: 'SV11',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        email: 'abc@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nữ',
-        ngaysinh: '2002-08-12',
-        khoa: 'K19',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        nganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1192',
-        trangthaitotnghiep: 'Chưa tốt nghiệp',
-        trangthai: 1,
-    },
-    {
-        masv: 'SV12',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        email: 'abc@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nữ',
-        ngaysinh: '2002-08-12',
-        khoa: 'K19',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        nganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1192',
-        trangthaitotnghiep: 'Chưa tốt nghiệp',
-        trangthai: 1,
-    },
-]
-
+import { fetchAllSinhVien } from "../GetData"
+import { toast } from "react-toastify";
+import { useState, useEffect } from 'react';
+import moment from "moment";
 const csvConfig = mkConfig({
     fieldSeparator: ',',
     decimalSeparator: '.',
     useKeysAsHeaders: true,
 });
 
-const TableSinhVien = () => {
+const TableSinhVien = (props) => {
+    const accessToken = props.accessToken;
+    const [listData_sinhvien, SetListData_sinhvien] = useState([]);
+
+    // component didmount
+    useEffect(() => {
+        getListSinhVien();
+    }, []);
+
+    const getListSinhVien = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchAllSinhVien(headers);
+        if (res && res.data && res.data.DanhSach) {
+            SetListData_sinhvien(res.data.DanhSach)
+        }
+    }
+
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
         const csv = generateCsv(csvConfig)(rowData);
@@ -208,13 +42,13 @@ const TableSinhVien = () => {
     };
 
     const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(data);
+        const csv = generateCsv(csvConfig)(listData_sinhvien);
         download(csvConfig)(csv);
     };
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'masv',
+                accessorKey: 'MaSV',
                 header: 'Mã',
                 size: 100,
                 enableColumnOrdering: false,
@@ -222,7 +56,7 @@ const TableSinhVien = () => {
                 enableSorting: false,
             },
             {
-                accessorKey: 'hosv',
+                accessorKey: 'HoSV',
                 header: 'Họ',
                 size: 150,
                 enableEditing: false,
@@ -230,14 +64,14 @@ const TableSinhVien = () => {
 
             },
             {
-                accessorKey: 'tensv',
+                accessorKey: 'TenSV',
                 header: 'Tên',
                 size: 100,
                 enableEditing: false,
             },
             {
 
-                accessorKey: 'email',
+                accessorKey: 'Email',
                 header: 'Email',
                 size: 160,
                 enableEditing: false,
@@ -245,35 +79,36 @@ const TableSinhVien = () => {
 
             },
             {
-                accessorKey: 'sdt',
+                accessorKey: 'SoDienThoai',
                 header: 'Số điện thoại',
                 size: 100,
                 enableEditing: false,
             },
             {
-                accessorKey: 'gioitinh',
+                accessorKey: 'GioiTinh',
                 header: 'Giới Tính',
                 size: 100,
                 enableEditing: false,
             },
             {
 
-                accessorKey: 'ngaysinh',
+                accessorKey: 'NgaySinh',
                 header: 'Ngày sinh',
+                accessorFn: (dataRow) => moment(dataRow.NgaySinh).format("DD-MM-YYYY"),
                 size: 100,
                 enableEditing: false,
 
 
             },
             {
-                accessorKey: 'khoa',
+                accessorKey: 'Khoa',
                 header: 'Khóa',
                 size: 150,
                 enableEditing: false,
             },
             {
 
-                accessorKey: 'chuyennganh',
+                accessorKey: 'ChuyenNganh',
                 header: 'Chuyên ngành',
                 size: 150,
                 enableEditing: false,
@@ -281,14 +116,14 @@ const TableSinhVien = () => {
 
             },
             {
-                accessorKey: 'nganh',
+                accessorKey: 'Nganh',
                 header: 'Ngành',
                 size: 200,
                 enableEditing: false,
             },
             {
 
-                accessorKey: 'lop',
+                accessorKey: 'Lop',
                 header: 'Lớp',
                 size: 150,
                 enableEditing: false,
@@ -296,7 +131,7 @@ const TableSinhVien = () => {
 
             },
             {
-                accessorKey: 'trangthaitotnghiep',
+                accessorKey: 'TrangThaiTotNghiep',
                 header: 'Trạng thái tốt nghiệp',
                 size: 250,
                 enableEditing: false,
@@ -306,7 +141,7 @@ const TableSinhVien = () => {
 
     const table = useMantineReactTable({
         columns,
-        data,
+        data: listData_sinhvien,
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',
@@ -326,7 +161,7 @@ const TableSinhVien = () => {
                 </Link>
 
 
-                <Link to={"/admin/sinhvien/edit/" + row.original.masv}>
+                <Link to={"/admin/sinhvien/edit/" + row.original.MaSV}>
                     <IconButton onClick={() => table.setEditingRow(row)}>
                         <Edit fontSize="small" />
                     </IconButton>

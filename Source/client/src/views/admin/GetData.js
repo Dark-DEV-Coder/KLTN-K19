@@ -73,19 +73,8 @@ const fetchEditGiangVien = (headers, MaGV, data) => {
 export { fetchEditGiangVien };
 
 //Thêm thông tin Giảng viên
-const fetchAddGiangVien = (headers, MaGV, HoGV, TenGV, Email, SoDienThoai, GioiTinh, NgaySinh, DonViCongTac, ChuyenNganh, TrinhDo) => {
-    return axios.post(`admin/giang-vien/Them`, {
-        MaGV: MaGV,
-        HoGV: HoGV,
-        TenGV: TenGV,
-        Email: Email,
-        SoDienThoai: SoDienThoai,
-        GioiTinh: GioiTinh,
-        NgaySinh: NgaySinh,
-        DonViCongTac: DonViCongTac,
-        ChuyenNganh: ChuyenNganh,
-        TrinhDo: TrinhDo
-    }, { headers });
+const fetchAddGiangVien = (headers, data) => {
+    return axios.post(`admin/giang-vien/Them`, data, { headers });
 }
 export { fetchAddGiangVien };
 
@@ -151,9 +140,9 @@ export { fetchDetailChucNang };
 
 //Sửa  Chức Năng
 const fetchEditChucNang = (headers, MaCN, data) => {
-    for (const pair of data.entries()) {
-        console.log(pair[0] + ": " + pair[1]);
-    }
+    // for (const pair of data.entries()) {
+    //     console.log(pair[0] + ": " + pair[1]);
+    // }
     // console.log(data.TenChucNang)
     return axios.post(`admin/chuc-nang/ChinhSua/${MaCN}`, data, { headers });
 }
@@ -161,9 +150,9 @@ export { fetchEditChucNang };
 
 //Thêm Chức Năng
 const fetchAddChucNang = (headers, data) => {
-    for (const pair of data.entries()) {
-        console.log(pair[0] + ": " + pair[1]);
-    }
+    // for (const pair of data.entries()) {
+    //     console.log(pair[0] + ": " + pair[1]);
+    // }
     return axios.post(`admin/chuc-nang/Them`, data, { headers });
 }
 export { fetchAddChucNang };
@@ -174,3 +163,26 @@ const fetchDeleteChucNang = (headers, MaCN) => {
 }
 export { fetchDeleteChucNang };
 //Chức năng
+
+//Sinh Viên
+//Get List Sinh Viên
+const fetchAllSinhVien = (headers) => {
+    return axios.get('admin/sinh-vien/DanhSachSinhVien', { headers });
+}
+export { fetchAllSinhVien };
+
+//Get Chi Tiết Sinh Viên
+const fetchDetailSinhVien = (headers, MaSV) => {
+    return axios.get(`admin/sinh-vien/ChiTietSinhVien/${MaSV}`, { headers });
+}
+export { fetchDetailSinhVien };
+
+//Sửa thông tin Sinh Viên
+const fetchEditSinhVien = (headers, MaSV, data) => {
+    for (const pair of data.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+    }
+    // console.log(data.HoGV)
+    return axios.post(`admin/sinh-vien/ChinhSua/${MaSV}`, data, { headers });
+}
+export { fetchEditSinhVien };
