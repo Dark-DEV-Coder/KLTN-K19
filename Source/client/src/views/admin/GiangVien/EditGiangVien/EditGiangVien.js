@@ -1,27 +1,27 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { fetchAllChuyenNganh, fetchDetailGiangVien, fetchEditGiangVien } from "../../GetData"
 import * as React from 'react';
+import "./EditGiangVien.scss"
+import { fetchAllChuyenNganh, fetchDetailGiangVien, fetchEditGiangVien } from "../../GetData"
 import { toast } from "react-toastify";
 import moment from "moment";
-import "./EditGiangVien.scss"
 
 const EditGiangVien = () => {
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     let navigate = useNavigate();
     const giangvien = useParams();
     const [listChuyenNganh, setListChuyenNganh] = useState([]);
-    const [magv, SetMagv] = useState("")
-    const [hogv, SetHogv] = useState("")
-    const [tengv, SetTengv] = useState("")
-    const [email, SetEmail] = useState("")
-    const [sdt, SetSdt] = useState("")
-    const [gioitinh, SetGioitinh] = useState("")
-    const [ngaysinh, SetNgaysinh] = useState("")
-    const [donvicongtac, SetDonvicongtac] = useState("")
-    const [chuyennganh, SetChuyennganh] = useState("")
-    const [trinhdo, SetTrinhdo] = useState("")
+    const [magv, setMagv] = useState("")
+    const [hogv, setHogv] = useState("")
+    const [tengv, setTengv] = useState("")
+    const [email, setEmail] = useState("")
+    const [sdt, setSdt] = useState("")
+    const [gioitinh, setGioitinh] = useState("")
+    const [ngaysinh, setNgaysinh] = useState("")
+    const [donvicongtac, setDonvicongtac] = useState("")
+    const [chuyennganh, setChuyennganh] = useState("")
+    const [trinhdo, setTrinhdo] = useState("")
     const [giangvienEdit, setGiangvienEdit] = useState({ MaGV: "", HoGV: "", TenGV: "", Email: "", SoDienThoai: "", GioiTinh: "", NgaySinh: "", DonViCongTac: "", ChuyenNganh: "", TrinhDo: "" });
     const [Hinh, setHinh] = useState("")
     // component didmount
@@ -41,16 +41,17 @@ const EditGiangVien = () => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDetailGiangVien(headers, giangvien.MaGV);
         if (res && res.data) {
-            SetMagv(res.data.MaGV)
-            SetHogv(res.data.HoGV)
-            SetTengv(res.data.TenGV)
-            SetEmail(res.data.Email)
-            SetSdt(res.data.SoDienThoai)
-            SetGioitinh(res.data.GioiTinh)
-            SetNgaysinh(res.data.NgaySinh)
-            SetDonvicongtac(res.data.DonViCongTac)
-            SetChuyennganh(res.data.ChuyenNganh)
-            SetTrinhdo(res.data.TrinhDo)
+            setMagv(res.data.MaGV)
+            setHogv(res.data.HoGV)
+            setTengv(res.data.TenGV)
+            setEmail(res.data.Email)
+            setSdt(res.data.SoDienThoai)
+            setGioitinh(res.data.GioiTinh)
+            setNgaysinh(moment(res.data.NgaySinh).format("YYYY-MM-DD"))
+            setDonvicongtac(res.data.DonViCongTac)
+            setChuyennganh(res.data.ChuyenNganh)
+            setTrinhdo(res.data.TrinhDo)
+            setHinh(res.data.Hinh)
         }
     }
     const handleEditGiangVien = async () => {
@@ -67,7 +68,8 @@ const EditGiangVien = () => {
         value_img.append("Email", email);
         value_img.append("SoDienThoai", sdt);
         value_img.append("GioiTinh", gioitinh);
-        value_img.append("Hinh", ngaysinh);
+        const value_ngaysinh = new Date(ngaysinh)
+        value_img.append("NgaySinh", value_ngaysinh);
         value_img.append("DonViCongTac", donvicongtac);
         value_img.append("ChuyenNganh", chuyennganh);
         value_img.append("TrinhDo", trinhdo);
@@ -92,25 +94,25 @@ const EditGiangVien = () => {
         setSL(img)
     }
 
-    const onChangeInputSL = (event, SetState) => {
+    const onChangeInputSL = (event, setState) => {
         let changeValue = event.target.value;
-        SetState(changeValue);
+        setState(changeValue);
     }
 
-    const onChangeSelect = (event, SetSelect) => {
+    const onChangeSelect = (event, setSelect) => {
         let changeValue = event.target.value;
-        SetSelect(changeValue);
+        setSelect(changeValue);
     }
 
     // check dữ liệu
-    const [checkdulieuHo, SetCheckdulieuHo] = useState(true)
-    const [checkdulieuTen, SetCheckdulieuTen] = useState(true)
-    const [checkdulieuEmail, SetCheckdulieuEmail] = useState(true)
-    const [checkdulieuSDT, SetCheckdulieuSDT] = useState(true)
-    const [checkdulieuDVCT, SetCheckdulieuDVCT] = useState(true)
-    const [checkdulieuTrinhDo, SetCheckdulieuTrinhDo] = useState(true)
-    const checkdulieu = (value, SetDuLieu) => {
-        value === '' ? SetDuLieu(false) : SetDuLieu(true)
+    const [checkdulieuHo, setCheckdulieuHo] = useState(true)
+    const [checkdulieuTen, setCheckdulieuTen] = useState(true)
+    const [checkdulieuEmail, setCheckdulieuEmail] = useState(true)
+    const [checkdulieuSDT, setCheckdulieuSDT] = useState(true)
+    const [checkdulieuDVCT, setCheckdulieuDVCT] = useState(true)
+    const [checkdulieuTrinhDo, setCheckdulieuTrinhDo] = useState(true)
+    const checkdulieu = (value, setDuLieu) => {
+        value === '' ? setDuLieu(false) : setDuLieu(true)
     }
     return (
         <main className="main2">
@@ -141,49 +143,49 @@ const EditGiangVien = () => {
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputGV" htmlFor="inputHoGV">Họ lót</label>
-                            <input type="text" className="form-control" id="inputHoGV" value={hogv} onChange={(event) => onChangeInputSL(event, SetHogv)} onBlur={() => checkdulieu(hogv, SetCheckdulieuHo)} />
+                            <input type="text" className="form-control" id="inputHoGV" value={hogv} onChange={(event) => onChangeInputSL(event, setHogv)} onBlur={() => checkdulieu(hogv, setCheckdulieuHo)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuHo ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputGV" htmlFor="inputTenGV">Tên</label>
-                            <input type="text" className="form-control" id="inputTenGV" value={tengv} onChange={(event) => onChangeInputSL(event, SetTengv)} onBlur={() => checkdulieu(tengv, SetCheckdulieuTen)} />
+                            <input type="text" className="form-control" id="inputTenGV" value={tengv} onChange={(event) => onChangeInputSL(event, setTengv)} onBlur={() => checkdulieu(tengv, setCheckdulieuTen)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputGV" htmlFor="inputEmailGV">Email</label>
-                            <input type="text" className="form-control" id="inputEmailGV" value={email} onChange={(event) => onChangeInputSL(event, SetEmail)} onBlur={() => checkdulieu(email, SetCheckdulieuEmail)} />
+                            <input type="text" className="form-control" id="inputEmailGV" value={email} onChange={(event) => onChangeInputSL(event, setEmail)} onBlur={() => checkdulieu(email, setCheckdulieuEmail)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuEmail ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputGV" htmlFor="inputSdtGV">Số điện thoại</label>
-                            <input type="text" className="form-control" id="inputSdtGV" value={sdt} onChange={(event) => onChangeInputSL(event, SetSdt)} onBlur={() => checkdulieu(sdt, SetCheckdulieuSDT)} />
+                            <input type="text" className="form-control" id="inputSdtGV" value={sdt} onChange={(event) => onChangeInputSL(event, setSdt)} onBlur={() => checkdulieu(sdt, setCheckdulieuSDT)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuSDT ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputGV" htmlFor="inputGioitinhGV">Giới tính</label>
-                            <select value={gioitinh} onChange={(event) => onChangeSelect(event, SetGioitinh)} id="inputGioitinhGV" className="form-control">
+                            <select value={gioitinh} onChange={(event) => onChangeSelect(event, setGioitinh)} id="inputGioitinhGV" className="form-control">
                                 <option value='Nam'>Nam</option>
                                 <option value='Nữ'>Nữ</option>
                             </select>
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputGV" htmlFor="inputNgaysinh">Ngày sinh</label>
-                            <input type="date" className="form-control" id="inputNgaysinh" value={ngaysinh} onChange={(event) => onChangeInputSL(event, SetNgaysinh)} />
+                            <input type="date" className="form-control" id="inputNgaysinh" value={ngaysinh} onChange={(event) => onChangeInputSL(event, setNgaysinh)} />
                         </div>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputGV" htmlFor="inputDonviCT">Đơn vị công tác</label>
-                            <input type="text" className="form-control" id="inputDonviCT" value={donvicongtac} onChange={(event) => onChangeInputSL(event, SetDonvicongtac)} onBlur={() => checkdulieu(donvicongtac, SetCheckdulieuDVCT)} />
+                            <input type="text" className="form-control" id="inputDonviCT" value={donvicongtac} onChange={(event) => onChangeInputSL(event, setDonvicongtac)} onBlur={() => checkdulieu(donvicongtac, setCheckdulieuDVCT)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuDVCT ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputGV" htmlFor="inputChuyennganh">Chuyên ngành</label>
-                            <select value={chuyennganh} onChange={(event) => onChangeSelect(event, SetChuyennganh)} id="inputChuyennganh" className="form-control">
+                            <select value={chuyennganh} onChange={(event) => onChangeSelect(event, setChuyennganh)} id="inputChuyennganh" className="form-control">
                                 {listChuyenNganh && listChuyenNganh.length > 0 &&
                                     listChuyenNganh.map((item, index) => {
                                         return (
@@ -197,19 +199,20 @@ const EditGiangVien = () => {
                     <div className="form-row">
                         <div className="form-group col-md-12">
                             <label className="inputGV" htmlFor="inputTrinhdo">Trình độ</label>
-                            <input type="text" className="form-control" id="inputTrinhdo" value={trinhdo} onChange={(event) => onChangeInputSL(event, SetTrinhdo)} onBlur={() => checkdulieu(trinhdo, SetCheckdulieuTrinhDo)} />
+                            <input type="text" className="form-control" id="inputTrinhdo" value={trinhdo} onChange={(event) => onChangeInputSL(event, setTrinhdo)} onBlur={() => checkdulieu(trinhdo, setCheckdulieuTrinhDo)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuTrinhDo ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
 
                     </div>
                     <div className="form-row">
-                        <div className="form-group col-md-12">
+                        <div className="form-group col-md-7">
                             <div className="custom-file">
                                 <label className="inputKL" htmlFor="inputDSDT">Hình ảnh</label>
                                 <input type="file" accept="image/*" className="form-control file" id="inputDSDT" onChange={(event) => onChangeFile(event, setHinh)} />
                             </div>
-                            <div className="invalid-feedback" style={{ display: 'block' }}>Chỉ chấp nhận các file có đuôi là png, ...</div>
+                            <div className="invalid-feedback" style={{ display: 'block', color: 'blue' }}>Chỉ chấp nhận các file có đuôi là png, jpeg, jpg ...</div>
                         </div>
+                        {Hinh ? <img className="img-preview" src={Hinh} /> : ""}
                     </div>
                     <button className="btn" type="button" onClick={() => handleEditGiangVien()}>Lưu</button>
                 </div>

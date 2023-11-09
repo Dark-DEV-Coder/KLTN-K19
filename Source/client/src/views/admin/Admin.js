@@ -115,7 +115,7 @@ const Admin = () => {
                         <Route path='sinhvien'  >
                             <Route index element={<SinhVien />}></Route>
                             <Route path="new" element={<AddSinhVien />} ></Route>
-                            <Route path="edit/:masv" element={<EditSinhVien />} ></Route>
+                            <Route path="edit/:MaSV" element={<EditSinhVien />} ></Route>
                         </Route>
                         <Route path='nganhhoc'  >
                             <Route index element={<Nganh />}></Route>

@@ -2,9 +2,10 @@
 import "./SinhVien.scss"
 import { Link } from "react-router-dom";
 import TableSinhVien from "./TableSinhVien";
+import { useState } from 'react';
 const SinhVien = () => {
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     return (
-
         <>
             <main className="main2">
                 {/* <HeaderMain title={'Chuyên ngành'} /> */}
@@ -30,7 +31,7 @@ const SinhVien = () => {
                 {/* <MantineReactTable table={table} />; */}
 
 
-                <TableSinhVien />
+                <TableSinhVien accessToken={accessToken} />
 
             </main >
         </>
