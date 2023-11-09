@@ -40,7 +40,7 @@ const CanhBaoHocTapSchema = new Schema(
                     required: true,
                 },
                 NgaySinh: {
-                    type: String,
+                    type: Date,
                 },
                 GioiTinh: {
                     type: String,

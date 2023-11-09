@@ -26,6 +26,8 @@ tags:
   description: "Các API của model SinhVien"
 - name: "GiangVien"
   description: "Các API của model GiangVien"
+- name: "CanhBaoHocTap"
+  description: "Các API của model CanhBaoHocTap"
 paths:
   /admin/chuc-nang/DanhSachChucNang:
     get: 
@@ -1632,7 +1634,7 @@ paths:
             }
       security:
         - ApiKeyAuth: []
-  /admin/canh-bao-hoc-tap/importFile:
+  /admin/canh-bao-hoc-tap/ThemDotCanhBao:
     post: 
       tags:
         - "CanhBaoHocTap"
@@ -1663,7 +1665,7 @@ paths:
         - in: formData
           name: KieuCanhBao
           type: string
-          enum : ['Điểm học tập','Điểm rèn luyện']
+          enum : ['Điểm học tập','Điểm rèn luyện','Chưa import file']
           description: Kiểu cảnh báo chỉ có 2 kiểu là Điểm học tập hoặc Điểm rèn luyện
           required: true
         - in: formData
@@ -1671,12 +1673,10 @@ paths:
           type: string
           enum : ['Cảnh báo','Tạm dừng','Buộc thôi học']
           description: Kết quả điểm rèn luyện
-          required: true
         - in: formData
           name: FileExcelPDF
           type: file
           description: file excel
-          required: true
       responses:
         200:
           description: Thêm đợt cảnh báo học tập thành công.
@@ -1696,6 +1696,211 @@ paths:
             }
       security:
         - ApiKeyAuth: [] 
+  /admin/canh-bao-hoc-tap/importFile/{MaCBHT}:
+    post: 
+      tags:
+        - "CanhBaoHocTap"
+      summary: Import file đợt cảnh báo học tập, điểm rèn luyện
+      produces:
+        - multipart/form-data    
+      parameters:
+        - in: path
+          name: MaCBHT
+          type: string
+          description: Mã cảnh báo học tập
+          required: true
+        - in: formData
+          name: KieuCanhBao
+          type: string
+          enum : ['Điểm học tập','Điểm rèn luyện','Chưa import file']
+          description: Kiểu cảnh báo chỉ có 2 kiểu là Điểm học tập hoặc Điểm rèn luyện
+          required: true
+        - in: formData
+          name: KetQuaDRL
+          type: string
+          enum : ['Cảnh báo','Tạm dừng','Buộc thôi học']
+          description: Kết quả điểm rèn luyện
+          required: true
+        - in: formData
+          name: FileExcelPDF
+          type: file
+          description: file excel
+          required: true
+      responses:
+        200:
+          description: Import file đợt cảnh báo học tập, điểm rèn luyện thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Import file đợt cảnh báo học tập, điểm rèn luyện thành công.",
+            }          
+        400:
+          description: Import file đợt cảnh báo học tập, điểm rèn luyện thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Import file đợt cảnh báo học tập, điểm rèn luyện thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/canh-bao-hoc-tap/ChinhSuaThongTin/{MaCBHT}:
+    post: 
+      tags:
+        - "CanhBaoHocTap"
+      summary: Chỉnh sửa thông tin đợt cảnh báo học tập
+      produces:
+        - multipart/form-data    
+      parameters:
+        - in: path
+          name: MaCBHT
+          type: string
+          description: Mã cảnh báo học tập
+          required: true
+        - in: formData
+          name: Ten
+          type: string
+          description: Tên đợt cảnh báo học tập
+          required: true
+        - in: formData
+          name: Dot
+          type: string
+          description: Đợt thứ mấy
+          required: true
+        - in: formData
+          name: NienKhoa
+          type: string
+          description: Niên khóa
+          required: true
+      responses:
+        200:
+          description: Chỉnh sửa thông tin đợt cảnh báo học tập thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Chỉnh sửa thông tin đợt cảnh báo học tập thành công.",
+            }          
+        400:
+          description: Chỉnh sửa thông tin đợt cảnh báo học tập thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Chỉnh sửa thông tin đợt cảnh báo học tập thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/canh-bao-hoc-tap/XoaDanhSachSinhVien/{MaCBHT}:
+    post: 
+      tags:
+        - "CanhBaoHocTap"
+      summary: Xóa danh sách sinh viên
+      produces:
+        - multipart/form-data    
+      parameters:
+        - in: path
+          name: MaCBHT
+          type: string
+          description: Mã cảnh báo học tập
+          required: true
+      responses:
+        200:
+          description: Xóa danh sách sinh viên thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Xóa danh sách sinh viên thành công.",
+            }          
+        400:
+          description: Xóa danh sách sinh viên thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Xóa danh sách sinh viên thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/canh-bao-hoc-tap/XoaDotCanhBao/{MaCBHT}:
+    delete: 
+      tags:
+        - "CanhBaoHocTap"
+      summary: Xóa đợt cảnh báo
+      produces:
+        - multipart/form-data    
+      parameters:
+        - in: path
+          name: MaCBHT
+          type: string
+          description: Mã cảnh báo học tập
+          required: true
+      responses:
+        200:
+          description: Xóa đợt cảnh báo thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Xóa đợt cảnh báo thành công.",
+            }          
+        400:
+          description: Xóa đợt cảnh báo thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Xóa đợt cảnh báo thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/canh-bao-hoc-tap/DanhSachDotCanhBao:
+    get: 
+      tags:
+        - "CanhBaoHocTap"
+      summary: Admin lấy danh sách đợt cảnh báo
+      produces:
+        - application/json     
+      parameters:
+      - in: query
+        name: page
+        type: integer
+        description: số trang (ví dụ trang 1, trang 2), giá trị > 0
+      - in: query
+        name: pageSize
+        type: integer
+        description: giới hạn số lượng 1 trang, giá trị > 0
+      - in: query
+        name: keyword
+        type: string
+        description: mã đợt cảnh báo, tên đợt cảnh báo, đợt cảnh báo, niên khóa đợt cảnh báo
+      - in: body
+        name: KieuCanhBao
+        type: string
+        description: mã đợt cảnh báo, tên đợt cảnh báo, đợt cảnh báo, niên khóa đợt cảnh báo
+        enum : ['Điểm học tập','Điểm rèn luyện','Chưa import file']
+        require: true
+      responses:
+        200: 
+          description: Lấy danh sách đợt cảnh báo thành công
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Lấy danh sách đợt cảnh báo thành công",
+            }
+        400:
+          description: Lấy danh sách đợt cảnh báo thất bại
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Lấy danh sách đợt cảnh báo thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
 securityDefinitions:
   ApiKeyAuth:
     type: apiKey

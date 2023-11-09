@@ -29,6 +29,7 @@ export const TrangThaiGiangVien = {
 }
 
 export const KieuCanhBaoSV = {
+    NoFile: 'Chưa import file',
     DRL: 'Điểm rèn luyện',
     DHT: 'Điểm học tập',
 }
