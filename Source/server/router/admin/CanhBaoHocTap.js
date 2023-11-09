@@ -12,6 +12,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import CanhBaoHocTap from "../../model/CanhBaoHocTap.js"
 import { XuLyNgaySinh } from "../../helper/XuLyDuLieu.js"
+import Nganh from "../../model/Nganh.js"
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -473,5 +474,164 @@ CanhBaoHocTapAdminRoute.delete('/XoaDotCanhBao/:MaCBHT', async (req, res) => {
     }
 })
 
+/**
+ * @route POST /api/admin/canh-bao-hoc-tap/ThongKeCBHTSinhVien/{MaCBHT}
+ * @description Thống kê sinh viên bị cảnh báo
+ * @access public
+ */
+CanhBaoHocTapAdminRoute.get('/ThongKeCBHTSinhVien/:MaCBHT', async (req, res) => {
+    try{
+        const { MaCBHT } = req.params;
+        const isExist = await CanhBaoHocTap.findOne({ MaCBHT: MaCBHT });
+        if (!isExist)
+            return sendError(res, "Đợt cảnh báo học tập không tồn tại.");
+        const { ThongKeTheo, LocTheoNganh, LocTheoKhoa } = req.body;
+        let cbht = null;
+        if (ThongKeTheo == "Ngành" && LocTheoNganh == "Tất cả" && LocTheoKhoa == "Tất cả"){
+            cbht = await CanhBaoHocTap.aggregate([
+                {
+                    $match: { "MaCBHT": MaCBHT }
+                },
+                { $unwind: '$ThongTin' },
+                {
+                    $group: {
+                        _id: { Nganh: '$ThongTin.Nganh', KQ: '$ThongTin.KQ' },
+                        count: { $sum: 1 }
+                    }
+                },
+                {
+                    $sort : { "_id.Nganh": 1 }
+                }
+            ]);
+        }
+        if (ThongKeTheo == "Khóa" && LocTheoKhoa == "Tất cả"){
+            if (LocTheoNganh == "Tất cả"){
+                cbht = await CanhBaoHocTap.aggregate([
+                    {
+                        $match: { "MaCBHT": MaCBHT }
+                    },
+                    { $unwind: '$ThongTin' },
+                    {
+                        $group: {
+                            _id: { Khoa: '$ThongTin.Khoa', KQ: '$ThongTin.KQ' },
+                            count: { $sum: 1 }
+                        }
+                    },
+                    {
+                        $sort : { "_id.Khoa": 1 }
+                    }
+                ]);
+            }
+            else{
+                const manganh = await Nganh.findOne({ TenNganh: LocTheoNganh });
+                cbht = await CanhBaoHocTap.aggregate([
+                    {
+                        $match: { "MaCBHT": MaCBHT }
+                    },
+                    { $unwind: '$ThongTin' },
+                    {
+                        $match: { "ThongTin.Nganh": manganh.MaNganh }
+                    },
+                    {
+                        $group: {
+                            _id: { Khoa: '$ThongTin.Khoa', KQ: '$ThongTin.KQ' },
+                            count: { $sum: 1 }
+                        }
+                    },
+                    {
+                        $sort : { "_id.Khoa": 1 }
+                    }
+                ]);
+            }
+        }
+        if (ThongKeTheo == "Lớp"){
+            if ( LocTheoNganh == "Tất cả" && LocTheoKhoa == "Tất cả" ){
+                cbht = await CanhBaoHocTap.aggregate([
+                    {
+                        $match: { "MaCBHT": MaCBHT }
+                    },
+                    { $unwind: '$ThongTin' },
+                    {
+                        $group: {
+                            _id: { Lop: '$ThongTin.Lop', KQ: '$ThongTin.KQ' },
+                            count: { $sum: 1 }
+                        }
+                    },
+                    {
+                        $sort : { "_id.Lop": 1 }
+                    }
+                ]);
+            }
+            if ( LocTheoNganh != "Tất cả" && LocTheoKhoa == "Tất cả" ){
+                const manganh = await Nganh.findOne({ TenNganh: LocTheoNganh });
+                cbht = await CanhBaoHocTap.aggregate([
+                    {
+                        $match: { "MaCBHT": MaCBHT }
+                    },
+                    { $unwind: '$ThongTin' },
+                    {
+                        $match: { "ThongTin.Nganh": manganh.MaNganh }
+                    },
+                    {
+                        $group: {
+                            _id: { Lop: '$ThongTin.Lop', KQ: '$ThongTin.KQ' },
+                            count: { $sum: 1 }
+                        }
+                    },
+                    {
+                        $sort : { "_id.Lop": 1 }
+                    }
+                ]);
+            }
+            if ( LocTheoNganh == "Tất cả" && LocTheoKhoa != "Tất cả" ){
+                cbht = await CanhBaoHocTap.aggregate([
+                    {
+                        $match: { "MaCBHT": MaCBHT }
+                    },
+                    { $unwind: '$ThongTin' },
+                    {
+                        $match: { "ThongTin.Khoa": LocTheoKhoa }
+                    },
+                    {
+                        $group: {
+                            _id: { Lop: '$ThongTin.Lop', KQ: '$ThongTin.KQ' },
+                            count: { $sum: 1 }
+                        }
+                    },
+                    {
+                        $sort : { "_id.Lop": 1 }
+                    }
+                ]);
+            }
+            if ( LocTheoNganh != "Tất cả" && LocTheoKhoa != "Tất cả" ){
+                const manganh = await Nganh.findOne({ TenNganh: LocTheoNganh });
+                cbht = await CanhBaoHocTap.aggregate([
+                    {
+                        $match: { "MaCBHT": MaCBHT }
+                    },
+                    { $unwind: '$ThongTin' },
+                    {
+                        $match: { "ThongTin.Nganh": manganh.MaNganh, "ThongTin.Khoa": LocTheoKhoa }
+                    },
+                    {
+                        $group: {
+                            _id: { Lop: '$ThongTin.Lop', KQ: '$ThongTin.KQ' },
+                            count: { $sum: 1 }
+                        }
+                    },
+                    {
+                        $sort : { "_id.Lop": 1 }
+                    }
+                ]);
+            }
+        }
+        
+        return sendSuccess(res, "Thống kê sinh viên bị cảnh báo thành công", cbht);
+    }
+    catch (error){
+        console.log(error)
+        return sendServerError(res)
+    }
+})
 
 export default CanhBaoHocTapAdminRoute

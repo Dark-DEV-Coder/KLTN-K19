@@ -2002,6 +2002,53 @@ paths:
             }
       security:
       - ApiKeyAuth: []
+  /admin/canh-bao-hoc-tap/ThongKeCBHTSinhVien/{MaCBHT}:
+    get: 
+      tags:
+        - "CanhBaoHocTap"
+      summary: Thống kê sinh viên bị cảnh báo
+      produces:
+        - application/json  
+      parameters:
+        - in: path
+          name: MaCBHT
+          type: string
+          description: Mã cảnh báo học tập
+          required: true
+        - in: body
+          name: ThongKeTheo
+          type: string
+          description: Thống kê theo ngành, theo khóa, theo lớp
+          required: true
+        - in: body
+          name: LocTheoNganh
+          type: string
+          description: Lọc theo ngành
+          required: true
+        - in: body
+          name: LocTheoKhoa
+          type: string
+          description: Lọc theo khóa
+          required: true
+      responses:
+        200:
+          description: Thống kê sinh viên bị cảnh báo thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Thống kê sinh viên bị cảnh báo thành công.",
+            }          
+        400:
+          description: Thống kê sinh viên bị cảnh báo thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Thống kê sinh viên bị cảnh báo thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
 securityDefinitions:
   ApiKeyAuth:
     type: apiKey
