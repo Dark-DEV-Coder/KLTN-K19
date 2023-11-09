@@ -1184,10 +1184,6 @@ paths:
           type: string
           description: Lớp của sinh viên
           required: true
-        - in: formData
-          name: Hinh
-          type: file
-          description: Hình đại diện sinh viên
       responses:
         200:
           description: Thêm sinh viên thành công.
@@ -1270,10 +1266,6 @@ paths:
           type: string
           description: Lớp của sinh viên
           required: true
-        - in: formData
-          name: Hinh
-          type: file
-          description: Hình đại diện sinh viên
       responses:
         200:
           description: Chỉnh sửa thông tin sinh viên thành công.
