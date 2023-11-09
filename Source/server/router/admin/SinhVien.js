@@ -75,7 +75,7 @@ SinhVienAdminRoute.get('/ChiTietSinhVien/:MaSV', async (req, res) => {
  * @description Thêm sinh viên
  * @access public
  */
-SinhVienAdminRoute.post('/Them', createSinhVienDir, uploadImg.single("Hinh"), async (req, res) => {
+SinhVienAdminRoute.post('/Them', async (req, res) => {
     try{
         const errors = KtraDuLieuSinhVienKhiThem(req.body)
         if (errors)
@@ -84,22 +84,7 @@ SinhVienAdminRoute.post('/Them', createSinhVienDir, uploadImg.single("Hinh"), as
         const isExist = await SinhVien.findOne({ MaSV: MaSV }).lean();
         if (isExist)
             return sendError(res, "Mã sinh viên đã tồn tại");
-        let resultImage = '';
-        if (req.file){
-            let hoten = HoSV + " " + TenSV;
-            let fileImage = await `${req.file.destination}${req.file.filename}`;
-            let nameImage = await hoten.normalize('NFD')
-                                        .replace(/[\u0300-\u036f]/g, '')
-                                        .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-                                        .replace(/ /g, '') + Date.now();
-            resultImage = await UploadHinhLenCloudinary(fileImage, "SinhVien", nameImage);
-            if (resultImage) {
-                fs.unlinkSync(fileImage, (err) => {
-                    console.log(err);
-                })
-            }
-        }
-        const sinhvien = await SinhVien.create({ MaSV, HoSV, TenSV, Email, SoDienThoai, GioiTinh, NgaySinh, Khoa, ChuyenNganh, Nganh, Lop, Hinh: resultImage });
+        const sinhvien = await SinhVien.create({ MaSV, HoSV, TenSV, Email, SoDienThoai, GioiTinh, NgaySinh, Khoa, ChuyenNganh, Nganh, Lop });
 
         return sendSuccess(res, "Thêm sinh viên thành công", sinhvien);
     }
@@ -114,7 +99,7 @@ SinhVienAdminRoute.post('/Them', createSinhVienDir, uploadImg.single("Hinh"), as
  * @description Chỉnh sửa thông tin sinh viên
  * @access public
 */
-SinhVienAdminRoute.post('/ChinhSua/:MaSV', createSinhVienDir, uploadImg.single("Hinh"), async (req, res) => {
+SinhVienAdminRoute.post('/ChinhSua/:MaSV', async (req, res) => {
     try{
         const errors = KtraDuLieuSinhVienKhiChinhSua(req.body)
         if (errors)
@@ -124,28 +109,8 @@ SinhVienAdminRoute.post('/ChinhSua/:MaSV', createSinhVienDir, uploadImg.single("
         const sinhvien = await SinhVien.findOne({ MaSV: MaSV }).lean();
         if (!sinhvien)
             return sendError(res, "Mã sinh viên không tồn tại");
-        if (sinhvien.Hinh != ''){
-            let splitUrl = await sinhvien.Hinh.split('/');
-            let file = await `${splitUrl[splitUrl.length - 2]}/${splitUrl[splitUrl.length - 1].split('.')[0]}`;
-            await DeleteHinhTrenCloudinary(file);
-        }
         
-        let resultImage = '';
-        if (req.file){
-            let hoten = HoSV + " " + TenSV;
-            let fileImage = await `${req.file.destination}${req.file.filename}`;
-            let nameImage = await hoten.normalize('NFD')
-                                        .replace(/[\u0300-\u036f]/g, '')
-                                        .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-                                        .replace(/ /g, '') + Date.now();
-            resultImage = await UploadHinhLenCloudinary(fileImage, "SinhVien", nameImage);
-            if (resultImage) {
-                fs.unlinkSync(fileImage, (err) => {
-                    console.log(err);
-                })
-            }
-        }
-        await SinhVien.findOneAndUpdate({ MaSV: MaSV },{ HoSV, TenSV, Email, SoDienThoai, GioiTinh, NgaySinh, Khoa, ChuyenNganh, Nganh, Lop, Hinh: resultImage });
+        await SinhVien.findOneAndUpdate({ MaSV: MaSV },{ HoSV, TenSV, Email, SoDienThoai, GioiTinh, NgaySinh, Khoa, ChuyenNganh, Nganh, Lop });
 
         return sendSuccess(res, "Chỉnh sửa thông tin sinh viên thành công");
     }
