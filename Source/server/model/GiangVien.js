@@ -34,7 +34,7 @@ const GiangVienSchema = new Schema(
             required: true,
         },
         NgaySinh: {
-            type: String,
+            type: Date,
             required: true,
         },
         DonViCongTac: {

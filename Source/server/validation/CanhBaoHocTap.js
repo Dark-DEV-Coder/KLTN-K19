@@ -10,3 +10,13 @@ export const KtraDuLieuCBHTKhiThem = data => {
 
     return error.get()
 }
+
+export const KtraDuLieuCBHTKhiChinhSua = data => {
+    const error = new Error()
+
+    error.isRequired(data.Ten, "Ten")
+        .isRequired(data.Dot, "Dot")
+        .isRequired(data.NienKhoa, "NienKhoa")
+
+    return error.get()
+}

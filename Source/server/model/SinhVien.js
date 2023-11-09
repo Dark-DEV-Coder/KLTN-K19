@@ -34,7 +34,7 @@ const SinhVienSchema = new Schema(
             required: true,
         },
         NgaySinh: {
-            type: String,
+            type: Date,
             required: true,
         },
         Khoa: { // khóa (ví dụ: khóa 19, khóa 20)
