@@ -27,3 +27,14 @@ export const TrangThaiGiangVien = {
     DaCoTaiKhoan: 'Đã có tài khoản',
     DaXoa: 'Đã xóa'
 }
+
+export const KieuCanhBaoSV = {
+    DRL: 'Điểm rèn luyện',
+    DHT: 'Điểm học tập',
+}
+
+export const KetQuaDRLSinhVien = {
+    CB: 'Cảnh báo',
+    TD: 'Tạm dừng',
+    BTH: 'Buộc thôi học',
+}

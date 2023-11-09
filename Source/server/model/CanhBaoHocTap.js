@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { TrangThaiTonTai } from "../constant.js";
+import { KieuCanhBaoSV, TrangThaiTonTai } from "../constant.js";
 const { Schema } = mongoose;
 
 const CanhBaoHocTapSchema = new Schema(
@@ -20,6 +20,11 @@ const CanhBaoHocTapSchema = new Schema(
             type: String,
             required: true,
         },
+        KieuCanhBao: {
+            type: String,
+            enum: Object.values(KieuCanhBaoSV),
+            required: true,
+        },
         ThongTin: [
             {
                 MaSV: {
@@ -35,6 +40,9 @@ const CanhBaoHocTapSchema = new Schema(
                     required: true,
                 },
                 NgaySinh: {
+                    type: String,
+                },
+                GioiTinh: {
                     type: String,
                 },
                 NamThu: {
@@ -59,6 +67,12 @@ const CanhBaoHocTapSchema = new Schema(
                     type: String,
                 },
                 GhiChu: {
+                    type: String,
+                },
+                DiemRenLuyen: {
+                    type: Number,
+                },
+                XepLoaiDRL: {
                     type: String,
                 },
                 Lop: {
