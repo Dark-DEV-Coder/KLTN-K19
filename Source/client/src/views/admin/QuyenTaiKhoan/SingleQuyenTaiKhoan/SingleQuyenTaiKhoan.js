@@ -3,7 +3,7 @@ import "./SingleQuyenTaiKhoan.scss"
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-const SingleTaiKhoan = () => {
+const SingleQuyenTaiKhoan = () => {
     const dulieutest = {
         MaQuyen: 'admin',
         TenQuyen: 'admin',
@@ -94,4 +94,4 @@ const SingleTaiKhoan = () => {
         </>
     )
 }
-export default SingleTaiKhoan;
+export default SingleQuyenTaiKhoan;

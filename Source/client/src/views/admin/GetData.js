@@ -63,36 +63,18 @@ const fetchDetailGiangVien = (headers, MaGV) => {
 export { fetchDetailGiangVien };
 
 //Sửa thông tin Giảng viên
-const fetchEditGiangVien = (headers, MaGV, HoGV, TenGV, Email, SoDienThoai, GioiTinh, NgaySinh, DonViCongTac, ChuyenNganh, TrinhDo) => {
-    return axios.put(`admin/giang-vien/ChinhSua/${MaGV}`, {
-        MaGV: MaGV,
-        HoGV: HoGV,
-        TenGV: TenGV,
-        Email: Email,
-        SoDienThoai: SoDienThoai,
-        GioiTinh: GioiTinh,
-        NgaySinh: NgaySinh,
-        DonViCongTac: DonViCongTac,
-        ChuyenNganh: ChuyenNganh,
-        TrinhDo: TrinhDo
-    }, { headers });
+const fetchEditGiangVien = (headers, MaGV, data) => {
+    for (const pair of data.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+    }
+    // console.log(data.HoGV)
+    return axios.post(`admin/giang-vien/ChinhSua/${MaGV}`, data, { headers });
 }
 export { fetchEditGiangVien };
 
 //Thêm thông tin Giảng viên
-const fetchAddGiangVien = (headers, MaGV, HoGV, TenGV, Email, SoDienThoai, GioiTinh, NgaySinh, DonViCongTac, ChuyenNganh, TrinhDo) => {
-    return axios.post(`admin/giang-vien/Them`, {
-        MaGV: MaGV,
-        HoGV: HoGV,
-        TenGV: TenGV,
-        Email: Email,
-        SoDienThoai: SoDienThoai,
-        GioiTinh: GioiTinh,
-        NgaySinh: NgaySinh,
-        DonViCongTac: DonViCongTac,
-        ChuyenNganh: ChuyenNganh,
-        TrinhDo: TrinhDo
-    }, { headers });
+const fetchAddGiangVien = (headers, data) => {
+    return axios.post(`admin/giang-vien/Them`, data, { headers });
 }
 export { fetchAddGiangVien };
 
@@ -161,19 +143,46 @@ const fetchEditChucNang = (headers, MaCN, data) => {
     // for (const pair of data.entries()) {
     //     console.log(pair[0] + ": " + pair[1]);
     // }
-    console.log(data.TenChucNang)
-    return axios.post(`admin/chuc-nang/ChinhSua/${MaCN}`, {
-        data: data
-    }, { headers });
+    // console.log(data.TenChucNang)
+    return axios.post(`admin/chuc-nang/ChinhSua/${MaCN}`, data, { headers });
 }
 export { fetchEditChucNang };
 
 //Thêm Chức Năng
-const fetchAddChucNang = (headers, MaCN, TenChucNang, Hinh) => {
-    return axios.post(`admin/chuc-nang/Them`, {
-        MaCN: MaCN,
-        TenChucNang: TenChucNang,
-        Hinh: Hinh,
-    }, { headers });
+const fetchAddChucNang = (headers, data) => {
+    // for (const pair of data.entries()) {
+    //     console.log(pair[0] + ": " + pair[1]);
+    // }
+    return axios.post(`admin/chuc-nang/Them`, data, { headers });
 }
 export { fetchAddChucNang };
+
+//Xóa  Chức năng
+const fetchDeleteChucNang = (headers, MaCN) => {
+    return axios.delete(`admin/chuc-nang/Xoa/${MaCN}`, { headers });
+}
+export { fetchDeleteChucNang };
+//Chức năng
+
+//Sinh Viên
+//Get List Sinh Viên
+const fetchAllSinhVien = (headers) => {
+    return axios.get('admin/sinh-vien/DanhSachSinhVien', { headers });
+}
+export { fetchAllSinhVien };
+
+//Get Chi Tiết Sinh Viên
+const fetchDetailSinhVien = (headers, MaSV) => {
+    return axios.get(`admin/sinh-vien/ChiTietSinhVien/${MaSV}`, { headers });
+}
+export { fetchDetailSinhVien };
+
+//Sửa thông tin Sinh Viên
+const fetchEditSinhVien = (headers, MaSV, data) => {
+    for (const pair of data.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+    }
+    // console.log(data.HoGV)
+    return axios.post(`admin/sinh-vien/ChinhSua/${MaSV}`, data, { headers });
+}
+export { fetchEditSinhVien };

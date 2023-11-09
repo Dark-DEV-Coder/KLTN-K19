@@ -21,6 +21,7 @@ const AddGiangVien = () => {
     const [donvicongtac, SetDonvicongtac] = useState('')
     const [chuyennganh, SetChuyennganh] = useState('httt')
     const [trinhdo, SetTrinhdo] = useState('')
+    const [Hinh, setHinh] = useState("")
 
     // component didmount
     useEffect(() => {
@@ -37,11 +38,24 @@ const AddGiangVien = () => {
 
     const handleAddGiangVien = async () => {
         const headers = { 'x-access-token': accessToken };
-        if (!headers || !magv || !hogv || !tengv || !email || !sdt || !gioitinh || !ngaysinh || !donvicongtac || !chuyennganh || !trinhdo) {
+        if (!headers || !magv || !hogv || !tengv || !email || !sdt || !gioitinh || !ngaysinh || !donvicongtac || !chuyennganh || !trinhdo || !Hinh) {
             toast.error("Vui lòng điền đầy đủ dữ liệu")
             return
         }
-        let res = await fetchAddGiangVien(headers, magv, hogv, tengv, email, sdt, gioitinh, ngaysinh, donvicongtac, chuyennganh, trinhdo)
+        let data_sinhvien = new FormData();
+        data_sinhvien.append("MaGV", magv);
+        data_sinhvien.append("HoGV", hogv);
+        data_sinhvien.append("TenGV", tengv);
+        data_sinhvien.append("Email", email);
+        data_sinhvien.append("SoDienThoai", sdt);
+        data_sinhvien.append("GioiTinh", gioitinh);
+        const value_ngaysinh = new Date(ngaysinh)
+        data_sinhvien.append("NgaySinh", value_ngaysinh);
+        data_sinhvien.append("DonViCongTac", donvicongtac);
+        data_sinhvien.append("ChuyenNganh", chuyennganh);
+        data_sinhvien.append("TrinhDo", trinhdo);
+        data_sinhvien.append("Hinh", Hinh);
+        let res = await fetchAddGiangVien(headers, data_sinhvien)
         if (res.status === true) {
             toast.success(res.message)
             navigate("/admin/giangvien")
@@ -61,6 +75,11 @@ const AddGiangVien = () => {
         let changeValue = event.target.value;
         SetSelect(changeValue);
     }
+    const onChangeFile = (event, setSL) => {
+        const img = event.target.files[0];
+        img.preview = URL.createObjectURL(img)
+        setSL(img)
+    }
 
     // check dữ liệu
     const [checkdulieuMa, SetCheckdulieuMa] = useState(true)
@@ -70,6 +89,7 @@ const AddGiangVien = () => {
     const [checkdulieuSDT, SetCheckdulieuSDT] = useState(true)
     const [checkdulieuDVCT, SetCheckdulieuDVCT] = useState(true)
     const [checkdulieuTrinhDo, SetCheckdulieuTrinhDo] = useState(true)
+    const [checkdulieuHinh, setCheckdulieuHinh] = useState(true)
     const checkdulieu = (value, SetDuLieu) => {
         value === '' ? SetDuLieu(false) : SetDuLieu(true)
     }
@@ -107,12 +127,12 @@ const AddGiangVien = () => {
                             <input type="text" className="form-control" id="inputHoGV" placeholder="Điền mã giảng viên ..." value={magv} onChange={(event) => onChangeInputSL(event, SetMagv)} onBlur={() => checkdulieu(magv, SetCheckdulieuMa)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuMa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
-                        <div className="form-group col-md-5">
+                        <div className="form-group col-md-4">
                             <label className="inputGV" htmlFor="inputHoGV">Họ lót</label>
                             <input type="text" className="form-control" id="inputHoGV" placeholder="Điền họ lót ..." value={hogv} onChange={(event) => onChangeInputSL(event, SetHogv)} onBlur={() => checkdulieu(hogv, SetCheckdulieuHo)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuHo ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
-                        <div className="form-group col-md-5">
+                        <div className="form-group col-md-6">
                             <label className="inputGV" htmlFor="inputTenGV">Tên</label>
                             <input type="text" className="form-control" id="inputTenGV" placeholder="Điền tên ..." value={tengv} onChange={(event) => onChangeInputSL(event, SetTengv)} onBlur={() => checkdulieu(tengv, SetCheckdulieuTen)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
@@ -167,13 +187,26 @@ const AddGiangVien = () => {
                             <label className="inputGV" htmlFor="inputTrinhdo">Trình độ</label>
                             <input type="text" className="form-control" id="inputTrinhdo" placeholder="Điền trình độ ..." value={trinhdo} onChange={(event) => onChangeInputSL(event, SetTrinhdo)} onBlur={() => checkdulieu(trinhdo, SetCheckdulieuTrinhDo)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuTrinhDo ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+
                         </div>
                     </div>
+                    <div className="form-row">
+                        <div className="form-group col-md-7">
+                            <div className="custom-file">
+                                <label className="inputKL" htmlFor="inputDSDT">Hình ảnh</label>
+                                <input type="file" accept="image/*" className="form-control file" id="inputDSDT" onChange={(event) => onChangeFile(event, setHinh)} onBlur={() => checkdulieu(Hinh, setCheckdulieuHinh)} />
+                            </div>
+                            <div className="invalid-feedback" style={{ display: 'block', color: 'blue' }}>Chỉ chấp nhận các file có đuôi là png, jpeg, jpg ...</div>
+                            <div className="invalid-feedback" style={{ display: checkdulieuHinh ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+
+                        </div>
+
+                        {Hinh ? <img className="img-preview" src={Hinh.preview} /> : ""}
+
+                    </div>
+
                     <button className="btn" type="button" onClick={() => handleAddGiangVien()}>Lưu</button>
                 </div>
-
-
-
             </form>
 
 
