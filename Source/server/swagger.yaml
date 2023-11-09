@@ -1901,6 +1901,107 @@ paths:
             }
       security:
       - ApiKeyAuth: []
+  /admin/canh-bao-hoc-tap/ChiTietDotCanhBao/{MaCBHT}:
+    get: 
+      tags:
+        - "CanhBaoHocTap"
+      summary: Admin lấy chi tiết đợt cảnh báo
+      produces:
+        - application/json     
+      parameters:
+      - in: query
+        name: MaCBHT
+        type: integer
+        description: Mã đợt cảnh báo học tập
+      responses:
+        200: 
+          description: Lấy chi tiết đợt cảnh báo thành công
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Lấy chi tiết đợt cảnh báo thành công",
+            }
+        400:
+          description: Lấy chi tiết đợt cảnh báo thất bại
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Lấy chi tiết đợt cảnh báo thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
+  /admin/tai-khoan/DanhSachTKGiangVien:
+    get: 
+      tags:
+        - "TaiKhoan"
+      summary: Admin lấy danh sách tài khoản giảng viên
+      produces:
+        - application/json     
+      parameters:
+      - in: query
+        name: page
+        type: integer
+        description: số trang (ví dụ trang 1, trang 2), giá trị > 0
+      - in: query
+        name: pageSize
+        type: integer
+        description: giới hạn số lượng 1 trang, giá trị > 0
+      responses:
+        200: 
+          description: Lấy danh sách tài khoản giảng viên thành công
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Lấy danh sách tài khoản giảng viên thành công",
+            }
+        400:
+          description: Lấy danh sách tài khoản giảng viên thất bại
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Lấy danh sách tài khoản giảng viên thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
+  /admin/tai-khoan/DanhSachTKSinhVien:
+    get: 
+      tags:
+        - "TaiKhoan"
+      summary: Admin lấy danh sách tài khoản sinh viên
+      produces:
+        - application/json     
+      parameters:
+      - in: query
+        name: page
+        type: integer
+        description: số trang (ví dụ trang 1, trang 2), giá trị > 0
+      - in: query
+        name: pageSize
+        type: integer
+        description: giới hạn số lượng 1 trang, giá trị > 0
+      responses:
+        200: 
+          description: Lấy danh sách tài khoản sinh viên thành công
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Lấy danh sách tài khoản sinh viên thành công",
+            }
+        400:
+          description: Lấy danh sách tài khoản sinh viên thất bại
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Lấy danh sách tài khoản sinh viên thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
 securityDefinitions:
   ApiKeyAuth:
     type: apiKey
