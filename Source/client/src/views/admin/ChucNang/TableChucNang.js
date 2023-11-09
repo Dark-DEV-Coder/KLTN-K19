@@ -12,7 +12,7 @@ import {
 import { Delete, Edit, Visibility } from '@mui/icons-material';
 import { toast } from "react-toastify";
 import { useState, useEffect } from 'react';
-import { fetchAllChucNang } from "../GetData"
+import { fetchAllChucNang, fetchDeleteChucNang } from "../GetData"
 
 const csvConfig = mkConfig({
     fieldSeparator: ',',
@@ -33,6 +33,19 @@ const TableChucNang = (props) => {
         let res = await fetchAllChucNang(headers);
         if (res && res.data && res.data.DanhSach) {
             SetListData_chucnang(res.data.DanhSach)
+        }
+    }
+    const handleDeleteRows = async (row) => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDeleteChucNang(headers, row.original.MaCN)
+        if (res.status === true) {
+            toast.success(res.message)
+            getListChucNang()
+            return;
+        }
+        if (res.success === false) {
+            toast.error(res.message)
+            return;
         }
     }
 
@@ -93,7 +106,7 @@ const TableChucNang = (props) => {
                     </IconButton>
                 </Link>
 
-                <IconButton onClick={() => console.log(row.original.name)}>
+                <IconButton onClick={() => handleDeleteRows(row)}>
                     <Delete fontSize="small" sx={{ color: 'red' }} />
                 </IconButton>
             </Box >

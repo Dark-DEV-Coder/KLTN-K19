@@ -3,7 +3,24 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./EditQuyenTaiKhoan.scss"
+import { fetchAllChucNang } from "../../GetData"
 const EditQuyenTaiKhoan = () => {
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+    const [listchucnang, SetListchucnang] = useState([]);
+    // component didmount
+    useEffect(() => {
+        getListChucNang();
+    }, []);
+
+    const getListChucNang = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchAllChucNang(headers);
+        if (res && res.data && res.data.DanhSach) {
+            SetListchucnang(res.data.DanhSach)
+        }
+    }
+
+
     const dulieutest = {
         MaQuyen: 'admin',
         TenQuyen: 'admin',
@@ -16,24 +33,6 @@ const EditQuyenTaiKhoan = () => {
         { MaCN: 'totnghiep', TenChucNang: 'Tốt nghiệp' },
         { MaCN: 'sinhvien', TenChucNang: 'Sinh viên' },
     ]
-
-    const listchucnang = [
-        { MaCN: 'home', TenChucNang: 'Dashboard', },
-        { MaCN: 'dkichuyennganh', TenChucNang: 'Đăng ký chuyên ngành' },
-        { MaCN: 'khoaluan', TenChucNang: 'Khóa luận' },
-        { MaCN: 'thuctap', TenChucNang: 'Thực tập' },
-        { MaCN: 'totnghiep', TenChucNang: 'Tốt nghiệp' },
-        { MaCN: 'canhbaohoctap', TenChucNang: 'Cảnh báo' },
-        { MaCN: 'giangvien', TenChucNang: 'Giảng viên' },
-        { MaCN: 'sinhvien', TenChucNang: 'Sinh viên' },
-        { MaCN: 'nganhhoc', TenChucNang: 'Ngành' },
-        { MaCN: 'chuyennganh', TenChucNang: 'Chuyên ngành' },
-        { MaCN: 'taikhoan', TenChucNang: 'Tài khoản' },
-        { MaCN: 'chucnang', TenChucNang: 'Chức năng' },
-        { MaCN: 'chat', TenChucNang: 'ChatBox' },
-
-    ]
-
     const [MaQuyen, SetMaQuyen] = useState(dulieutest.MaQuyen)
     const [TenQuyen, SetTenQuyen] = useState(dulieutest.TenQuyen)
     const [CNTaiKhoan, SetCNTaiKhoan] = useState(chucnangcuaTK)
@@ -53,7 +52,7 @@ const EditQuyenTaiKhoan = () => {
     const [checkdulieuMaQuyen, SetCheckdulieuMaQuyen] = useState(true)
     const [checkdulieuTenQuyen, SetCheckdulieuTenQuyen] = useState(true)
 
-    
+
     const checkdulieu = (value, SetDuLieu) => {
         value === '' ? SetDuLieu(false) : SetDuLieu(true)
     }
@@ -105,34 +104,32 @@ const EditQuyenTaiKhoan = () => {
                             </div>
                         </div>
                         <div className="form-row">
+                            {/* chạy map */}
                             {listchucnang && listchucnang.length > 0 &&
                                 listchucnang.map((item, index) => {
-
                                     return (
                                         <div key={item.MaCN} >
                                             <div className="form-check form-check-inline" key={item.MaCN}>
                                                 <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value={item.MaCN} defaultChecked={chucnangcuaTK.filter(item2 => item2.MaCN == item.MaCN).length > 0 ? true : false} onClick={(event) => onChangeChucNang(item)} />
-                                                <label className="inputTKK" htmlFor="inlineCheckbox1">{item.TenChucNang}</label>
+                                                <label className="inputTKK label-TCN" htmlFor="inlineCheckbox1">{item.TenChucNang}</label>
                                             </div>
-
                                             <div className="div-CN-con">
                                                 <div className="form-check them">
-                                                    <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value="Thêm" />
-                                                    <label className="inputTKK" htmlFor="inlineCheckbox1">Thêm</label>
+                                                    <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value="Thêm,Sửa,Xóa" />
+                                                    <label className="inputTKK" htmlFor="inlineCheckbox1">Thêm, Sửa, Xóa</label>
                                                 </div>
                                                 <div className="form-check sua">
-                                                    <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value="Sửa" />
-                                                    <label className="inputTKK" htmlFor="inlineCheckbox1">Sửa</label>
+                                                    <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value="Xem danh sách" />
+                                                    <label className="inputTKK" htmlFor="inlineCheckbox1">Xem danh sách</label>
                                                 </div>
-                                                <div className="form-check xoa">
+                                                {/* <div className="form-check xoa">
                                                     <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value="Xóa" />
                                                     <label className="inputTKK" htmlFor="inlineCheckbox1">Xóa</label>
                                                 </div>
                                                 <div className="form-check xem-ds">
                                                     <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value="Xem danh sách" />
                                                     <label className="inputTKK" htmlFor="inlineCheckbox1">Xem danh sách</label>
-                                                </div>
-
+                                                </div> */}
                                             </div>
                                         </div>
                                     )

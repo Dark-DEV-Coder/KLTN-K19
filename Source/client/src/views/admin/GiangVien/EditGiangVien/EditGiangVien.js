@@ -23,7 +23,7 @@ const EditGiangVien = () => {
     const [chuyennganh, SetChuyennganh] = useState("")
     const [trinhdo, SetTrinhdo] = useState("")
     const [giangvienEdit, setGiangvienEdit] = useState({ MaGV: "", HoGV: "", TenGV: "", Email: "", SoDienThoai: "", GioiTinh: "", NgaySinh: "", DonViCongTac: "", ChuyenNganh: "", TrinhDo: "" });
-
+    const [Hinh, setHinh] = useState("")
     // component didmount
     useEffect(() => {
         getListChuyenNganh();
@@ -60,7 +60,20 @@ const EditGiangVien = () => {
             return
         }
 
-        let res = await fetchEditGiangVien(headers, magv, hogv, tengv, email, sdt, gioitinh, ngaysinh, donvicongtac, chuyennganh, trinhdo)
+        let value_img = new FormData();
+        value_img.append("MaGV", magv);
+        value_img.append("HoGV", hogv);
+        value_img.append("TenGV", tengv);
+        value_img.append("Email", email);
+        value_img.append("SoDienThoai", sdt);
+        value_img.append("GioiTinh", gioitinh);
+        value_img.append("Hinh", ngaysinh);
+        value_img.append("DonViCongTac", donvicongtac);
+        value_img.append("ChuyenNganh", chuyennganh);
+        value_img.append("TrinhDo", trinhdo);
+        value_img.append("Hinh", Hinh);
+
+        let res = await fetchEditGiangVien(headers, magv, value_img)
         if (res.status === true) {
             toast.success(res.message)
             navigate("/admin/giangvien")
@@ -71,6 +84,12 @@ const EditGiangVien = () => {
             return;
 
         }
+    }
+
+    const onChangeFile = (event, setSL) => {
+        const img = event.target.files[0];
+        img.preview = URL.createObjectURL(img)
+        setSL(img)
     }
 
     const onChangeInputSL = (event, SetState) => {
@@ -182,6 +201,15 @@ const EditGiangVien = () => {
                             <div className="invalid-feedback" style={{ display: checkdulieuTrinhDo ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
 
+                    </div>
+                    <div className="form-row">
+                        <div className="form-group col-md-12">
+                            <div className="custom-file">
+                                <label className="inputKL" htmlFor="inputDSDT">Hình ảnh</label>
+                                <input type="file" accept="image/*" className="form-control file" id="inputDSDT" onChange={(event) => onChangeFile(event, setHinh)} />
+                            </div>
+                            <div className="invalid-feedback" style={{ display: 'block' }}>Chỉ chấp nhận các file có đuôi là png, ...</div>
+                        </div>
                     </div>
                     <button className="btn" type="button" onClick={() => handleEditGiangVien()}>Lưu</button>
                 </div>

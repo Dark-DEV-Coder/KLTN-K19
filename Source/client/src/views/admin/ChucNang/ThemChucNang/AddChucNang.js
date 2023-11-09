@@ -17,7 +17,12 @@ const AddChucNang = () => {
             toast.error("Vui lòng điền đầy đủ dữ liệu !")
             return
         }
-        let res = await fetchAddChucNang(headers, MaCN, TenChucNang, Hinh)
+        let value_img = new FormData();
+        // value_img.TenChucNang = TenChucNang;
+        value_img.append("MaCN", MaCN);
+        value_img.append("TenChucNang", TenChucNang);
+        value_img.append("Hinh", Hinh);
+        let res = await fetchAddChucNang(headers, value_img)
         if (res.status === true) {
             toast.success(res.message)
             navigate("/admin/chucnang")
@@ -27,6 +32,11 @@ const AddChucNang = () => {
             toast.error(res.message)
             return;
         }
+    }
+    const onChangeFile = (event, setSL) => {
+        const img = event.target.files[0];
+        img.preview = URL.createObjectURL(img)
+        setSL(img)
     }
 
     const onChangeInputSL = (event, SetSL) => {
@@ -85,7 +95,7 @@ const AddChucNang = () => {
                         <div className="form-group col-md-12">
                             <div className="custom-file">
                                 <label className="inputKL" htmlFor="inputDSDT">Icon chức năng  <a href="https://boxicons.com/" target="_blank" rel="noopener" style={{ fontWeight: '400' }}>(Link lấy icon)</a></label>
-                                <input type="file" accept=".png" className="form-control file" id="inputDSDT" onChange={(event) => onChangeInputSL(event, setHinh)} />
+                                <input type="file" accept=".png" className="form-control file" id="inputDSDT" onChange={(event) => onChangeFile(event, setHinh)} />
                             </div>
                             <div className="invalid-feedback" style={{ display: 'block' }}>Chỉ chấp nhận các file có đuôi là png, ...</div>
                         </div>
