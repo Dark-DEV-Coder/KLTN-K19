@@ -1206,7 +1206,7 @@ paths:
       security:
         - ApiKeyAuth: [] 
   /admin/sinh-vien/ChinhSua/{MaSV}:
-    post: 
+    put: 
       tags:
         - "SinhVien"
       summary: Chỉnh sửa thông tin sinh viên
@@ -2046,6 +2046,38 @@ paths:
             example: {
               "status": false,
               "message": "Thống kê sinh viên bị cảnh báo thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/canh-bao-hoc-tap/TraCuuCBHTSinhVien:
+    get: 
+      tags:
+        - "CanhBaoHocTap"
+      summary: Tra cứu sinh viên bị cảnh báo
+      produces:
+        - application/json  
+      parameters:
+        - in: body
+          name: MaSV
+          type: string
+          description: Mã sinh viên
+          required: true
+      responses:
+        200:
+          description: Tra cứu sinh viên bị cảnh báo thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Tra cứu sinh viên bị cảnh báo thành công.",
+            }          
+        400:
+          description: Tra cứu sinh viên bị cảnh báo thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Tra cứu sinh viên bị cảnh báo thất bại.",
             }
       security:
         - ApiKeyAuth: []

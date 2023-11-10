@@ -95,11 +95,11 @@ SinhVienAdminRoute.post('/Them', async (req, res) => {
 })
 
 /**
- * @route POST /api/admin/sinh-vien/ChinhSua/{MaSV}
+ * @route PUT /api/admin/sinh-vien/ChinhSua/{MaSV}
  * @description Chỉnh sửa thông tin sinh viên
  * @access public
 */
-SinhVienAdminRoute.post('/ChinhSua/:MaSV', async (req, res) => {
+SinhVienAdminRoute.put('/ChinhSua/:MaSV', async (req, res) => {
     try{
         const errors = KtraDuLieuSinhVienKhiChinhSua(req.body)
         if (errors)
