@@ -13,6 +13,7 @@ import { dirname } from 'path';
 import CanhBaoHocTap from "../../model/CanhBaoHocTap.js"
 import { XuLyNgaySinh } from "../../helper/XuLyDuLieu.js"
 import Nganh from "../../model/Nganh.js"
+import SinhVien from "../../model/SinhVien.js"
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -129,7 +130,7 @@ CanhBaoHocTapAdminRoute.post('/ThemDotCanhBao', createCanhBaoHocTapDir, uploadFi
                                                 slcblt = row.getCell("H").value;
                                             if ( row.getCell("M").value != null )
                                                 ghichu = row.getCell("M").value.richText[0].text;
-                                            let ngaysinh = XuLyNgaySinh(row.getCell("E").value);
+                                            let ngaysinh = row.getCell("E").value;
                                             let sv = {
                                                 MaSV: row.getCell("B").value,
                                                 HoSV: row.getCell("C").value.richText[0].text,
@@ -156,7 +157,7 @@ CanhBaoHocTapAdminRoute.post('/ThemDotCanhBao', createCanhBaoHocTapDir, uploadFi
                                                 slcblt = row.getCell("G").value;
                                             if ( row.getCell("M").value != null )
                                                 ghichu = row.getCell("L").value.richText[0].text;
-                                            let ngaysinh = XuLyNgaySinh(row.getCell("D").value);
+                                            let ngaysinh = row.getCell("D").value;
                                             let hoten = row.getCell("C").value.richText[0].text.trim();
                                             let ho = hoten.split(' ')[0] + " " + hoten.split(' ')[1];
                                             let ten = hoten.split(' ')[hoten.split(' ').length - 1];
@@ -475,7 +476,7 @@ CanhBaoHocTapAdminRoute.delete('/XoaDotCanhBao/:MaCBHT', async (req, res) => {
 })
 
 /**
- * @route POST /api/admin/canh-bao-hoc-tap/ThongKeCBHTSinhVien/{MaCBHT}
+ * @route GET /api/admin/canh-bao-hoc-tap/ThongKeCBHTSinhVien/{MaCBHT}
  * @description Thống kê sinh viên bị cảnh báo
  * @access public
  */
@@ -631,6 +632,52 @@ CanhBaoHocTapAdminRoute.get('/ThongKeCBHTSinhVien/:MaCBHT', async (req, res) => 
     catch (error){
         console.log(error)
         return sendServerError(res)
+    }
+})
+
+/**
+ * @route GET /api/admin/canh-bao-hoc-tap/TraCuuCBHTSinhVien
+ * @description Thống kê sinh viên bị cảnh báo
+ * @access public
+ */
+CanhBaoHocTapAdminRoute.get('/TraCuuCBHTSinhVien', async (req, res) => {
+    try{
+        const { MaSV } = req.body;
+        if (!MaSV.match(/^[0-9]{10}/))
+            return sendError(res, "Mã sinh viên không đúng định dạng");
+        let drl = [];
+        let dht = [];
+        const cbht = await CanhBaoHocTap.aggregate([
+            {
+                $project: {
+                    _id: 0, // Loại bỏ trường _id
+                    KieuCanhBao: "$KieuCanhBao",
+                    ThongTin: {
+                        $filter: {
+                            input: '$ThongTin',
+                            as: 'thongtin',
+                            cond: { $eq: ['$$thongtin.MaSV', MaSV] }, // Thêm điều kiện where theo MaSV
+                        },
+                    },
+                },
+            },
+        ]);
+        cbht.forEach((data) => {
+            if (data.ThongTin.length != 0){
+                if (data.KieuCanhBao == KieuCanhBaoSV.DHT)
+                    dht = data.ThongTin;
+                else
+                    drl = data.ThongTin;
+            }
+        });
+        return sendSuccess(res, "Tra cứu sinh viên thành công.", {
+            DiemRenLuyen: drl,
+            DiemHocTap: dht,
+        });
+    }
+    catch(error){
+        console.log(error);
+        return sendServerError(res);
     }
 })
 
