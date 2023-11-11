@@ -131,11 +131,6 @@ SinhVienAdminRoute.delete('/Xoa/:MaSV', async (req, res) => {
         const isExist = await SinhVien.findOne({ MaSV: MaSV })
         if (!isExist) 
             return sendError(res, "Sinh viên này không tồn tại");
-        if (isExist.Hinh != ''){
-            let splitUrl = await isExist.Hinh.split('/');
-            let file = await `${splitUrl[splitUrl.length - 2]}/${splitUrl[splitUrl.length - 1].split('.')[0]}`;
-            await DeleteHinhTrenCloudinary(file);
-        }
         await SinhVien.findOneAndDelete({ MaSV: MaSV });
         return sendSuccess(res, "Xóa sinh viên thành công.")
     } catch (error) {
