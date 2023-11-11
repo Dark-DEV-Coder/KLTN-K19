@@ -73,25 +73,8 @@ const EditSinhVien = () => {
             toast.error("Vui lòng điền đầy đủ dữ liệu")
             return
         }
-
-        let value_sinhvien = new FormData();
-        value_sinhvien.append("MaSV", masv);
-        value_sinhvien.append("HoSV", hosv);
-        value_sinhvien.append("TenSV", tensv);
-        value_sinhvien.append("Email", email);
-        value_sinhvien.append("SoDienThoai", sdt);
-        value_sinhvien.append("GioiTinh", gioitinh);
-        console.log(ngaysinh)
         const value_ngaysinh = new Date(ngaysinh)
-        value_sinhvien.append("NgaySinh", value_ngaysinh);
-        value_sinhvien.append("Khoa", khoa);
-        value_sinhvien.append("ChuyenNganh", chuyennganh);
-        value_sinhvien.append("Nganh", nganhhoc);
-        value_sinhvien.append("Lop", lop);
-        value_sinhvien.append("TrangThaiTotNghiep", trangthaitotnghiep);
-
-        let res = await fetchEditSinhVien(headers, masv, value_sinhvien)
-        console.log(res)
+        let res = await fetchEditSinhVien(headers, masv, hosv, tensv, email, sdt, gioitinh, value_ngaysinh, khoa, chuyennganh, nganhhoc, lop, trangthaitotnghiep)
         if (res.status === true) {
             toast.success(res.message)
             navigate("/admin/sinhvien")
@@ -127,6 +110,7 @@ const EditSinhVien = () => {
         let changeValue = event.target.value;
         setNganhhoc(changeValue);
         getChuyenNganh(changeValue);
+        setChuyennganh('')
     }
 
     const onChangeSelect = (event, setSelect) => {
@@ -188,7 +172,7 @@ const EditSinhVien = () => {
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputSV" htmlFor="inputEmailGV">Email</label>
-                            <input type="text" className="form-control" id="inputEmailGV" placeholder="abc...@gmail.com" value={email} onChange={(event) => onChangeInputSL(event, setEmail)} onBlur={() => checkdulieu(email, setCheckdulieuEmail)} />
+                            <input type="email" className="form-control" id="inputEmailGV" placeholder="abc...@gmail.com" value={email} onChange={(event) => onChangeInputSL(event, setEmail)} onBlur={() => checkdulieu(email, setCheckdulieuEmail)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuEmail ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
