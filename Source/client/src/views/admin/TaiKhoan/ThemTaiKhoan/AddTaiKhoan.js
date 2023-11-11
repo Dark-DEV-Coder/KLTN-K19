@@ -1,45 +1,65 @@
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { fetchAddTaiKhoan, fetchAllQuyenTK } from "../../GetData"
+import { toast } from "react-toastify";
 const AddTaiKhoan = () => {
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+    let navigate = useNavigate();
+    const [MaTK, setMaTK] = useState("")
+    const [TenDangNhap, setTenDangNhap] = useState("")
+    const [MatKhau, setMatKhau] = useState("")
+    const [QuyenTK, setQuyenTK] = useState("SINHVIEN")
+    const [listQuyenTK, setListQuyenTK] = useState([]);
 
-    const [TenDangNhap, SetTenDangNhap] = useState("")
-    const [MatKhau, SetMatKhau] = useState("")
-    const [QuyenTK, SetQuyenTK] = useState("sinhvien")
+    // component didmount
+    useEffect(() => {
+        getListQuyenTK();
+    }, []);
 
-    const onChangeInputSL = (event, SetState) => {
-        let changeValue = event.target.value;
-        SetState(changeValue);
+    const getListQuyenTK = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchAllQuyenTK(headers);
+        if (res && res.data && res.data.DanhSach) {
+            setListQuyenTK(res.data.DanhSach)
+        }
     }
-    const onChangeSelect = (event, SetSelect) => {
+
+    const handleAddTaiKhoan = async () => {
+        const headers = { 'x-access-token': accessToken };
+        if (!MaTK || !TenDangNhap || !MatKhau) {
+            toast.error("Vui lòng điền đầy đủ dữ liệu !")
+            return
+        }
+        let res = await fetchAddTaiKhoan(headers, MaTK, TenDangNhap, MatKhau, QuyenTK)
+        if (res.status === true) {
+            toast.success(res.message)
+            navigate("/admin/taikhoan")
+            return;
+        }
+        if (res.status === false) {
+            toast.error(res.message)
+            return;
+        }
+    }
+
+    const onChangeInputSL = (event, setState) => {
         let changeValue = event.target.value;
-        SetSelect(changeValue);
+        setState(changeValue);
+    }
+    const onChangeSelect = (event, setSelect) => {
+        let changeValue = event.target.value;
+        setSelect(changeValue);
     }
 
     // check dữ liệu
-    const [checkdulieuTenDN, SetCheckdulieuTenDN] = useState(true)
-    const [checkdulieuMatKhau, SetCheckdulieuMatKhau] = useState(true)
-    const checkdulieu = (value, SetDuLieu) => {
-        value === '' ? SetDuLieu(false) : SetDuLieu(true)
+    const [checkdulieuMaTK, setCheckdulieuMaTK] = useState(true)
+    const [checkdulieuTenDN, setCheckdulieuTenDN] = useState(true)
+    const [checkdulieuMatKhau, setCheckdulieuMatKhau] = useState(true)
+    const checkdulieu = (value, setDuLieu) => {
+        value === '' ? setDuLieu(false) : setDuLieu(true)
     }
 
-    const quyenTK = [
-        {
-            MaQuyen: 'admin',
-            TenQuyen: 'Admin',
-            trangthai: 1,
-        },
-        {
-            MaQuyen: 'giangvien',
-            TenQuyen: 'Giảng viên',
-            trangthai: 1,
-        },
-        {
-            MaQuyen: 'sinhvien',
-            TenQuyen: 'Sinh Viên',
-            trangthai: 1,
-        },
-    ]
 
     const listchucnang = [
         { MaCN: 'home', TenChucNang: 'Dashboard', },
@@ -84,24 +104,29 @@ const AddTaiKhoan = () => {
                     <div className="container-edit">
                         <div className="form-row">
                             <div className="form-group col-md-6">
-                                <label className="inputTK" for="inputTenDN">Tên đăng nhập</label>
-                                <input type="text" className="form-control" id="inputTenDN" placeholder="Điền tên đăng nhập ..." value={TenDangNhap} onChange={(event) => onChangeInputSL(event, SetTenDangNhap)} onBlur={() => checkdulieu(TenDangNhap, SetCheckdulieuTenDN)} />
-                                <div className="invalid-feedback" style={{ display: checkdulieuTenDN ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+                                <label className="inputTK" htmlFor="inputTenDN">Mã tài khoản</label>
+                                <input type="text" className="form-control" id="inputTenDN" placeholder="Điền mã tài khoản ..." value={MaTK} onChange={(event) => onChangeInputSL(event, setMaTK)} onBlur={() => checkdulieu(MaTK, setCheckdulieuMaTK)} />
+                                <div className="invalid-feedback" style={{ display: checkdulieuMaTK ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                             </div>
                             <div className="form-group col-md-6">
-                                <label className="inputTK" for="inputTenGV">Mật khẩu</label>
-                                <input type="text" className="form-control" id="inputTenDN" placeholder="Điền mật khẩu ..." value={MatKhau} onChange={(event) => onChangeInputSL(event, SetMatKhau)} onBlur={() => checkdulieu(MatKhau, SetCheckdulieuMatKhau)} />
-                                <div className="invalid-feedback" style={{ display: checkdulieuMatKhau ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+                                <label className="inputTK" htmlFor="inputTenGV">Tên đăng nhập</label>
+                                <input type="text" className="form-control" id="inputTenDN" placeholder="Điền tên đăng nhập ..." value={TenDangNhap} onChange={(event) => onChangeInputSL(event, setTenDangNhap)} onBlur={() => checkdulieu(TenDangNhap, setCheckdulieuTenDN)} />
+                                <div className="invalid-feedback" style={{ display: checkdulieuTenDN ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                             </div>
                         </div>
                         <div className="form-row" >
-                            <div className="form-group col-md-12">
+                            <div className="form-group col-md-6">
+                                <label className="inputTK" htmlFor="inputTenGV">Mật khẩu</label>
+                                <input type="text" className="form-control" id="inputTenDN" placeholder="Điền mật khẩu ..." value={MatKhau} onChange={(event) => onChangeInputSL(event, setMatKhau)} onBlur={() => checkdulieu(MatKhau, setCheckdulieuMatKhau)} />
+                                <div className="invalid-feedback" style={{ display: checkdulieuMatKhau ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+                            </div>
+                            <div className="form-group col-md-6">
                                 <label className="inputDT" htmlFor="inputTrangthai">Quyền tài khoản </label>
-                                <select defaultValue={QuyenTK} id="inputTrangthai" className="form-control" onChange={(event) => onChangeSelect(event, SetQuyenTK)} >
-                                    {quyenTK && quyenTK.length > 0 &&
-                                        quyenTK.map((item, index) => {
+                                <select value={QuyenTK} id="inputTrangthai" className="form-control" onChange={(event) => onChangeSelect(event, setQuyenTK)} >
+                                    {listQuyenTK && listQuyenTK.length > 0 &&
+                                        listQuyenTK.map((item, index) => {
                                             return (
-                                                <option value={item.MaQuyen} key={item.MaQuyen}>{item.TenQuyen}</option>
+                                                <option value={item.MaQTK} key={item.MaQTK}>{item.TenQuyenTK}</option>
                                             )
                                         })
                                     }
@@ -109,7 +134,7 @@ const AddTaiKhoan = () => {
                                 </select>
                             </div>
                         </div>
-                        <button className="btn" type="submit" style={{ marginTop: '2rem' }}>Submit form</button>
+                        <button className="btn" type="button" style={{ marginTop: '2rem' }} onClick={() => handleAddTaiKhoan()}>Lưu</button>
                     </div>
                 </form>
 

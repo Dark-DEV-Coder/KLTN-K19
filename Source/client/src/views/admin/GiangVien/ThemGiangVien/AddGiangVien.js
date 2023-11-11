@@ -42,20 +42,20 @@ const AddGiangVien = () => {
             toast.error("Vui lòng điền đầy đủ dữ liệu")
             return
         }
-        let data_sinhvien = new FormData();
-        data_sinhvien.append("MaGV", magv);
-        data_sinhvien.append("HoGV", hogv);
-        data_sinhvien.append("TenGV", tengv);
-        data_sinhvien.append("Email", email);
-        data_sinhvien.append("SoDienThoai", sdt);
-        data_sinhvien.append("GioiTinh", gioitinh);
+        let value_giangvien = new FormData();
+        value_giangvien.append("MaGV", magv);
+        value_giangvien.append("HoGV", hogv);
+        value_giangvien.append("TenGV", tengv);
+        value_giangvien.append("Email", email);
+        value_giangvien.append("SoDienThoai", sdt);
+        value_giangvien.append("GioiTinh", gioitinh);
         const value_ngaysinh = new Date(ngaysinh)
-        data_sinhvien.append("NgaySinh", value_ngaysinh);
-        data_sinhvien.append("DonViCongTac", donvicongtac);
-        data_sinhvien.append("ChuyenNganh", chuyennganh);
-        data_sinhvien.append("TrinhDo", trinhdo);
-        data_sinhvien.append("Hinh", Hinh);
-        let res = await fetchAddGiangVien(headers, data_sinhvien)
+        value_giangvien.append("NgaySinh", value_ngaysinh);
+        value_giangvien.append("DonViCongTac", donvicongtac);
+        value_giangvien.append("ChuyenNganh", chuyennganh);
+        value_giangvien.append("TrinhDo", trinhdo);
+        value_giangvien.append("Hinh", Hinh);
+        let res = await fetchAddGiangVien(headers, value_giangvien)
         if (res.status === true) {
             toast.success(res.message)
             navigate("/admin/giangvien")

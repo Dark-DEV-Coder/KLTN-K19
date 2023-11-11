@@ -1,17 +1,32 @@
 
 
 import { Link } from "react-router-dom";
-import TableTaiKhoan from "./TableTaiKhoan";
+import TableTaiKhoanGV from "./TableTaiKhoanGV";
+import TableTaiKhoanSV from "./TableTaiKhoanSV";
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import { useState } from "react";
+import { useState } from 'react';
 
 const TaiKhoan = () => {
     const [value, setValue] = useState('dstkgv');
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+    const [listData_TKSV, SetListData_TKSV] = useState([]);
+
+    // const getListTaiKhoanSV = async () => {
+    //     const headers = { 'x-access-token': accessToken };
+    //     let res = await fetchAllTaiKhoanSV(headers);
+    //     console.log(res)
+    //     if (res && res.data && res.data.DanhSach) {
+    //         SetListData_TKSV(res.data.DanhSach)
+    //     }
+    // }
+
+
+
+
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -34,7 +49,7 @@ const TaiKhoan = () => {
                     </div>
                     <Link to={"/admin/taikhoan/new"} className="btn-download">
                         <i className='bx bxs-cloud-download'></i>
-                        <span className="text">Create Data</span>
+                        <span className="text">Tạo mới</span>
                     </Link>
                 </div>
                 {/* Tab */}
@@ -51,7 +66,7 @@ const TaiKhoan = () => {
                             <div className="card4">
                                 <h6 className="card-header">Danh sách tài khoản giảng viên</h6>
                             </div>
-                            <TableTaiKhoan />
+                            <TableTaiKhoanGV accessToken={accessToken} />
 
                         </div>
                     </TabPanel>
@@ -60,7 +75,7 @@ const TaiKhoan = () => {
                             <div className="card4">
                                 <h6 className="card-header">Danh sách tài khoản sinh viên</h6>
                             </div>
-                            <TableTaiKhoan />
+                            <TableTaiKhoanSV accessToken={accessToken} listData={listData_TKSV} />
 
                         </div>
                     </TabPanel>

@@ -24,7 +24,7 @@ const SinhVien = () => {
                     </div>
                     <Link to={"/admin/sinhvien/new"} className="btn-download">
                         <i className='bx bxs-cloud-download'></i>
-                        <span className="text">Create Data</span>
+                        <span className="text">Tạo mới</span>
                     </Link>
                 </div>
 
