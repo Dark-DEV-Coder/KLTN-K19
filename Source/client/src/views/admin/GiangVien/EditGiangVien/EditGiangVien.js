@@ -61,21 +61,21 @@ const EditGiangVien = () => {
             return
         }
 
-        let value_img = new FormData();
-        value_img.append("MaGV", magv);
-        value_img.append("HoGV", hogv);
-        value_img.append("TenGV", tengv);
-        value_img.append("Email", email);
-        value_img.append("SoDienThoai", sdt);
-        value_img.append("GioiTinh", gioitinh);
+        let value_giangvien = new FormData();
+        value_giangvien.append("MaGV", magv);
+        value_giangvien.append("HoGV", hogv);
+        value_giangvien.append("TenGV", tengv);
+        value_giangvien.append("Email", email);
+        value_giangvien.append("SoDienThoai", sdt);
+        value_giangvien.append("GioiTinh", gioitinh);
         const value_ngaysinh = new Date(ngaysinh)
-        value_img.append("NgaySinh", value_ngaysinh);
-        value_img.append("DonViCongTac", donvicongtac);
-        value_img.append("ChuyenNganh", chuyennganh);
-        value_img.append("TrinhDo", trinhdo);
-        value_img.append("Hinh", Hinh);
+        value_giangvien.append("NgaySinh", value_ngaysinh);
+        value_giangvien.append("DonViCongTac", donvicongtac);
+        value_giangvien.append("ChuyenNganh", chuyennganh);
+        value_giangvien.append("TrinhDo", trinhdo);
+        value_giangvien.append("Hinh", Hinh);
 
-        let res = await fetchEditGiangVien(headers, magv, value_img)
+        let res = await fetchEditGiangVien(headers, magv, value_giangvien)
         if (res.status === true) {
             toast.success(res.message)
             navigate("/admin/giangvien")

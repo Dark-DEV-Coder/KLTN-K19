@@ -8,7 +8,7 @@ import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your l
 import { Link } from "react-router-dom";
 import { IconButton } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
-import { fetchAllSinhVien } from "../GetData"
+import { fetchAllSinhVien, fetchDeleteSinhVien } from "../GetData"
 import { toast } from "react-toastify";
 import { useState, useEffect } from 'react';
 import moment from "moment";
@@ -32,6 +32,19 @@ const TableSinhVien = (props) => {
         let res = await fetchAllSinhVien(headers);
         if (res && res.data && res.data.DanhSach) {
             SetListData_sinhvien(res.data.DanhSach)
+        }
+    }
+    const handleDeleteRows = async (row) => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDeleteSinhVien(headers, row.original.MaSV)
+        if (res.status === true) {
+            toast.success(res.message)
+            getListSinhVien()
+            return;
+        }
+        if (res.success === false) {
+            toast.error(res.message)
+            return;
         }
     }
 
@@ -167,7 +180,7 @@ const TableSinhVien = (props) => {
                     </IconButton>
                 </Link>
 
-                <IconButton onClick={() => console.log(row.original.name)}>
+                <IconButton onClick={() => handleDeleteRows(row)}>
                     <Delete fontSize="small" sx={{ color: 'red' }} />
                 </IconButton>
             </Box >

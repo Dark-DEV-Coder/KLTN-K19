@@ -178,11 +178,79 @@ const fetchDetailSinhVien = (headers, MaSV) => {
 export { fetchDetailSinhVien };
 
 //Sửa thông tin Sinh Viên
-const fetchEditSinhVien = (headers, MaSV, data) => {
-    for (const pair of data.entries()) {
-        console.log(pair[0] + ": " + pair[1]);
-    }
-    // console.log(data.HoGV)
-    return axios.post(`admin/sinh-vien/ChinhSua/${MaSV}`, data, { headers });
+const fetchEditSinhVien = (headers, MaSV, HoSV, TenSV, Email, SoDienThoai, GioiTinh, NgaySinh, Khoa, ChuyenNganh, Nganh, Lop, TrangThaiTotNghiep) => {
+    return axios.put(`admin/sinh-vien/ChinhSua/${MaSV}`, {
+        MaSV: MaSV,
+        HoSV: HoSV,
+        TenSV: TenSV,
+        Email: Email,
+        SoDienThoai: SoDienThoai,
+        GioiTinh: GioiTinh,
+        NgaySinh: NgaySinh,
+        Khoa: Khoa,
+        ChuyenNganh: ChuyenNganh,
+        Nganh: Nganh,
+        Lop: Lop,
+        TrangThaiTotNghiep: TrangThaiTotNghiep,
+    }, { headers });
 }
 export { fetchEditSinhVien };
+
+//Thêm thông tin Sinh Viên
+const fetchAddSinhVien = (headers, MaSV, HoSV, TenSV, Email, SoDienThoai, GioiTinh, NgaySinh, Khoa, ChuyenNganh, Nganh, Lop, TrangThaiTotNghiep) => {
+    return axios.post(`admin/sinh-vien/Them`, {
+        MaSV: MaSV,
+        HoSV: HoSV,
+        TenSV: TenSV,
+        Email: Email,
+        SoDienThoai: SoDienThoai,
+        GioiTinh: GioiTinh,
+        NgaySinh: NgaySinh,
+        Khoa: Khoa,
+        ChuyenNganh: ChuyenNganh,
+        Nganh: Nganh,
+        Lop: Lop,
+        TrangThaiTotNghiep: TrangThaiTotNghiep,
+    }, { headers });
+}
+export { fetchAddSinhVien };
+
+//Xóa  Sinh Viên
+const fetchDeleteSinhVien = (headers, MaSV) => {
+    return axios.delete(`admin/sinh-vien/Xoa/${MaSV}`, { headers });
+}
+export { fetchDeleteSinhVien };
+//Sinh Viên
+
+//Tài khoản
+//Get List Tài khoản giảng viên
+const fetchAllTaiKhoanGV = (headers) => {
+    return axios.get('admin/tai-khoan/DanhSachTKGiangVien', { headers });
+}
+export { fetchAllTaiKhoanGV };
+
+//Get List Tài khoản sinh viên
+const fetchAllTaiKhoanSV = (headers) => {
+    return axios.get('admin/tai-khoan/DanhSachTKSinhVien', { headers });
+}
+export { fetchAllTaiKhoanSV };
+
+//Thêm Tài khoản
+const fetchAddTaiKhoan = (headers, MaTK, TenDangNhap, MatKhau, MaQTK) => {
+    return axios.post(`admin/tai-khoan/Them`, {
+        MaTK: MaTK,
+        TenDangNhap: TenDangNhap,
+        MatKhau: MatKhau,
+        MaQTK: MaQTK,
+    }, { headers });
+}
+export { fetchAddTaiKhoan };
+//Tài khoản
+
+
+// Quyền tài khoản
+//Get List Quyền tài khoản
+const fetchAllQuyenTK = (headers) => {
+    return axios.get('admin/quyen-tai-khoan/DanhSachQuyenTK', { headers });
+}
+export { fetchAllQuyenTK };

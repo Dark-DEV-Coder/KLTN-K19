@@ -1,69 +1,50 @@
 
 
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Box, Button } from '@mantine/core';
 import { IconDownload, IconUpload } from '@tabler/icons-react';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
 import { Link } from "react-router-dom";
-import {
-    IconButton,
-} from '@mui/material';
+import { IconButton } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
-
-
-const data = [
-    {
-        MaTK: 'TK1',
-        TenDangNhap: 'admin',
-        MatKhau: 'admin',
-        trangthai: 1,
-    },
-    {
-        MaTK: 'TK2',
-        TenDangNhap: 'giangvien2',
-        MatKhau: 'admin',
-        trangthai: 1,
-    },
-    {
-        MaTK: 'TK3',
-        TenDangNhap: 'giangvien3',
-        MatKhau: 'admin',
-        trangthai: 1,
-    },
-    {
-        MaTK: 'TK4',
-        TenDangNhap: 'giangvien4',
-        MatKhau: 'admin',
-        trangthai: 1,
-    },
-
-    {
-        MaTK: 'TK5',
-        TenDangNhap: 'giangvien5',
-        MatKhau: 'admin',
-        trangthai: 1,
-    },
-    {
-        MaTK: 'TK6',
-        TenDangNhap: 'giangvien6',
-        MatKhau: 'admin',
-        trangthai: 1,
-    },
-
-]
-
+import { toast } from "react-toastify";
+import { useState, useEffect } from 'react';
+import { fetchAllTaiKhoanSV } from "../GetData"
 const csvConfig = mkConfig({
     fieldSeparator: ',',
     decimalSeparator: '.',
     useKeysAsHeaders: true,
 });
 
-const TableTaiKhoan = () => {
-    const [trangthaiTK, setTrangthaiTK] = useState('1')
+
+
+const TableTaiKhoanSV = (props) => {
+    const accessToken = props.accessToken;
+    const [listData_TKSV, SetListData_TKSV] = useState([]);
+    const [listData, SetListData] = useState([]);
+    const [trangthaiTK, setTrangthaiTK] = useState('Đã kích hoạt')
+
+    // component didmount
+    useEffect(() => {
+        getListTaiKhoanSV();
+    }, []);
+
+    const getListTaiKhoanSV = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchAllTaiKhoanSV(headers);
+        console.log(res)
+        if (res && res.data && res.data.DanhSach) {
+            SetListData_TKSV(res.data.DanhSach)
+            SetListData(res.data.DanhSach.filter(item => item.TrangThai === 'Đã kích hoạt'))
+        }
+    }
+
+
     const onChangeSelect = (event, SetSelect) => {
         let changeValue = event.target.value;
         SetSelect(changeValue);
+        changeValue === 'Đã kích hoạt' ? SetListData(listData_TKSV.filter(item => item.TrangThai === 'Đã kích hoạt')) : SetListData(listData_TKSV.filter(item => item.TrangThai === 'Chưa kích hoạt'))
     }
 
     const handleExportRows = (rows) => {
@@ -73,7 +54,7 @@ const TableTaiKhoan = () => {
     };
 
     const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(data);
+        const csv = generateCsv(csvConfig)(listData);
         download(csvConfig)(csv);
     };
     const columns = useMemo(
@@ -106,7 +87,7 @@ const TableTaiKhoan = () => {
 
     const table = useMantineReactTable({
         columns,
-        data,
+        data: listData,
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',
@@ -155,8 +136,8 @@ const TableTaiKhoan = () => {
                 }}
             >
                 <select value={trangthaiTK} className="select-btn" onChange={(event) => onChangeSelect(event, setTrangthaiTK)} >
-                    <option value='1'>Đã kích hoạt</option>
-                    <option value='0'>Chưa kích hoạt</option>
+                    <option value='Đã kích hoạt'>Đã kích hoạt</option>
+                    <option value='Chưa kích hoạt'>Chưa kích hoạt</option>
                 </select>
                 <Button
                     color="lightblue"
@@ -191,7 +172,6 @@ const TableTaiKhoan = () => {
 
         ),
     });
-
     return (
         <>
 
@@ -202,4 +182,4 @@ const TableTaiKhoan = () => {
 
 };
 
-export default TableTaiKhoan;
+export default TableTaiKhoanSV;
