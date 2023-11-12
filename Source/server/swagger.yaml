@@ -2119,6 +2119,38 @@ paths:
             }
       security:
         - ApiKeyAuth: []
+  /admin/sinh-vien/importFileSV:
+    post: 
+      tags:
+        - "SinhVien"
+      summary: Import file thông tin sinh viên
+      produces:
+        - multipart/form-data    
+      parameters:
+        - in: formData
+          name: FileExcel
+          type: file
+          description: file excel
+          required: true
+      responses:
+        200:
+          description: Import file thông tin sinh viên thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Import file thông tin sinh viên thành công.",
+            }          
+        400:
+          description: Import file thông tin sinh viên thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Import file thông tin sinh viên thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
 securityDefinitions:
   ApiKeyAuth:
     type: apiKey

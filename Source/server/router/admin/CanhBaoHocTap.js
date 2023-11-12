@@ -279,7 +279,10 @@ CanhBaoHocTapAdminRoute.post('/importFile/:MaCBHT', createCanhBaoHocTapDir, uplo
                                         KhoaHoc = row.getCell("A").value.richText[0].text.split(': ')[1];
                                     }
                                     if ( row.getCell("A").value.richText[0].text.includes("Lớp:") ){
-                                        LopHoc = row.getCell("A").value.richText[0].text.split('(')[1].split(')')[0];
+                                        if ( row.getCell("A").value.richText[0].text.includes("(CLC)") )
+                                            LopHoc = row.getCell("A").value.richText[0].text.split('(')[2].split(')')[0];
+                                        else
+                                            LopHoc = row.getCell("A").value.richText[0].text.split('(')[1].split(')')[0];
                                     }
                                 }
                                 else{

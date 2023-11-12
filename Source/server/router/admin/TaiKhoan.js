@@ -214,7 +214,9 @@ TaiKhoanAdminRoute.get('/DanhSachTKGiangVien', async (req, res) => {
             if (data.MaTK != null){
                 let thongtin = {
                     HoTen: data.HoGV + " " + data.TenGV,
-                    TaiKhoan: data.MaTK
+                    MaTK: data.MaTK.MaTK,
+                    TenDangNhap: data.MaTK.TenDangNhap,
+                    TrangThai: data.MaTK.TrangThai
                 }
                 taikhoans.push(thongtin);
             }
@@ -262,7 +264,9 @@ TaiKhoanAdminRoute.get('/DanhSachTKSinhVien', async (req, res) => {
             if (data.MaTK != null){
                 let thongtin = {
                     HoTen: data.HoSV + " " + data.TenSV,
-                    TaiKhoan: data.MaTK
+                    MaTK: data.MaTK.MaTK,
+                    TenDangNhap: data.MaTK.TenDangNhap,
+                    TrangThai: data.MaTK.TrangThai
                 }
                 taikhoans.push(thongtin);
             }
