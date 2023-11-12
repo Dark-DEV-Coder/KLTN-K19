@@ -32,6 +32,7 @@ const TableGiangVien = (props) => {
         let res = await fetchAllGiangVien(headers);
         if (res && res.data && res.data.DanhSach) {
             SetListData_giangvien(res.data.DanhSach)
+
         }
     }
 
