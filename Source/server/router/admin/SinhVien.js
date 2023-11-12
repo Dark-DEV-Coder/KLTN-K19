@@ -155,7 +155,8 @@ SinhVienAdminRoute.delete('/Xoa/:MaSV', async (req, res) => {
  */
 SinhVienAdminRoute.post('/importFileSV', createSinhVienDir, uploadFile.single("FileExcel"), async (req, res) => {
     try{
-        let thongtin = [];
+        let thongtinCreate = [];
+        let thongtinUpdate = [];
         let fileName = path.join(__dirname, `../../public/SinhVien/${req.file.filename}`);
         const nganh = await Nganh.find({});
         const sinhvien = await SinhVien.find({});
@@ -168,19 +169,23 @@ SinhVienAdminRoute.post('/importFileSV', createSinhVienDir, uploadFile.single("F
                     worksheet.eachRow((row, rowNumber) => {
                         if ( rowNumber > 1 ){
                             let NganhHoc = nganh.find( ({MaNganh}) => MaNganh === row.getCell("AU").value );
-                            let checkSV = sinhvien.find( ({MaSV}) => MaSV === row.getCell("A").value )
                             let KhoaHoc = row.getCell("AX").value;
+                            let ngaysinh = String(row.getCell("D").value)
                             let sv = {
                                 MaSV: row.getCell("A").value,
                                 HoSV: row.getCell("B").value,
                                 TenSV: row.getCell("C").value,
-                                NgaySinh: new Date(row.getCell("D").value),
+                                NgaySinh: new Date(ngaysinh.split("/")[2] + "-" + ngaysinh.split("/")[1] + "-" + ngaysinh.split("/")[0] ),
                                 DTBTLHK: row.getCell("F").value,
                                 Lop: row.getCell("J").value,
                                 Nganh: NganhHoc.TenNganh,
                                 Khoa: String(KhoaHoc).substring(0,4),
                             }
-                            thongtin.push(sv);
+                            let checkSV = sinhvien.find( ({MaSV}) => MaSV === row.getCell("A").value )
+                            if (checkSV)
+                                thongtinUpdate.push(sv)
+                            else
+                                thongtinCreate.push(sv);
                         }
                         
                     });
@@ -192,7 +197,33 @@ SinhVienAdminRoute.post('/importFileSV', createSinhVienDir, uploadFile.single("F
         fs.unlinkSync(fileName, (err) => {
             console.log(err)
         })
-        console.log(thongtin[0]);
+        if ( thongtinUpdate.length > 0 ){
+            await thongtinUpdate.forEach( async (element) => {
+                await SinhVien.findOneAndUpdate({ MaSV: element.MaSV },{ 
+                    HoSV: element.HoSV, 
+                    TenSV: element.TenSV, 
+                    NgaySinh: element.NgaySinh, 
+                    Khoa: element.Khoa, 
+                    DTBTLHK: element.DTBTLHK, 
+                    Nganh: element.Nganh, 
+                    Lop : element.Lop
+                });
+            })
+        }
+        if (thongtinCreate.length > 0 ){
+            await thongtinCreate.forEach( async (element) => {
+                await SinhVien.create({ 
+                    MaSV: element.MaSV,
+                    HoSV: element.HoSV, 
+                    TenSV: element.TenSV,
+                    NgaySinh: element.NgaySinh, 
+                    Khoa: element.Khoa,
+                    Nganh: element.Nganh, 
+                    Lop: element.Lop ,
+                    DTBTLHK: element.DTBTLHK
+                });
+            });
+        }
         return sendSuccess(res, "Import file thông tin sinh viên thành công");
     }
     catch (error){

@@ -23,12 +23,15 @@ const SinhVienSchema = new Schema(
         },
         Email: {
             type: String,
+            default: null,
         },
         SoDienThoai: {
             type: String,
+            default: null,
         },
         GioiTinh: {
             type: String,
+            default: null,
         },
         NgaySinh: {
             type: Date,
@@ -40,6 +43,7 @@ const SinhVienSchema = new Schema(
         },
         ChuyenNganh: {
             type: String,
+            default: null,
         },
         Nganh: {
             type: String,
@@ -51,6 +55,7 @@ const SinhVienSchema = new Schema(
         },
         DTBTLHK: {
             type: Number,
+            default: 0,
         },
         TrangThaiTotNghiep: {
             type: String,
