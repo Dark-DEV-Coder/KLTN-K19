@@ -1,38 +1,45 @@
 
 import "./SingleQuyenTaiKhoan.scss"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { fetchDetailQuyenTK, fetchAllChucNang } from "../../GetData"
+
 const SingleQuyenTaiKhoan = () => {
-    const dulieutest = {
-        MaQuyen: 'admin',
-        TenQuyen: 'admin',
-        trangthai: 1,
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+    let navigate = useNavigate();
+    const quyenTK = useParams();
+    const [maquyen, setMaquyen] = useState("")
+    const [tenquyen, setTenquyen] = useState("")
+    const [listchucnangTK, setListchucnangTK] = useState([]);
+    const [listchucnang, setListchucnang] = useState([]);
+    // component didmount
+    useEffect(() => {
+        getListChucNang();
+        getDetailQuyenTK();
+    }, []);
+    const getListChucNang = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchAllChucNang(headers);
+        // console.log("CN: ", res)
+        if (res && res.data && res.data.DanhSach) {
+            setListchucnang(res.data.DanhSach)
+        }
     }
-    const chucnangcuaTK = [
-        { MaCN: 'khoaluan', TenChucNang: 'Khóa luận' },
-        { MaCN: 'thuctap', TenChucNang: 'Thực tập' },
-        { MaCN: 'totnghiep', TenChucNang: 'Tốt nghiệp' },
-        { MaCN: 'sinhvien', TenChucNang: 'Sinh viên' },
-    ]
-
-    const listchucnang = [
-        { MaCN: 'home', TenChucNang: 'Dashboard', },
-        { MaCN: 'dkichuyennganh', TenChucNang: 'Đăng ký chuyên ngành' },
-        { MaCN: 'khoaluan', TenChucNang: 'Khóa luận' },
-        { MaCN: 'thuctap', TenChucNang: 'Thực tập' },
-        { MaCN: 'totnghiep', TenChucNang: 'Tốt nghiệp' },
-        { MaCN: 'canhbaohoctap', TenChucNang: 'Cảnh báo' },
-        { MaCN: 'giangvien', TenChucNang: 'Giảng viên' },
-        { MaCN: 'sinhvien', TenChucNang: 'Sinh viên' },
-        { MaCN: 'nganhhoc', TenChucNang: 'Ngành' },
-        { MaCN: 'chuyennganh', TenChucNang: 'Chuyên ngành' },
-        { MaCN: 'taikhoan', TenChucNang: 'Tài khoản' },
-        { MaCN: 'chucnang', TenChucNang: 'Chức năng' },
-        { MaCN: 'chat', TenChucNang: 'ChatBox' },
-
-    ]
-    const taikhoan = useParams();
+    const getDetailQuyenTK = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDetailQuyenTK(headers, quyenTK.MaQTK);
+        // console.log(res)
+        if (res && res.data) {
+            setMaquyen(res.data.MaQTK)
+            setTenquyen(res.data.TenQuyenTK)
+            setListchucnangTK(res.data.ChucNang)
+        }
+    }
+    const getCheckChucNang = (item) => {
+        const check = listchucnangTK.filter(item2 => item2.MaCN.MaCN === item.MaCN).length;
+        return check
+    }
     return (
         <>
             <main className="main2">
@@ -50,7 +57,7 @@ const SingleQuyenTaiKhoan = () => {
                             </li>
                             <li><i className='bx bx-chevron-right'></i></li>
                             <li>
-                                <Link className="active" >{dulieutest.TenQuyen}</Link>
+                                <Link className="active" >{quyenTK.MaQTK}</Link>
                             </li>
                         </ul>
                     </div>
@@ -60,27 +67,26 @@ const SingleQuyenTaiKhoan = () => {
                     <div className="container-edit">
                         <div className="form-row">
                             <div className="form-group col-md-6">
-                                <label className="inputTK" for="inputMaQuyen">Mã quyền</label>
-                                <input type="text" className="form-control" id="inputTenDN" value={dulieutest.MaQuyen} disabled />
+                                <label className="inputTK" htmlFor="inputMaQuyen">Mã quyền</label>
+                                <input type="text" className="form-control" id="inputTenDN" value={maquyen} disabled />
                             </div>
                             <div className="form-group col-md-6">
-                                <label className="inputTK" for="inputTenQuyen">Tên Quyền</label>
-                                <input type="text" className="form-control" id="inputTenDN" value={dulieutest.TenQuyen} disabled />
+                                <label className="inputTK" htmlFor="inputTenQuyen">Tên Quyền</label>
+                                <input type="text" className="form-control" id="inputTenDN" value={tenquyen} disabled />
                             </div>
                         </div>
                         <div className="form-row">
                             <div className="form-group col-md-12">
-                                <label className="inputTK" for="inputTenGV">Danh sách chức năng </label>
+                                <label className="inputTK" htmlFor="inputTenGV">Danh sách chức năng </label>
                             </div>
                         </div>
                         <div className="form-row">
                             {listchucnang && listchucnang.length > 0 &&
                                 listchucnang.map((item, index) => {
-
                                     return (
-                                        <div className="form-check form-check-inline">
-                                            <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value={item.MaCN} defaultChecked={chucnangcuaTK.filter(item2 => item2.MaCN == item.MaCN).length > 0 ? true : false} disabled />
-                                            <label className="inputTKK" for="inlineCheckbox1">{item.TenChucNang}</label>
+                                        <div className="form-check form-check-inline" key={item.MaCN}>
+                                            <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value={item.MaCN} checked={getCheckChucNang(item) === 1 ? true : false} disabled />
+                                            <label className="inputTKK" htmlFor="inlineCheckbox1">{item.TenChucNang}</label>
                                         </div>
                                     )
                                 })

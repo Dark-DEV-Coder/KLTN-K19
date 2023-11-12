@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import "./Dashboard.scss"
 import logo from "./logo.png"
 import dia from "./dia.png"
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 const Dashboard = (props) => {
-
     const { hiddenDB, loggedIn } = props;
+    let navigate = useNavigate();
     // const [hiddenDB2, setHiddenDB2] = useState(true)
 
     // useEffect(() => {
@@ -14,6 +14,11 @@ const Dashboard = (props) => {
 
     //     // }
     // }, [hiddenDB])
+
+    const LogOut = () => {
+        window.localStorage.clear();
+        navigate("/")
+    }
 
     const [catalog, setCatalog] = useState([
 
@@ -57,23 +62,17 @@ const Dashboard = (props) => {
                     )
                 })}
             </ul>
-            <ul className="side-menu">
+            <ul className="side-menu" style={{ borderTop: 'solid 1px black' }}>
                 <li>
-
-                    <NavLink to="/dashboard5" className={({ isActive }) => isActive ? "active" : ''}>
+                    <a className="logout">
                         <i className='bx bxs-cog' ></i>
-                        <span className="text">Settings</span>
-                    </NavLink>
-
-
+                        <span className="text">Cài đặt</span>
+                    </a>
                 </li>
-                <li>
-                    <a href="#" className="logout">
-                        <NavLink to="/dashboard6" className={({ isActive }) => isActive ? "active" : ''}>
-                            <i className='bx bxs-log-out-circle' ></i>
-                            <span className="text">Logout</span>
-                        </NavLink>
-
+                <li onClick={() => LogOut()}>
+                    <a className="logout">
+                        <i className='bx bx-log-out'></i>
+                        <span className="text">Đăng xuất</span>
                     </a>
                 </li>
             </ul>

@@ -10,56 +10,8 @@ import {
   useParams,
   Navigate
 } from "react-router-dom";
-import Dashboard from "./views/admin/Dashboard/Dashboard"
-import Tongquan from "./views/admin/Tongquan/Tongquan";
 import { useEffect, useState } from "react";
-import Nav from "./views/admin/Nav/Nav";
 import "./views/admin/Admin.scss"
-import DkiChuyenNganh from "./views/admin/DKiChuyenNganh/DKiChuyenNganh";
-import SingleDkiChuyenNganh from "./views/admin/DKiChuyenNganh/ChiTietDKCN/SingleDkiChuyenNganh";
-import EditDKCN from "./views/admin/DKiChuyenNganh/EditDKCN/EditDKCN";
-import AddDKCN from "./views/admin/DKiChuyenNganh/ThemDKCN/AddDKCN";
-import GiangVien from "./views/admin/GiangVien/GiangVien";
-import EditGiangVien from "./views/admin/GiangVien/EditGiangVien/EditGiangVien";
-import AddGiangVien from "./views/admin/GiangVien/ThemGiangVien/AddGiangVien";
-import SinhVien from "./views/admin/SinhVien/SinhVien";
-import AddSinhVien from "./views/admin/SinhVien/ThemSinhVien/AddSinhVien";
-import EditSinhVien from "./views/admin/SinhVien/EditSinhVien/EditSinhVien";
-import Nganh from "./views/admin/Nganh/Nganh";
-import EditNganh from "./views/admin/Nganh/EditNganh/EditNganh";
-import AddNganh from "./views/admin/Nganh/ThemNganh/AddNganh";
-import ChuyenNganh from "./views/admin/ChuyenNganh/ChuyenNganh";
-import EditChuyenNganh from "./views/admin/ChuyenNganh/EditChuyenNganh/EditChuyenNganh";
-import AddChuyenNganh from "./views/admin/ChuyenNganh/ThemChuyenNganh/AddChuyenNganh";
-import KhoaLuan from "./views/admin/KhoaLuan/KhoaLuan";
-import SingleKhoaLuan from "./views/admin/KhoaLuan/ChiTietKhoaLuan/SingleKhoaLuan";
-import ChiTietDeTai from "./views/admin/KhoaLuan/ChiTietDeTai/ChiTietDeTai";
-import EditDeTai from "./views/admin/KhoaLuan/EditDeTai/EditDeTai";
-import EditKhoaLuan from "./views/admin/KhoaLuan/EditKhoaLuan/EditKhoaLuan";
-import AddKhoaLuan from "./views/admin/KhoaLuan/ThemKhoaLuan/AddKhoaLuan";
-import CanhBaoHocTap from "./views/admin/CanhBaoHocTap/CanhBaoHocTap";
-import ChiTietCBHT from "./views/admin/CanhBaoHocTap/ChiTietCBHT/ChiTietCBHT";
-import EditCBHT from "./views/admin/CanhBaoHocTap/EditCBHT/EditCBHT";
-import AddCBHT from "./views/admin/CanhBaoHocTap/ThemCBHT/AddCBHT";
-// import Error from "../error/Error";
-import ThucTap from "./views/admin/ThucTap/ThucTap";
-import ChiTietThucTap from "./views/admin/ThucTap/ChiTietThucTap/ChiTietThucTap";
-import ViTriThucTap from "./views/admin/ThucTap/DSViTriThucTap/ViTriThucTap";
-import EditThucTap from "./views/admin/ThucTap/EditThucTap/EditThucTap";
-import AddThucTap from "./views/admin/ThucTap/ThemThucTap/AddThucTap";
-import EditCongTyThucTap from "./views/admin/ThucTap/EditCongTyThucTap/EditCongTyThucTap";
-import TaiKhoan from "./views/admin/TaiKhoan/TaiKhoan";
-import SingleTaiKhoan from "./views/admin/TaiKhoan/SingleTaiKhoan/SingleTaiKhoan";
-import EditTaiKhoan from "./views/admin/TaiKhoan/EditTaiKhoan/EditTaiKhoan";
-import AddTaiKhoan from "./views/admin/TaiKhoan/ThemTaiKhoan/AddTaiKhoan";
-import ChucNang from "./views/admin/ChucNang/ChucNang";
-import EditChucNang from "./views/admin/ChucNang/EditChucNang/EditChucNang";
-import AddChucNang from "./views/admin/ChucNang/ThemChucNang/AddChucNang";
-import ChiTietNganh from "./views/admin/Nganh/ChiTietNganh/ChiTietNganh";
-import QuyenTaiKhoan from "./views/admin/QuyenTaiKhoan/QuyenTaiKhoan";
-import ThemQuyenTaiKhoan from "./views/admin/QuyenTaiKhoan/ThemQuyenTaiKhoan/ThemQuyenTaiKhoan";
-import SingleQuyenTaiKhoan from "./views/admin/QuyenTaiKhoan/SingleQuyenTaiKhoan/SingleQuyenTaiKhoan";
-import EditQuyenTaiKhoan from "./views/admin/QuyenTaiKhoan/EditQuyenTaiKhoan/EditQuyenTaiKhoan";
 import LoginAdmin from "./views/admin/Login/LoginAdmin";
 
 function App() {
@@ -82,16 +34,14 @@ function App() {
   }
 
   const [loggedIn, setLoggedIn] = useState();
-  // useEffect(() => {
-  //   let token = localStorage.getItem("accessToken");
-  //   console.log("Token: ", token)
-  //   token ? setLoggedIn(true) : setLoggedIn(false)
-  // }, [])
+  useEffect(() => {
+    let token = localStorage.getItem("accessToken");
+    token ? setLoggedIn(true) : setLoggedIn(false)
+  }, [])
   const [loggedInClient, setLoggedInClient] = useState(false);
   const CheckLogin = () => {
     let token = localStorage.getItem("accessToken");
     token ? setLoggedIn(true) : setLoggedIn(false)
-
   }
 
   return (

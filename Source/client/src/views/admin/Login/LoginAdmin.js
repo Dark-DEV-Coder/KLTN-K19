@@ -1,17 +1,27 @@
 
 import "./LoginAdmin.scss"
 import Nav from "../../client/Nav";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { fetchLoginAdmin, } from "../GetData"
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 const LoginAdmin = (props) => {
-    const { CheckLogin } = props
+    const { loggedIn, CheckLogin } = props
     const OnCheckLogin = () => {
         CheckLogin();
     }
+    const GetToken = () => {
+        if (loggedIn) {
+            navigate("/admin/")
+            return
+        }
+    }
+
+    useEffect(() => {
+        GetToken()
+    }, [])
     let navigate = useNavigate();
     const [TenDangNhap, setTenDangNhap] = useState("");
     const [MatKhau, setMatKhau] = useState("");
@@ -38,7 +48,7 @@ const LoginAdmin = (props) => {
         }
         setLoadingAPI(true);
         let res = await fetchLoginAdmin(TenDangNhap, MatKhau);
-        // setAccessToken(res.data.accessToken)
+        console.log("Login: ", res)
         if (res.status) {
             if (res.data && res.data.accessToken) {
                 localStorage.setItem("accessToken", res.data.accessToken)
