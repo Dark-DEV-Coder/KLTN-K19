@@ -1,3 +1,4 @@
+import { TrangThaiTaiKhoan } from "../constant.js"
 import Error from "../helper/error.js"
 
 export const KtraDuLieuTaiKhoanKhiThem = data => {
@@ -15,7 +16,7 @@ export const KtraDuLieuTaiKhoanKhiChinhSua = data => {
     const error = new Error()
 
     error.isRequired(data.MaQTK, "MaQTK")
-        .isRequired(data.TenDangNhap, "TenDangNhap")
+        .isInRange(data.TrangThai, TrangThaiTaiKhoan)
 
     return error.get()
 }

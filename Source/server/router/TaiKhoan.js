@@ -7,6 +7,7 @@ import GiangVien from "../model/GiangVien.js";
 import SinhVien from "../model/SinhVien.js";
 import { sendError, sendServerError, sendSuccess } from "../helper/client.js";
 import { createTokenPair } from "../middleware/auth.js";
+import { TrangThaiTaiKhoan } from "../constant.js";
 const TaiKhoanRoute = express.Router()
 
 /**
@@ -21,7 +22,7 @@ TaiKhoanRoute.post('/DangNhap', async (req, res) => {
             return sendError(res, err);
         const { TenDangNhap, MatKhau } = req.body;
 
-        const taikhoan = await TaiKhoan.findOne({ TenDangNhap: TenDangNhap });
+        const taikhoan = await TaiKhoan.findOne({ TenDangNhap: TenDangNhap, TrangThai: TrangThaiTaiKhoan.DaKichHoat });
         if (!taikhoan)
             return sendError(res, "Tên đăng nhập hoặc mật khẩu không chính xác");
         const KtraMatKhau = await argon2.verify(taikhoan.MatKhau, MatKhau);
@@ -78,7 +79,7 @@ TaiKhoanRoute.post('/DangNhapAdmin', async (req, res) => {
             return sendError(res, err);
         const { TenDangNhap, MatKhau } = req.body;
 
-        const taikhoan = await TaiKhoan.findOne({ TenDangNhap: TenDangNhap });
+        const taikhoan = await TaiKhoan.findOne({ TenDangNhap: TenDangNhap, TrangThai: TrangThaiTaiKhoan.DaKichHoat });
         if (!taikhoan)
             return sendError(res, "Tên đăng nhập hoặc mật khẩu không chính xác");
         const KtraMatKhau = await argon2.verify(taikhoan.MatKhau, MatKhau);

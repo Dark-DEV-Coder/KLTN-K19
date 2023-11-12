@@ -554,10 +554,11 @@ paths:
           required: true
           description: Mã quyền tài khoản
         - in: body
-          name: TenDangNhap
+          name: TrangThai
           type: string
           required: true
-          description: Tên đăng nhập
+          enum: ['Chưa kích hoạt','Đã kích hoạt']
+          description: Trạng thái tài khoản
       responses:
         200:
           description: Chỉnh sửa tài khoản thành công.
@@ -2078,6 +2079,43 @@ paths:
             example: {
               "status": false,
               "message": "Tra cứu sinh viên bị cảnh báo thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/tai-khoan/PhucHoiMatKhau/{MaTK}:
+    post: 
+      tags:
+        - "TaiKhoan"
+      summary: Phục hồi mật khẩu
+      produces:
+        - application/json     
+      parameters:
+        - in: path
+          name: MaTK
+          type: string
+          required: true
+          description: Mã tài khoản
+        - in: body
+          name: MatKhauPhucHoi
+          type: string
+          required: true
+          description: Mật khẩu phục hồi
+      responses:
+        200:
+          description: Phục hồi mật khẩu thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Phục hồi mật khẩu thành công.",
+            }          
+        400:
+          description: Phục hồi mật khẩu thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Phục hồi mật khẩu thất bại.",
             }
       security:
         - ApiKeyAuth: []

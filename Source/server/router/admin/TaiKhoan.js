@@ -139,23 +139,18 @@ TaiKhoanAdminRoute.put('/ChinhSua/:MaTK', async (req, res) => {
         const errors = KtraDuLieuTaiKhoanKhiChinhSua(req.body)
         if (errors)
             return sendError(res, errors)
-        const { MaQTK, TenDangNhap } = req.body;
+        const { MaQTK, TrangThai } = req.body;
         const { MaTK } = req.params;
 
         const isExistMa = await TaiKhoan.findOne({ MaTK: MaTK }).lean();
         if (!isExistMa)
             return sendError(res, "Tài khoản không tồn tại");
-        const isExistTen = await TaiKhoan.findOne({ TenDangNhap: TenDangNhap }).lean();
-        if (isExistTen){
-            if (isExistTen.MaTK != isExistMa.MaTK)
-                return sendError(res, "Tên đăng nhập đã tồn tại");
-        }
 
         const isExistMaQuyenTK = await QuyenTaiKhoan.findOne({ MaQTK: MaQTK });
         if (!isExistMaQuyenTK)
             return sendError(res, "Quyền tài khoản không tồn tại");
 
-        await TaiKhoan.findOneAndUpdate({ MaTK: MaTK },{ MaQTK: isExistMaQuyenTK._id, TenDangNhap: TenDangNhap });
+        await TaiKhoan.findOneAndUpdate({ MaTK: MaTK },{ MaQTK: isExistMaQuyenTK._id, TrangThai: TrangThai });
 
         return sendSuccess(res, "Chỉnh sửa tài khoản thành công");
     }
@@ -176,6 +171,16 @@ TaiKhoanAdminRoute.delete('/Xoa/:MaTK', async (req, res) => {
         const isExist = await TaiKhoan.findOne({ MaTK: MaTK })
         if (!isExist) 
             return sendError(res, "Tài khoản này không tồn tại");
+        const isExistSV = await SinhVien.findOne({ MaSV: isExist.TenDangNhap });
+        const isExistGV = await GiangVien.findOne({ MaGV: isExist.TenDangNhap });
+        if (isExistSV){
+            await SinhVien.findOneAndUpdate({ MaSV: isExistSV.MaSV },{ MaTK: null, TrangThai: TrangThaiSinhVien.ChuaCoTaiKhoan });
+        }
+        else{
+            if (isExistGV)
+                await GiangVien.findOneAndUpdate({ MaGV: isExistGV.MaGV },{ MaTK: null, TrangThai: TrangThaiGiangVien.ChuaCoTaiKhoan });
+            
+        }
         await TaiKhoan.findOneAndDelete({ MaTK: MaTK });
         return sendSuccess(res, "Xóa tài khoản thành công.")
     } catch (error) {
@@ -206,7 +211,13 @@ TaiKhoanAdminRoute.get('/DanhSachTKGiangVien', async (req, res) => {
                                                 })
         let taikhoans = []
         taikhoangvs.forEach((data) => {
-            taikhoans.push(data.MaTK);
+            if (data.MaTK != null){
+                let thongtin = {
+                    HoTen: data.HoGV + " " + data.TenGV,
+                    TaiKhoan: data.MaTK
+                }
+                taikhoans.push(thongtin);
+            }
         });
 
         if (taikhoangvs.length == 0) 
@@ -248,7 +259,13 @@ TaiKhoanAdminRoute.get('/DanhSachTKSinhVien', async (req, res) => {
                                                 })
         let taikhoans = []
         taikhoangvs.forEach((data) => {
-            taikhoans.push(data.MaTK);
+            if (data.MaTK != null){
+                let thongtin = {
+                    HoTen: data.HoSV + " " + data.TenSV,
+                    TaiKhoan: data.MaTK
+                }
+                taikhoans.push(thongtin);
+            }
         });
 
         if (taikhoangvs.length == 0) 
@@ -265,6 +282,29 @@ TaiKhoanAdminRoute.get('/DanhSachTKSinhVien', async (req, res) => {
     catch (error) {
         console.log(error)
         return sendServerError(res)
+    }
+})
+
+/**
+ * @route POST /api/tai-khoan/PhucHoiMatKhau/{MaTK}
+ * @description Phục hồi mật khẩu
+ * @access private
+*/
+TaiKhoanAdminRoute.post('/PhucHoiMatKhau/:MaTK', async (req,res) => {
+    try{
+        const { MaTK } = req.params;
+        const { MatKhauPhucHoi } = req.body;
+        const taikhoan = await TaiKhoan.findOne({ MaTK: MaTK });
+        if (!taikhoan)
+            return sendError(res, "Tài khoản không tồn tại");
+
+        let password = await argon2.hash(MatKhauPhucHoi);
+        await TaiKhoan.findOneAndUpdate({ MaTK: MaTK }, { MatKhau: password });
+        return sendSuccess(res, "Phục hồi mật khẩu thành công");
+    }
+    catch(error){
+        console.log(error);
+        return sendServerError(res);
     }
 })
 
