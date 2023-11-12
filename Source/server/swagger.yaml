@@ -262,7 +262,7 @@ paths:
       security:
       - ApiKeyAuth: []
   /admin/quyen-tai-khoan/ChiTietQuyenTK/{MaQTK}:
-    delete:
+    get:
       tags:
         - "QuyenTaiKhoan"
       summary: "Chi tiết thông tin quyền tài khoản"
