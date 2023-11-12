@@ -4,9 +4,18 @@ import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
 import { TrangThaiSinhVien } from "../../constant.js"
 import SinhVien from "../../model/SinhVien.js"
 import { createSinhVienDir } from "../../middleware/createDir.js"
-import { uploadImg } from "../../middleware/storage.js"
+import { uploadFile } from "../../middleware/storage.js"
 import { KtraDuLieuSinhVienKhiChinhSua, KtraDuLieuSinhVienKhiThem } from "../../validation/SinhVien.js"
-import { DeleteHinhTrenCloudinary, UploadHinhLenCloudinary } from "../../helper/connectCloudinary.js"
+import ExcelJS from 'exceljs'
+import path from "path"
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import { XuLyNgaySinh } from "../../helper/XuLyDuLieu.js"
+import Nganh from "../../model/Nganh.js"
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 
 const SinhVienAdminRoute = express.Router()
 
@@ -134,6 +143,59 @@ SinhVienAdminRoute.delete('/Xoa/:MaSV', async (req, res) => {
         await SinhVien.findOneAndDelete({ MaSV: MaSV });
         return sendSuccess(res, "Xóa sinh viên thành công.")
     } catch (error) {
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route POST /api/admin/sinh-vien/importFileSV
+ * @description Import file thông tin sinh viên
+ * @access public
+ */
+SinhVienAdminRoute.post('/importFileSV', createSinhVienDir, uploadFile.single("FileExcel"), async (req, res) => {
+    try{
+        let thongtin = [];
+        let fileName = path.join(__dirname, `../../public/SinhVien/${req.file.filename}`);
+        const nganh = await Nganh.find({});
+        const sinhvien = await SinhVien.find({});
+        const workbook = new ExcelJS.Workbook();
+        await workbook.xlsx.readFile(fileName)
+            .then(() => {
+                const sheetCount = workbook.worksheets.length;
+                for (let i = 1; i <= sheetCount; i++){
+                    const worksheet = workbook.getWorksheet(i);
+                    worksheet.eachRow((row, rowNumber) => {
+                        if ( rowNumber > 1 ){
+                            let NganhHoc = nganh.find( ({MaNganh}) => MaNganh === row.getCell("AU").value );
+                            let checkSV = sinhvien.find( ({MaSV}) => MaSV === row.getCell("A").value )
+                            let KhoaHoc = row.getCell("AX").value;
+                            let sv = {
+                                MaSV: row.getCell("A").value,
+                                HoSV: row.getCell("B").value,
+                                TenSV: row.getCell("C").value,
+                                NgaySinh: new Date(row.getCell("D").value),
+                                DTBTLHK: row.getCell("F").value,
+                                Lop: row.getCell("J").value,
+                                Nganh: NganhHoc.TenNganh,
+                                Khoa: String(KhoaHoc).substring(0,4),
+                            }
+                            thongtin.push(sv);
+                        }
+                        
+                    });
+                }
+            })
+            .catch(err => {
+                console.error(err);
+            });
+        fs.unlinkSync(fileName, (err) => {
+            console.log(err)
+        })
+        console.log(thongtin[0]);
+        return sendSuccess(res, "Import file thông tin sinh viên thành công");
+    }
+    catch (error){
         console.log(error)
         return sendServerError(res)
     }

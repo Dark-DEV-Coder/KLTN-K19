@@ -23,15 +23,12 @@ const SinhVienSchema = new Schema(
         },
         Email: {
             type: String,
-            required: true,
         },
         SoDienThoai: {
             type: String,
-            required: true,
         },
         GioiTinh: {
             type: String,
-            required: true,
         },
         NgaySinh: {
             type: Date,
@@ -52,8 +49,8 @@ const SinhVienSchema = new Schema(
             type: String,
             required: true,
         },
-        Hinh: {
-            type: String,
+        DTBTLHK: {
+            type: Number,
         },
         TrangThaiTotNghiep: {
             type: String,
