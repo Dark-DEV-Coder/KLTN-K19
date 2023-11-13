@@ -1,7 +1,7 @@
 import express from "express"
 import fs from 'fs'
 import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
-import { TrangThaiSinhVien } from "../../constant.js"
+import { CapTaiKhoanChoSinhVienKhiImportFile, TrangThaiSinhVien } from "../../constant.js"
 import SinhVien from "../../model/SinhVien.js"
 import { createSinhVienDir } from "../../middleware/createDir.js"
 import { uploadFile } from "../../middleware/storage.js"
@@ -10,8 +10,10 @@ import ExcelJS from 'exceljs'
 import path from "path"
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { XuLyNgaySinh } from "../../helper/XuLyDuLieu.js"
 import Nganh from "../../model/Nganh.js"
+import TaiKhoan from "../../model/TaiKhoan.js"
+import QuyenTaiKhoan from "../../model/QuyenTaiKhoan.js"
+import argon2 from "argon2"
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -155,6 +157,9 @@ SinhVienAdminRoute.delete('/Xoa/:MaSV', async (req, res) => {
  */
 SinhVienAdminRoute.post('/importFileSV', createSinhVienDir, uploadFile.single("FileExcel"), async (req, res) => {
     try{
+        const { CapTaiKhoan, MatKhauMacDinh } = req.body;
+        if (CapTaiKhoan == '' || MatKhauMacDinh == '')
+            return sendError(res, "Vui lòng điền đầy đủ thông tin");
         let thongtinCreate = [];
         let thongtinUpdate = [];
         let fileName = path.join(__dirname, `../../public/SinhVien/${req.file.filename}`);
@@ -197,32 +202,93 @@ SinhVienAdminRoute.post('/importFileSV', createSinhVienDir, uploadFile.single("F
         fs.unlinkSync(fileName, (err) => {
             console.log(err)
         })
-        if ( thongtinUpdate.length > 0 ){
-            await thongtinUpdate.forEach( async (element) => {
-                await SinhVien.findOneAndUpdate({ MaSV: element.MaSV },{ 
-                    HoSV: element.HoSV, 
-                    TenSV: element.TenSV, 
-                    NgaySinh: element.NgaySinh, 
-                    Khoa: element.Khoa, 
-                    DTBTLHK: element.DTBTLHK, 
-                    Nganh: element.Nganh, 
-                    Lop : element.Lop
+        if (CapTaiKhoan == CapTaiKhoanChoSinhVienKhiImportFile.TaoTaiKhoan){
+            const qtk = await QuyenTaiKhoan.findOne({ MaQTK: "SINHVIEN" });
+            let password = await argon2.hash(MatKhauMacDinh);
+            if ( thongtinUpdate.length > 0 ){
+                await thongtinUpdate.forEach( async (element) => {
+                    let checkSV = sinhvien.find( ({MaSV}) => MaSV === element.MaSV )
+                    if (checkSV.MaTK == null){
+                        let taikhoan = await TaiKhoan.create({
+                                                MaTK: "TK" + element.MaSV,
+                                                MaQTK: qtk._id,
+                                                TenDangNhap: element.MaSV,
+                                                MatKhau: password
+                                            })
+                        await SinhVien.findOneAndUpdate({ MaSV: element.MaSV },{ 
+                            HoSV: element.HoSV, 
+                            TenSV: element.TenSV, 
+                            NgaySinh: element.NgaySinh, 
+                            Khoa: element.Khoa, 
+                            DTBTLHK: element.DTBTLHK, 
+                            Nganh: element.Nganh, 
+                            Lop : element.Lop,
+                            MaTK: taikhoan._id
+                        });
+                    }
+                    else{
+                        await SinhVien.findOneAndUpdate({ MaSV: element.MaSV },{ 
+                            HoSV: element.HoSV, 
+                            TenSV: element.TenSV, 
+                            NgaySinh: element.NgaySinh, 
+                            Khoa: element.Khoa, 
+                            DTBTLHK: element.DTBTLHK, 
+                            Nganh: element.Nganh, 
+                            Lop : element.Lop
+                        });
+                    }
+                })
+            }
+            if (thongtinCreate.length > 0 ){
+                await thongtinCreate.forEach( async (element) => {
+                    let taikhoan = await TaiKhoan.create({
+                        MaTK: "TK" + element.MaSV,
+                        MaQTK: qtk._id,
+                        TenDangNhap: element.MaSV,
+                        MatKhau: password
+                    })
+                    await SinhVien.create({ 
+                        MaSV: element.MaSV,
+                        HoSV: element.HoSV, 
+                        TenSV: element.TenSV,
+                        NgaySinh: element.NgaySinh, 
+                        Khoa: element.Khoa,
+                        Nganh: element.Nganh, 
+                        Lop: element.Lop ,
+                        DTBTLHK: element.DTBTLHK,
+                        MaTK: taikhoan._id
+                    });
                 });
-            })
+            }
         }
-        if (thongtinCreate.length > 0 ){
-            await thongtinCreate.forEach( async (element) => {
-                await SinhVien.create({ 
-                    MaSV: element.MaSV,
-                    HoSV: element.HoSV, 
-                    TenSV: element.TenSV,
-                    NgaySinh: element.NgaySinh, 
-                    Khoa: element.Khoa,
-                    Nganh: element.Nganh, 
-                    Lop: element.Lop ,
-                    DTBTLHK: element.DTBTLHK
+        else{
+            if ( thongtinUpdate.length > 0 ){
+                await thongtinUpdate.forEach( async (element) => {
+                    await SinhVien.findOneAndUpdate({ MaSV: element.MaSV },{ 
+                        HoSV: element.HoSV, 
+                        TenSV: element.TenSV, 
+                        NgaySinh: element.NgaySinh, 
+                        Khoa: element.Khoa, 
+                        DTBTLHK: element.DTBTLHK, 
+                        Nganh: element.Nganh, 
+                        Lop : element.Lop
+                    });
+                })
+            }
+            if (thongtinCreate.length > 0 ){
+                await thongtinCreate.forEach( async (element) => {
+                    await SinhVien.create({ 
+                        MaSV: element.MaSV,
+                        HoSV: element.HoSV, 
+                        TenSV: element.TenSV,
+                        NgaySinh: element.NgaySinh, 
+                        Khoa: element.Khoa,
+                        Nganh: element.Nganh, 
+                        Lop: element.Lop ,
+                        DTBTLHK: element.DTBTLHK
+                    });
                 });
-            });
+            }
         }
         return sendSuccess(res, "Import file thông tin sinh viên thành công");
     }
