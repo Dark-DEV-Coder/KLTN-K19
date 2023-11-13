@@ -9,177 +9,15 @@ import {
     IconButton,
 } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
-
-const data = [
-    {
-        masv: '3119560001',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        ngaysinh: '2002-08-12',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1821',
-        namthu: '3',
-        hkthu: '8',
-        solancb: '',
-        tongsolancb: '3',
-        dtbchk: '0.14',
-        dtbtl: '1.55',
-        kq: 'BTH',
-        trangthai: 1,
-    },
-    {
-        masv: '3119560011',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        ngaysinh: '2002-08-12',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1821',
-        namthu: '3',
-        hkthu: '8',
-        solancb: '',
-        tongsolancb: '3',
-        dtbchk: '0.14',
-        dtbtl: '1.55',
-        kq: 'BTH',
-        trangthai: 1,
-    },
-    {
-        masv: '3119560015',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        ngaysinh: '2002-08-12',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1821',
-        namthu: '3',
-        hkthu: '8',
-        solancb: '',
-        tongsolancb: '3',
-        dtbchk: '0.14',
-        dtbtl: '1.55',
-        kq: 'BTH',
-        trangthai: 1,
-    },
-    {
-        masv: '3119560018',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        ngaysinh: '2002-08-12',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1821',
-        namthu: '3',
-        hkthu: '8',
-        solancb: '',
-        tongsolancb: '3',
-        dtbchk: '0.14',
-        dtbtl: '1.55',
-        kq: 'BTH',
-        trangthai: 1,
-    },
-    {
-        masv: '3119560020',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        ngaysinh: '2002-08-12',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1821',
-        namthu: '3',
-        hkthu: '8',
-        solancb: '',
-        tongsolancb: '3',
-        dtbchk: '0.14',
-        dtbtl: '1.55',
-        kq: 'BTH',
-        trangthai: 1,
-    },
-    {
-        masv: '3119560022',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        ngaysinh: '2002-08-12',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1821',
-        namthu: '3',
-        hkthu: '8',
-        solancb: '',
-        tongsolancb: '3',
-        dtbchk: '0.14',
-        dtbtl: '1.55',
-        kq: 'BTH',
-        trangthai: 1,
-    },
-    {
-        masv: '3119560023',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        ngaysinh: '2002-08-12',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1821',
-        namthu: '3',
-        hkthu: '8',
-        solancb: '',
-        tongsolancb: '3',
-        dtbchk: '0.14',
-        dtbtl: '1.55',
-        kq: 'BTH',
-        trangthai: 1,
-    },
-    {
-        masv: '3119560028',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        ngaysinh: '2002-08-12',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1821',
-        namthu: '3',
-        hkthu: '8',
-        solancb: '',
-        tongsolancb: '3',
-        dtbchk: '0.14',
-        dtbtl: '1.55',
-        kq: 'BTH',
-        trangthai: 1,
-    },
-    {
-        masv: '3119560035',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        ngaysinh: '2002-08-12',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1821',
-        namthu: '3',
-        hkthu: '8',
-        solancb: '',
-        tongsolancb: '3',
-        dtbchk: '0.14',
-        dtbtl: '1.55',
-        kq: 'BTH',
-        trangthai: 1,
-    },
-    {
-        masv: '3119560038',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        ngaysinh: '2002-08-12',
-        chuyennganh: 'Kỹ thuật phần mềm',
-        lop: 'DCT1821',
-        namthu: '3',
-        hkthu: '8',
-        solancb: '',
-        tongsolancb: '3',
-        dtbchk: '0.14',
-        dtbtl: '1.55',
-        kq: 'BTH',
-        trangthai: 1,
-    },
-]
-
+import moment from "moment";
 const csvConfig = mkConfig({
     fieldSeparator: ',',
     decimalSeparator: '.',
     useKeysAsHeaders: true,
 });
 
-const TableDSSVCanhBao = () => {
+const TableDSSVCanhBao = (props) => {
+    const list_data = props.list_data;
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
         const csv = generateCsv(csvConfig)(rowData);
@@ -187,13 +25,13 @@ const TableDSSVCanhBao = () => {
     };
 
     const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(data);
+        const csv = generateCsv(csvConfig)(list_data);
         download(csvConfig)(csv);
     };
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'masv',
+                accessorKey: 'MaSV',
                 header: 'Mã',
                 size: 100,
                 enableColumnOrdering: false,
@@ -201,7 +39,7 @@ const TableDSSVCanhBao = () => {
                 enableSorting: false,
             },
             {
-                accessorKey: 'hosv',
+                accessorKey: 'HoSV',
                 header: 'Họ',
                 size: 150,
                 enableEditing: false,
@@ -209,28 +47,29 @@ const TableDSSVCanhBao = () => {
 
             },
             {
-                accessorKey: 'tensv',
+                accessorKey: 'TenSV',
                 header: 'Tên',
                 size: 100,
                 enableEditing: false,
             },
             {
 
-                accessorKey: 'ngaysinh',
+                accessorKey: 'NgaySinh',
+                accessorFn: (dataRow) => moment(dataRow.NgaySinh).format("DD-MM-YYYY"),
                 header: 'Ngày sinh',
                 size: 100,
                 enableEditing: false,
 
             },
             {
-                accessorKey: 'chuyennganh',
+                accessorKey: 'ChuyenNganh',
                 header: 'Chuyên ngành',
                 size: 100,
                 enableEditing: false,
             },
             {
 
-                accessorKey: 'lop',
+                accessorKey: 'Lop',
                 header: 'Lớp',
                 size: 100,
                 enableEditing: false,
@@ -238,14 +77,14 @@ const TableDSSVCanhBao = () => {
 
             },
             {
-                accessorKey: 'namthu',
+                accessorKey: 'NamThu',
                 header: 'Năm thứ',
                 size: 100,
                 enableEditing: false,
             },
             {
 
-                accessorKey: 'hkthu',
+                accessorKey: 'HocKyThu',
                 header: 'HK thứ',
                 size: 100,
                 enableEditing: false,
@@ -253,28 +92,28 @@ const TableDSSVCanhBao = () => {
 
             },
             {
-                accessorKey: 'solancb',
+                accessorKey: 'SoLanCBLienTiep',
                 header: 'Số lần CB',
                 size: 100,
                 enableEditing: false,
             },
             {
 
-                accessorKey: 'tongsolancb',
+                accessorKey: 'TongSoLanCB',
                 header: 'Tổng số lần CB',
                 size: 150,
                 enableEditing: false,
 
             },
             {
-                accessorKey: 'dtbchk',
+                accessorKey: 'DTBCHK',
                 header: 'ĐTB cả HK',
                 size: 100,
                 enableEditing: false,
             },
             {
 
-                accessorKey: 'dtbtl',
+                accessorKey: 'DTBCTL',
                 header: 'ĐTB tích lũy',
                 size: 100,
                 enableEditing: false,
@@ -282,7 +121,7 @@ const TableDSSVCanhBao = () => {
 
             },
             {
-                accessorKey: 'kq',
+                accessorKey: 'KQ',
                 header: 'Kết quả',
                 size: 100,
                 enableEditing: false,
@@ -293,7 +132,7 @@ const TableDSSVCanhBao = () => {
 
     const table = useMantineReactTable({
         columns,
-        data,
+        data: list_data,
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',

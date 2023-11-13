@@ -1,30 +1,64 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import * as React from 'react';
-import "./EditCBHT.scss"
+import "./EditCBHT.scss";
+import { fetchDetailCanhBao, fetchEditCanhBao } from "../../GetData"
+import { toast } from "react-toastify";
 const EditCBHT = () => {
-    const dulieutest = {
-        MaCBHT: 'CBHT1',
-        Ten: 'Cảnh báo học tập đợt 1 năm học 2022-2023',
-        NienKhoa: '2022-2023',
-        trangthai: 1,
-    };
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+    let navigate = useNavigate();
     const canhbaohoctap = useParams();
+    const [MaCBHT, setMaCBHT] = useState("")
+    const [Ten, setTen] = useState("")
+    const [NienKhoa, setNienKhoa] = useState("")
+    const [Dot, setDot] = useState("")
 
-    const [Ten, SetTen] = useState(dulieutest.Ten)
-    const [NienKhoa, SetNienKhoa] = useState(dulieutest.NienKhoa)
 
-    const onChangeInputSL = (event, SetSL) => {
+    useEffect(() => {
+        getDetailCanhBao();
+    }, []);
+    const getDetailCanhBao = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDetailCanhBao(headers, canhbaohoctap.MaCBHT);
+        if (res && res.data) {
+            setMaCBHT(res.data.MaCBHT)
+            setTen(res.data.Ten)
+            setDot(res.data.Dot)
+            setNienKhoa(res.data.NienKhoa)
+        }
+    }
+
+    const handleEditCanhBao = async () => {
+        const headers = { 'x-access-token': accessToken };
+        if (!Ten || !NienKhoa || !Dot) {
+            toast.error("Vui lòng điền đầy đủ dữ liệu !")
+            return
+        }
+
+        let res = await fetchEditCanhBao(headers, canhbaohoctap.MaCBHT, Ten, Dot, NienKhoa)
+        if (res.status === true) {
+            toast.success(res.message)
+            navigate("/admin/canhbaohoctap")
+            return;
+        }
+        if (res.status === false) {
+            toast.error(res.message)
+            return;
+        }
+    }
+
+    const onChangeInputSL = (event, setSL) => {
         let changeValue = event.target.value;
-        SetSL(changeValue);
+        setSL(changeValue);
     }
 
     // check dữ liệu
-    const [checkdulieuTen, SetCheckdulieuTen] = useState(true)
-    const [checkdulieuNienKhoa, SetCheckdulieuNienKhoa] = useState(true)
-    const checkdulieu = (value, SetDuLieu) => {
-        value === '' ? SetDuLieu(false) : SetDuLieu(true)
+    const [checkdulieuTen, setCheckdulieuTen] = useState(true)
+    const [checkdulieuDot, setCheckdulieuDot] = useState(true)
+    const [checkdulieuNienKhoa, setCheckdulieuNienKhoa] = useState(true)
+    const checkdulieu = (value, setDuLieu) => {
+        value === '' ? setDuLieu(false) : setDuLieu(true)
     }
 
     return (
@@ -56,21 +90,25 @@ const EditCBHT = () => {
             <form className="form-edit">
                 <div className="container-edit">
                     <div className="form-group">
-                        <label className="inputCBHT" for="inputTen">Tên đợt cảnh báo học tập</label>
-                        <input type="text" className="form-control" id="inputTen" value={Ten} onChange={(event) => onChangeInputSL(event, SetTen)} onBlur={() => checkdulieu(Ten, SetCheckdulieuTen)} />
+                        <label className="inputCBHT" htmlFor="inputTen">Tên đợt cảnh báo học tập</label>
+                        <input type="text" className="form-control" id="inputTen" value={Ten} onChange={(event) => onChangeInputSL(event, setTen)} onBlur={() => checkdulieu(Ten, setCheckdulieuTen)} />
                         <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                     </div>
                     <div className="form-row">
-
-                        <div className="form-group col-md-12">
-                            <label className="inputCBHT" for="inputNienKhoa">Niên khóa</label>
-                            <input type="text" className="form-control" id="inputNienKhoa" value={NienKhoa} onChange={(event) => onChangeInputSL(event, SetNienKhoa)} onBlur={() => checkdulieu(NienKhoa, SetCheckdulieuNienKhoa)} />
+                        <div className="form-group col-md-6">
+                            <label className="inputCBHT" htmlFor="inputNienKhoa">Đợt</label>
+                            <input type="text" className="form-control" id="inputNienKhoa" value={Dot} onChange={(event) => onChangeInputSL(event, setDot)} onBlur={() => checkdulieu(Dot, setCheckdulieuDot)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuDot ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+                        </div>
+                        <div className="form-group col-md-6">
+                            <label className="inputCBHT" htmlFor="inputNienKhoa">Niên khóa</label>
+                            <input type="text" className="form-control" id="inputNienKhoa" value={NienKhoa} onChange={(event) => onChangeInputSL(event, setNienKhoa)} onBlur={() => checkdulieu(NienKhoa, setCheckdulieuNienKhoa)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuNienKhoa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
 
 
-                    <button className="btn" type="submit">Submit form</button>
+                    <button className="btn" type="button" onClick={() => handleEditCanhBao()}>Lưu</button>
                 </div>
 
 

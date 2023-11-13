@@ -243,9 +243,6 @@ export { fetchDetailTaiKhoan };
 
 //Sửa Tài khoản
 const fetchEditTaiKhoan = (headers, MaTK, TenDangNhap, QuyenTK) => {
-    console.log("MaTK ", MaTK)
-    console.log("TenDangNhap ", TenDangNhap)
-    console.log("QuyenTK ", QuyenTK)
     return axios.put(`admin/tai-khoan/ChinhSua/${MaTK}`, {
         TenDangNhap: TenDangNhap,
         QuyenTK: QuyenTK,
@@ -283,4 +280,43 @@ export { fetchAllQuyenTK };
 const fetchDetailQuyenTK = (headers, MaQTK) => {
     return axios.get(`admin/quyen-tai-khoan/ChiTietQuyenTK/${MaQTK}`, { headers });
 }
-export { fetchDetailQuyenTK };  
+export { fetchDetailQuyenTK };
+
+
+// Quyền tài khoản
+
+// Cảnh báo học tập
+//Get List Cảnh báo điểm học tập
+const fetchAllCanhBao_DHT = (headers) => {
+    return axios.get('admin/canh-bao-hoc-tap/DanhSachDotCanhBao?page&pageSize&keyword=&KieuCanhBao=Điểm học tập', { headers });
+}
+export { fetchAllCanhBao_DHT };
+
+//Get List Cảnh báo điểm rèn luyện
+const fetchAllCanhBao_DRL = (headers) => {
+    return axios.get('admin/canh-bao-hoc-tap/DanhSachDotCanhBao?page&pageSize&keyword=&KieuCanhBao=Điểm rèn luyện', { headers });
+}
+export { fetchAllCanhBao_DRL };
+
+//Get chi tiết Cảnh báo điểm rèn luyện
+const fetchDetailCanhBao = (headers, MaCBHT) => {
+    return axios.get(`admin/canh-bao-hoc-tap/ChiTietDotCanhBao/${MaCBHT}`, { headers });
+}
+export { fetchDetailCanhBao };
+
+//Sửa Cảnh báo
+const fetchEditCanhBao = (headers, MaCBHT, Ten, Dot, NienKhoa) => {
+    return axios.post(`admin/canh-bao-hoc-tap/ChinhSuaThongTin/${MaCBHT}`, {
+        MaCBHT: MaCBHT,
+        Ten: Ten,
+        Dot: Dot,
+        NienKhoa: NienKhoa,
+    }, { headers });
+}
+export { fetchEditCanhBao };
+
+//Xóa  Cảnh báo
+const fetchDeleteCanhBao = (headers, MaCBHT) => {
+    return axios.delete(`admin/canh-bao-hoc-tap/Xoa/${MaCBHT}`, { headers });
+}
+export { fetchDeleteCanhBao };
