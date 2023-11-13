@@ -137,8 +137,8 @@ const Admin = () => {
                         <Route path='quyentaikhoan'  >
                             <Route index element={<QuyenTaiKhoan />}></Route>
                             <Route path="new" element={<ThemQuyenTaiKhoan />} ></Route>
-                            <Route path="single/:MaQuyen" element={<SingleQuyenTaiKhoan />} ></Route>
-                            <Route path="edit/:MaQuyen" element={<EditQuyenTaiKhoan />} ></Route>
+                            <Route path="single/:MaQTK" element={<SingleQuyenTaiKhoan />} ></Route>
+                            <Route path="edit/:MaQTK" element={<EditQuyenTaiKhoan />} ></Route>
                         </Route>
                         <Route path='chucnang'  >
                             <Route index element={<ChucNang />}></Route>

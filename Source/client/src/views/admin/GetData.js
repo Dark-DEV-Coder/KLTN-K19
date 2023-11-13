@@ -235,6 +235,24 @@ const fetchAllTaiKhoanSV = (headers) => {
 }
 export { fetchAllTaiKhoanSV };
 
+//Get Chi Tiết Tài khoản
+const fetchDetailTaiKhoan = (headers, MaTK) => {
+    return axios.get(`admin/tai-khoan/ChiTietTaiKhoan/${MaTK}`, { headers });
+}
+export { fetchDetailTaiKhoan };
+
+//Sửa Tài khoản
+const fetchEditTaiKhoan = (headers, MaTK, TenDangNhap, QuyenTK) => {
+    console.log("MaTK ", MaTK)
+    console.log("TenDangNhap ", TenDangNhap)
+    console.log("QuyenTK ", QuyenTK)
+    return axios.put(`admin/tai-khoan/ChinhSua/${MaTK}`, {
+        TenDangNhap: TenDangNhap,
+        QuyenTK: QuyenTK,
+    }, { headers });
+}
+export { fetchEditTaiKhoan };
+
 //Thêm Tài khoản
 const fetchAddTaiKhoan = (headers, MaTK, TenDangNhap, MatKhau, MaQTK) => {
     return axios.post(`admin/tai-khoan/Them`, {
@@ -245,6 +263,12 @@ const fetchAddTaiKhoan = (headers, MaTK, TenDangNhap, MatKhau, MaQTK) => {
     }, { headers });
 }
 export { fetchAddTaiKhoan };
+
+//Xóa  Tài khoản
+const fetchDeleteTaiKhoan = (headers, MaTK) => {
+    return axios.delete(`admin/tai-khoan/Xoa/${MaTK}`, { headers });
+}
+export { fetchDeleteTaiKhoan };
 //Tài khoản
 
 
@@ -254,3 +278,9 @@ const fetchAllQuyenTK = (headers) => {
     return axios.get('admin/quyen-tai-khoan/DanhSachQuyenTK', { headers });
 }
 export { fetchAllQuyenTK };
+
+//Get Chi Tiết Quyền tài khoản
+const fetchDetailQuyenTK = (headers, MaQTK) => {
+    return axios.get(`admin/quyen-tai-khoan/ChiTietQuyenTK/${MaQTK}`, { headers });
+}
+export { fetchDetailQuyenTK };  

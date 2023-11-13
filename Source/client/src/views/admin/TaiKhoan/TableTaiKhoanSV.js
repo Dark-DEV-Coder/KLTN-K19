@@ -10,7 +10,7 @@ import { IconButton } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
 import { toast } from "react-toastify";
 import { useState, useEffect } from 'react';
-import { fetchAllTaiKhoanSV } from "../GetData"
+import { fetchAllTaiKhoanSV, fetchDeleteTaiKhoan } from "../GetData"
 const csvConfig = mkConfig({
     fieldSeparator: ',',
     decimalSeparator: '.',
@@ -33,12 +33,26 @@ const TableTaiKhoanSV = (props) => {
     const getListTaiKhoanSV = async () => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchAllTaiKhoanSV(headers);
-        console.log(res)
         if (res && res.data && res.data.DanhSach) {
             SetListData_TKSV(res.data.DanhSach)
             SetListData(res.data.DanhSach.filter(item => item.TrangThai === 'Đã kích hoạt'))
         }
     }
+
+    const handleDeleteRows = async (row) => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDeleteTaiKhoan(headers, row.original.MaTK)
+        if (res.status === true) {
+            toast.success(res.message)
+            getListTaiKhoanSV()
+            return;
+        }
+        if (res.success === false) {
+            toast.error(res.message)
+            return;
+        }
+    }
+
 
 
     const onChangeSelect = (event, SetSelect) => {
@@ -76,11 +90,10 @@ const TableTaiKhoanSV = (props) => {
 
             },
             {
-                accessorKey: 'MatKhau',
-                header: 'Mật khẩu',
-                size: 100,
+                accessorKey: 'HoTen',
+                header: 'Họ tên người dùng',
+                size: 200,
                 enableEditing: false,
-
             },
         ]
     );
@@ -99,7 +112,7 @@ const TableTaiKhoanSV = (props) => {
 
 
         renderRowActions: ({ row, table }) => (
-            trangthaiTK === '1' ?
+            trangthaiTK === 'Đã kích hoạt' ?
                 <Box sx={{ display: 'flex', gap: '0.3rem' }}>
                     <Link to={"/admin/taikhoan/single/" + row.original.MaTK}>
                         <IconButton>
@@ -113,7 +126,7 @@ const TableTaiKhoanSV = (props) => {
                         </IconButton>
                     </Link>
 
-                    <IconButton onClick={() => console.log(row.original.name)}>
+                    <IconButton onClick={() => handleDeleteRows(row)}>
                         <Delete fontSize="small" sx={{ color: 'red' }} />
                     </IconButton>
                 </Box >
