@@ -32,3 +32,11 @@ export const createCanhBaoHocTapDir = (req, res, next) => {
     req.dirName = 'CanhBaoHocTap'
     next()
 }
+
+export const createTotNghiepDir = (req, res, next) => {
+    mkdir(`public/TotNghiep`, { recursive: true }, (err) => {
+        if (err) return sendError(res, 'Không thể tải tập tin lên.')
+    })
+    req.dirName = 'TotNghiep'
+    next()
+}

@@ -7,6 +7,7 @@ import ChuyenNganhAdminRoute from "./ChuyenNganh.js";
 import SinhVienAdminRoute from "./SinhVien.js";
 import GiangVienAdminRoute from "./GiangVien.js";
 import CanhBaoHocTapAdminRoute from "./CanhBaoHocTap.js";
+import TotNghiepAdminRoute from "./TotNghiep.js";
 
 const adminRoute = express.Router();
 
@@ -18,6 +19,7 @@ adminRoute.use('/chuc-nang', ChucNangAdminRoute)
         .use('/sinh-vien', SinhVienAdminRoute)
         .use('/giang-vien', GiangVienAdminRoute)
         .use('/canh-bao-hoc-tap', CanhBaoHocTapAdminRoute)
+        .use('/tot-nghiep', TotNghiepAdminRoute)
 
 export default adminRoute
 

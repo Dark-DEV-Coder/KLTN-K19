@@ -28,6 +28,8 @@ tags:
   description: "Các API của model GiangVien"
 - name: "CanhBaoHocTap"
   description: "Các API của model CanhBaoHocTap"
+- name: "TotNghiep"
+  description: "Các API của model TotNghiep"
 paths:
   /admin/chuc-nang/DanhSachChucNang:
     get: 
@@ -1752,24 +1754,24 @@ paths:
         - "CanhBaoHocTap"
       summary: Chỉnh sửa thông tin đợt cảnh báo học tập
       produces:
-        - multipart/form-data    
+        - application/json    
       parameters:
         - in: path
           name: MaCBHT
           type: string
           description: Mã cảnh báo học tập
           required: true
-        - in: formData
+        - in: body
           name: Ten
           type: string
           description: Tên đợt cảnh báo học tập
           required: true
-        - in: formData
+        - in: body
           name: Dot
           type: string
           description: Đợt thứ mấy
           required: true
-        - in: formData
+        - in: body
           name: NienKhoa
           type: string
           description: Niên khóa
@@ -1910,9 +1912,9 @@ paths:
       produces:
         - application/json     
       parameters:
-      - in: query
+      - in: path
         name: MaCBHT
-        type: integer
+        type: string
         description: Mã đợt cảnh báo học tập
       responses:
         200: 
@@ -2158,6 +2160,339 @@ paths:
             example: {
               "status": false,
               "message": "Import file thông tin sinh viên thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/tot-nghiep/DanhSachDotTotNghiep:
+    get: 
+      tags:
+        - "TotNghiep"
+      summary: Admin lấy danh sách đợt tốt nghiệp
+      produces:
+        - application/json     
+      parameters:
+      - in: query
+        name: page
+        type: integer
+        description: số trang (ví dụ trang 1, trang 2), giá trị > 0
+      - in: query
+        name: pageSize
+        type: integer
+        description: giới hạn số lượng 1 trang, giá trị > 0
+      - in: query
+        name: keyword
+        type: string
+        description: mã đợt tốt nghiệp, tên đợt tốt nghiệp, niên khóa đợt tốt nghiệp
+      responses:
+        200: 
+          description: Lấy danh sách đợt tốt nghiệp thành công
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Lấy danh sách đợt tốt nghiệp thành công",
+            }
+        400:
+          description: Lấy danh sách đợt tốt nghiệp thất bại
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Lấy danh sách đợt tốt nghiệp thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
+  /admin/tot-nghiep/ChiTietDotTotNghiep/{MaTN}:
+    get: 
+      tags:
+        - "TotNghiep"
+      summary: Admin lấy chi tiết đợt tốt nghiệp
+      produces:
+        - application/json     
+      parameters:
+      - in: path
+        name: MaTN
+        type: string
+        description: Mã đợt tốt nghiệp
+      responses:
+        200: 
+          description: Lấy chi tiết đợt tốt nghiệp thành công
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Lấy chi tiết đợt tốt nghiệp thành công",
+            }
+        400:
+          description: Lấy chi tiết đợt tốt nghiệp thất bại
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Lấy chi tiết đợt tốt nghiệp thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
+  /admin/tot-nghiep/ThemDotTotNghiep:
+    post: 
+      tags:
+        - "TotNghiep"
+      summary: Thêm đợt tốt nghiệp
+      produces:
+        - multipart/form-data    
+      parameters:
+        - in: formData
+          name: MaTN
+          type: string
+          description: Mã đợt tốt nghiệp
+          required: true
+        - in: formData
+          name: Ten
+          type: string
+          description: Tên đợt tốt nghiệp
+          required: true
+        - in: formData
+          name: NienKhoa
+          type: string
+          description: Niên khóa
+          required: true
+        - in: formData
+          name: FilePDF
+          type: file
+          description: file pdf
+      responses:
+        200:
+          description: Thêm đợt tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Thêm đợt tốt nghiệp thành công.",
+            }          
+        400:
+          description: Thêm đợt tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Thêm đợt tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: [] 
+  /admin/tot-nghiep/importFile/{MaTN}:
+    post: 
+      tags:
+        - "TotNghiep"
+      summary: Import file đợt tốt nghiệp
+      produces:
+        - multipart/form-data    
+      parameters:
+        - in: path
+          name: MaTN
+          type: string
+          description: Mã tốt nghiệp
+          required: true
+        - in: formData
+          name: FilePDF
+          type: file
+          description: file pdf
+          required: true
+      responses:
+        200:
+          description: Import file đợt tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Import file đợt tốt nghiệp thành công.",
+            }          
+        400:
+          description: Import file đợt tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Import file đợt tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/tot-nghiep/ChinhSuaThongTin/{MaTN}:
+    post: 
+      tags:
+        - "TotNghiep"
+      summary: Chỉnh sửa thông tin đợt tốt nghiệp
+      produces:
+        - application/json   
+      parameters:
+        - in: path
+          name: MaTN
+          type: string
+          description: Mã tốt nghiệp
+          required: true
+        - in: body
+          name: Ten
+          type: string
+          description: Tên đợt tốt nghiệp
+          required: true
+        - in: body
+          name: NienKhoa
+          type: string
+          description: Niên khóa tốt nghiệp
+          required: true
+      responses:
+        200:
+          description: Chỉnh sửa thông tin đợt tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Chỉnh sửa thông tin đợt tốt nghiệp thành công.",
+            }          
+        400:
+          description: Chỉnh sửa thông tin đợt tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Chỉnh sửa thông tin đợt tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/tot-nghiep/XoaDanhSachSinhVien/{MaTN}:
+    post: 
+      tags:
+        - "TotNghiep"
+      summary: Xóa danh sách sinh viên
+      produces:
+        - application/json     
+      parameters:
+        - in: path
+          name: MaTN
+          type: string
+          description: Mã cảnh báo tốt nghiệp
+          required: true
+      responses:
+        200:
+          description: Xóa danh sách sinh viên thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Xóa danh sách sinh viên thành công.",
+            }          
+        400:
+          description: Xóa danh sách sinh viên thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Xóa danh sách sinh viên thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/tot-nghiep/XoaDotTotNghiep/{MaTN}:
+    delete: 
+      tags:
+        - "TotNghiep"
+      summary: Xóa đợt tốt nghiệp
+      produces:
+        - application/json    
+      parameters:
+        - in: path
+          name: MaTN
+          type: string
+          description: Mã tốt nghiệp
+          required: true
+      responses:
+        200:
+          description: Xóa đợt tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Xóa đợt tốt nghiệp thành công.",
+            }          
+        400:
+          description: Xóa đợt tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Xóa đợt tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/tot-nghiep/ThongKeTotNghiepSinhVien/{MaTN}:
+    get: 
+      tags:
+        - "TotNghiep"
+      summary: Thống kê sinh viên tốt nghiệp
+      produces:
+        - application/json  
+      parameters:
+        - in: path
+          name: MaTN
+          type: string
+          description: Mã tốt nghiệp
+          required: true
+        - in: body
+          name: ThongKeTheo
+          type: string
+          description: Thống kê theo ngành, theo lớp
+          required: true
+        - in: body
+          name: LocTheoNganh
+          type: string
+          description: Lọc theo ngành
+          required: true
+      responses:
+        200:
+          description: Thống kê sinh viên tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Thống kê sinh viên tốt nghiệp thành công.",
+            }          
+        400:
+          description: Thống kê sinh viên tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Thống kê sinh viên tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/tot-nghiep/TraCuuSinhVienTotNghiep:
+    get: 
+      tags:
+        - "TotNghiep"
+      summary: Tra cứu sinh viên tốt nghiệp
+      produces:
+        - application/json  
+      parameters:
+        - in: body
+          name: MaSV
+          type: string
+          description: Mã sinh viên
+          required: true
+      responses:
+        200:
+          description: Tra cứu sinh viên tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Tra cứu sinh viên tốt nghiệp thành công.",
+            }          
+        400:
+          description: Tra cứu sinh viên tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Tra cứu sinh viên tốt nghiệp thất bại.",
             }
       security:
         - ApiKeyAuth: []
