@@ -2128,6 +2128,16 @@ paths:
         - multipart/form-data    
       parameters:
         - in: formData
+          name: CapTaiKhoan
+          type: String
+          description: Chọn select có 2 giá trị là "Tạo tài khoản" và "Không tạo tài khoản"
+          required: true
+        - in: formData
+          name: MatKhauMacDinh
+          type: String
+          description: Mật khẩu mặc định của tài khoản
+          required: true
+        - in: formData
           name: FileExcel
           type: file
           description: file excel

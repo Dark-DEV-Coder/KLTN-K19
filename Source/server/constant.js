@@ -39,3 +39,8 @@ export const KetQuaDRLSinhVien = {
     TD: 'Tạm dừng',
     BTH: 'Buộc thôi học',
 }
+
+export const CapTaiKhoanChoSinhVienKhiImportFile = {
+    TaoTaiKhoan: "Tạo tài khoản",
+    KhongTaoTaiKhoan: "Không tạo tài khoản",
+}
