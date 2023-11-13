@@ -65,7 +65,7 @@ CanhBaoHocTapAdminRoute.get('/DanhSachDotCanhBao', async (req, res) => {
 
 /**
  * @route GET /api/admin/canh-bao-hoc-tap/ChiTietDotCanhBao/{MaCBHT}
- * @description Xóa danh sách sinh viên đã import
+ * @description Chi tiết đợt cảnh báo
  * @access public
  */
 CanhBaoHocTapAdminRoute.get('/ChiTietDotCanhBao/:MaCBHT', async (req, res) => {
@@ -95,6 +95,9 @@ CanhBaoHocTapAdminRoute.post('/ThemDotCanhBao', createCanhBaoHocTapDir, uploadFi
         if (errors)
             return sendError(res, errors)
         const { MaCBHT, Ten, Dot, NienKhoa, KieuCanhBao, KetQuaDRL } = req.body;
+        const isExist = await CanhBaoHocTap.findOne({ MaCBHT: MaCBHT });
+        if (isExist)
+            return sendError(res, "Mã cảnh báo học tập đã tồn tại");
         let thongtin = [];
         if (req.file){
             if (KieuCanhBao != KieuCanhBaoSV.DRL && KieuCanhBao != KieuCanhBaoSV.DHT && KieuCanhBao != KieuCanhBaoSV.NoFile)
@@ -350,7 +353,11 @@ CanhBaoHocTapAdminRoute.post('/importFile/:MaCBHT', createCanhBaoHocTapDir, uplo
                     .catch(err => {
                         console.error(err);
                     });
-            await CanhBaoHocTap.findOneAndUpdate({ MaCBHT: MaCBHT }, { KieuCanhBao: KieuCanhBao, ThongTin: thongtin });
+            const cbht = await CanhBaoHocTap.findOne({ MaCBHT: MaCBHT });
+            thongtin.forEach((element) => {
+                cbht.ThongTin.push(element);
+            });;
+            await CanhBaoHocTap.findOneAndUpdate({ MaCBHT: MaCBHT }, { KieuCanhBao: KieuCanhBao, ThongTin: cbht.ThongTin });
         }
 
         if (KieuCanhBao == KieuCanhBaoSV.DRL){
@@ -391,7 +398,11 @@ CanhBaoHocTapAdminRoute.post('/importFile/:MaCBHT', createCanhBaoHocTapDir, uplo
                         }
                     }
                 }
-                await CanhBaoHocTap.findOneAndUpdate({ MaCBHT: MaCBHT }, { KieuCanhBao: KieuCanhBao, ThongTin: thongtin });
+                const cbht = await CanhBaoHocTap.findOne({ MaCBHT: MaCBHT });
+                thongtin.forEach((element) => {
+                    cbht.ThongTin.push(element);
+                });;
+                await CanhBaoHocTap.findOneAndUpdate({ MaCBHT: MaCBHT }, { KieuCanhBao: KieuCanhBao, ThongTin: cbht.ThongTin });
             });
         }   
         fs.unlinkSync(fileName, (err) => {
@@ -408,7 +419,7 @@ CanhBaoHocTapAdminRoute.post('/importFile/:MaCBHT', createCanhBaoHocTapDir, uplo
 
 /**
  * @route POST /api/admin/canh-bao-hoc-tap/ChinhSuaThongTin/{MaCBHT}
- * @description Thêm đợt cảnh báo học tập hoặc cảnh báo điểm rèn luyện
+ * @description Chỉnh sửa thông tin đợt cảnh báo học tập hoặc cảnh báo điểm rèn luyện
  * @access public
  */
 CanhBaoHocTapAdminRoute.post('/ChinhSuaThongTin/:MaCBHT', async (req, res) => {
@@ -640,7 +651,7 @@ CanhBaoHocTapAdminRoute.get('/ThongKeCBHTSinhVien/:MaCBHT', async (req, res) => 
 
 /**
  * @route GET /api/admin/canh-bao-hoc-tap/TraCuuCBHTSinhVien
- * @description Thống kê sinh viên bị cảnh báo
+ * @description Tra cứu sinh viên bị cảnh báo
  * @access public
  */
 CanhBaoHocTapAdminRoute.get('/TraCuuCBHTSinhVien', async (req, res) => {
