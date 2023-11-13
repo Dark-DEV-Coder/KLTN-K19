@@ -27,7 +27,7 @@ const CanhBaoHocTapAdminRoute = express.Router();
  */
 CanhBaoHocTapAdminRoute.get('/DanhSachDotCanhBao', async (req, res) => {
     try{
-        const { KieuCanhBao } = req.body;
+        const { KieuCanhBao } = req.query;
         if (KieuCanhBao != KieuCanhBaoSV.DRL && KieuCanhBao != KieuCanhBaoSV.DHT && KieuCanhBao != KieuCanhBaoSV.NoFile)
                 return sendError(res,"Kiểu cảnh báo phải là Điểm rèn luyện hoặc là Điểm học tập");
         const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 0

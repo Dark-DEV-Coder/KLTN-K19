@@ -1879,10 +1879,10 @@ paths:
         name: keyword
         type: string
         description: mã đợt cảnh báo, tên đợt cảnh báo, đợt cảnh báo, niên khóa đợt cảnh báo
-      - in: body
+      - in: query
         name: KieuCanhBao
         type: string
-        description: mã đợt cảnh báo, tên đợt cảnh báo, đợt cảnh báo, niên khóa đợt cảnh báo
+        description: Kiểu cảnh báo
         enum : ['Điểm học tập','Điểm rèn luyện','Chưa import file']
         require: true
       responses:
