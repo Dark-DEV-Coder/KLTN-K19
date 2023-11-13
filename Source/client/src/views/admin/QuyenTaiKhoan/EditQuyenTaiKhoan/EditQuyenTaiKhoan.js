@@ -13,10 +13,13 @@ const EditQuyenTaiKhoan = () => {
     const [tenquyen, setTenquyen] = useState("")
     const [listchucnangTK, setListchucnangTK] = useState([]);
     const [listchucnang, setListchucnang] = useState([]);
+    const [listmachucnang, setListmachucnang] = useState([]);
+
+    const [defaultChecked, setDefaultChecked] = useState(false)
     // component didmount
     useEffect(() => {
-        getListChucNang();
         getDetailQuyenTK();
+        getListChucNang();
     }, []);
 
     const getListChucNang = async () => {
@@ -33,11 +36,12 @@ const EditQuyenTaiKhoan = () => {
             setMaquyen(res.data.MaQTK)
             setTenquyen(res.data.TenQuyenTK)
             setListchucnangTK(res.data.ChucNang)
+            let current = [];
+            res.data.ChucNang.map((item, index) => {
+                current = [...current, item.MaCN.MaCN]
+            })
+            setListmachucnang(current)
         }
-    }
-    const getCheckChucNang = (maquyen) => {
-        const check = listchucnangTK.filter(item2 => item2.MaCN.MaCN === maquyen).length;
-        return check
     }
 
     const onChangeInputSL = (event, SetState) => {
@@ -45,10 +49,10 @@ const EditQuyenTaiKhoan = () => {
         SetState(changeValue);
     }
 
-    const onChangeChucNang = (maquyen) => {
+    const onChangeChucNang = (item2) => {
         let current = listchucnangTK;
-        let check = current.filter(item => item.MaCN === maquyen).length;
-        check === 1 ? current = current.filter(item => item.MaCN !== maquyen) : current = [...current, maquyen]
+        let check = current.filter(item => item.MaCN.MaCN === item2.MaCN).length;
+        check === 1 ? current = current.filter(item => item.MaCN.MaCN !== item2.MaCN) : current = [...current, item2]
         setListchucnangTK(current)
     }
 
@@ -57,20 +61,6 @@ const EditQuyenTaiKhoan = () => {
     const [checkdulieuTenQuyen, SetCheckdulieuTenQuyen] = useState(true)
     const checkdulieu = (value, SetDuLieu) => {
         value === '' ? SetDuLieu(false) : SetDuLieu(true)
-    }
-
-    //
-    const [hidden_DKCN, setHidden_DKCN] = useState(false)
-
-    const onHidden = (value, SetHidden) => {
-        let current = listchucnangTK;
-        // console.log(current)
-        let check = current.filter(item => item.MaCN.MaCN === value).length;
-        // console.log(check)
-        check === 1 ? SetHidden(true) : SetHidden(false)
-    }
-    const offHidden = (SetHidden) => {
-        SetHidden(false)
     }
 
     return (
@@ -116,22 +106,37 @@ const EditQuyenTaiKhoan = () => {
                             </div>
                         </div>
                         <div className="form-row">
-                            <div >
-                                <div className="form-check form-check-inline" >
-                                    <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value="dkychuyennganh" defaultChecked={getCheckChucNang("dkychuyennganh") === 1 ? true : false} onClick={() => onHidden("dkychuyennganh", setHidden_DKCN)} onBlur={() => offHidden(setHidden_DKCN)} />
-                                    <label className="inputTKK label-TCN" htmlFor="inlineCheckbox1">Đăng ký chuyên ngành</label>
-                                </div>
-                                <div className="div-CN-con" style={{ display: hidden_DKCN ? 'block' : 'none' }}>
-                                    <div className="form-check them">
-                                        <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value="Thêm,Sửa,Xóa" />
-                                        <label className="inputTKK" htmlFor="inlineCheckbox1">Thêm, Sửa, Xóa</label>
-                                    </div>
-                                    <div className="form-check sua">
-                                        <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value="Xem danh sách" />
-                                        <label className="inputTKK" htmlFor="inlineCheckbox1">Xem danh sách</label>
-                                    </div>
-                                </div>
-                            </div>
+                            {/* chạy map */}
+                            {listchucnang && listchucnang.length > 0 &&
+                                listchucnang.map((item, index) => {
+                                    return (
+                                        <div key={item.MaCN} >
+                                            <div className="form-check form-check-inline" key={item.MaCN}>
+                                                <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value={item.MaCN} defaultChecked={listmachucnang.filter(item2 => item2 === item.MaCN).length > 0 ? true : false} onClick={(event) => onChangeChucNang(item)} />
+                                                <label className="inputTKK label-TCN" htmlFor="inlineCheckbox1">{item.TenChucNang}</label>
+                                            </div>
+                                            {/* <div className="div-CN-con">
+                                                <div className="form-check them">
+                                                    <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value="Thêm,Sửa,Xóa" />
+                                                    <label className="inputTKK" htmlFor="inlineCheckbox1">Thêm, Sửa, Xóa</label>
+                                                </div>
+                                                <div className="form-check sua">
+                                                    <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value="Xem danh sách" />
+                                                    <label className="inputTKK" htmlFor="inlineCheckbox1">Xem danh sách</label>
+                                                </div> */}
+                                            {/* <div className="form-check xoa">
+                                                    <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value="Xóa" />
+                                                    <label className="inputTKK" htmlFor="inlineCheckbox1">Xóa</label>
+                                                </div>
+                                                <div className="form-check xem-ds">
+                                                    <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value="Xem danh sách" />
+                                                    <label className="inputTKK" htmlFor="inlineCheckbox1">Xem danh sách</label>
+                                                </div> */}
+                                            {/* </div> */}
+                                        </div>
+                                    )
+                                })
+                            }
                         </div>
                         <button className="btn" type="submit" style={{ marginTop: '2rem' }}>Submit form</button>
                     </div>
