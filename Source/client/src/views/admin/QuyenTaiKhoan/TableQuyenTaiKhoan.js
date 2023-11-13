@@ -1,31 +1,15 @@
 
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Box, Button } from '@mantine/core';
 import { IconDownload, IconUpload } from '@tabler/icons-react';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
 import { Link } from "react-router-dom";
 import { IconButton } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
-
-
-const data = [
-    {
-        MaQuyen: 'admin',
-        TenQuyen: 'admin',
-        trangthai: 1,
-    },
-    {
-        MaQuyen: 'giangvien',
-        TenQuyen: 'giangvien',
-        trangthai: 1,
-    },
-    {
-        MaQuyen: 'sinhvien',
-        TenQuyen: 'sinhvien',
-        trangthai: 1,
-    },
-]
+import { fetchAllQuyenTK, fetchDeleteGiangVien } from "../GetData"
+import { toast } from "react-toastify";
+import { useState, useEffect } from 'react';
 
 const csvConfig = mkConfig({
     fieldSeparator: ',',
@@ -33,7 +17,22 @@ const csvConfig = mkConfig({
     useKeysAsHeaders: true,
 });
 
-const TableQuyenTaiKhoan = () => {
+const TableQuyenTaiKhoan = (props) => {
+    const accessToken = props.accessToken;
+    const [listData_QuyenTaiKhoan, setListData_QuyenTaiKhoan] = useState([]);
+    // component didmount
+    useEffect(() => {
+        getListQuyenTaiKhoan();
+    }, []);
+
+    const getListQuyenTaiKhoan = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchAllQuyenTK(headers);
+        if (res && res.data && res.data.DanhSach) {
+            setListData_QuyenTaiKhoan(res.data.DanhSach)
+        }
+    }
+
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
         const csv = generateCsv(csvConfig)(rowData);
@@ -41,13 +40,13 @@ const TableQuyenTaiKhoan = () => {
     };
 
     const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(data);
+        const csv = generateCsv(csvConfig)(listData_QuyenTaiKhoan);
         download(csvConfig)(csv);
     };
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'MaQuyen',
+                accessorKey: 'MaQTK',
                 header: 'Mã quyền',
                 size: 100,
                 enableColumnOrdering: false,
@@ -55,7 +54,7 @@ const TableQuyenTaiKhoan = () => {
                 enableSorting: false,
             },
             {
-                accessorKey: 'TenQuyen',
+                accessorKey: 'TenQuyenTK',
                 header: 'Tên quyền tài khoản',
                 size: 100,
                 enableEditing: false,
@@ -65,7 +64,7 @@ const TableQuyenTaiKhoan = () => {
 
     const table = useMantineReactTable({
         columns,
-        data,
+        data: listData_QuyenTaiKhoan,
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',
@@ -78,13 +77,13 @@ const TableQuyenTaiKhoan = () => {
 
         renderRowActions: ({ row, table }) => (
             <Box sx={{ display: 'flex', gap: '0.3rem' }}>
-                <Link to={"/admin/quyentaikhoan/single/" + row.original.MaQuyen}>
+                <Link to={"/admin/quyentaikhoan/single/" + row.original.MaQTK}>
                     <IconButton>
                         <Visibility fontSize="small" />
                     </IconButton>
                 </Link>
 
-                <Link to={"/admin/quyentaikhoan/edit/" + row.original.MaQuyen}>
+                <Link to={"/admin/quyentaikhoan/edit/" + row.original.MaQTK}>
                     <IconButton  >
                         <Edit fontSize="small" />
                     </IconButton>

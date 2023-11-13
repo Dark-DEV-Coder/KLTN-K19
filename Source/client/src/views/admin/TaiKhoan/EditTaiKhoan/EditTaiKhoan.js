@@ -1,52 +1,77 @@
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { fetchDetailTaiKhoan, fetchEditTaiKhoan, fetchAllQuyenTK } from "../../GetData"
+import { toast } from "react-toastify";
+import axios from "../../../custom-axios"
 const EditTaiKhoan = () => {
-    const dulieutest = {
-        MaTK: 'TK1',
-        TenDangNhap: 'admin',
-        MatKhau: 'admin',
-        MaQuyen: 'giangvien',
-        trangthai: 1,
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+    const taikhoan = useParams();
+    let navigate = useNavigate();
+    const [MaTK, setMaTK] = useState("")
+    const [TenDangNhap, setTenDangNhap] = useState("")
+    const [MatKhau, setMatKhau] = useState("")
+    const [QuyenTK, setQuyenTK] = useState("SINHVIEN")
+    const [listQuyenTK, setListQuyenTK] = useState([]);
+    // component didmount
+    useEffect(() => {
+        getDetailTaiKhoan();
+        getListQuyenTK();
+    }, []);
+
+    const getDetailTaiKhoan = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDetailTaiKhoan(headers, taikhoan.MaTK);
+        if (res && res.data) {
+            setMaTK(res.data.MaTK)
+            setTenDangNhap(res.data.TenDangNhap)
+            setMatKhau(res.data.MatKhau)
+            setQuyenTK(res.data.MaQTK.MaQTK)
+        }
     }
-    const quyenTK = [
-        {
-            MaQuyen: 'admin',
-            TenQuyen: 'Admin',
-            trangthai: 1,
-        },
-        {
-            MaQuyen: 'giangvien',
-            TenQuyen: 'Giảng viên',
-            trangthai: 1,
-        },
-        {
-            MaQuyen: 'sinhvien',
-            TenQuyen: 'Sinh Viên',
-            trangthai: 1,
-        },
-    ]
-    const [TenDangNhap, SetTenDangNhap] = useState(dulieutest.TenDangNhap)
-    const [MatKhau, SetMatKhau] = useState(dulieutest.MatKhau)
-    const [QuyenTK, SetQuyenTK] = useState(dulieutest.MaQuyen)
-    const onChangeInputSL = (event, SetState) => {
-        let changeValue = event.target.value;
-        SetState(changeValue);
+    const getListQuyenTK = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchAllQuyenTK(headers);
+        if (res && res.data && res.data.DanhSach) {
+            setListQuyenTK(res.data.DanhSach)
+        }
     }
-    const onChangeSelect = (event, SetSelect) => {
+
+    const handleEditTaiKhoan = async () => {
+        const headers = { 'x-access-token': accessToken };
+        if (!TenDangNhap || !QuyenTK) {
+            toast.error("Vui lòng điền đầy đủ dữ liệu !")
+            return
+        }
+        let res = await fetchEditTaiKhoan(headers, MaTK, TenDangNhap, QuyenTK)
+        if (res.status === true) {
+            toast.success(res.message)
+            navigate("/admin/taikhoan")
+            return;
+        }
+        if (res.status === false) {
+            toast.error(res.message)
+            return;
+        }
+    }
+
+
+    const onChangeInputSL = (event, setState) => {
         let changeValue = event.target.value;
-        SetSelect(changeValue);
+        setState(changeValue);
+    }
+    const onChangeSelect = (event, setSelect) => {
+        let changeValue = event.target.value;
+        setSelect(changeValue);
     }
 
     // check dữ liệu
-    const [checkdulieuTenDN, SetCheckdulieuTenDN] = useState(true)
-    const [checkdulieuMatKhau, SetCheckdulieuMatKhau] = useState(true)
-    const checkdulieu = (value, SetDuLieu) => {
-        value === '' ? SetDuLieu(false) : SetDuLieu(true)
+    const [checkdulieuTenDN, setCheckdulieuTenDN] = useState(true)
+    const [checkdulieuMatKhau, setCheckdulieuMatKhau] = useState(true)
+    const checkdulieu = (value, setDuLieu) => {
+        value === '' ? setDuLieu(false) : setDuLieu(true)
     }
-
-    const taikhoan = useParams();
     return (
         <>
             <main className="main2">
@@ -75,23 +100,23 @@ const EditTaiKhoan = () => {
                         <div className="form-row">
                             <div className="form-group col-md-6">
                                 <label className="inputTK" htmlFor="inputTenDN">Tên đăng nhập</label>
-                                <input type="text" className="form-control" id="inputTenDN" value={TenDangNhap} onChange={(event) => onChangeInputSL(event, SetTenDangNhap)} onBlur={() => checkdulieu(TenDangNhap, SetCheckdulieuTenDN)} />
+                                <input type="text" className="form-control" id="inputTenDN" value={TenDangNhap} onChange={(event) => onChangeInputSL(event, setTenDangNhap)} onBlur={() => checkdulieu(TenDangNhap, setCheckdulieuTenDN)} />
                                 <div className="invalid-feedback" style={{ display: checkdulieuTenDN ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                             </div>
                             <div className="form-group col-md-6">
                                 <label className="inputTK" htmlFor="inputTenGV">Mật khẩu</label>
-                                <input type="text" className="form-control" id="inputTenDN" value={MatKhau} onChange={(event) => onChangeInputSL(event, SetMatKhau)} onBlur={() => checkdulieu(MatKhau, SetCheckdulieuMatKhau)} />
+                                <input type="text" className="form-control" id="inputTenDN" value={MatKhau} onChange={(event) => onChangeInputSL(event, setMatKhau)} onBlur={() => checkdulieu(MatKhau, setCheckdulieuMatKhau)} />
                                 <div className="invalid-feedback" style={{ display: checkdulieuMatKhau ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                             </div>
                         </div>
                         <div className="form-row" >
                             <div className="form-group col-md-12">
                                 <label className="inputDT" htmlFor="inputTrangthai">Quyền tài khoản </label>
-                                <select defaultValue={QuyenTK} id="inputTrangthai" className="form-control" onChange={(event) => onChangeSelect(event, SetQuyenTK)} >
-                                    {quyenTK && quyenTK.length > 0 &&
-                                        quyenTK.map((item, index) => {
+                                <select value={QuyenTK} id="inputTrangthai" className="form-control" onChange={(event) => onChangeSelect(event, setQuyenTK)} >
+                                    {listQuyenTK && listQuyenTK.length > 0 &&
+                                        listQuyenTK.map((item, index) => {
                                             return (
-                                                <option value={item.MaQuyen} key={item.MaQuyen}>{item.TenQuyen}</option>
+                                                <option value={item.MaQTK} key={item.MaQTK}>{item.TenQuyenTK}</option>
                                             )
                                         })
                                     }
@@ -100,7 +125,7 @@ const EditTaiKhoan = () => {
                             </div>
 
                         </div>
-                        <button className="btn" type="submit" style={{ marginTop: '2rem' }}>Submit form</button>
+                        <button className="btn" type="button" style={{ marginTop: '2rem' }} onClick={() => handleEditTaiKhoan()}>Lưu</button>
                     </div>
                 </form>
 
