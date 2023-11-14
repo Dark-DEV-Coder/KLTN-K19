@@ -2496,6 +2496,38 @@ paths:
             }
       security:
         - ApiKeyAuth: []
+  /admin/tai-khoan/KichHoatTaiKhoan/{MaTK}:
+    post: 
+      tags:
+        - "TaiKhoan"
+      summary: Kích hoạt tài khoản
+      produces:
+        - application/json     
+      parameters:
+        - in: path
+          name: MaTK
+          type: string
+          required: true
+          description: Mã tài khoản
+      responses:
+        200:
+          description: Kích hoạt tài khoản thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Kích hoạt tài khoản thành công.",
+            }          
+        400:
+          description: Kích hoạt tài khoản thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Kích hoạt tài khoản thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []  
 securityDefinitions:
   ApiKeyAuth:
     type: apiKey
