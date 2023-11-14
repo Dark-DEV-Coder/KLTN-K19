@@ -11,9 +11,7 @@ import Pdfparser from "pdf2json"
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import CanhBaoHocTap from "../../model/CanhBaoHocTap.js"
-import { XuLyNgaySinh } from "../../helper/XuLyDuLieu.js"
 import Nganh from "../../model/Nganh.js"
-import SinhVien from "../../model/SinhVien.js"
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -133,12 +131,12 @@ CanhBaoHocTapAdminRoute.post('/ThemDotCanhBao', createCanhBaoHocTapDir, uploadFi
                                                 slcblt = row.getCell("H").value;
                                             if ( row.getCell("M").value != null )
                                                 ghichu = row.getCell("M").value.richText[0].text;
-                                            let ngaysinh = row.getCell("E").value;
+                                            let ngaysinh = String(row.getCell("E").value);
                                             let sv = {
                                                 MaSV: row.getCell("B").value,
                                                 HoSV: row.getCell("C").value.richText[0].text,
                                                 TenSV: row.getCell("D").value.richText[0].text,
-                                                NgaySinh: ngaysinh,
+                                                NgaySinh: new Date(ngaysinh.split("/")[2] + "-" + ngaysinh.split("/")[1] + "-" + ngaysinh.split("/")[0]),
                                                 NamThu: row.getCell("F").value,
                                                 HocKyThu: row.getCell("G").value,
                                                 SoLanCBLienTiep: slcblt,
@@ -160,7 +158,7 @@ CanhBaoHocTapAdminRoute.post('/ThemDotCanhBao', createCanhBaoHocTapDir, uploadFi
                                                 slcblt = row.getCell("G").value;
                                             if ( row.getCell("M").value != null )
                                                 ghichu = row.getCell("L").value.richText[0].text;
-                                            let ngaysinh = row.getCell("D").value;
+                                            let ngaysinh = String(row.getCell("D").value);
                                             let hoten = row.getCell("C").value.richText[0].text.trim();
                                             let ho = hoten.split(' ')[0] + " " + hoten.split(' ')[1];
                                             let ten = hoten.split(' ')[hoten.split(' ').length - 1];
@@ -168,7 +166,7 @@ CanhBaoHocTapAdminRoute.post('/ThemDotCanhBao', createCanhBaoHocTapDir, uploadFi
                                                 MaSV: row.getCell("B").value,
                                                 HoSV: ho,
                                                 TenSV: ten,
-                                                NgaySinh: ngaysinh,
+                                                NgaySinh: new Date(ngaysinh.split("/")[2] + "-" + ngaysinh.split("/")[1] + "-" + ngaysinh.split("/")[0]),
                                                 NamThu: row.getCell("E").value,
                                                 HocKyThu: row.getCell("F").value,
                                                 SoLanCBLienTiep: slcblt,
@@ -212,12 +210,13 @@ CanhBaoHocTapAdminRoute.post('/ThemDotCanhBao', createCanhBaoHocTapDir, uploadFi
                                 let xeploai = decodeURIComponent(pdfData.Pages[i].Texts[j+8].R[0].T);
                                 if (decodeURIComponent(pdfData.Pages[i].Texts[j+7].R[0].T) == 0)
                                     xeploai = 'Kém';
+                                let ngaysinh = String(decodeURIComponent(pdfData.Pages[i].Texts[j+5].R[0].T));
                                 let sv = {
                                     MaSV: decodeURIComponent(pdfData.Pages[i].Texts[j+1].R[0].T),
                                     HoSV: decodeURIComponent(pdfData.Pages[i].Texts[j+2].R[0].T),
                                     TenSV: decodeURIComponent(pdfData.Pages[i].Texts[j+3].R[0].T),
                                     GioiTinh: decodeURIComponent(pdfData.Pages[i].Texts[j+4].R[0].T),
-                                    NgaySinh: decodeURIComponent(pdfData.Pages[i].Texts[j+5].R[0].T),
+                                    NgaySinh: new Date(ngaysinh.split("/")[2] + "-" + ngaysinh.split("/")[1] + "-" + ngaysinh.split("/")[0]),
                                     Lop: decodeURIComponent(pdfData.Pages[i].Texts[j+6].R[0].T),
                                     DiemRenLuyen: decodeURIComponent(pdfData.Pages[i].Texts[j+7].R[0].T),
                                     XepLoaiDRL: xeploai,
@@ -296,12 +295,12 @@ CanhBaoHocTapAdminRoute.post('/importFile/:MaCBHT', createCanhBaoHocTapDir, uplo
                                             slcblt = row.getCell("H").value;
                                         if ( row.getCell("M").value != null )
                                             ghichu = row.getCell("M").value.richText[0].text;
-                                        let ngaysinh = XuLyNgaySinh(row.getCell("E").value);
+                                        let ngaysinh = String(row.getCell("E").value);
                                         let sv = {
                                             MaSV: row.getCell("B").value,
                                             HoSV: row.getCell("C").value.richText[0].text,
                                             TenSV: row.getCell("D").value.richText[0].text,
-                                            NgaySinh: ngaysinh,
+                                            NgaySinh: new Date(ngaysinh.split("/")[2] + "-" + ngaysinh.split("/")[1] + "-" + ngaysinh.split("/")[0]),
                                             NamThu: row.getCell("F").value,
                                             HocKyThu: row.getCell("G").value,
                                             SoLanCBLienTiep: slcblt,
@@ -323,7 +322,7 @@ CanhBaoHocTapAdminRoute.post('/importFile/:MaCBHT', createCanhBaoHocTapDir, uplo
                                             slcblt = row.getCell("G").value;
                                         if ( row.getCell("M").value != null )
                                             ghichu = row.getCell("L").value.richText[0].text;
-                                        let ngaysinh = XuLyNgaySinh(row.getCell("D").value);
+                                        let ngaysinh = String(row.getCell("D").value);
                                         let hoten = row.getCell("C").value.richText[0].text.trim();
                                         let ho = hoten.split(' ')[0] + " " + hoten.split(' ')[1];
                                         let ten = hoten.split(' ')[hoten.split(' ').length - 1];
@@ -331,7 +330,7 @@ CanhBaoHocTapAdminRoute.post('/importFile/:MaCBHT', createCanhBaoHocTapDir, uplo
                                             MaSV: row.getCell("B").value,
                                             HoSV: ho,
                                             TenSV: ten,
-                                            NgaySinh: ngaysinh,
+                                            NgaySinh: new Date(ngaysinh.split("/")[2] + "-" + ngaysinh.split("/")[1] + "-" + ngaysinh.split("/")[0]),
                                             NamThu: row.getCell("E").value,
                                             HocKyThu: row.getCell("F").value,
                                             SoLanCBLienTiep: slcblt,
@@ -379,12 +378,13 @@ CanhBaoHocTapAdminRoute.post('/importFile/:MaCBHT', createCanhBaoHocTapDir, uplo
                             let xeploai = decodeURIComponent(pdfData.Pages[i].Texts[j+8].R[0].T);
                             if (decodeURIComponent(pdfData.Pages[i].Texts[j+7].R[0].T) == 0)
                                 xeploai = 'Kém';
+                            let ngaysinh = String(decodeURIComponent(pdfData.Pages[i].Texts[j+5].R[0].T));
                             let sv = {
                                 MaSV: decodeURIComponent(pdfData.Pages[i].Texts[j+1].R[0].T),
                                 HoSV: decodeURIComponent(pdfData.Pages[i].Texts[j+2].R[0].T),
                                 TenSV: decodeURIComponent(pdfData.Pages[i].Texts[j+3].R[0].T),
                                 GioiTinh: decodeURIComponent(pdfData.Pages[i].Texts[j+4].R[0].T),
-                                NgaySinh: decodeURIComponent(pdfData.Pages[i].Texts[j+5].R[0].T),
+                                NgaySinh: new Date(ngaysinh.split("/")[2] + "-" + ngaysinh.split("/")[1] + "-" + ngaysinh.split("/")[0]),
                                 Lop: decodeURIComponent(pdfData.Pages[i].Texts[j+6].R[0].T),
                                 DiemRenLuyen: decodeURIComponent(pdfData.Pages[i].Texts[j+7].R[0].T),
                                 XepLoaiDRL: xeploai,
