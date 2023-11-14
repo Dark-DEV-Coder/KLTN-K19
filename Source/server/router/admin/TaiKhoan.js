@@ -312,4 +312,27 @@ TaiKhoanAdminRoute.post('/PhucHoiMatKhau/:MaTK', async (req,res) => {
     }
 })
 
+/**
+ * @route POST /api/admin/tai-khoan/KichHoatTaiKhoan/{MaTK}
+ * @description Kích hoạt tài khoản
+ * @access public
+ */
+TaiKhoanAdminRoute.post('/KichHoatTaiKhoan/:MaTK', async (req, res) => {
+    try{
+        const { MaTK } = req.params;
+
+        const isExistMa = await TaiKhoan.findOne({ MaTK: MaTK }).lean();
+        if (!isExistMa)
+            return sendError(res, "Tài khoản không tồn tại");
+
+        await TaiKhoan.findOneAndUpdate({ MaTK: MaTK },{ TrangThai: TrangThaiTaiKhoan.DaKichHoat });
+
+        return sendSuccess(res, "Kích hoạt tài khoản thành công");
+    }
+    catch (error){
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
 export default TaiKhoanAdminRoute
