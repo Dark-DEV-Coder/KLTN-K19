@@ -50,12 +50,12 @@ const AddCBHT = () => {
                 <div className="container-edit">
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label className="inputCBHT" for="inputTen">Tên đợt cảnh báo học tập</label>
+                            <label className="inputCBHT" htmlFor="inputTen">Tên đợt cảnh báo học tập</label>
                             <input type="text" className="form-control" id="inputTen" value={Ten} placeholder="Điền tên đợt cảnh báo ..." onChange={(event) => onChangeInputSL(event, SetTen)} onBlur={() => checkdulieu(Ten, SetCheckdulieuTen)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
-                            <label className="inputCBHT" for="inputNienKhoa">Niên khóa</label>
+                            <label className="inputCBHT" htmlFor="inputNienKhoa">Niên khóa</label>
                             <input type="text" className="form-control" id="inputNienKhoa" value={NienKhoa} placeholder="Điền niên khóa ..." onChange={(event) => onChangeInputSL(event, SetNienKhoa)} onBlur={() => checkdulieu(NienKhoa, SetCheckdulieuNienKhoa)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuNienKhoa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
@@ -63,7 +63,7 @@ const AddCBHT = () => {
                     <div className="form-row">
                         <div className="form-group col-md-12">
                             <div className="custom-file">
-                                <label className="inputCBHT" for="inputDSSV">Danh sách sinh viên</label>
+                                <label className="inputCBHT" htmlFor="inputDSSV">Danh sách sinh viên</label>
                                 <input type="file" className="form-control file" id="inputDSSV" onChange={(event) => onChangeInputSL(event, SetDSSV)} />
                                 <div className="invalid-feedback">Example invalid custom file feedback</div>
                             </div>

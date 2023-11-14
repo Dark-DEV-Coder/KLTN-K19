@@ -17,31 +17,6 @@ const EditChucNang = () => {
         getDetailChucNang();
 
     }, []);
-
-    // const convertBase64 = (file) => {
-    //     return new Promise((resolve, reject) => {
-    //         const fileReader = new FileReader();
-    //         fileReader.readAsDataURL(file);
-
-    //         fileReader.onload = () => {
-    //             resolve(fileReader.result);
-    //         };
-
-    //         fileReader.onerror = (error) => {
-    //             reject(error);
-    //         };
-    //     });
-    // };
-
-    // const uploadImage = async (event) => {
-    //     const files = event.target.files;
-    //     if (files.length === 1) {
-    //         const base64 = await convertBase64(files[0]);
-    //         setHinh(base64)
-    //         return;
-    //     }
-    // };
-
     const getDetailChucNang = async () => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDetailChucNang(headers, chucnang.MaCN);
@@ -64,7 +39,6 @@ const EditChucNang = () => {
         console.log(value_img);
 
         let res = await fetchEditChucNang(headers, MaCN, value_img)
-        console.log("Eror: ", res)
         if (res.status === true) {
             toast.success(res.message)
             navigate("/admin/chucnang")

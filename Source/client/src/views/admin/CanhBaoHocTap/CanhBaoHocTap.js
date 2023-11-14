@@ -2,7 +2,9 @@
 import "./CanhBaoHocTap.scss"
 import { Link } from "react-router-dom";
 import TableCanhBaoHocTap from "./TableCanhBaoHocTap";
+import { useState } from "react";
 const CanhBaoHocTap = () => {
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     return (
         <>
             <main className="main2">
@@ -26,7 +28,7 @@ const CanhBaoHocTap = () => {
                     </Link>
                 </div>
 
-                <TableCanhBaoHocTap />
+                <TableCanhBaoHocTap accessToken={accessToken} />
 
 
 

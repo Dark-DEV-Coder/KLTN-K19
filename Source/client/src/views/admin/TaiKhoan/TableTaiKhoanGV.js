@@ -33,7 +33,6 @@ const TableTaiKhoanGV = (props) => {
     const getListTaiKhoanGV = async () => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchAllTaiKhoanGV(headers);
-        console.log(res)
         if (res && res.data && res.data.DanhSach) {
             SetListData_TKGV(res.data.DanhSach)
             SetListData(res.data.DanhSach.filter(item => item.TrangThai === 'Đã kích hoạt'))
