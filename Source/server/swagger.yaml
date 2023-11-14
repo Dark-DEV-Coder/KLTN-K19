@@ -2528,6 +2528,305 @@ paths:
             }
       security:
         - ApiKeyAuth: []  
+  /admin/dk-chuyen-nganh/DanhSachDKCN:
+    get: 
+      tags:
+        - "DangKyChuyenNganh"
+      summary: Admin lấy danh sách đăng ký chuyên ngành
+      produces:
+        - application/json     
+      parameters:
+      - in: query
+        name: page
+        type: integer
+        required: true
+        description: số trang (ví dụ trang 1, trang 2), giá trị > 0
+      - in: query
+        name: pageSize
+        type: integer
+        required: true
+        description: giới hạn số lượng 1 trang, giá trị > 0
+      - in: query
+        name: keyword
+        type: string
+        required: true
+        description: mã đăng ký chuyên ngành hoặc tên đăng ký chuyên ngành
+      responses:
+        200: 
+          description: Lấy danh sách đăng ký chuyên ngành thành công
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Lấy danh sách đăng ký chuyên ngành thành công",
+            }
+        400:
+          description: Lấy danh sách đăng ký chuyên ngành thất bại
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Lấy danh sách đăng ký chuyên ngành thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
+  /admin/dk-chuyen-nganh/ChiTietDKCN/{MaDKCN}:
+    get:
+      tags:
+        - "DangKyChuyenNganh"
+      summary: "Xem chi tiết thông tin đăng ký chuyên ngành"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaDKCN
+          type: string
+          required: true
+          description: Mã đăng ký chuyên ngành
+      responses:
+        200:
+          description: Xem chi tiết thông tin đăng ký chuyên ngành thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Xem chi tiết thông tin đăng ký chuyên ngành thành công.",
+            }
+        400:
+          description: Xem chi tiết thông tin đăng ký chuyên ngành thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Xem chi tiết thông tin đăng ký chuyên ngành thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/dk-chuyen-nganh/Them:
+    post: 
+      tags:
+        - "DangKyChuyenNganh"
+      summary: Thêm đăng ký chuyên ngành
+      produces:
+        - application/json     
+      parameters:
+        - in: body
+          name: MaDKCN
+          type: string
+          required: true
+          description: Mã đăng ký chuyên ngành
+        - in: body
+          name: Ten
+          type: string
+          required: true
+          description: Tên đăng ký chuyên ngành
+        - in: body
+          name: Khoa
+          type: string
+          required: true
+          description: Khóa đăng ký chuyên ngành (ví dụ 2019, 2020, 2021)
+        - in: body
+          name: ThoiGianBD
+          type: string
+          required: true
+          description: Thời gian bắt đầu đăng ký
+        - in: body
+          name: ThoiGianKT
+          type: string
+          required: true
+          description: Thời gian kết thúc đăng ký
+      responses:
+        200:
+          description: Thêm đăng ký chuyên ngành thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Thêm đăng ký chuyên ngành thành công.",
+            }          
+        400:
+          description: Thêm đăng ký chuyên ngành thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Thêm đăng ký chuyên ngành thất bại.",
+            }
+      security:
+        - ApiKeyAuth: [] 
+  /admin/dk-chuyen-nganh/ChinhSua/{MaDKCN}:
+    put: 
+      tags:
+        - "DangKyChuyenNganh"
+      summary: Chỉnh sửa đăng ký chuyên ngành
+      produces:
+        - application/json     
+      parameters:
+        - in: path
+          name: MaDKCN
+          type: string
+          required: true
+          description: Mã đăng ký chuyên ngành
+        - in: body
+          name: Ten
+          type: string
+          required: true
+          description: Tên đăng ký chuyên ngành
+        - in: body
+          name: Khoa
+          type: string
+          required: true
+          description: Khóa đăng ký chuyên ngành (ví dụ 2019, 2020, 2021)
+        - in: body
+          name: ThoiGianBD
+          type: string
+          required: true
+          description: Thời gian bắt đầu đăng ký
+        - in: body
+          name: ThoiGianKT
+          type: string
+          required: true
+          description: Thời gian kết thúc đăng ký
+      responses:
+        200:
+          description: Chỉnh sửa đăng ký chuyên ngành thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Chỉnh sửa đăng ký chuyên ngành thành công.",
+            }          
+        400:
+          description: Chỉnh sửa đăng ký chuyên ngành thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Chỉnh sửa đăng ký chuyên ngành thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/dk-chuyen-nganh/Xoa/{MaDKCN}:
+    delete:
+      tags:
+        - "DangKyChuyenNganh"
+      summary: "Xóa thông tin đăng ký chuyên ngành"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaDKCN
+          type: string
+          required: true
+          description: Mã đăng ký chuyên ngành
+      responses:
+        200:
+          description: Xóa thông tin đăng ký chuyên ngành thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Xóa thông tin đăng ký chuyên ngành thành công.",
+            }
+        400:
+          description: Xóa thông tin đăng ký chuyên ngành thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Xóa thông tin đăng ký chuyên ngành thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/dk-chuyen-nganh/ThemChuyenNganhDangKy/{MaDKCN}:
+    post:
+      tags:
+        - "DangKyChuyenNganh"
+      summary: "Thêm thông tin chuyên ngành để sinh viên đăng ký"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaDKCN
+          type: string
+          required: true
+          description: Mã đăng ký chuyên ngành
+        - in: body
+          name: MaNganh
+          type: string
+          required: true
+          description: Mã ngành
+        - in: body
+          name: MaChuyenNganh
+          type: string
+          required: true
+          description: Mã chuyên ngành
+        - in: body
+          name: ToiDa
+          type: string
+          required: true
+          description: Số lượng tối đa cho sinh viên đăng ký
+      responses:
+        200:
+          description: Thêm thông tin chuyên ngành để sinh viên đăng ký thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Thêm thông tin chuyên ngành để sinh viên đăng ký thành công.",
+            }
+        400:
+          description: Thêm thông tin chuyên ngành để sinh viên đăng ký thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Thêm thông tin chuyên ngành để sinh viên đăng ký thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/dk-chuyen-nganh/XoaChuyenNganhDangKy/{MaDKCN}:
+    post:
+      tags:
+        - "DangKyChuyenNganh"
+      summary: "Xóa thông tin chuyên ngành để sinh viên đăng ký"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaDKCN
+          type: string
+          required: true
+          description: Mã đăng ký chuyên ngành
+        - in: body
+          name: MaNganh
+          type: string
+          required: true
+          description: Mã ngành
+        - in: body
+          name: MaChuyenNganh
+          type: string
+          required: true
+          description: Mã chuyên ngành
+      responses:
+        200:
+          description: Xóa thông tin chuyên ngành để sinh viên đăng ký thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Xóa thông tin chuyên ngành để sinh viên đăng ký thành công.",
+            }
+        400:
+          description: Xóa thông tin chuyên ngành để sinh viên đăng ký thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Xóa thông tin chuyên ngành để sinh viên đăng ký thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
 securityDefinitions:
   ApiKeyAuth:
     type: apiKey

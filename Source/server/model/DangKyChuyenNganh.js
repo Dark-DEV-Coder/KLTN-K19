@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { TrangThaiDangKyChuyenNganh } from "../constant.js";
 const { Schema } = mongoose;
 
 const DangKyChuyenNganhSchema = new Schema(
@@ -11,11 +12,7 @@ const DangKyChuyenNganhSchema = new Schema(
             type: String,
             required: true,
         },
-        NienKhoa: {
-            type: String,
-            required: true,
-        },
-        Khoa: { // khóa (ví dụ: khóa 19, khóa 20)
+        Khoa: { // khóa (ví dụ: khóa 2019, khóa 2020)
             type: String,
             required: true,
         },
@@ -30,30 +27,33 @@ const DangKyChuyenNganhSchema = new Schema(
         ThongTin: [
             {
                 Nganh: {
-                    type: String,
-                    required: true,
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'nganhs',
                 },
                 ChuyenNganh: {
-                    type: String,
-                    required: true,
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'chuyennganhs',
                 },
                 ToiDa: {
                     type: Number,
-                    required: true,
                 },
                 DaDangKy: {
                     type: Number,
-                    required: true,
                 },
                 ConLai: {
                     type: Number,
-                    required: true,
                 },
-                SinhVien: [String],
+                SinhVien: [
+                    {
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: 'sinhviens',
+                    }
+                ],
             }
         ],
         TrangThai: {
             type: String,
+            enum: Object.values(TrangThaiDangKyChuyenNganh),
             required: true,
         },
     },

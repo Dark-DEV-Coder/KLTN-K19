@@ -44,3 +44,9 @@ export const CapTaiKhoanChoSinhVienKhiImportFile = {
     TaoTaiKhoan: "Tạo tài khoản",
     KhongTaoTaiKhoan: "Không tạo tài khoản",
 }
+
+export const TrangThaiDangKyChuyenNganh = {
+    HetThoiGianDangKy: "Hết thời gian đăng ký",
+    TrongThoiGianDangKy: "Trong thời gian đăng ký",
+    ChuaToiThoiGianDangKy: "Chưa tới thời gian đăng ký",
+}
