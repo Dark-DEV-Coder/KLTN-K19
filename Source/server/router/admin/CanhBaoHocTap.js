@@ -510,12 +510,12 @@ CanhBaoHocTapAdminRoute.post('/ThongKeCBHTSinhVien/:MaCBHT', async (req, res) =>
                 { $unwind: '$ThongTin' },
                 {
                     $group: {
-                        _id: { Nganh: '$ThongTin.Nganh', KQ: '$ThongTin.KQ' },
+                        _id: { Key: '$ThongTin.Nganh', KQ: '$ThongTin.KQ' },
                         count: { $sum: 1 }
                     }
                 },
                 {
-                    $sort : { "_id.Nganh": 1 }
+                    $sort : { "_id.Key": 1, "_id.KQ": 1 }
                 }
             ]);
         }
@@ -528,12 +528,12 @@ CanhBaoHocTapAdminRoute.post('/ThongKeCBHTSinhVien/:MaCBHT', async (req, res) =>
                     { $unwind: '$ThongTin' },
                     {
                         $group: {
-                            _id: { Khoa: '$ThongTin.Khoa', KQ: '$ThongTin.KQ' },
+                            _id: { Key: '$ThongTin.Khoa', KQ: '$ThongTin.KQ' },
                             count: { $sum: 1 }
                         }
                     },
                     {
-                        $sort : { "_id.Khoa": 1 }
+                        $sort : { "_id.Key": 1, "_id.KQ": 1 }
                     }
                 ]);
             }
@@ -549,12 +549,12 @@ CanhBaoHocTapAdminRoute.post('/ThongKeCBHTSinhVien/:MaCBHT', async (req, res) =>
                     },
                     {
                         $group: {
-                            _id: { Khoa: '$ThongTin.Khoa', KQ: '$ThongTin.KQ' },
+                            _id: { Key: '$ThongTin.Khoa', KQ: '$ThongTin.KQ' },
                             count: { $sum: 1 }
                         }
                     },
                     {
-                        $sort : { "_id.Khoa": 1 }
+                        $sort : { "_id.Key": 1, "_id.KQ": 1 }
                     }
                 ]);
             }
@@ -568,12 +568,12 @@ CanhBaoHocTapAdminRoute.post('/ThongKeCBHTSinhVien/:MaCBHT', async (req, res) =>
                     { $unwind: '$ThongTin' },
                     {
                         $group: {
-                            _id: { Lop: '$ThongTin.Lop', KQ: '$ThongTin.KQ' },
+                            _id: { Key: '$ThongTin.Lop', KQ: '$ThongTin.KQ' },
                             count: { $sum: 1 }
                         }
                     },
                     {
-                        $sort : { "_id.Lop": 1 }
+                        $sort : { "_id.Key": 1, "_id.KQ": 1 }
                     }
                 ]);
             }
@@ -589,12 +589,12 @@ CanhBaoHocTapAdminRoute.post('/ThongKeCBHTSinhVien/:MaCBHT', async (req, res) =>
                     },
                     {
                         $group: {
-                            _id: { Lop: '$ThongTin.Lop', KQ: '$ThongTin.KQ' },
+                            _id: { Key: '$ThongTin.Lop', KQ: '$ThongTin.KQ' },
                             count: { $sum: 1 }
                         }
                     },
                     {
-                        $sort : { "_id.Lop": 1 }
+                        $sort : { "_id.Key": 1, "_id.KQ": 1 }
                     }
                 ]);
             }
@@ -609,12 +609,12 @@ CanhBaoHocTapAdminRoute.post('/ThongKeCBHTSinhVien/:MaCBHT', async (req, res) =>
                     },
                     {
                         $group: {
-                            _id: { Lop: '$ThongTin.Lop', KQ: '$ThongTin.KQ' },
+                            _id: { Key: '$ThongTin.Lop', KQ: '$ThongTin.KQ' },
                             count: { $sum: 1 }
                         }
                     },
                     {
-                        $sort : { "_id.Lop": 1 }
+                        $sort : { "_id.Key": 1, "_id.KQ": 1 }
                     }
                 ]);
             }
@@ -630,18 +630,80 @@ CanhBaoHocTapAdminRoute.post('/ThongKeCBHTSinhVien/:MaCBHT', async (req, res) =>
                     },
                     {
                         $group: {
-                            _id: { Lop: '$ThongTin.Lop', KQ: '$ThongTin.KQ' },
+                            _id: { Key: '$ThongTin.Lop', KQ: '$ThongTin.KQ' },
                             count: { $sum: 1 }
                         }
                     },
                     {
-                        $sort : { "_id.Lop": 1 }
+                        $sort : { "_id.Key": 1, "_id.KQ": 1 }
                     }
                 ]);
             }
         }
+        let data = [];
+        for (let i = 0; i < cbht.length ; i++){
+            if (i != cbht.length - 1){
+                if (cbht[i]._id.Key === cbht[i+1]._id.Key){
+                    let thongtin =    {
+                        Khoa: cbht[i]._id.Key,
+                        ThongKe:{
+                            BTH: cbht[i].count,
+                            CC: cbht[i+1].count,
+                        }
+                    }
+                    i++;
+                    data.push(thongtin);
+                }
+                else{
+                    if (cbht[i]._id.KQ == "BTH"){
+                        let thongtin =    {
+                            Khoa: cbht[i]._id.Key,
+                            ThongKe:{
+                                BTH: cbht[i].count,
+                                CC: 0,
+                            }
+                        }
+                        data.push(thongtin);
+                    }
+                    else{
+                        let thongtin =    {
+                            Khoa: cbht[i]._id.Key,
+                            ThongKe:{
+                                BTH: 0,
+                                CC: cbht[i].count,
+                            }
+                        }
+                        data.push(thongtin);
+                    }
+                    
+                }
+            }
+            else{
+                if (cbht[i]._id.KQ == "BTH"){
+                    let thongtin =    {
+                        Khoa: cbht[i]._id.Key,
+                        ThongKe:{
+                            BTH: cbht[i].count,
+                            CC: 0,
+                        }
+                    }
+                    data.push(thongtin);
+                }
+                else{
+                    let thongtin =    {
+                        Khoa: cbht[i]._id.Key,
+                        ThongKe:{
+                            BTH: 0,
+                            CC: cbht[i].count,
+                        }
+                    }
+                    data.push(thongtin);
+                }
+            }
+            
+        }
         
-        return sendSuccess(res, "Thống kê sinh viên bị cảnh báo thành công", cbht);
+        return sendSuccess(res, "Thống kê sinh viên bị cảnh báo thành công", data);
     }
     catch (error){
         console.log(error)
