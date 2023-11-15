@@ -2006,7 +2006,7 @@ paths:
       security:
       - ApiKeyAuth: []
   /admin/canh-bao-hoc-tap/ThongKeCBHTSinhVien/{MaCBHT}:
-    get: 
+    post: 
       tags:
         - "CanhBaoHocTap"
       summary: Thống kê sinh viên bị cảnh báo

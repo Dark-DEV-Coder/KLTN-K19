@@ -490,11 +490,11 @@ CanhBaoHocTapAdminRoute.delete('/XoaDotCanhBao/:MaCBHT', async (req, res) => {
 })
 
 /**
- * @route GET /api/admin/canh-bao-hoc-tap/ThongKeCBHTSinhVien/{MaCBHT}
+ * @route POST /api/admin/canh-bao-hoc-tap/ThongKeCBHTSinhVien/{MaCBHT}
  * @description Thống kê sinh viên bị cảnh báo
  * @access public
  */
-CanhBaoHocTapAdminRoute.get('/ThongKeCBHTSinhVien/:MaCBHT', async (req, res) => {
+CanhBaoHocTapAdminRoute.post('/ThongKeCBHTSinhVien/:MaCBHT', async (req, res) => {
     try{
         const { MaCBHT } = req.params;
         const isExist = await CanhBaoHocTap.findOne({ MaCBHT: MaCBHT });
