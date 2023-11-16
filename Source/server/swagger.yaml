@@ -2053,7 +2053,7 @@ paths:
       security:
         - ApiKeyAuth: []
   /admin/canh-bao-hoc-tap/TraCuuCBHTSinhVien:
-    get: 
+    post: 
       tags:
         - "CanhBaoHocTap"
       summary: Tra cứu sinh viên bị cảnh báo
@@ -2824,6 +2824,32 @@ paths:
             example: {
               "status": false,
               "message" : "Xóa thông tin chuyên ngành để sinh viên đăng ký thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/dk-chuyen-nganh/TuDongCapNhatTrangThaiDKCN:
+    post:
+      tags:
+        - "DangKyChuyenNganh"
+      summary: "Tự động cập nhập trạng thái của các đợt đăng ký chuyên ngành"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Tự động cập nhập trạng thái thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Tự động cập nhập trạng thái thành công.",
+            }
+        400:
+          description: Tự động cập nhập trạng thái thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Tự động cập nhập trạng thái thất bại.",
             }
       security:
         - ApiKeyAuth: []

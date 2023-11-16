@@ -712,11 +712,11 @@ CanhBaoHocTapAdminRoute.post('/ThongKeCBHTSinhVien/:MaCBHT', async (req, res) =>
 })
 
 /**
- * @route GET /api/admin/canh-bao-hoc-tap/TraCuuCBHTSinhVien
+ * @route POST /api/admin/canh-bao-hoc-tap/TraCuuCBHTSinhVien
  * @description Tra cứu sinh viên bị cảnh báo
  * @access public
  */
-CanhBaoHocTapAdminRoute.get('/TraCuuCBHTSinhVien', async (req, res) => {
+CanhBaoHocTapAdminRoute.post('/TraCuuCBHTSinhVien', async (req, res) => {
     try{
         const { MaSV } = req.body;
         if (!MaSV.match(/^[0-9]{10}/))
