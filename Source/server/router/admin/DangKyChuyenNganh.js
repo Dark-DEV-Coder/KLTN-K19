@@ -103,6 +103,22 @@ DangKyChuyenNganhAdminRoute.post('/Them', async (req, res) => {
         const kt = new Date(ThoiGianKT);
         if (kt < bd)
             return sendError(res, "Ngày kết thúc phải lớn hơn ngày bắt đầu");
+        let check = 0;
+        const data = await DangKyChuyenNganh.find({});
+        data.forEach((element) => {
+            if ( element.ThoiGianBD <= bd && bd <= element.ThoiGianKT ){
+                check = 1;
+                return;
+            }
+            else{
+                if (element.ThoiGianBD <= kt && kt <= element.ThoiGianKT){
+                    check = 1;
+                    return;
+                }
+            }
+        });
+        if ( check == 1 )
+            return sendError(res, "Có đợt đăng ký chuyên ngành khác trong khoảng thời gian này. Vui lòng chọn khoảng thời gian khác.");
         let trangthai = "";
         if ( now < bd && now < kt)
             trangthai = TrangThaiDangKyChuyenNganh.ChuaToiThoiGianDangKy;
@@ -142,6 +158,27 @@ DangKyChuyenNganhAdminRoute.put('/ChinhSua/:MaDKCN', async (req, res) => {
         const kt = new Date(ThoiGianKT);
         if (kt < bd)
             return sendError(res, "Ngày kết thúc phải lớn hơn ngày bắt đầu");
+        let check = 0;
+        const data = await DangKyChuyenNganh.find({});
+        if (data.length > 0){
+            data.forEach((element) => {
+                if (element.MaDKCN != MaDKCN){
+                    if ( element.ThoiGianBD <= bd && bd <= element.ThoiGianKT ){
+                        check = 1;
+                        return;
+                    }
+                    else{
+                        if (element.ThoiGianBD <= kt && kt <= element.ThoiGianKT){
+                            check = 1;
+                            return;
+                        }
+                    }
+                }
+            });
+        }
+        
+        if ( check == 1 )
+            return sendError(res, "Có đợt đăng ký chuyên ngành khác trong khoảng thời gian này. Vui lòng chọn khoảng thời gian khác.");
         let trangthai = "";
         if ( now < bd && now < kt)
             trangthai = TrangThaiDangKyChuyenNganh.ChuaToiThoiGianDangKy;
@@ -273,6 +310,38 @@ DangKyChuyenNganhAdminRoute.post('/XoaChuyenNganhDangKy/:MaDKCN', async (req, re
             return sendError(res, "Thông tin này không tồn tại nên không thể xóa.");
 
         return sendSuccess(res, "Xóa chuyên ngành đăng ký thành công");
+    }
+    catch (error){
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route POST /api/admin/dk-chuyen-nganh/TuDongCapNhatTrangThaiDKCN
+ * @description Tự động cập nhập trạng thái của các đợt đăng ký chuyên ngành
+ * @access public
+ */
+DangKyChuyenNganhAdminRoute.post('/TuDongCapNhatTrangThaiDKCN', async (req, res) => {
+    try{
+
+        const dkcn = await DangKyChuyenNganh.find({ TrangThai: { $in: [TrangThaiDangKyChuyenNganh.ChuaToiThoiGianDangKy, TrangThaiDangKyChuyenNganh.TrongThoiGianDangKy]} }).lean();
+        const date = new Date();
+        const now = new Date(DoiDinhDangNgay(date));
+        if (dkcn.length > 0){
+            let trangthai = "";
+            for(let i = 0; i< dkcn.length; i++){
+                trangthai = "";
+                if ( now < dkcn[i].ThoiGianBD && now < dkcn[i].ThoiGianKT)
+                    trangthai = TrangThaiDangKyChuyenNganh.ChuaToiThoiGianDangKy;
+                if ( dkcn[i].ThoiGianBD <= now && now <= dkcn[i].ThoiGianKT)
+                    trangthai = TrangThaiDangKyChuyenNganh.TrongThoiGianDangKy;
+                if ( now > dkcn[i].ThoiGianBD && now > dkcn[i].ThoiGianKT)
+                    trangthai = TrangThaiDangKyChuyenNganh.HetThoiGianDangKy
+                await DangKyChuyenNganh.findOneAndUpdate({ MaDKCN: dkcn[i].MaDKCN }, { TrangThai: trangthai });
+            }
+        }
+        return sendSuccess(res, "Tự động cập nhập trạng thái thành công");
     }
     catch (error){
         console.log(error)
