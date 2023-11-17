@@ -30,6 +30,10 @@ tags:
   description: "Các API của model CanhBaoHocTap"
 - name: "TotNghiep"
   description: "Các API của model TotNghiep"
+- name: "DangKyChuyenNganh"
+  description: "Các API của model DangKyChuyenNganh"
+- name: "KhoaLuanTotNghiep"
+  description: "Các API của model KhoaLuanTotNghiep"
 paths:
   /admin/chuc-nang/DanhSachChucNang:
     get: 
@@ -2850,6 +2854,616 @@ paths:
             example: {
               "status": false,
               "message" : "Tự động cập nhập trạng thái thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/khoa-luan-tot-nghiep/DanhSachKLTN:
+    get: 
+      tags:
+        - "KhoaLuanTotNghiep"
+      summary: Admin lấy danh sách các đợt đăng ký khóa luận tốt nghiệp
+      produces:
+        - application/json     
+      parameters:
+      - in: query
+        name: page
+        type: integer
+        required: true
+        description: số trang (ví dụ trang 1, trang 2), giá trị > 0
+      - in: query
+        name: pageSize
+        type: integer
+        required: true
+        description: giới hạn số lượng 1 trang, giá trị > 0
+      - in: query
+        name: keyword
+        type: string
+        required: true
+        description: mã khóa luận tốt nghiệp hoặc tên khóa luận tốt nghiệp
+      responses:
+        200: 
+          description: Lấy danh sách khóa luận tốt nghiệp thành công
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Lấy danh sách khóa luận tốt nghiệp thành công",
+            }
+        400:
+          description: Lấy danh sách khóa luận tốt nghiệp thất bại
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Lấy danh sách khóa luận tốt nghiệp thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
+  /admin/khoa-luan-tot-nghiep/ChiTietKLTN/{MaKLTN}:
+    get:
+      tags:
+        - "KhoaLuanTotNghiep"
+      summary: "Xem chi tiết thông tin khóa luận tốt nghiệp"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+      responses:
+        200:
+          description: Xem chi tiết thông tin khóa luận tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Xem chi tiết thông tin khóa luận tốt nghiệp thành công.",
+            }
+        400:
+          description: Xem chi tiết thông tin khóa luận tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Xem chi tiết thông tin khóa luận tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/khoa-luan-tot-nghiep/Them:
+    post: 
+      tags:
+        - "KhoaLuanTotNghiep"
+      summary: Thêm đợt đăng ký khóa luận tốt nghiệp
+      produces:
+        - application/json     
+      parameters:
+        - in: body
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+        - in: body
+          name: Ten
+          type: string
+          required: true
+          description: Tên khóa luận tốt nghiệp
+        - in: body
+          name: MaNganh
+          type: string
+          required: true
+          description: Mã ngành
+        - in: body
+          name: Khoa
+          type: string
+          required: true
+          description: Khóa của khóa luận tốt nghiệp (ví dụ 2019, 2020, 2021)
+        - in: body
+          name: ThoiGianBD
+          type: string
+          required: true
+          description: Thời gian bắt đầu đăng ký
+        - in: body
+          name: ThoiGianKT
+          type: string
+          required: true
+          description: Thời gian kết thúc đăng ký
+      responses:
+        200:
+          description: Thêm đợt đăng ký khóa luận tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Thêm đợt đăng ký khóa luận tốt nghiệp thành công.",
+            }          
+        400:
+          description: Thêm đợt đăng ký khóa luận tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Thêm đợt đăng ký khóa luận tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: [] 
+  /admin/khoa-luan-tot-nghiep/ChinhSua/{MaKLTN}:
+    put: 
+      tags:
+        - "KhoaLuanTotNghiep"
+      summary: Chỉnh sửa đợt đăng ký khóa luận tốt nghiệp
+      produces:
+        - application/json     
+      parameters:
+        - in: path
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+        - in: body
+          name: Ten
+          type: string
+          required: true
+          description: Tên khóa luận tốt nghiệp
+        - in: body
+          name: Khoa
+          type: string
+          required: true
+          description: Khóa đăng ký khóa luận tốt nghiệp (ví dụ 2019, 2020, 2021)
+        - in: body
+          name: MaNganh
+          type: string
+          required: true
+          description: Mã ngành
+        - in: body
+          name: ThoiGianBD
+          type: string
+          required: true
+          description: Thời gian bắt đầu đăng ký
+        - in: body
+          name: ThoiGianKT
+          type: string
+          required: true
+          description: Thời gian kết thúc đăng ký
+      responses:
+        200:
+          description: Chỉnh sửa đợt đăng ký khóa luận tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Chỉnh sửa đợt đăng ký khóa luận tốt nghiệp thành công.",
+            }          
+        400:
+          description: Chỉnh sửa đợt đăng ký khóa luận tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Chỉnh sửa đợt đăng ký khóa luận tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/khoa-luan-tot-nghiep/Xoa/{MaKLTN}:
+    delete:
+      tags:
+        - "KhoaLuanTotNghiep"
+      summary: "Xóa thông tin đăng ký khóa luận tốt nghiệp"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaDKCN
+          type: string
+          required: true
+          description: Mã đăng ký khóa luận tốt nghiệp
+      responses:
+        200:
+          description: Xóa thông tin đăng ký khóa luận tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Xóa thông tin đăng ký khóa luận tốt nghiệp thành công.",
+            }
+        400:
+          description: Xóa thông tin đăng ký khóa luận tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Xóa thông tin đăng ký khóa luận tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/khoa-luan-tot-nghiep/ThemSVDangKyKL/{MaKLTN}:
+    post:
+      tags:
+        - "KhoaLuanTotNghiep"
+      summary: "Thêm sinh viên đăng ký khóa luận tốt nghiệp"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+        - in: body
+          name: TenDeTai
+          type: string
+          required: true
+          description: Tên đề tài
+        - in: body
+          name: MaGV
+          type: string
+          required: true
+          description: Mã giảng viên
+        - in: body
+          name: MaSV
+          type: string
+          required: true
+          description: Mã sinh viên
+        - in: body
+          name: HoSV
+          type: string
+          required: true
+          description: Họ sinh viên
+        - in: body
+          name: TenSV
+          type: string
+          required: true
+          description: Tên sinh viên
+        - in: body
+          name: Email
+          type: string
+          required: true
+          description: Email sinh viên
+        - in: body
+          name: SoDienThoai
+          type: string
+          required: true
+          description: Số điện thoại sinh viên
+        - in: body
+          name: DTBTL
+          type: string
+          required: true
+          description: Điểm trung bình tích lũy học kỳ (hệ 4)
+        - in: body
+          name: TinChiTL
+          type: string
+          required: true
+          description: Số tín chỉ tích lũy
+      responses:
+        200:
+          description: Thêm sinh viên đăng ký khóa luận tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Thêm sinh viên đăng ký khóa luận tốt nghiệp thành công.",
+            }
+        400:
+          description: Thêm sinh viên đăng ký khóa luận tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Thêm sinh viên đăng ký khóa luận tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/khoa-luan-tot-nghiep/SuaThongTinSVDangKyKL/{MaKLTN}:
+    post:
+      tags:
+        - "KhoaLuanTotNghiep"
+      summary: "Chỉnh sửa thông tin sinh viên đăng ký khóa luận tốt nghiệp"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+        - in: body
+          name: TenDeTai
+          type: string
+          required: true
+          description: Tên đề tài
+        - in: body
+          name: MaGV
+          type: string
+          required: true
+          description: Mã giảng viên
+        - in: body
+          name: MaSV
+          type: string
+          required: true
+          description: Mã sinh viên
+        - in: body
+          name: HoSV
+          type: string
+          required: true
+          description: Họ sinh viên
+        - in: body
+          name: TenSV
+          type: string
+          required: true
+          description: Tên sinh viên
+        - in: body
+          name: Email
+          type: string
+          required: true
+          description: Email sinh viên
+        - in: body
+          name: SoDienThoai
+          type: string
+          required: true
+          description: Số điện thoại sinh viên
+        - in: body
+          name: DTBTL
+          type: string
+          required: true
+          description: Điểm trung bình tích lũy học kỳ (hệ 4)
+        - in: body
+          name: TinChiTL
+          type: string
+          required: true
+          description: Số tín chỉ tích lũy
+      responses:
+        200:
+          description: Chỉnh sửa thông tin sinh viên đăng ký khóa luận tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Chỉnh sửa thông tin sinh viên đăng ký khóa luận tốt nghiệp thành công.",
+            }
+        400:
+          description: Chỉnh sửa thông tin sinh viên đăng ký khóa luận tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Chỉnh sửa thông tin sinh viên đăng ký khóa luận tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/khoa-luan-tot-nghiep/XoaSVDangKyKL/{MaKLTN}:
+    post:
+      tags:
+        - "KhoaLuanTotNghiep"
+      summary: "Xóa thông tin sinh viên đăng ký khóa luận tốt nghiệp"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+        - in: body
+          name: TenDeTai
+          type: string
+          required: true
+          description: Tên đề tài
+        - in: body
+          name: MaGV
+          type: string
+          required: true
+          description: Mã giảng viên
+        - in: body
+          name: MaSV
+          type: string
+          required: true
+          description: Mã sinh viên
+      responses:
+        200:
+          description: Xóa thông tin sinh viên đăng ký khóa luận tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Xóa thông tin sinh viên đăng ký khóa luận tốt nghiệp thành công.",
+            }
+        400:
+          description: Xóa thông tin sinh viên đăng ký khóa luận tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Xóa thông tin sinh viên đăng ký khóa luận tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/khoa-luan-tot-nghiep/ThemDeTaiKhoaLuan/{MaKLTN}:
+    post:
+      tags:
+        - "KhoaLuanTotNghiep"
+      summary: "Thêm đề tài khóa luận tốt nghiệp"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+        - in: body
+          name: TenDeTai
+          type: string
+          required: true
+          description: Tên đề tài
+        - in: body
+          name: MaGV
+          type: string
+          required: true
+          description: Mã giảng viên
+      responses:
+        200:
+          description: Thêm đề tài khóa luận tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Thêm đề tài khóa luận tốt nghiệp thành công.",
+            }
+        400:
+          description: Thêm đề tài khóa luận tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Thêm đề tài khóa luận tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/khoa-luan-tot-nghiep/ChinhSuaTenDeTaiKhoaLuan/{MaKLTN}:
+    post:
+      tags:
+        - "KhoaLuanTotNghiep"
+      summary: "Chỉnh sửa tên đề tài khóa luận tốt nghiệp"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+        - in: body
+          name: TenDeTaiCu
+          type: string
+          required: true
+          description: Tên đề tài cũ
+        - in: body
+          name: TenDeTaiMoi
+          type: string
+          required: true
+          description: Tên đề tài mới
+        - in: body
+          name: MaGV
+          type: string
+          required: true
+          description: Mã giảng viên
+      responses:
+        200:
+          description: Chỉnh sửa tên đề tài khóa luận tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Chỉnh sửa tên đề tài khóa luận tốt nghiệp thành công.",
+            }
+        400:
+          description: Chỉnh sửa tên đề tài khóa luận tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Chỉnh sửa tên đề tài khóa luận tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/khoa-luan-tot-nghiep/XoaDeTaiKhoaLuan/{MaKLTN}:
+    post:
+      tags:
+        - "KhoaLuanTotNghiep"
+      summary: "Xóa đề tài khóa luận tốt nghiệp"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+        - in: body
+          name: TenDeTai
+          type: string
+          required: true
+          description: Tên đề tài
+        - in: body
+          name: MaGV
+          type: string
+          required: true
+          description: Mã giảng viên
+      responses:
+        200:
+          description: Xóa đề tài khóa luận tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Xóa đề tài khóa luận tốt nghiệp thành công.",
+            }
+        400:
+          description: Xóa đề tài khóa luận tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Xóa đề tài khóa luận tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/khoa-luan-tot-nghiep/TuDongCapNhatTrangThaiKLTN:
+    post:
+      tags:
+        - "KhoaLuanTotNghiep"
+      summary: "Tự động cập nhập trạng thái của các đợt đăng ký khóa luận tốt nghiệp"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Tự động cập nhập trạng thái thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Tự động cập nhập trạng thái thành công.",
+            }
+        400:
+          description: Tự động cập nhập trạng thái thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Tự động cập nhập trạng thái thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/khoa-luan-tot-nghiep/ExportFileExcelDsDeTai/{MaKLTN}:
+    get:
+      tags:
+        - "KhoaLuanTotNghiep"
+      summary: "Export file danh sách đề tài và sinh viên đăng ký đề tài"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+      responses:
+        200:
+          description: Export file thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Export file thành công.",
+            }
+        400:
+          description: Export file thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Export file thất bại.",
             }
       security:
         - ApiKeyAuth: []

@@ -50,3 +50,14 @@ export const TrangThaiDangKyChuyenNganh = {
     TrongThoiGianDangKy: "Trong thời gian đăng ký",
     ChuaToiThoiGianDangKy: "Chưa tới thời gian đăng ký",
 }
+
+export const DeTaiKhoaLuan = {
+    ChuaDu: "Chưa đủ số lượng sinh viên đăng ký",
+    DaDu: "Đã đủ số lượng sinh viên đăng ký",
+}
+
+export const TrangThaiDangKyKLTN = {
+    HetThoiGianDangKy: "Hết thời gian đăng ký",
+    TrongThoiGianDangKy: "Trong thời gian đăng ký",
+    ChuaToiThoiGianDangKy: "Chưa tới thời gian đăng ký",
+}
