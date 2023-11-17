@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { DeTaiKhoaLuan, TrangThaiDangKyKLTN } from "../constant.js";
 const { Schema } = mongoose;
 
 const KhoaLuanTotNghiepSchema = new Schema(
@@ -11,12 +12,13 @@ const KhoaLuanTotNghiepSchema = new Schema(
             type: String,
             required: true,
         },
-        NienKhoa: {
+        Khoa: { // khóa (ví dụ: khóa 2019, khóa 2020)
             type: String,
             required: true,
         },
-        Khoa: { // khóa (ví dụ: khóa 19, khóa 20)
-            type: String,
+        Nganh: { 
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'nganhs',
             required: true,
         },
         ThoiGianBD: {
@@ -29,28 +31,89 @@ const KhoaLuanTotNghiepSchema = new Schema(
         },
         DSDeTai: [
             {
-                BoMon: {
-                    type: String,
-                    required: true,
-                },
                 TenDeTai: {
                     type: String,
                     required: true,
                 },
                 GVHD: {
-                    type: String,
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'giangviens',
                     required: true,
                 },
-                SVChinhThuc: [String],
-                SVDuKien: [String],
+                SVChinhThuc: [
+                    {
+                        MaSV: {
+                            type: String,
+                            required: true,
+                        },
+                        HoSV: {
+                            type: String,
+                            required: true,
+                        },
+                        TenSV: {
+                            type: String,
+                            required: true,
+                        },
+                        Email: {
+                            type: String,
+                            required: true,
+                        },
+                        SoDienThoai: {
+                            type: String,
+                            required: true,
+                        },
+                        DTBTL: {
+                            type: Number,
+                            required: true,
+                        },
+                        TinChiTL: {
+                            type: Number,
+                            required: true,
+                        }
+                    }
+                ],
+                SVDuKien: [
+                    {
+                        MaSV: {
+                            type: String,
+                            required: true,
+                        },
+                        HoSV: {
+                            type: String,
+                            required: true,
+                        },
+                        TenSV: {
+                            type: String,
+                            required: true,
+                        },
+                        Email: {
+                            type: String,
+                            required: true,
+                        },
+                        SoDienThoai: {
+                            type: String,
+                            required: true,
+                        },
+                        DTBTL: {
+                            type: Number,
+                            required: true,
+                        },
+                        TinChiTL: {
+                            type: Number,
+                            required: true,
+                        }
+                    }
+                ],
                 TrangThaiDeTai: {
                     type: String,
-                    required: true,
+                    enum: Object.values(DeTaiKhoaLuan),
+                    default: DeTaiKhoaLuan.ChuaDu,
                 },
             }
         ],
         TrangThai: {
             type: String,
+            enum: Object.values(TrangThaiDangKyKLTN),
             required: true,
         },
     },

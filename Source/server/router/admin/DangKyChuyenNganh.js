@@ -105,18 +105,20 @@ DangKyChuyenNganhAdminRoute.post('/Them', async (req, res) => {
             return sendError(res, "Ngày kết thúc phải lớn hơn ngày bắt đầu");
         let check = 0;
         const data = await DangKyChuyenNganh.find({});
-        data.forEach((element) => {
-            if ( element.ThoiGianBD <= bd && bd <= element.ThoiGianKT ){
-                check = 1;
-                return;
-            }
-            else{
-                if (element.ThoiGianBD <= kt && kt <= element.ThoiGianKT){
+        if ( data.length > 0 ){
+            data.forEach((element) => {
+                if ( element.ThoiGianBD <= bd && bd <= element.ThoiGianKT ){
                     check = 1;
                     return;
                 }
-            }
-        });
+                else{
+                    if (element.ThoiGianBD <= kt && kt <= element.ThoiGianKT){
+                        check = 1;
+                        return;
+                    }
+                }
+            });
+        }
         if ( check == 1 )
             return sendError(res, "Có đợt đăng ký chuyên ngành khác trong khoảng thời gian này. Vui lòng chọn khoảng thời gian khác.");
         let trangthai = "";
@@ -128,7 +130,7 @@ DangKyChuyenNganhAdminRoute.post('/Them', async (req, res) => {
             trangthai = TrangThaiDangKyChuyenNganh.HetThoiGianDangKy
 
         const dkcn = await DangKyChuyenNganh.create({ MaDKCN: MaDKCN, Ten: Ten, Khoa: Khoa, ThoiGianBD: ThoiGianBD, ThoiGianKT: ThoiGianKT, TrangThai: trangthai });
-        return sendSuccess(res, "Thêm đăng ký chuyên ngành thành công", dkcn);
+        return sendSuccess(res, "Thêm đợt đăng ký chuyên ngành thành công", dkcn);
     }
     catch (error){
         console.log(error)
@@ -137,7 +139,7 @@ DangKyChuyenNganhAdminRoute.post('/Them', async (req, res) => {
 })
 
 /**
- * @route POST /api/admin/dk-chuyen-nganh/ChinhSua/{MaDKCN}
+ * @route PUT /api/admin/dk-chuyen-nganh/ChinhSua/{MaDKCN}
  * @description Chỉnh sửa đợt đăng ký chuyên ngành
  * @access public
  */
