@@ -1,154 +1,16 @@
 import "./TableDKiChuyenNganh.scss"
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Box, Button } from '@mantine/core';
 import { IconDownload, IconUpload } from '@tabler/icons-react';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
-import { MenuItem } from '@mui/material';
 import { Link } from "react-router-dom";
-import moment from 'moment'
-import {
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    IconButton,
-    Stack,
-    TextField,
-    Tooltip,
-} from '@mui/material';
+import { IconButton } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
-
-
-// const columns = [
-//     {
-//         accessorKey: 'madkcn',
-//         header: 'Mã',
-//         size: 10,
-//         enableColumnOrdering: false,
-//         enableEditing: false, //disable editing on this column
-//         enableSorting: false,
-
-//     },
-//     {
-//         accessorKey: 'nienkhoa',
-//         header: 'Niên khóa',
-//         size: 130,
-//     },
-//     {
-//         accessorKey: 'khoahoc',
-//         header: 'Khóa',
-//         size: 130,
-//     },
-//     {
-//         type: 'date',
-//         accessorKey: 'tgbd',
-//         header: 'Bắt đầu',
-//         size: 150,
-
-//     },
-//     {
-//         type: 'date',
-//         accessorKey: 'tgkt',
-//         header: 'Kết thúc',
-//         size: 150,
-//     },
-//     {
-//         accessorKey: 'nganh',
-//         header: 'Ngành',
-//         size: 100,
-
-//     },
-// ];
-
-
-
-
-
-
-const data = [
-    {
-        madkcn: 'CN1',
-        ten:'Đăng ký chuyên ngành đợt 1',
-        nienkhoa: '2019-2020',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
-        trangthai: 1,
-    },
-    {
-        madkcn: 'CN2',
-        ten:'Đăng ký chuyên ngành đợt 2',
-        nienkhoa: '2019-2020',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
-        trangthai: 1,
-    },
-    {
-        madkcn: 'CN3',
-        ten:'Đăng ký chuyên ngành đợt 3',
-        nienkhoa: '2019-2020',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
-        trangthai: 1,
-    },
-    {
-        madkcn: 'CN4',
-        ten:'Đăng ký chuyên ngành đợt 4',
-        nienkhoa: '2019-2020',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
-        trangthai: 1,
-    },
-    {
-        madkcn: 'CN5',
-        ten:'Đăng ký chuyên ngành đợt 5',
-        nienkhoa: '2019-2020',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
-        trangthai: 1,
-    },
-    {
-        madkcn: 'CN6',
-        ten:'Đăng ký chuyên ngành đợt 6',
-        nienkhoa: '2019-2020',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
-        trangthai: 1,
-    },
-    {
-        madkcn: 'CN7',
-        ten:'Đăng ký chuyên ngành đợt 7',
-        nienkhoa: '2019-2020',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
-        trangthai: 1,
-    },
-    {
-        madkcn: 'CN8',
-        ten:'Đăng ký chuyên ngành đợt 8',
-        nienkhoa: '2019-2020',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
-        trangthai: 1,
-    },
-    {
-        madkcn: 'CN9',
-        ten:'Đăng ký chuyên ngành đợt 9',
-        nienkhoa: '2019-2020',
-        khoahoc: 'K19',
-        tgbd: '01/02/2019',
-        tgkt: '14/03/2019',
-        trangthai: 1,
-    },
-]
+import moment from "moment";
+import { toast } from "react-toastify";
+import { useEffect, useState } from 'react';
+import { fetchAllDangKyCN, fetchDeleteDangKyCN } from "../GetData"
 
 const csvConfig = mkConfig({
     fieldSeparator: ',',
@@ -156,8 +18,35 @@ const csvConfig = mkConfig({
     useKeysAsHeaders: true,
 });
 
-const TableDKiChuyenNganh = () => {
-    const [checkdiv, setCheckdiv] = useState(false)
+const TableDKiChuyenNganh = (props) => {
+    const accessToken = props.accessToken;
+    const [listData_dkchuyennganh, SetListData_dkchuyennganh] = useState([]);
+    // component didmount
+    useEffect(() => {
+        getListDangKyChuyenNganh();
+    }, []);
+
+    const getListDangKyChuyenNganh = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchAllDangKyCN(headers);
+        if (res && res.data && res.data.DanhSach) {
+            SetListData_dkchuyennganh(res.data.DanhSach)
+        }
+    }
+    const handleDeleteRows = async (row) => {
+        const headers = { 'x-access-token': accessToken };
+        console.log(row.original.MaCBHT)
+        let res = await fetchDeleteDangKyCN(headers, row.original.MaDKCN)
+        if (res.status === true) {
+            toast.success(res.message)
+            getListDangKyChuyenNganh()
+            return;
+        }
+        if (res.success === false) {
+            toast.error(res.message)
+            return;
+        }
+    }
 
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
@@ -166,43 +55,37 @@ const TableDKiChuyenNganh = () => {
     };
 
     const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(data);
+        const csv = generateCsv(csvConfig)(listData_dkchuyennganh);
         download(csvConfig)(csv);
     };
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'madkcn',
+                accessorKey: 'MaDKCN',
                 header: 'Mã',
-                size: 10,
+                size: 100,
                 enableColumnOrdering: false,
                 enableEditing: false, //disable editing on this column
                 enableSorting: false,
 
             },
             {
-                accessorKey: 'ten',
+                accessorKey: 'Ten',
                 header: 'Tên đợt đăng ký',
                 size: 200,
                 enableEditing: false,
 
             },
             {
-                accessorKey: 'nienkhoa',
-                header: 'Niên khóa',
-                size: 100,
-                enableEditing: false,
-
-            },
-            {
-                accessorKey: 'khoahoc',
-                header: 'Khóa',
+                accessorKey: 'Khoa',
+                header: 'Khóa học',
                 size: 100,
                 enableEditing: false,
             },
             {
 
-                accessorKey: 'tgbd',
+                accessorKey: 'ThoiGianBD',
+                accessorFn: (dataRow) => moment(dataRow.ThoiGianBD).format("DD-MM-YYYY"),
                 header: 'Bắt đầu',
                 size: 100,
                 enableEditing: false,
@@ -210,8 +93,8 @@ const TableDKiChuyenNganh = () => {
 
             },
             {
-                type: 'date',
-                accessorKey: 'tgkt',
+                accessorKey: 'ThoiGianKT',
+                accessorFn: (dataRow) => moment(dataRow.ThoiGianKT).format("DD-MM-YYYY"),
                 header: 'Kết thúc',
                 size: 100,
                 enableEditing: false,
@@ -221,7 +104,7 @@ const TableDKiChuyenNganh = () => {
 
     const table = useMantineReactTable({
         columns,
-        data,
+        data: listData_dkchuyennganh,
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',
@@ -234,19 +117,19 @@ const TableDKiChuyenNganh = () => {
 
         renderRowActions: ({ row, table }) => (
             <Box sx={{ display: 'flex', gap: '0.3rem' }}>
-                <Link to={"/admin/dkichuyennganh/single/" + row.original.madkcn}>
+                <Link to={"/admin/dkichuyennganh/single/" + row.original.MaDKCN}>
                     <IconButton>
                         <Visibility fontSize="small" />
                     </IconButton>
                 </Link>
 
-                <Link to={"/admin/dkichuyennganh/edit/" + row.original.madkcn}>
+                <Link to={"/admin/dkichuyennganh/edit/" + row.original.MaDKCN}>
                     <IconButton  >
                         <Edit fontSize="small" />
                     </IconButton>
                 </Link>
 
-                <IconButton onClick={() => console.log(row.original.name)}>
+                <IconButton onClick={() => handleDeleteRows(row)}>
                     <Delete fontSize="small" sx={{ color: 'red' }} />
                 </IconButton>
             </Box >

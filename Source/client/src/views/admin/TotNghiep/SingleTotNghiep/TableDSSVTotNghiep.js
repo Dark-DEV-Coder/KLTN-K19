@@ -1,83 +1,20 @@
-
-import "./TableCanhBaoHocTap.scss";
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Box, Button } from '@mantine/core';
 import { IconDownload, IconUpload } from '@tabler/icons-react';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
 import { Link } from "react-router-dom";
-import {
-    IconButton,
-} from '@mui/material';
+import { IconButton } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
-import { toast } from "react-toastify";
-import { useState, useEffect } from 'react';
-import { fetchAllCanhBao_DHT, fetchAllCanhBao_DRL, fetchDeleteCanhBao } from "../GetData"
-
+import moment from "moment";
 const csvConfig = mkConfig({
     fieldSeparator: ',',
     decimalSeparator: '.',
     useKeysAsHeaders: true,
 });
 
-const TableCanhBaoHocTap = (props) => {
-    const accessToken = props.accessToken;
-    const [kieuCanhBao, setKieuCanhBao] = useState("Điểm học tập");
-    const [listData_canhbao_DHT, SetListData_canhbao_DHT] = useState([]);
-    const [listData_canhbao_DRL, SetListData_canhbao_DRL] = useState([]);
-    const [listData_canhbao, SetListData_canhbao] = useState([]);
-    // component didmount
-    useEffect(() => {
-        getListCanhBao_DHT();
-        getListCanhBao_DRL();
-
-    }, []);
-
-    const getListCanhBao_DHT = async () => {
-        const headers = { 'x-access-token': accessToken };
-        let res = await fetchAllCanhBao_DHT(headers);
-        if (res && res.data && res.data.DanhSach) {
-            SetListData_canhbao_DHT(res.data.DanhSach)
-            SetListData_canhbao(res.data.DanhSach)
-        }
-    }
-    const getListCanhBao_DRL = async () => {
-        const headers = { 'x-access-token': accessToken };
-        let res = await fetchAllCanhBao_DRL(headers);
-        if (res && res.data && res.data.DanhSach) {
-            SetListData_canhbao_DRL(res.data.DanhSach)
-        }
-    }
-
-    const handleDeleteRows = async (row) => {
-        const headers = { 'x-access-token': accessToken };
-        console.log(row.original.MaCBHT)
-        let res = await fetchDeleteCanhBao(headers, row.original.MaCBHT)
-        if (res.status === true) {
-            toast.success(res.message)
-            getListCanhBao_DHT()
-            return;
-        }
-        if (res.success === false) {
-            toast.error(res.message)
-            return;
-        }
-    }
-
-    const onChangeSelect = (event, SetSelect) => {
-        let changeValue = event.target.value;
-        SetSelect(changeValue);
-        if (changeValue === "Điểm học tập") {
-            SetListData_canhbao(listData_canhbao_DHT)
-            return
-        }
-        if (changeValue === "Điểm rèn luyện") {
-            SetListData_canhbao(listData_canhbao_DRL)
-            return
-        }
-    }
-
-
+const TableDSSVTotNghiep = (props) => {
+    const list_data = props.list_data;
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
         const csv = generateCsv(csvConfig)(rowData);
@@ -85,13 +22,13 @@ const TableCanhBaoHocTap = (props) => {
     };
 
     const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(listData_canhbao);
+        const csv = generateCsv(csvConfig)(list_data);
         download(csvConfig)(csv);
     };
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'MaCBHT',
+                accessorKey: 'MaSV',
                 header: 'Mã',
                 size: 100,
                 enableColumnOrdering: false,
@@ -99,38 +36,89 @@ const TableCanhBaoHocTap = (props) => {
                 enableSorting: false,
             },
             {
-                accessorKey: 'Ten',
-                header: 'Tên',
-                size: 300,
+                accessorKey: 'HoSV',
+                header: 'Họ',
+                size: 150,
                 enableEditing: false,
 
 
             },
             {
+                accessorKey: 'TenSV',
+                header: 'Tên',
+                size: 100,
+                enableEditing: false,
+            },
+            {
+                accessorKey: 'GioiTinh',
+                header: 'Giới tính',
+                size: 100,
+                enableEditing: false,
+            },
+            {
 
-                accessorKey: 'NienKhoa',
-                header: 'Niên khóa',
+                accessorKey: 'NgaySinh',
+                accessorFn: (dataRow) => moment(dataRow.NgaySinh).format("DD-MM-YYYY"),
+                header: 'Ngày sinh',
+                size: 100,
+                enableEditing: false,
+
+            },
+            {
+
+                accessorKey: 'Lop',
+                header: 'Lớp',
+                size: 100,
+                enableEditing: false,
+
+
+            },
+            {
+                accessorKey: 'ChuyenNganh',
+                header: 'Chuyên ngành',
+                size: 100,
+                enableEditing: false,
+            },
+            {
+
+                accessorKey: 'Nganh',
+                header: 'Ngành',
                 size: 100,
                 enableEditing: false,
 
 
             },
 
+            {
+                accessorKey: 'TinChi',
+                header: 'Số tín chỉ',
+                size: 100,
+                enableEditing: false,
+            },
+            {
+                accessorKey: 'DTBTL',
+                header: 'ĐTB tích lũy',
+                size: 100,
+                enableEditing: false,
+            },
+            {
+
+                accessorKey: 'XepLoaiTN',
+                header: 'Xếp loại tốt nghiệp',
+                size: 150,
+                enableEditing: false,
+
+            },
         ]
     );
 
     const table = useMantineReactTable({
         columns,
-        data: listData_canhbao,
+        data: list_data,
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',
         positionToolbarAlertBanner: 'bottom',
-        positionActionsColumn: 'last',
-        enableColumnActions: true,
-        enableRowActions: true,
-
-
 
         renderRowActions: ({ row, table }) => (
             <Box sx={{ display: 'flex', gap: '0.3rem' }}>
@@ -141,13 +129,13 @@ const TableCanhBaoHocTap = (props) => {
                 </Link>
 
 
-                <Link to={"/admin/canhbaohoctap/edit/" + row.original.MaCBHT}>
+                <Link to={"/canhbaohoctap/sinhvien/edit/" + row.original.masv}>
                     <IconButton onClick={() => table.setEditingRow(row)}>
                         <Edit fontSize="small" />
                     </IconButton>
                 </Link>
 
-                <IconButton onClick={() => handleDeleteRows(row)}>
+                <IconButton onClick={() => console.log(row.original.name)}>
                     <Delete fontSize="small" sx={{ color: 'red' }} />
                 </IconButton>
             </Box >
@@ -165,10 +153,6 @@ const TableCanhBaoHocTap = (props) => {
                     flexWrap: 'wrap',
                 }}
             >
-                <select value={kieuCanhBao} className="select-btn" onChange={(event) => onChangeSelect(event, setKieuCanhBao)} >
-                    <option value='Điểm học tập'>Điểm học tập</option>
-                    <option value='Điểm rèn luyện'>Điểm rèn luyện</option>
-                </select>
                 <Button
                     color="lightblue"
                     //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
@@ -239,4 +223,4 @@ const TableCanhBaoHocTap = (props) => {
     )
 }
 
-export default TableCanhBaoHocTap
+export default TableDSSVTotNghiep

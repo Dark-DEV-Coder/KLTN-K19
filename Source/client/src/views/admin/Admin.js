@@ -57,6 +57,10 @@ import ThemQuyenTaiKhoan from "./QuyenTaiKhoan/ThemQuyenTaiKhoan/ThemQuyenTaiKho
 import SingleQuyenTaiKhoan from "./QuyenTaiKhoan/SingleQuyenTaiKhoan/SingleQuyenTaiKhoan";
 import EditQuyenTaiKhoan from "./QuyenTaiKhoan/EditQuyenTaiKhoan/EditQuyenTaiKhoan";
 import LoginAdmin from "./Login/LoginAdmin";
+import TotNghiep from "./TotNghiep/TotNghiep";
+import ChiTietTotNghiep from "./TotNghiep/SingleTotNghiep/ChiTietTotNghiep";
+import AddTotNghiep from "./TotNghiep/ThemTotNghiep/AddTotNghiep";
+import EditTotNghiep from "./TotNghiep/EditTotNghiep/EditTotNghiep";
 const Admin = () => {
 
     const [hiddenDB, setHiddenDB] = useState(false);
@@ -80,17 +84,22 @@ const Admin = () => {
                         <Route path='dkichuyennganh'  >
                             <Route index element={<DkiChuyenNganh />}></Route>
                             <Route path="new" element={<AddDKCN />}></Route>
-                            <Route path="single/:madkcn" element={<SingleDkiChuyenNganh />}></Route>
-                            <Route path="edit/:madkcn" element={<EditDKCN />}></Route>
+                            <Route path="single/:MaDKCN" element={<SingleDkiChuyenNganh />}></Route>
+                            <Route path="edit/:MaDKCN" element={<EditDKCN />}></Route>
                         </Route>
                         <Route path='khoaluan'  >
                             <Route index element={<KhoaLuan />}></Route>
                             <Route path="new" element={<AddKhoaLuan />}></Route>
                             <Route path="single/:makl" element={<SingleKhoaLuan />}></Route>
                             <Route path="edit/:makl" element={<EditKhoaLuan />}></Route>
-
                             <Route path="detai/:ten" element={<ChiTietDeTai />}></Route>
                             <Route path="detai/edit/:ten" element={<EditDeTai />}></Route>
+                        </Route>
+                        <Route path='totnghiep'  >
+                            <Route index element={<TotNghiep />}></Route>
+                            <Route path="new" element={<AddTotNghiep />}></Route>
+                            <Route path="single/:MaTN" element={<ChiTietTotNghiep />}></Route>
+                            <Route path="edit/:MaTN" element={<EditTotNghiep />}></Route>
                         </Route>
                         <Route path='thuctap'  >
                             <Route index element={<ThucTap />}></Route>

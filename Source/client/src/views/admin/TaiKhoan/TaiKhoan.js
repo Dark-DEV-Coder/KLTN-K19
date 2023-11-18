@@ -13,7 +13,6 @@ import { useState } from 'react';
 const TaiKhoan = () => {
     const [value, setValue] = useState('dstkgv');
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
-    const [listData_TKSV, SetListData_TKSV] = useState([]);
 
     // const getListTaiKhoanSV = async () => {
     //     const headers = { 'x-access-token': accessToken };
@@ -75,7 +74,7 @@ const TaiKhoan = () => {
                             <div className="card4">
                                 <h6 className="card-header">Danh sách tài khoản sinh viên</h6>
                             </div>
-                            <TableTaiKhoanSV accessToken={accessToken} listData={listData_TKSV} />
+                            <TableTaiKhoanSV accessToken={accessToken} />
 
                         </div>
                     </TabPanel>

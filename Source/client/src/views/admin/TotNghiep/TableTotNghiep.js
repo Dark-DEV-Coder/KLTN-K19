@@ -1,5 +1,3 @@
-
-
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
 import React, { useMemo } from 'react';
 import { Box, Button } from '@mantine/core';
@@ -10,55 +8,43 @@ import { IconButton } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
 import { toast } from "react-toastify";
 import { useState, useEffect } from 'react';
-import { fetchAllTaiKhoanSV, fetchDeleteTaiKhoan } from "../GetData"
+import { fetchAllTotNghiep, fetchDeleteTotNghiep } from "../GetData"
+
 const csvConfig = mkConfig({
     fieldSeparator: ',',
     decimalSeparator: '.',
     useKeysAsHeaders: true,
 });
 
-
-
-const TableTaiKhoanSV = (props) => {
+const TableTotNghiep = (props) => {
     const accessToken = props.accessToken;
-    const [listData_TKSV, setListData_TKSV] = useState([]);
-    const [listData, setListData] = useState([]);
-    const [trangthaiTK, setTrangthaiTK] = useState('Đã kích hoạt')
+    const [listData_TN, setListData_TN] = useState([]);
 
     // component didmount
     useEffect(() => {
-        getListTaiKhoanSV();
+        getListTotNghiep();
     }, []);
 
-    const getListTaiKhoanSV = async () => {
+    const getListTotNghiep = async () => {
         const headers = { 'x-access-token': accessToken };
-        let res = await fetchAllTaiKhoanSV(headers);
+        let res = await fetchAllTotNghiep(headers);
         if (res && res.data && res.data.DanhSach) {
-            setListData_TKSV(res.data.DanhSach)
-            setListData(res.data.DanhSach.filter(item => item.TrangThai === 'Đã kích hoạt'))
+            setListData_TN(res.data.DanhSach)
         }
     }
 
     const handleDeleteRows = async (row) => {
         const headers = { 'x-access-token': accessToken };
-        let res = await fetchDeleteTaiKhoan(headers, row.original.MaTK)
+        let res = await fetchDeleteTotNghiep(headers, row.original.MaTN)
         if (res.status === true) {
             toast.success(res.message)
-            getListTaiKhoanSV()
+            getListTotNghiep()
             return;
         }
         if (res.success === false) {
             toast.error(res.message)
             return;
         }
-    }
-
-
-
-    const onChangeSelect = (event, setSelect) => {
-        let changeValue = event.target.value;
-        setSelect(changeValue);
-        changeValue === 'Đã kích hoạt' ? setListData(listData_TKSV.filter(item => item.TrangThai === 'Đã kích hoạt')) : setListData(listData_TKSV.filter(item => item.TrangThai === 'Chưa kích hoạt'))
     }
 
     const handleExportRows = (rows) => {
@@ -68,39 +54,55 @@ const TableTaiKhoanSV = (props) => {
     };
 
     const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(listData);
+        const csv = generateCsv(csvConfig)(listData_TN);
         download(csvConfig)(csv);
     };
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'MaTK',
-                header: 'Mã tài khoản',
+                accessorKey: 'MaTN',
+                header: 'Mã',
                 size: 100,
                 enableColumnOrdering: false,
                 enableEditing: false, //disable editing on this column
                 enableSorting: false,
-
             },
             {
-                accessorKey: 'TenDangNhap',
-                header: 'Tên đăng nhập',
+                accessorKey: 'Ten',
+                header: 'Tên',
+                size: 150,
+                enableEditing: false,
+            },
+            {
+
+                accessorKey: 'NienKhoa',
+                header: 'Niên khóa',
                 size: 100,
                 enableEditing: false,
+            },
 
-            },
-            {
-                accessorKey: 'HoTen',
-                header: 'Họ tên người dùng',
-                size: 200,
-                enableEditing: false,
-            },
+            // {
+
+            //     accessorKey: 'ThoiGianBD',
+            //     header: 'Thời gian bắt đầu',
+            //     size: 100,
+            //     enableEditing: false,
+            // },
+
+            // {
+
+            //     accessorKey: 'ThoiGianKT',
+            //     header: 'Thời gian kết thúc',
+            //     size: 100,
+            //     enableEditing: false,
+            // },
+
         ]
     );
 
     const table = useMantineReactTable({
         columns,
-        data: listData,
+        data: listData_TN,
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',
@@ -112,33 +114,26 @@ const TableTaiKhoanSV = (props) => {
 
 
         renderRowActions: ({ row, table }) => (
-            trangthaiTK === 'Đã kích hoạt' ?
-                <Box sx={{ display: 'flex', gap: '0.3rem' }}>
-                    <Link to={"/admin/taikhoan/single/" + row.original.MaTK}>
-                        <IconButton>
-                            <Visibility fontSize="small" />
-                        </IconButton>
-                    </Link>
-
-                    <Link to={"/admin/taikhoan/edit/" + row.original.MaTK}>
-                        <IconButton  >
-                            <Edit fontSize="small" />
-                        </IconButton>
-                    </Link>
-
-                    <IconButton onClick={() => handleDeleteRows(row)}>
-                        <Delete fontSize="small" sx={{ color: 'red' }} />
+            <Box sx={{ display: 'flex', gap: '0.3rem' }}>
+                <Link to={"/admin/totnghiep/single/" + row.original.MaTN}>
+                    <IconButton>
+                        <Visibility fontSize="small" />
                     </IconButton>
-                </Box >
-                :
-                <Box sx={{ display: 'flex', gap: '0.3rem' }}>
-                    <button type="button" className="btn btn-outline-success">Chấp nhận</button>
-                    <button type="button" className="btn btn-outline-danger">Từ chối</button>
-                </Box >
+                </Link>
+
+
+                <Link to={"/admin/totnghiep/edit/" + row.original.MaTN}>
+                    <IconButton onClick={() => table.setEditingRow(row)}>
+                        <Edit fontSize="small" />
+                    </IconButton>
+                </Link>
+
+                <IconButton onClick={() => handleDeleteRows(row)}>
+                    <Delete fontSize="small" sx={{ color: 'red' }} />
+                </IconButton>
+            </Box >
+
         ),
-
-
-
         renderTopToolbarCustomActions: ({ table }) => (
             <Box
                 sx={{
@@ -148,10 +143,6 @@ const TableTaiKhoanSV = (props) => {
                     flexWrap: 'wrap',
                 }}
             >
-                <select value={trangthaiTK} className="select-btn" onChange={(event) => onChangeSelect(event, setTrangthaiTK)} >
-                    <option value='Đã kích hoạt'>Đã kích hoạt</option>
-                    <option value='Chưa kích hoạt'>Chưa kích hoạt</option>
-                </select>
                 <Button
                     color="lightblue"
                     //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
@@ -161,6 +152,26 @@ const TableTaiKhoanSV = (props) => {
                 >
                     Export All Data
                 </Button>
+                {/* <Button
+                            disabled={table.getPrePaginationRowModel().rows.length === 0}
+                            //export all rows, including from the next page, (still respects filtering and sorting)
+                            onClick={() =>
+                                handleExportRows(table.getPrePaginationRowModel().rows)
+                            }
+                            leftIcon={<IconDownload />}
+                            variant="filled"
+                        >
+                            Export All Rows
+                        </Button> */}
+                {/* <Button
+                            disabled={table.getRowModel().rows.length === 0}
+                            //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
+                            onClick={() => handleExportRows(table.getRowModel().rows)}
+                            leftIcon={<IconDownload />}
+                            variant="filled"
+                        >
+                            Export Page Rows
+                        </Button> */}
                 <Button
                     disabled={
                         !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
@@ -181,18 +192,25 @@ const TableTaiKhoanSV = (props) => {
                 >
                     Import Data
                 </Button>
-            </Box >
+                {/* <Button
+                            sx={{ backgroundColor: 'green' }}
+                            //only export selected rows
+                            // onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
+                            leftIcon={<IconDownload />}
+                            variant="filled"
+                        >
+                            Create Data
+                        </Button> */}
+            </Box>
 
         ),
     });
+
     return (
         <>
-
             <MantineReactTable table={table} />
-
         </>
     )
+}
 
-};
-
-export default TableTaiKhoanSV;
+export default TableTotNghiep
