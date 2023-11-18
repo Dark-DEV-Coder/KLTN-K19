@@ -7,6 +7,7 @@ import { KtraDuLieuDKCNKhiChinhSua, KtraDuLieuDKCNKhiThem, KtraDuLieuDKCNKhiThem
 import { DoiDinhDangNgay, XuLyNgaySinh } from "../../helper/XuLyDuLieu.js"
 import Nganh from "../../model/Nganh.js"
 import ChuyenNganh from "../../model/ChuyenNganh.js"
+import SinhVien from "../../model/SinhVien.js"
 
 const DangKyChuyenNganhAdminRoute = express.Router()
 
@@ -278,11 +279,11 @@ DangKyChuyenNganhAdminRoute.post('/ThemChuyenNganhDangKy/:MaDKCN', async (req, r
 })
 
 /**
- * @route POST /api/admin/dk-chuyen-nganh/XoaChuyenNganhDangKy/{MaDKCN}
- * @description Xóa thông tin chuyên ngành sinh viên đăng ký
+ * @route POST /api/admin/dk-chuyen-nganh/SuaChuyenNganhDangKy/{MaDKCN}
+ * @description Sửa thông tin chuyên ngành sinh viên đăng ký
  * @access public
  */
-DangKyChuyenNganhAdminRoute.post('/XoaChuyenNganhDangKy/:MaDKCN', async (req, res) => {
+DangKyChuyenNganhAdminRoute.post('/SuaChuyenNganhDangKy/:MaDKCN', async (req, res) => {
     try{
         const errors = KtraDuLieuDKCNKhiXoaMonChuyenNganh(req.body)
         if (errors)
@@ -298,13 +299,14 @@ DangKyChuyenNganhAdminRoute.post('/XoaChuyenNganhDangKy/:MaDKCN', async (req, re
         const chuyennganh = await ChuyenNganh.findOne({ MaChuyenNganh: MaChuyenNganh });
 
         if (isExist.ThongTin.length > 0){
-            let i = 0;
             isExist.ThongTin.forEach((element) => {
                 if ( element.Nganh.equals(nganh._id) && element.ChuyenNganh.equals(chuyennganh._id) ){
-                    isExist.ThongTin.splice(i,1);
+                    element.ToiDa = 0;
+                    element.ConLai = 0;
+                    element.DaDangKy = 0;
+                    element.SinhVien = [];
                     return;
                 }
-                i++;
             });
             await DangKyChuyenNganh.findOneAndUpdate({ MaDKCN: MaDKCN }, { ThongTin: isExist.ThongTin });
         }
@@ -346,6 +348,69 @@ DangKyChuyenNganhAdminRoute.post('/TuDongCapNhatTrangThaiDKCN', async (req, res)
         return sendSuccess(res, "Tự động cập nhập trạng thái thành công");
     }
     catch (error){
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route POST /api/admin/dk-chuyen-nganh/ThonKeSVDangKyChuyenNganh
+ * @description Thống kê số lượng sinh viên đã đăng ký chuyên ngành
+ * @access public
+ */
+DangKyChuyenNganhAdminRoute.post('/ThonKeSVDangKyChuyenNganh', async (req, res) => {
+    try {
+        const { MaNganh, MaChuyenNganh, MaDKCN } = req.body;
+        if ( MaNganh == '' || MaChuyenNganh == '' || MaDKCN == '')
+            return sendError(res, "Vui lòng điền đẩy đủ thông tin.");
+
+        const nganh = await Nganh.findOne({ MaNganh: MaNganh });
+        if (!nganh)
+            return sendError(res, "Ngành này không tồn tại.");
+        const dkcn = await DangKyChuyenNganh.findOne({ MaDKCN: MaDKCN });
+        if (!dkcn)
+            return sendError(res, "Đợt đăng ký chuyên ngành này không tồn tại.");
+
+        let array = [];
+        const khoa = dkcn.Khoa;
+        if (MaChuyenNganh == "Tất cả"){
+            const sinhvien = await SinhVien.find({ Khoa: khoa, Nganh: nganh.TenNganh });
+            sinhvien.forEach((element) => {
+                let cn = '';
+                if (element.ChuyenNganh == null)
+                    cn = "Chưa đăng ký";
+                else
+                    cn = element.ChuyenNganh;
+                let sv = {
+                    MaSV: element.MaSV,
+                    HoSV: element.HoSV,
+                    TenSV: element.TenSV,
+                    Diem: element.DTBTLHK,
+                    ChuyenNganh: cn
+                }
+                array.push(sv);
+            });
+        }
+        else{
+            const chuyennganh = await ChuyenNganh.findOne({ MaChuyenNganh: MaChuyenNganh });
+            if (!chuyennganh)
+                return sendError(res, "Chuyên ngành này không tồn tại.");
+            const sinhvien = await SinhVien.find({ Khoa: khoa, Nganh: nganh.TenNganh, ChuyenNganh: chuyennganh.TenChuyenNganh });
+            sinhvien.forEach((element) => {
+                let sv = {
+                    MaSV: element.MaSV,
+                    HoSV: element.HoSV,
+                    TenSV: element.TenSV,
+                    Diem: element.DTBTLHK,
+                    ChuyenNganh: element.ChuyenNganh
+                }
+                array.push(sv);
+            });
+        }
+        
+        return sendSuccess(res, "Lấy danh sách sinh viên thành công.", array);
+    }
+    catch (error) {
         console.log(error)
         return sendServerError(res)
     }

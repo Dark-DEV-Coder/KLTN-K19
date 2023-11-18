@@ -2789,11 +2789,11 @@ paths:
             }
       security:
         - ApiKeyAuth: []
-  /admin/dk-chuyen-nganh/XoaChuyenNganhDangKy/{MaDKCN}:
+  /admin/dk-chuyen-nganh/SuaChuyenNganhDangKy/{MaDKCN}:
     post:
       tags:
         - "DangKyChuyenNganh"
-      summary: "Xóa thông tin chuyên ngành để sinh viên đăng ký"
+      summary: "Sửa thông tin chuyên ngành để sinh viên đăng ký"
       produces:
         - application/json
       parameters:
@@ -2814,20 +2814,20 @@ paths:
           description: Mã chuyên ngành
       responses:
         200:
-          description: Xóa thông tin chuyên ngành để sinh viên đăng ký thành công.
+          description: Sửa thông tin chuyên ngành để sinh viên đăng ký thành công.
           schema:
             type: object
             example: {
               "status": true,
-              "message": "Xóa thông tin chuyên ngành để sinh viên đăng ký thành công.",
+              "message": "Sửa thông tin chuyên ngành để sinh viên đăng ký thành công.",
             }
         400:
-          description: Xóa thông tin chuyên ngành để sinh viên đăng ký thất bại.
+          description: Sửa thông tin chuyên ngành để sinh viên đăng ký thất bại.
           schema:
             type: object
             example: {
               "status": false,
-              "message" : "Xóa thông tin chuyên ngành để sinh viên đăng ký thất bại.",
+              "message" : "Sửa thông tin chuyên ngành để sinh viên đăng ký thất bại.",
             }
       security:
         - ApiKeyAuth: []
@@ -3467,6 +3467,48 @@ paths:
             }
       security:
         - ApiKeyAuth: []
+  /admin/dk-chuyen-nganh/ThonKeSVDangKyChuyenNganh:
+    post: 
+      tags:
+        - "DangKyChuyenNganh"
+      summary: Thống kê số lượng sinh viên đã đăng ký chuyên ngành
+      produces:
+        - application/json     
+      parameters:
+      - in: body
+        name: MaNganh
+        type: string
+        required: true
+        description: Mã ngành
+      - in: body
+        name: MaChuyenNganh
+        type: string
+        required: true
+        description: Mã chuyên ngành
+      - in: body
+        name: MaDKCN
+        type: string
+        required: true
+        description: Mã đợt đăng ký chuyên ngành
+      responses:
+        200: 
+          description: Thống kê số lượng sinh viên thành công
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Thống kê số lượng sinh viên thành công",
+            }
+        400:
+          description: Thống kê số lượng sinh viên thất bại
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Thống kê số lượng sinh viên thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
 securityDefinitions:
   ApiKeyAuth:
     type: apiKey
