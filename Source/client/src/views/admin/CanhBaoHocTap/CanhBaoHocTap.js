@@ -24,15 +24,10 @@ const CanhBaoHocTap = () => {
                     </div>
                     <Link to={"/admin/canhbaohoctap/new"} className="btn-download">
                         <i className='bx bxs-cloud-download'></i>
-                        <span className="text">Create Data</span>
+                        <span className="text">Tạo mới</span>
                     </Link>
                 </div>
-
                 <TableCanhBaoHocTap accessToken={accessToken} />
-
-
-
-
             </main >
         </>
     )

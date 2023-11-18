@@ -298,11 +298,21 @@ const fetchAllCanhBao_DRL = (headers) => {
 }
 export { fetchAllCanhBao_DRL };
 
-//Get chi tiết Cảnh báo điểm rèn luyện
+//Get chi tiết Cảnh báo 
 const fetchDetailCanhBao = (headers, MaCBHT) => {
     return axios.get(`admin/canh-bao-hoc-tap/ChiTietDotCanhBao/${MaCBHT}`, { headers });
 }
 export { fetchDetailCanhBao };
+
+//Get bảng thống kê
+const fetchStatisticalCanhBao = (headers, MaCBHT, ThongKeTheo, LocTheoNganh, LocTheoKhoa) => {
+    return axios.post(`admin/canh-bao-hoc-tap/ThongKeCBHTSinhVien/${MaCBHT}`, {
+        ThongKeTheo: ThongKeTheo,
+        LocTheoNganh: LocTheoNganh,
+        LocTheoKhoa: LocTheoKhoa,
+    }, { headers });
+}
+export { fetchStatisticalCanhBao };
 
 //Sửa Cảnh báo
 const fetchEditCanhBao = (headers, MaCBHT, Ten, Dot, NienKhoa) => {
@@ -317,6 +327,134 @@ export { fetchEditCanhBao };
 
 //Xóa  Cảnh báo
 const fetchDeleteCanhBao = (headers, MaCBHT) => {
-    return axios.delete(`admin/canh-bao-hoc-tap/Xoa/${MaCBHT}`, { headers });
+    return axios.delete(`admin/canh-bao-hoc-tap/XoaDotCanhBao/${MaCBHT}`, { headers });
 }
 export { fetchDeleteCanhBao };
+
+//Thêm Cảnh báo
+const fetchAddCanhBao = (headers, data) => {
+    for (const pair of data.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+    }
+    return axios.post(`admin/canh-bao-hoc-tap/ThemDotCanhBao`, data, { headers });
+}
+export { fetchAddCanhBao };
+// Cảnh báo học tập
+
+// Tốt nghiệp
+//Get List Tốt nghiệp
+const fetchAllTotNghiep = (headers) => {
+    return axios.get('admin/tot-nghiep/DanhSachDotTotNghiep', { headers });
+}
+export { fetchAllTotNghiep };
+
+//Get chi tiết Tốt nghiệp
+const fetchDetailTotNghiep = (headers, MaTN) => {
+    return axios.get(`admin/tot-nghiep/ChiTietDotTotNghiep/${MaTN}`, { headers });
+}
+export { fetchDetailTotNghiep };
+
+//Get bảng thống kê Tốt nghiệp
+const fetchStatisticalTotNghiep = (headers, MaTN, ThongKeTheo, LocTheoNganh, LocTheoKhoa) => {
+    return axios.post(`admin/tot-nghiep/ThongKeTotNghiepSinhVien/${MaTN}`, {
+        ThongKeTheo: ThongKeTheo,
+        LocTheoNganh: LocTheoNganh,
+        LocTheoKhoa: LocTheoKhoa,
+    }, { headers });
+}
+export { fetchStatisticalTotNghiep };
+
+//Thêm Tốt nghiệp
+const fetchAddTotNghiep = (headers, data) => {
+    // for (const pair of data.entries()) {
+    //     console.log(pair[0] + ": " + pair[1]);
+    // }
+    return axios.post(`admin/tot-nghiep/ThemDotTotNghiep`, data, { headers });
+}
+export { fetchAddTotNghiep };
+
+//Sửa Tốt nghiệp
+const fetchEditTotNghiep = (headers, MaTN, Ten, NienKhoa) => {
+    return axios.post(`admin/tot-nghiep/ChinhSuaThongTin/${MaTN}`, {
+        MaTN: MaTN,
+        Ten: Ten,
+        NienKhoa: NienKhoa,
+    }, { headers });
+}
+export { fetchEditTotNghiep };
+
+//Xóa  Tốt nghiệp
+const fetchDeleteTotNghiep = (headers, MaTN) => {
+    return axios.delete(`admin/tot-nghiep/XoaDotTotNghiep/${MaTN}`, { headers });
+}
+export { fetchDeleteTotNghiep };
+// Tốt nghiệp
+
+// Đăng ký chuyên ngành
+//Get List Đăng ký chuyên ngành
+const fetchAllDangKyCN = (headers) => {
+    return axios.get('admin/dk-chuyen-nganh/DanhSachDKCN', { headers });
+}
+export { fetchAllDangKyCN };
+
+//Get chi tiết Đăng ký chuyên ngành
+const fetchDetailDangKyCN = (headers, MaDKCN) => {
+    return axios.get(`admin/dk-chuyen-nganh/ChiTietDKCN/${MaDKCN}`, { headers });
+}
+export { fetchDetailDangKyCN };
+
+//Get chi tiết DSSV Đăng ký chuyên ngành
+const fetchDetailDSSVDangKyCN = (headers, MaDKCN, MaNganh, MaChuyenNganh) => {
+    return axios.post(`admin/dk-chuyen-nganh/ThonKeSVDangKyChuyenNganh`, {
+        MaDKCN: MaDKCN,
+        MaNganh: MaNganh,
+        MaChuyenNganh: MaChuyenNganh
+    }, { headers });
+}
+export { fetchDetailDSSVDangKyCN };
+
+//Sửa Đăng ký chuyên ngành
+const fetchEditDangKyCN = (headers, MaDKCN, Ten, Khoa, ThoiGianBD, ThoiGianKT) => {
+    return axios.put(`admin/dk-chuyen-nganh/ChinhSua/${MaDKCN}`, {
+        Ten: Ten,
+        Khoa: Khoa,
+        ThoiGianBD: ThoiGianBD,
+        ThoiGianKT: ThoiGianKT,
+    }, { headers });
+}
+export { fetchEditDangKyCN };
+
+//Thêm Đăng ký chuyên ngành
+const fetchAddDangKyCN = (headers, MaDKCN, Ten, Khoa, ThoiGianBD, ThoiGianKT) => {
+    return axios.post(`admin/dk-chuyen-nganh/Them`, {
+        MaDKCN: MaDKCN,
+        Ten: Ten,
+        Khoa: Khoa,
+        ThoiGianBD: ThoiGianBD,
+        ThoiGianKT: ThoiGianKT
+    }, { headers });
+}
+export { fetchAddDangKyCN };
+
+//Thêm Chuyên ngành Đăng ký
+const fetchAddChuyenNganhDangKyCN = (headers, MaDKCN, MaNganh, MaChuyenNganh, ToiDa) => {
+    console.log("MaDKCN: ", MaDKCN)
+    console.log("MaNganh: ", MaNganh)
+    console.log("MaChuyenNganh: ", MaChuyenNganh)
+    console.log("ToiDa: ", ToiDa)
+
+    return axios.post(`admin/dk-chuyen-nganh/ThemChuyenNganhDangKy/${MaDKCN}`, {
+        MaDKCN: MaDKCN,
+        MaNganh: MaNganh,
+        MaChuyenNganh: MaChuyenNganh,
+        ToiDa: ToiDa
+    }, { headers });
+}
+export { fetchAddChuyenNganhDangKyCN };
+
+//Xóa  Đăng ký chuyên ngành
+const fetchDeleteDangKyCN = (headers, MaDKCN) => {
+    return axios.delete(`admin/dk-chuyen-nganh/Xoa/${MaDKCN}`, { headers });
+}
+export { fetchDeleteDangKyCN };
+

@@ -50,7 +50,7 @@ const SingleTaiKhoan = () => {
                             </li>
                             <li><i className='bx bx-chevron-right'></i></li>
                             <li>
-                                <Link className="active" >Tài khoản</Link>
+                                <Link  >Tài khoản</Link>
                             </li>
                             <li><i className='bx bx-chevron-right'></i></li>
                             <li>
