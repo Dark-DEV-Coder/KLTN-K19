@@ -1,34 +1,31 @@
-import "./ChiTietCBHT.scss"
+
 import { Link, useNavigate } from "react-router-dom";
-import TableDSSVCanhBao from "./TableDSSVCanhBao";
+import TableDSSVTotNghiep from "./TableDSSVTotNghiep";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import TableDSSVCanhBao_DRL from "./TableDSSVCanhBao_DRL";
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Chart from "react-apexcharts";
-import { fetchDetailCanhBao, fetchStatisticalCanhBao, fetchAllNganh } from "../../GetData"
-const ChiTietCBHT = () => {
+import { fetchDetailTotNghiep, fetchStatisticalTotNghiep, fetchAllNganh } from "../../GetData"
+const ChiTietTotNghiep = () => {
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     const [value, setValue] = useState('ds');
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
-    const canhbao = useParams();
+    const totnghiep = useParams();
     let navigate = useNavigate();
     const [listData_nganh, SetListData_nganh] = useState([]);
 
     // Table xem chi tiết
-    const [MaCBHT, setMaCBHT] = useState("")
+    const [MaTN, setMaTN] = useState("")
     const [Ten, setTen] = useState("")
-    const [Dot, setDot] = useState("")
     const [NienKhoa, setNienKhoa] = useState("")
-    const [KieuCanhBao, setKieuCanhBao] = useState("")
     const [data_SV, setData_SV] = useState([])
     // Table xem chi tiết
 
@@ -45,8 +42,8 @@ const ChiTietCBHT = () => {
 
 
     useEffect(() => {
-        getDetailCanhBao();
-        getStatisticalCanhBao(select_thongke, select_nganh, select_khoa);
+        getDetailTotNghiep();
+        // getStatisticalCanhBao(select_thongke, select_nganh, select_khoa);
         getListNganh();
         getNam();
     }, []);
@@ -62,7 +59,7 @@ const ChiTietCBHT = () => {
     }
     const getStatisticalCanhBao = async (thongketheo, nganh, khoa) => {
         const headers = { 'x-access-token': accessToken };
-        let res = await fetchStatisticalCanhBao(headers, canhbao.MaCBHT, thongketheo, nganh, khoa);
+        let res = await fetchStatisticalTotNghiep(headers, totnghiep.MaTN, thongketheo, nganh, khoa);
         console.log(res)
         if (res && res.data) {
             let ds_khoa = [];
@@ -85,15 +82,13 @@ const ChiTietCBHT = () => {
             SetListData_nganh(res.data.DanhSach)
         }
     }
-    const getDetailCanhBao = async () => {
+    const getDetailTotNghiep = async () => {
         const headers = { 'x-access-token': accessToken };
-        let res = await fetchDetailCanhBao(headers, canhbao.MaCBHT);
+        let res = await fetchDetailTotNghiep(headers, totnghiep.MaTN);
         if (res && res.data) {
-            setMaCBHT(res.data.MaCBHT)
+            setMaTN(res.data.MaTN)
             setTen(res.data.Ten)
-            setDot(res.data.Dot)
             setNienKhoa(res.data.NienKhoa)
-            setKieuCanhBao(res.data.KieuCanhBao)
             setData_SV(res.data.ThongTin)
         }
     }
@@ -106,12 +101,6 @@ const ChiTietCBHT = () => {
             setSelect_nganh("Tất cả")
             setSelect_khoa("Tất cả")
             getStatisticalCanhBao('Ngành', 'Tất cả', 'Tất cả');
-            return
-        }
-        if (res === 'Khóa') {
-            setSelect_thongke("Khóa")
-            setSelect_khoa("Tất cả")
-            getStatisticalCanhBao('Khóa', 'Tất cả', 'Tất cả');
             return
         }
         if (res === 'Lớp') {
@@ -209,7 +198,7 @@ const ChiTietCBHT = () => {
                             </li>
                             <li><i className='bx bx-chevron-right'></i></li>
                             <li>
-                                <Link >Cảnh báo học tập</Link>
+                                <Link >Tốt nghiệp</Link>
                             </li>
                             <li><i className='bx bx-chevron-right'></i></li>
                             <li>
@@ -230,11 +219,7 @@ const ChiTietCBHT = () => {
                     </Box>
 
                     <TabPanel value="ds" >
-                        {KieuCanhBao === "Điểm học tập" ?
-                            <TableDSSVCanhBao list_data={data_SV} />
-                            : <TableDSSVCanhBao_DRL list_data={data_SV} />
-
-                        }
+                        <TableDSSVTotNghiep list_data={data_SV} />
                     </TabPanel>
                     <TabPanel value="tk">
                         <div className="table">
@@ -243,7 +228,6 @@ const ChiTietCBHT = () => {
                                     <label className="inputGV" htmlFor="inputGioitinhGV">Thống kê theo</label>
                                     <select value={select_thongke} id="inputGioitinhGV" className="form-control" onChange={(event) => changleSelectThongKe(event)}>
                                         <option value='Ngành'>Ngành</option>
-                                        <option value='Khóa'>Khóa</option>
                                         <option value='Lớp'>Lớp</option>
                                     </select>
                                 </div>
@@ -260,7 +244,7 @@ const ChiTietCBHT = () => {
                                         }
                                     </select>
                                 </div>
-                                <div className="form-group col-md-4">
+                                {/* <div className="form-group col-md-4">
                                     <label className="inputGV" htmlFor="inputGioitinhGV">Lọc theo khóa</label>
                                     <select value={select_khoa} id="inputGioitinhGV" className="form-control" onChange={(event) => changleSelect_khoa(event)} disabled={select_thongke === "Ngành" || select_thongke === "Khóa" ? true : false}>
                                         <option value="Tất cả">Tất cả</option>
@@ -272,7 +256,7 @@ const ChiTietCBHT = () => {
                                             })
                                         }
                                     </select>
-                                </div>
+                                </div> */}
                             </div>
                             <div id="chart">
                                 {thongke_khoa.length === 0 ?
@@ -280,7 +264,7 @@ const ChiTietCBHT = () => {
                                         <label style={{ color: 'red' }}>Không có dữ liệu cho đợt tìm kiếm : </label>
                                         <h6> Thống kê theo: {select_thongke}</h6>
                                         <h6> Lọc theo ngành: {select_nganh}</h6>
-                                        <h6> Lọc theo khóa: {select_khoa}</h6>
+                                        {/* <h6> Lọc theo khóa: {select_khoa}</h6> */}
                                     </>
                                     :
                                     <Chart options={value_table.options} series={value_table.series} type="bar" height={350} />
@@ -292,16 +276,8 @@ const ChiTietCBHT = () => {
 
                     </TabPanel>
                 </TabContext>
-
-
-
-
-
-
-
-
             </main >
         </>
     )
 }
-export default ChiTietCBHT;
+export default ChiTietTotNghiep;
