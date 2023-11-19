@@ -30,7 +30,6 @@ const ViTriThucTap = () => {
 
     const onChangeSelect = (event, SetSelect) => {
         let changeValue = event.target.value;
-        console.log("Select", changeValue)
         SetSelect(changeValue);
     }
     return (

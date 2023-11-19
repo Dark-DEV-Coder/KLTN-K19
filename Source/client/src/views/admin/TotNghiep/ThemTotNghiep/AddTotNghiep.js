@@ -26,7 +26,6 @@ const AddTotNghiep = () => {
         value_canhbao.append("NienKhoa", NienKhoa);
         value_canhbao.append("FilePDF", FilePDF);
         let res = await fetchAddTotNghiep(headers, value_canhbao)
-        console.log(res)
         if (res.status === true) {
             toast.success(res.message)
             navigate("/admin/totnghiep")

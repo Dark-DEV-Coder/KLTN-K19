@@ -36,7 +36,6 @@ const EditChucNang = () => {
         // value_img.TenChucNang = TenChucNang;
         value_img.append("TenChucNang", TenChucNang);
         value_img.append("Hinh", Hinh);
-        console.log(value_img);
 
         let res = await fetchEditChucNang(headers, MaCN, value_img)
         if (res.status === true) {

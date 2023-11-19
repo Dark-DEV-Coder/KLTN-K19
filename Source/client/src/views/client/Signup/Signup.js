@@ -29,7 +29,6 @@ const Signup = () => {
 
     const onChangeSelect = (event, SetSelect) => {
         let changeValue = event.target.value;
-        console.log('select', changeValue)
         SetSelect(changeValue);
     }
 

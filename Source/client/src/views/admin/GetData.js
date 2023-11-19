@@ -355,11 +355,11 @@ const fetchDetailTotNghiep = (headers, MaTN) => {
 export { fetchDetailTotNghiep };
 
 //Get bảng thống kê Tốt nghiệp
-const fetchStatisticalTotNghiep = (headers, MaTN, ThongKeTheo, LocTheoNganh, LocTheoKhoa) => {
+const fetchStatisticalTotNghiep = (headers, MaTN, ThongKeTheo, LocTheoNganh, KieuThongKe) => {
     return axios.post(`admin/tot-nghiep/ThongKeTotNghiepSinhVien/${MaTN}`, {
         ThongKeTheo: ThongKeTheo,
         LocTheoNganh: LocTheoNganh,
-        LocTheoKhoa: LocTheoKhoa,
+        KieuThongKe: KieuThongKe,
     }, { headers });
 }
 export { fetchStatisticalTotNghiep };
@@ -457,4 +457,68 @@ const fetchDeleteDangKyCN = (headers, MaDKCN) => {
     return axios.delete(`admin/dk-chuyen-nganh/Xoa/${MaDKCN}`, { headers });
 }
 export { fetchDeleteDangKyCN };
+
+// Đăng ký chuyên ngành
+
+//Khóa luận
+//Get List Khóa luận
+const fetchAllKhoaLuan = (headers) => {
+    return axios.get('admin/khoa-luan-tot-nghiep/DanhSachKLTN', { headers });
+}
+export { fetchAllKhoaLuan };
+
+//Get Chi Tiết Khóa luận
+const fetchDetailKhoaLuan = (headers, MaKLTN) => {
+    return axios.get(`admin/khoa-luan-tot-nghiep/ChiTietKLTN/${MaKLTN}`, { headers });
+}
+export { fetchDetailKhoaLuan };
+
+//Chỉnh sửa khóa luận
+const fetchEditKhoaLuan = (headers, MaKLTN, Ten, Khoa, MaNganh, ThoiGianBD, ThoiGianKT) => {
+    return axios.put(`admin/khoa-luan-tot-nghiep/ChinhSua/${MaKLTN}`, {
+        Ten: Ten,
+        Khoa: Khoa,
+        MaNganh: MaNganh,
+        ThoiGianBD: ThoiGianBD,
+        ThoiGianKT: ThoiGianKT
+    }, { headers });
+}
+export { fetchEditKhoaLuan };
+
+//Thêm khóa luận
+const fetchAddKhoaLuan = (headers, MaKLTN, Ten, MaNganh, Khoa, ThoiGianBD, ThoiGianKT) => {
+    return axios.post(`admin/khoa-luan-tot-nghiep/Them`, {
+        MaKLTN: MaKLTN,
+        Ten: Ten,
+        Khoa: Khoa,
+        MaNganh: MaNganh,
+        ThoiGianBD: ThoiGianBD,
+        ThoiGianKT: ThoiGianKT
+    }, { headers });
+}
+export { fetchAddKhoaLuan };
+
+//Xóa  khóa luận
+const fetchDeleteKhoaLuan = (headers, MaKLTN) => {
+    return axios.delete(`admin/khoa-luan-tot-nghiep/Xoa/${MaKLTN}`, { headers });
+}
+export { fetchDeleteKhoaLuan };
+
+//Thêm đề tài của khóa luận tốt nghiệp
+const fetchAddDeTai = (headers, MaKLTN, TenDeTai, MaGV) => {
+    return axios.post(`admin/khoa-luan-tot-nghiep/ThemDeTaiKhoaLuan/${MaKLTN}`, {
+        TenDeTai: TenDeTai,
+        MaGV: MaGV,
+    }, { headers });
+}
+export { fetchAddDeTai };
+
+//Xóa đề tài của khóa luận tốt nghiệp
+const fetchDeleteDeTai = (headers, MaKLTN, TenDeTai, MaGV) => {
+    return axios.post(`admin/khoa-luan-tot-nghiep/XoaDeTaiKhoaLuan/${MaKLTN}`, {
+        TenDeTai: TenDeTai,
+        MaGV: MaGV,
+    }, { headers });
+}
+export { fetchDeleteDeTai };
 

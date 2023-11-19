@@ -61,6 +61,7 @@ import TotNghiep from "./TotNghiep/TotNghiep";
 import ChiTietTotNghiep from "./TotNghiep/SingleTotNghiep/ChiTietTotNghiep";
 import AddTotNghiep from "./TotNghiep/ThemTotNghiep/AddTotNghiep";
 import EditTotNghiep from "./TotNghiep/EditTotNghiep/EditTotNghiep";
+import AddDeTai from "./KhoaLuan/ThemDeTai/AddDeTai";
 const Admin = () => {
 
     const [hiddenDB, setHiddenDB] = useState(false);
@@ -90,10 +91,11 @@ const Admin = () => {
                         <Route path='khoaluan'  >
                             <Route index element={<KhoaLuan />}></Route>
                             <Route path="new" element={<AddKhoaLuan />}></Route>
-                            <Route path="single/:makl" element={<SingleKhoaLuan />}></Route>
-                            <Route path="edit/:makl" element={<EditKhoaLuan />}></Route>
-                            <Route path="detai/:ten" element={<ChiTietDeTai />}></Route>
-                            <Route path="detai/edit/:ten" element={<EditDeTai />}></Route>
+                            <Route path="single/:MaKLTN" element={<SingleKhoaLuan />}></Route>
+                            <Route path="edit/:MaKLTN" element={<EditKhoaLuan />}></Route>
+                            <Route path=":MaKLTN/detai/new" element={<AddDeTai />}></Route>
+                            <Route path=":MaKLTN/detai/:TenDeTai" element={<ChiTietDeTai />}></Route>
+                            <Route path=":MaKLTN/detai/edit/:TenDeTai" element={<EditDeTai />}></Route>
                         </Route>
                         <Route path='totnghiep'  >
                             <Route index element={<TotNghiep />}></Route>

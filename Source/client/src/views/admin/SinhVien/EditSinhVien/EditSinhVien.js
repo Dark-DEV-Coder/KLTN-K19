@@ -67,7 +67,7 @@ const EditSinhVien = () => {
         }
     }
 
-    const handleEditGiangVien = async () => {
+    const handleEditSinhVien = async () => {
         const headers = { 'x-access-token': accessToken };
         if (!masv || !hosv || !tensv || !email || !sdt || !ngaysinh || !khoa || !lop) {
             toast.error("Vui lòng điền đầy đủ dữ liệu")
@@ -248,7 +248,7 @@ const EditSinhVien = () => {
                         </div>
 
                     </div>
-                    <button className="btn" type="button" onClick={() => handleEditGiangVien()}>Lưu</button>
+                    <button className="btn" type="button" onClick={() => handleEditSinhVien()}>Lưu</button>
                 </div>
 
 

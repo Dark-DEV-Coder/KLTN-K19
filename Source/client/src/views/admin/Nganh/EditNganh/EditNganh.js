@@ -6,7 +6,6 @@ import "./EditNganh.scss"
 import TableChuyenNganh from "../ChiTietNganh/TableChuyenNganh/TableChuyenNganh";
 import { fetchDetailNganh, fetchEditNganh } from "../../GetData"
 import { toast } from "react-toastify";
-import axios from "../../../custom-axios"
 const EditNganh = () => {
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     const nganh = useParams();

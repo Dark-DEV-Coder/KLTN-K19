@@ -1,38 +1,86 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import * as React from 'react';
 import "./EditKhoaLuan.scss"
+import { fetchAllNganh, fetchDetailKhoaLuan, fetchEditKhoaLuan } from "../../GetData"
+import { toast } from "react-toastify";
+import moment from "moment";
 const EditKhoaLuan = () => {
-    const dulieutest = {
-        makl: 'KL1',
-        ten: 'Đợt đăng ký khóa luận năm học 2023-2024',
-        nienkhoa: '2023-2024',
-        khoahoc: 'K19',
-        tgbd: "2023-09-15",
-        tgkt: "2023-09-30",
-        trangthai: 1,
-    };
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     const khoaluan = useParams();
+    let navigate = useNavigate();
+    const [listData_nganh, SetListData_nganh] = useState([]);
 
-    const [ten, SetTen] = useState(dulieutest.ten)
-    const [nienkhoa, SetNienkhoa] = useState(dulieutest.nienkhoa)
-    const [khoahoc, SetKhoahoc] = useState(dulieutest.khoahoc)
-    const [dsdt, SetDsdt] = useState(dulieutest.khoahoc)
-    const [tgbd, SetTgbd] = useState(dulieutest.tgbd)
-    const [tgkt, SetTgkt] = useState(dulieutest.tgkt)
 
-    const onChangeInputSL = (event, SetSL) => {
+    const [ten, setTen] = useState("")
+    const [nganh, setNganh] = useState("DCT")
+    const [khoahoc, setKhoahoc] = useState("")
+    // const [dsdt, setDsdt] = useState("")
+    const [tgbd, setTgbd] = useState("")
+    const [tgkt, setTgkt] = useState("")
+
+    // component didmount
+    useEffect(() => {
+        getListNganh();
+        getDetailKhoaLuan();
+
+    }, []);
+
+    const getListNganh = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchAllNganh(headers);
+        if (res && res.data && res.data.DanhSach) {
+            SetListData_nganh(res.data.DanhSach)
+        }
+    }
+    const getDetailKhoaLuan = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDetailKhoaLuan(headers, khoaluan.MaKLTN);
+        if (res && res.data) {
+            setTen(res.data.Ten)
+            setNganh(res.data.Nganh.MaNganh)
+            setKhoahoc(res.data.Khoa)
+            setTgbd(moment(res.data.ThoiGianBD).format("YYYY-MM-DD"))
+            setTgkt(moment(res.data.ThoiGianKT).format("YYYY-MM-DD"))
+        }
+    }
+    const handleEditKhoaLuan = async () => {
+        const headers = { 'x-access-token': accessToken };
+        if (!ten || !khoahoc) {
+            toast.error("Vui lòng điền đầy đủ dữ liệu")
+            return
+        }
+        const ngayBD = new Date(tgbd)
+        const ngayKT = new Date(tgkt)
+        let res = await fetchEditKhoaLuan(headers, khoaluan.MaKLTN, ten, khoahoc, nganh, ngayBD, ngayKT)
+        if (res.status === true) {
+            toast.success(res.message)
+            navigate("/admin/khoaluan")
+            return;
+        }
+        if (res.status === false) {
+            toast.error(res.message)
+            return;
+
+        }
+    }
+    const onChangeSelect = (event, setSelect) => {
         let changeValue = event.target.value;
-        SetSL(changeValue);
+        setSelect(changeValue);
+    }
+
+    const onChangeInputSL = (event, setSL) => {
+        let changeValue = event.target.value;
+        setSL(changeValue);
     }
 
     // check dữ liệu
-    const [checkdulieuTen, SetCheckdulieuTen] = useState(true)
-    const [checkdulieuKhoaHoc, SetCheckdulieuKhoaHoc] = useState(true)
-    const [checkdulieuNienKhoa, SetCheckdulieuNienKhoa] = useState(true)
-    const checkdulieu = (value, SetDuLieu) => {
-        value === '' ? SetDuLieu(false) : SetDuLieu(true)
+    const [checkdulieuTen, setCheckdulieuTen] = useState(true)
+    const [checkdulieuKhoaHoc, setCheckdulieuKhoaHoc] = useState(true)
+    // const [checkdulieuNienKhoa, setCheckdulieuNienKhoa] = useState(true)
+    const checkdulieu = (value, setDuLieu) => {
+        value === '' ? setDuLieu(false) : setDuLieu(true)
     }
 
     return (
@@ -51,7 +99,7 @@ const EditKhoaLuan = () => {
                         </li>
                         <li><i className='bx bx-chevron-right'></i></li>
                         <li>
-                            <Link className="active" >{khoaluan.makl}</Link>
+                            <Link className="active" >{khoaluan.MaKLTN}</Link>
                         </li>
 
 
@@ -59,47 +107,52 @@ const EditKhoaLuan = () => {
                 </div>
 
             </div>
-
-
             <form className="form-edit">
                 <div className="container-edit">
                     <div className="form-group">
-                        <label className="inputKL" for="inputTen">Tên đợt đăng ký khóa luận</label>
-                        <input type="text" className="form-control" id="inputTen" value={ten} onChange={(event) => onChangeInputSL(event, SetTen)} onBlur={() => checkdulieu(ten, SetCheckdulieuTen)} />
+                        <label className="inputKL" htmlFor="inputTen">Tên đợt đăng ký khóa luận</label>
+                        <input type="text" className="form-control" id="inputTen" value={ten} onChange={(event) => onChangeInputSL(event, setTen)} onBlur={() => checkdulieu(ten, setCheckdulieuTen)} />
                         <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label className="inputKL" for="inputKhoa">Khóa học</label>
-                            <input type="text" className="form-control" id="inputKhoa" value={khoahoc} onChange={(event) => onChangeInputSL(event, SetKhoahoc)} onBlur={() => checkdulieu(khoahoc, SetCheckdulieuKhoaHoc)} />
+                            <label className="inputKL" htmlFor="inputKhoa">Khóa học</label>
+                            <input type="text" className="form-control" id="inputKhoa" value={khoahoc} onChange={(event) => onChangeInputSL(event, setKhoahoc)} onBlur={() => checkdulieu(khoahoc, setCheckdulieuKhoaHoc)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuKhoaHoc ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">
-                            <label className="inputKL" for="inputNienKhoa">Niên khóa</label>
-                            <input type="text" className="form-control" id="inputNienKhoa" value={nienkhoa} onChange={(event) => onChangeInputSL(event, SetNienkhoa)} onBlur={() => checkdulieu(nienkhoa, SetCheckdulieuNienKhoa)} />
-                            <div className="invalid-feedback" style={{ display: checkdulieuNienKhoa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+                            <label className="inputSV" htmlFor="inputNganh">Ngành</label>
+                            <select value={nganh} onChange={(event) => onChangeSelect(event, setNganh)} id="inputNganh" className="form-control">
+                                {listData_nganh && listData_nganh.length > 0 &&
+                                    listData_nganh.map((item, index) => {
+                                        return (
+                                            <option key={item.MaNganh} value={item.MaNganh}>{item.TenNganh}</option>
+                                        )
+                                    })
+                                }
+                            </select>
                         </div>
                     </div>
                     {/* <div className="form-row">
                         <div className="form-group col-md-12">
                             <div className="custom-file">
-                                <label className="inputKL" for="inputDSDT">Danh sách đề tài</label>
-                                <input type="file" className="form-control file" id="inputDSDT" onChange={(event) => onChangeInputSL(event, SetDsdt)} />
+                                <label className="inputKL" htmlFor="inputDSDT">Danh sách đề tài</label>
+                                <input type="file" className="form-control file" id="inputDSDT" onChange={(event) => onChangeInputSL(event, setDsdt)} />
                             </div>
                             <div className="invalid-feedback" style={{ display: 'block' }}>Chỉ chấp nhận các file có đuôi là xls, xlsm, xlsx, xlt,...</div>
                         </div>
                     </div> */}
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label className="inputKL" for="inputNgayBD">Ngày bắt đầu</label>
-                            <input type="date" className="form-control" id="inputNgayBD" value={tgbd} onChange={(event) => onChangeInputSL(event, SetTgbd)} />
+                            <label className="inputKL" htmlFor="inputNgayBD">Ngày bắt đầu</label>
+                            <input type="date" className="form-control" id="inputNgayBD" value={tgbd} onChange={(event) => onChangeInputSL(event, setTgbd)} />
                         </div>
                         <div className="form-group col-md-6">
-                            <label className="inputKL" for="inputNgayKT">Ngày kết thúc</label>
-                            <input type="date" className="form-control" id="inputNgayKT" value={tgkt} onChange={(event) => onChangeInputSL(event, SetTgkt)} />
+                            <label className="inputKL" htmlFor="inputNgayKT">Ngày kết thúc</label>
+                            <input type="date" className="form-control" id="inputNgayKT" value={tgkt} onChange={(event) => onChangeInputSL(event, setTgkt)} />
                         </div>
                     </div>
-                    <button className="btn" type="submit">Submit form</button>
+                    <button className="btn" type="button" onClick={() => handleEditKhoaLuan()}>Lưu</button>
                 </div>
 
 

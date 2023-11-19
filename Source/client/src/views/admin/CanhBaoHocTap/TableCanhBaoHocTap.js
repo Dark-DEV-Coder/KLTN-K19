@@ -51,7 +51,6 @@ const TableCanhBaoHocTap = (props) => {
 
     const handleDeleteRows = async (row) => {
         const headers = { 'x-access-token': accessToken };
-        console.log(row.original.MaCBHT)
         let res = await fetchDeleteCanhBao(headers, row.original.MaCBHT)
         if (res.status === true) {
             toast.success(res.message)

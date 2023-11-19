@@ -35,7 +35,6 @@ const TableDKiChuyenNganh = (props) => {
     }
     const handleDeleteRows = async (row) => {
         const headers = { 'x-access-token': accessToken };
-        console.log(row.original.MaCBHT)
         let res = await fetchDeleteDangKyCN(headers, row.original.MaDKCN)
         if (res.status === true) {
             toast.success(res.message)
