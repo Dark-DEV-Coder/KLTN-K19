@@ -26,7 +26,9 @@ export const KtraDuLieuDKTTKhiChinhSua = data => {
 export const KtraKhiThemCongTyTrongDS = data => {
     const error = new Error()
 
-    error.isRequired(data.TenCongTy, "TenCongTy")
+    error.isRequired(data.Ho, "Ho")
+        .isRequired(data.Ten, "Ten")
+        .isRequired(data.TenCongTy, "TenCongTy")
         .isRequired(data.Website, "Website")
         .isRequired(data.SoDienThoai, "SoDienThoai")
         .isInvalidPhone(data.SoDienThoai, "SoDienThoai")
@@ -39,8 +41,7 @@ export const KtraKhiThemCongTyTrongDS = data => {
 export const KtraKhiXoaCongTyTrongDS = data => {
     const error = new Error()
 
-    error.isRequired(data.SoDienThoai, "SoDienThoai")
-        .isInvalidPhone(data.SoDienThoai, "SoDienThoai")
+    error.isRequired(data.Email, "Email")
 
     return error.get()
 }
@@ -50,8 +51,7 @@ export const KtraKhiThemViTriCongTyTrongDS = data => {
 
     error.isRequired(data.ViTri, "ViTri")
         .isRequired(data.ToiDa, "ToiDa")
-        .isRequired(data.SoDienThoaiCty, "SoDienThoaiCty")
-        .isInvalidPhone(data.SoDienThoaiCty, "SoDienThoaiCty")
+        .isRequired(data.Email, "Email")
 
     return error.get()
 }
@@ -60,8 +60,7 @@ export const KtraKhiXoaViTriCongTyTrongDS = data => {
     const error = new Error()
 
     error.isRequired(data.ViTri, "ViTri")
-        .isRequired(data.SoDienThoaiCty, "SoDienThoaiCty")
-        .isInvalidPhone(data.SoDienThoaiCty, "SoDienThoaiCty")
+        .isRequired(data.Email, "Email")
 
     return error.get()
 }

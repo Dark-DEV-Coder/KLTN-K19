@@ -27,6 +27,14 @@ const DangKyThucTapSchema = new Schema(
         },
         CongTyTrongDS: [
             {
+                HoNguoiLienHe: {
+                    type: String,
+                    required: true,
+                },
+                TenNguoiLienHe: {
+                    type: String,
+                    required: true,
+                },
                 TenCongTy: {
                     type: String,
                     required: true,
@@ -77,6 +85,14 @@ const DangKyThucTapSchema = new Schema(
         ],
         CongTyNgoaiDS: [
             {
+                HoNguoiLienHe: {
+                    type: String,
+                    required: true,
+                },
+                TenNguoiLienHe: {
+                    type: String,
+                    required: true,
+                },
                 TenCongTy: {
                     type: String,
                     required: true,

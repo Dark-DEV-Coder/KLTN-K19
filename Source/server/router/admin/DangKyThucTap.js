@@ -1,13 +1,24 @@
 import express from "express"
 import fs from 'fs'
+import argon2 from "argon2"
 import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
-import { TrangThaiDangKyThucTap } from "../../constant.js"
+import { CapTaiKhoanChoSinhVienKhiImportFile, TrangThaiDangKyThucTap } from "../../constant.js"
 import DangKyThucTap from "../../model/DangKyThucTap.js"
 import { DoiDinhDangNgay, XuLyNgaySinh } from "../../helper/XuLyDuLieu.js"
 import Nganh from "../../model/Nganh.js"
 import ChuyenNganh from "../../model/ChuyenNganh.js"
+import QuyenTaiKhoan from "../../model/QuyenTaiKhoan.js"
+import TaiKhoan from "../../model/TaiKhoan.js"
 import SinhVien from "../../model/SinhVien.js"
 import { KtraDuLieuDKTTKhiChinhSua, KtraDuLieuDKTTKhiThem, KtraKhiThemCongTyTrongDS, KtraKhiThemViTriCongTyTrongDS, KtraKhiXoaCongTyTrongDS, KtraKhiXoaViTriCongTyTrongDS } from "../../validation/DangKyThucTap.js"
+import ExcelJS from 'exceljs'
+import path from "path"
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import { createThucTapDir } from "../../middleware/createDir.js"
+import { uploadFile } from "../../middleware/storage.js"
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const DangKyThucTapAdminRoute = express.Router()
 
@@ -213,7 +224,7 @@ DangKyThucTapAdminRoute.post('/ThemCongTyTrongDanhSach/:MaDKTT', async (req, res
         const errors = KtraKhiThemCongTyTrongDS(req.body)
         if (errors)
             return sendError(res, errors)
-        const { TenCongTy, Website, SoDienThoai, Email, DiaChi } = req.body;
+        const { Ho, Ten, TenCongTy, Website, SoDienThoai, Email, DiaChi } = req.body;
         const { MaDKTT } = req.params;
 
         const isExist = await DangKyThucTap.findOne({ MaDKTT: MaDKTT }).lean();
@@ -221,6 +232,8 @@ DangKyThucTapAdminRoute.post('/ThemCongTyTrongDanhSach/:MaDKTT', async (req, res
             return sendError(res, "Đợt đăng ký thực tập không tồn tại");
 
         let thongtin = {
+            HoNguoiLienHe: Ho,
+            TenNguoiLienHe: Ten,
             TenCongTy: TenCongTy,
             Website: Website,
             SoDienThoai: SoDienThoai,
@@ -264,7 +277,7 @@ DangKyThucTapAdminRoute.post('/XoaCongTyTrongDanhSach/:MaDKTT', async (req, res)
         const errors = KtraKhiXoaCongTyTrongDS(req.body)
         if (errors)
             return sendError(res, errors)
-        const { SoDienThoai } = req.body;
+        const { Email } = req.body;
         const { MaDKTT } = req.params;
 
         const isExist = await DangKyThucTap.findOne({ MaDKTT: MaDKTT }).lean();
@@ -274,7 +287,7 @@ DangKyThucTapAdminRoute.post('/XoaCongTyTrongDanhSach/:MaDKTT', async (req, res)
         if (isExist.CongTyTrongDS.length > 0){
             let i = 0;
             isExist.CongTyTrongDS.forEach((element) => {
-                if ( element.SoDienThoai.includes(SoDienThoai) ){
+                if ( element.Email.includes(Email) ){
                     isExist.CongTyTrongDS.splice(i,1);
                     return;
                 }
@@ -456,69 +469,6 @@ DangKyThucTapAdminRoute.post('/TuDongCapNhatTrangThaiDKTT', async (req, res) => 
     }
 })
 
-// /**
-//  * @route POST /api/admin/dk-chuyen-nganh/ThonKeSVDangKyChuyenNganh
-//  * @description Thống kê số lượng sinh viên đã đăng ký chuyên ngành
-//  * @access public
-//  */
-// DangKyChuyenNganhAdminRoute.post('/ThonKeSVDangKyChuyenNganh', async (req, res) => {
-//     try {
-//         const { MaNganh, MaChuyenNganh, MaDKCN } = req.body;
-//         if ( MaNganh == '' || MaChuyenNganh == '' || MaDKCN == '')
-//             return sendError(res, "Vui lòng điền đẩy đủ thông tin.");
-
-//         const nganh = await Nganh.findOne({ MaNganh: MaNganh });
-//         if (!nganh)
-//             return sendError(res, "Ngành này không tồn tại.");
-//         const dkcn = await DangKyChuyenNganh.findOne({ MaDKCN: MaDKCN });
-//         if (!dkcn)
-//             return sendError(res, "Đợt đăng ký chuyên ngành này không tồn tại.");
-
-//         let array = [];
-//         const khoa = dkcn.Khoa;
-//         if (MaChuyenNganh == "Tất cả"){
-//             const sinhvien = await SinhVien.find({ Khoa: khoa, Nganh: nganh.TenNganh });
-//             sinhvien.forEach((element) => {
-//                 let cn = '';
-//                 if (element.ChuyenNganh == null)
-//                     cn = "Chưa đăng ký";
-//                 else
-//                     cn = element.ChuyenNganh;
-//                 let sv = {
-//                     MaSV: element.MaSV,
-//                     HoSV: element.HoSV,
-//                     TenSV: element.TenSV,
-//                     Diem: element.DTBTLHK,
-//                     ChuyenNganh: cn
-//                 }
-//                 array.push(sv);
-//             });
-//         }
-//         else{
-//             const chuyennganh = await ChuyenNganh.findOne({ MaChuyenNganh: MaChuyenNganh });
-//             if (!chuyennganh)
-//                 return sendError(res, "Chuyên ngành này không tồn tại.");
-//             const sinhvien = await SinhVien.find({ Khoa: khoa, Nganh: nganh.TenNganh, ChuyenNganh: chuyennganh.TenChuyenNganh });
-//             sinhvien.forEach((element) => {
-//                 let sv = {
-//                     MaSV: element.MaSV,
-//                     HoSV: element.HoSV,
-//                     TenSV: element.TenSV,
-//                     Diem: element.DTBTLHK,
-//                     ChuyenNganh: element.ChuyenNganh
-//                 }
-//                 array.push(sv);
-//             });
-//         }
-        
-//         return sendSuccess(res, "Lấy danh sách sinh viên thành công.", array);
-//     }
-//     catch (error) {
-//         console.log(error)
-//         return sendServerError(res)
-//     }
-// })
-
 /**
  * @route POST /api/admin/dk-thuc-tap/ThemViTriCongTyTrongDanhSach/{MaDKTT}
  * @description Thêm vị trí thực tập công ty trong danh sách
@@ -529,7 +479,7 @@ DangKyThucTapAdminRoute.post('/ThemViTriCongTyTrongDanhSach/:MaDKTT', async (req
         const errors = KtraKhiThemViTriCongTyTrongDS(req.body)
         if (errors)
             return sendError(res, errors)
-        const { ViTri, ToiDa, SoDienThoaiCty } = req.body;
+        const { ViTri, ToiDa, Email } = req.body;
         const { MaDKTT } = req.params;
         if ( !ToiDa.match(/^[0-9]/) )
             return sendError(res, "Tối đa phải là ký tự số");
@@ -548,7 +498,7 @@ DangKyThucTapAdminRoute.post('/ThemViTriCongTyTrongDanhSach/:MaDKTT', async (req
         let check = 0;
         if (isExist.CongTyTrongDS.length > 0){
             isExist.CongTyTrongDS.forEach((element) => {
-                if ( element.SoDienThoai.includes(SoDienThoaiCty) ){
+                if ( element.Email.includes(Email) ){
                     check = 1;
                     element.DangKy.push(thongtin);
                     return;
@@ -582,7 +532,7 @@ DangKyThucTapAdminRoute.post('/XoaViTriCongTyTrongDanhSach/:MaDKTT', async (req,
         const errors = KtraKhiXoaViTriCongTyTrongDS(req.body)
         if (errors)
             return sendError(res, errors)
-            const { ViTri, SoDienThoaiCty } = req.body;
+            const { ViTri, Email } = req.body;
         const { MaDKTT } = req.params;
 
         const isExist = await DangKyThucTap.findOne({ MaDKTT: MaDKTT }).lean();
@@ -593,7 +543,7 @@ DangKyThucTapAdminRoute.post('/XoaViTriCongTyTrongDanhSach/:MaDKTT', async (req,
         if (isExist.CongTyTrongDS.length > 0){
             let i = 0;
             isExist.CongTyTrongDS.forEach((element) => {
-                if ( element.SoDienThoai.includes(SoDienThoaiCty) ){
+                if ( element.Email.includes(Email) ){
                     let k = 0;
                     element.DangKy.forEach((data) => {
                         if ( data.ViTri.includes(ViTri) ){
@@ -614,6 +564,391 @@ DangKyThucTapAdminRoute.post('/XoaViTriCongTyTrongDanhSach/:MaDKTT', async (req,
             return sendError(res, "Thông tin này không tồn tại nên không thể xóa.");
 
         return sendSuccess(res, "Xóa vị trí thực tập công ty trong danh sách thành công");
+    }
+    catch (error){
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route POST /api/admin/dk-thuc-tap/ImportDSSinhVienDKTT/{MaDKTT}
+ * @description Import danh sách sinh viên đăng ký thực tập
+ * @access public
+ */
+DangKyThucTapAdminRoute.post('/ImportDSSinhVienDKTT/:MaDKTT', createThucTapDir, uploadFile.single("FileExcel"), async (req, res) => {
+    try{
+        const { CapTaiKhoan, MatKhauMacDinh } = req.body;
+        if (CapTaiKhoan == '' || MatKhauMacDinh == '')
+            return sendError(res, "Vui lòng điền đầy đủ thông tin");
+        const { MaDKTT } = req.params;
+        const dktt = await DangKyThucTap.findOne({ MaDKTT: MaDKTT });
+        if (!dktt)
+            return sendError(res, "Đợt đăng ký thực tập này không tồn tại");
+        let thongtinCreate = [];
+        let thongtinUpdate = [];
+        let svdangkytt = [];
+        let fileName = path.join(__dirname, `../../public/ThucTap/${req.file.filename}`);
+        const nganh = await Nganh.find({});
+        const sinhvien = await SinhVien.find({});
+        const workbook = new ExcelJS.Workbook();
+        await workbook.xlsx.readFile(fileName)
+            .then(() => {
+                const sheetCount = workbook.worksheets.length;
+                for (let i = 1; i <= sheetCount; i++){
+                    const worksheet = workbook.getWorksheet(i);
+                    worksheet.eachRow((row, rowNumber) => {
+                        if ( rowNumber > 1 ){
+                            let NganhHoc = nganh.find( ({MaNganh}) => MaNganh === row.getCell("G").value );
+                            let KhoaHoc = row.getCell("H").value;
+                            let ngaysinh = String(row.getCell("D").value)
+                            let sv = {
+                                MaSV: row.getCell("A").value,
+                                HoSV: row.getCell("B").value,
+                                TenSV: row.getCell("C").value,
+                                NgaySinh: new Date(ngaysinh.split("/")[2] + "-" + ngaysinh.split("/")[1] + "-" + ngaysinh.split("/")[0] ),
+                                DTBTLHK: row.getCell("E").value,
+                                Lop: row.getCell("F").value,
+                                Nganh: NganhHoc.TenNganh,
+                                Khoa: String(KhoaHoc).substring(0,4),
+                            }
+                            let checkSV = sinhvien.find( ({MaSV}) => MaSV === row.getCell("A").value )
+                            if (checkSV)
+                                thongtinUpdate.push(sv)
+                            else
+                                thongtinCreate.push(sv);
+                        }
+                        
+                    });
+                }
+            })
+            .catch(err => {
+                console.error(err);
+            });
+        fs.unlinkSync(fileName, (err) => {
+            console.log(err)
+        })
+        if (CapTaiKhoan == CapTaiKhoanChoSinhVienKhiImportFile.TaoTaiKhoan){
+            const qtk = await QuyenTaiKhoan.findOne({ MaQTK: "SINHVIEN" });
+            let password = await argon2.hash(MatKhauMacDinh);
+            if ( thongtinUpdate.length > 0 ){
+                for (let i = 0; i< thongtinUpdate.length; i++){
+                    let checkSV = sinhvien.find( ({MaSV}) => MaSV === thongtinUpdate[i].MaSV )
+                    if (checkSV.MaTK == null){
+                        let taikhoan = await TaiKhoan.create({
+                                                MaTK: "TK" + thongtinUpdate[i].MaSV,
+                                                MaQTK: qtk._id,
+                                                TenDangNhap: thongtinUpdate[i].MaSV,
+                                                MatKhau: password
+                                            })
+                        let sv = await SinhVien.findOneAndUpdate({ MaSV: thongtinUpdate[i].MaSV },{ 
+                            HoSV: thongtinUpdate[i].HoSV, 
+                            TenSV: thongtinUpdate[i].TenSV, 
+                            NgaySinh: thongtinUpdate[i].NgaySinh, 
+                            Khoa: thongtinUpdate[i].Khoa, 
+                            DTBTLHK: thongtinUpdate[i].DTBTLHK, 
+                            Nganh: thongtinUpdate[i].Nganh, 
+                            Lop : thongtinUpdate[i].Lop,
+                            MaTK: taikhoan._id
+                        });
+                        svdangkytt.push(sv._id);
+                    }
+                    else{
+                        let sv = await SinhVien.findOneAndUpdate({ MaSV: thongtinUpdate[i].MaSV },{ 
+                            HoSV: thongtinUpdate[i].HoSV, 
+                            TenSV: thongtinUpdate[i].TenSV, 
+                            NgaySinh: thongtinUpdate[i].NgaySinh, 
+                            Khoa: thongtinUpdate[i].Khoa, 
+                            DTBTLHK: thongtinUpdate[i].DTBTLHK, 
+                            Nganh: thongtinUpdate[i].Nganh, 
+                            Lop : thongtinUpdate[i].Lop
+                        });
+                        svdangkytt.push(sv._id);
+                    }
+                }
+            }
+            if (thongtinCreate.length > 0 ){
+                for (let i = 0; i< thongtinCreate.length; i++){
+                    let taikhoan = await TaiKhoan.create({
+                        MaTK: "TK" + thongtinCreate[i].MaSV,
+                        MaQTK: qtk._id,
+                        TenDangNhap: thongtinCreate[i].MaSV,
+                        MatKhau: password
+                    })
+                    let sv = await SinhVien.create({ 
+                        MaSV: thongtinCreate[i].MaSV,
+                        HoSV: thongtinCreate[i].HoSV, 
+                        TenSV: thongtinCreate[i].TenSV,
+                        NgaySinh: thongtinCreate[i].NgaySinh, 
+                        Khoa: thongtinCreate[i].Khoa,
+                        Nganh: thongtinCreate[i].Nganh, 
+                        Lop: thongtinCreate[i].Lop ,
+                        DTBTLHK: thongtinCreate[i].DTBTLHK,
+                        MaTK: taikhoan._id
+                    });
+                    svdangkytt.push(sv._id);
+                };
+            }
+        }
+        else{
+            if ( thongtinUpdate.length > 0 ){
+                for (let i = 0; i< thongtinUpdate.length; i++){
+                    let sv = await SinhVien.findOneAndUpdate({ MaSV: thongtinUpdate[i].MaSV },{ 
+                        HoSV: thongtinUpdate[i].HoSV, 
+                        TenSV: thongtinUpdate[i].TenSV, 
+                        NgaySinh: thongtinUpdate[i].NgaySinh, 
+                        Khoa: thongtinUpdate[i].Khoa, 
+                        DTBTLHK: thongtinUpdate[i].DTBTLHK, 
+                        Nganh: thongtinUpdate[i].Nganh, 
+                        Lop : thongtinUpdate[i].Lop
+                    });
+                    svdangkytt.push(sv._id);
+                }
+            }
+            if (thongtinCreate.length > 0 ){
+                for (let i = 0; i< thongtinCreate.length; i++){
+                    let sv = await SinhVien.create({ 
+                        MaSV: thongtinCreate[i].MaSV,
+                        HoSV: thongtinCreate[i].HoSV, 
+                        TenSV: thongtinCreate[i].TenSV,
+                        NgaySinh: thongtinCreate[i].NgaySinh, 
+                        Khoa: thongtinCreate[i].Khoa,
+                        Nganh: thongtinCreate[i].Nganh, 
+                        Lop: thongtinCreate[i].Lop ,
+                        DTBTLHK: thongtinCreate[i].DTBTLHK
+                    });
+                    svdangkytt.push(sv);
+                };
+            }
+        }
+        dktt.SinhVienDuocDKTT = svdangkytt;
+        await DangKyThucTap.findOneAndUpdate({ MaDKTT: MaDKTT }, { SinhVienDuocDKTT: dktt.SinhVienDuocDKTT});
+        return sendSuccess(res, "Import file thông tin sinh viên thành công");
+    }
+    catch (error){
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route GET /api/admin/dk-thuc-tap/ExportFileExcelDsSVDKTT/{MaKLTT}
+ * @description Export file danh sách công ty và sinh viên đăng ký thực tập
+ * @access public
+ */
+DangKyThucTapAdminRoute.get('/ExportFileExcelDsSVDKTT/:MaKLTT', async (req, res) => {
+    try{
+        const { MaKLTT } = req.params;
+        const now = new Date();
+
+        const dktt = await DangKyThucTap.findOne({ MaKLTT: MaKLTT }).populate([
+            {
+                path: "CongTyTrongDS",
+                select: "DangKy",
+                populate: [
+                    {
+                        path: "DangKy",
+                        select: "SinhVien",
+                        populate: [
+                            {
+                                path: "SinhVien",
+                                select: "MaSV HoSV TenSV Lop"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                path: "CongTyNgoaiDS",
+                select: "SinhVien",
+                populate: [
+                    {
+                        path: "SinhVien",
+                        select: "MaSV HoSV TenSV Lop",
+                    }
+                ]
+            }
+        ]).lean();
+        if (!dktt)
+            return sendError(res, "Đợt đăng ký thực tập này không tồn tại");
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('DS Đăng ký');
+
+        worksheet.getColumn("A").width = 5;
+        worksheet.getColumn("B").width = 27;
+        worksheet.getColumn("C").width = 14;
+        worksheet.getColumn("D").width = 8;
+        worksheet.getColumn("E").width = 10;
+        worksheet.getColumn("F").width = 30;
+        worksheet.getColumn("G").width = 14;
+        worksheet.getColumn("H").width = 18;
+
+        worksheet.getRow(9).height = 28;
+        worksheet.getRow(10).height = 28;
+
+        const sizeFont = 12;
+        const fontType = "Times New Roman";
+        const borderRound = {
+            top: {style:'thin'},
+            left: {style:'thin'},
+            bottom: {style:'thin'},
+            right: {style:'thin'}
+        };
+
+        worksheet.mergeCells('A1:E1');
+        const row1 = worksheet.getRow(1).getCell("A");
+        row1.value = "TRƯỜNG ĐẠI HỌC SÀI GÒN";
+        row1.alignment = { vertical: 'middle', horizontal: 'center' };
+        row1.font = { size: sizeFont, name: fontType }
+
+        worksheet.mergeCells('F1:H1');
+        const row1_2 = worksheet.getRow(1).getCell("F");
+        row1_2.value = "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM";
+        row1_2.alignment = { vertical: 'middle', horizontal: 'center' };
+        row1_2.font = { bold: true, size: sizeFont, name: fontType }
+
+        worksheet.mergeCells('A2:E2');
+        const row2 = worksheet.getRow(2).getCell("A");
+        row2.value = "KHOA/NGÀNH: CÔNG NGHỆ THÔNG TIN";
+        row2.alignment = { vertical: 'middle', horizontal: 'center' };
+        row2.font = { bold: true, size: sizeFont, name: fontType }
+
+        worksheet.mergeCells('F2:I2');
+        const row2_2 = worksheet.getRow(2).getCell("F");
+        row2_2.value = "Độc lập - Tự do - Hạnh phúc";
+        row2_2.alignment = { vertical: 'middle', horizontal: 'center' };
+        row2_2.font = { bold: true, size: sizeFont, name: fontType }
+
+        worksheet.mergeCells('E4:I4');
+        const row4 = worksheet.getRow(4).getCell("E");
+        row4.value = "Thành phố Hồ Chí Minh, ngày    tháng    năm "  + now.getFullYear();
+        row4.alignment = { vertical: 'middle', horizontal: 'center' };
+        row4.font = { size: sizeFont, name: fontType, italic: true }
+
+        worksheet.mergeCells('A6:I6');
+        const row6 = worksheet.getRow(6).getCell("A");
+        row6.value = "DANH SÁCH SINH VIÊN ĐĂNG KÍ THỰC TẬP NĂM HỌC " + dktt.NienKhoa;
+        row6.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+        row6.font = { bold: true, size: sizeFont, name: fontType }
+
+        worksheet.mergeCells('A7:I7');
+        const row7 = worksheet.getRow(7).getCell("A");
+        row7.value = "Ngành: Công nghệ thông tin - Trình độ: Đại học";
+        row7.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+        row7.font = { bold: true, size: sizeFont, name: fontType }
+
+        worksheet.mergeCells('A9:A10');
+        const stt = worksheet.getRow(9).getCell("A");
+        stt.value = "STT";
+        stt.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+        stt.font = { bold: true, size: sizeFont, name: fontType }
+        stt.border = borderRound
+
+        worksheet.mergeCells('B9:B10');
+        const masosv = worksheet.getRow(9).getCell("B");
+        masosv.value = "Mã số SV";
+        masosv.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+        masosv.font = { bold: true, size: sizeFont, name: fontType }
+        masosv.border = borderRound
+
+        worksheet.mergeCells('C9:D10');
+        const hotensv = worksheet.getRow(9).getCell("C");
+        hotensv.value = "Họ tên sinh viên";
+        hotensv.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+        hotensv.font = { bold: true, size: sizeFont, name: fontType }
+        hotensv.border = borderRound
+
+
+        worksheet.mergeCells('E9:E10');
+        const lop = worksheet.getRow(9).getCell("E");
+        lop.value = "Lớp";
+        lop.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+        lop.font = { bold: true, size: sizeFont, name: fontType }
+        lop.border = borderRound
+
+        worksheet.mergeCells('F9:F10');
+        const tencty = worksheet.getRow(9).getCell("F");
+        tencty.value = "Tên cơ sở thực tập";
+        tencty.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+        tencty.font = { bold: true, size: sizeFont, name: fontType }
+        tencty.border = borderRound
+
+        worksheet.mergeCells('G9:H9');
+        const gvhuongdan = worksheet.getRow(9).getCell("G");
+        gvhuongdan.value = "Giảng viên hướng dẫn";
+        gvhuongdan.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+        gvhuongdan.font = { bold: true, size: sizeFont, name: fontType }
+        gvhuongdan.border = borderRound
+
+        const macb = worksheet.getRow(10).getCell("G");
+        macb.value = "Mã CB";
+        macb.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+        macb.font = { bold: true, size: sizeFont, name: fontType }
+        macb.border = borderRound
+
+        const hotengv = worksheet.getRow(10).getCell("H");
+        hotengv.value = "(Ông/bà) Họ và tên";
+        hotengv.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+        hotengv.font = { bold: true, size: sizeFont, name: fontType }
+        hotengv.border = borderRound
+
+        let dssv = [];
+        dktt.CongTyNgoaiDS.forEach((element) => {
+            let sv = {
+                MaSV: element.SinhVien.MaSV,
+                HoSV: element.SinhVien.HoSV,
+                TenSV: element.SinhVien.TenSV,
+                Lop: element.SinhVien.Lop,
+                Cty: element.TenCongTy
+            }
+            dssv.push(sv);
+        })
+        dktt.CongTyTrongDS.forEach((element) => {
+            element.DangKy.forEach((data1) => {
+                data1.SinhVien.forEach((data2) => {
+                    let sv = {
+                        MaSV: data2.MaSV,
+                        HoSV: data2.HoSV,
+                        TenSV: data2.TenSV,
+                        Lop: data2.Lop,
+                        Cty: element.TenCongTy
+                    }
+                    dssv.push(sv);
+                });
+            });
+        });
+
+        let i = 11;
+        let dem = 1;
+        dssv.forEach((element) => {
+            worksheet.getRow(i).height = 24
+            worksheet.getRow(i).getCell("A").value = dem;
+            worksheet.getRow(i).getCell("B").value = element.MaSV;
+            worksheet.getRow(i).getCell("C").value = element.HoSV;
+            worksheet.getRow(i).getCell("D").value = element.TenSV;
+            worksheet.getRow(i).getCell("E").value = element.Lop;
+            worksheet.getRow(i).getCell("F").value = element.TenCongTy;
+            dem++;
+            i++;
+        });
+        for (let k = 11; k < i; k++){
+            worksheet.getRow(k).eachCell((cell) => {
+                cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+                cell.font = { size: sizeFont, name: fontType }
+                cell.border = borderRound
+            });
+        };
+
+        await res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheatml.sheet")
+        await res.setHeader("Content-Disposition", `attachment; filename=DSDangKyThucTap.xlsx`)
+        return workbook.xlsx.write(res)
+            .then(() => {
+                res.status(200)
+            })
+            .catch((error) => {
+                console.error('Lỗi khi xuất file Excel:', error);
+            });
     }
     catch (error){
         console.log(error)
