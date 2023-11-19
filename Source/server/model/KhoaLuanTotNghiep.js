@@ -6,6 +6,7 @@ const KhoaLuanTotNghiepSchema = new Schema(
     {
         MaKLTN: {
             type: String,
+            unique: true,
             required: true,
         },
         Ten: {

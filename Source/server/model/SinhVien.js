@@ -6,6 +6,7 @@ const SinhVienSchema = new Schema(
     {
         MaSV: {
             type: String,
+            unique: true,
             required: true,
         },
         MaTK: {

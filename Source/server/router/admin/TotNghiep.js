@@ -294,11 +294,11 @@ TotNghiepAdminRoute.delete('/XoaDotTotNghiep/:MaTN', async (req, res) => {
 })
 
 /**
- * @route GET /api/admin/tot-nghiep/ThongKeTotNghiepSinhVien/{MaTN}
+ * @route POST /api/admin/tot-nghiep/ThongKeTotNghiepSinhVien/{MaTN}
  * @description Thống kê sinh viên tốt nghiệp
  * @access public
  */
-TotNghiepAdminRoute.get('/ThongKeTotNghiepSinhVien/:MaTN', async (req, res) => {
+TotNghiepAdminRoute.post('/ThongKeTotNghiepSinhVien/:MaTN', async (req, res) => {
     try{
         const { MaTN } = req.params;
         const isExist = await TotNghiep.findOne({ MaTN: MaTN });
@@ -314,12 +314,12 @@ TotNghiepAdminRoute.get('/ThongKeTotNghiepSinhVien/:MaTN', async (req, res) => {
                 { $unwind: '$ThongTin' },
                 {
                     $group: {
-                        _id: { Nganh: '$ThongTin.Nganh', XepLoaiTN: '$ThongTin.XepLoaiTN' },
+                        _id: { Key: '$ThongTin.Nganh', XepLoaiTN: '$ThongTin.XepLoaiTN' },
                         count: { $sum: 1 }
                     }
                 },
                 {
-                    $sort : { "_id.Nganh": 1 }
+                    $sort : { "_id.Key": 1 }
                 }
             ]);
         }
@@ -332,12 +332,12 @@ TotNghiepAdminRoute.get('/ThongKeTotNghiepSinhVien/:MaTN', async (req, res) => {
                     { $unwind: '$ThongTin' },
                     {
                         $group: {
-                            _id: { Lop: '$ThongTin.Lop', XepLoaiTN: '$ThongTin.XepLoaiTN' },
+                            _id: { Key: '$ThongTin.Lop', XepLoaiTN: '$ThongTin.XepLoaiTN' },
                             count: { $sum: 1 }
                         }
                     },
                     {
-                        $sort : { "_id.Lop": 1 }
+                        $sort : { "_id.Key": 1 }
                     }
                 ]);
             }
@@ -352,18 +352,80 @@ TotNghiepAdminRoute.get('/ThongKeTotNghiepSinhVien/:MaTN', async (req, res) => {
                     },
                     {
                         $group: {
-                            _id: { Lop: '$ThongTin.Lop', XepLoaiTN: '$ThongTin.XepLoaiTN' },
+                            _id: { Key: '$ThongTin.Lop', XepLoaiTN: '$ThongTin.XepLoaiTN' },
                             count: { $sum: 1 }
                         }
                     },
                     {
-                        $sort : { "_id.Lop": 1 }
+                        $sort : { "_id.Key": 1 }
                     }
                 ]);
             }
         }
+        let data = [];
+        for (let i = 0; i < tn.length ; i++){
+            if (i != tn.length - 1){
+                if (tn[i]._id.Key === tn[i+1]._id.Key){
+                    let thongtin =    {
+                        Khoa: tn[i]._id.Key,
+                        ThongKe:{
+                            BTH: tn[i].count,
+                            CC: tn[i+1].count,
+                        }
+                    }
+                    i++;
+                    data.push(thongtin);
+                }
+                else{
+                    if (tn[i]._id.KQ == "BTH"){
+                        let thongtin =    {
+                            Khoa: tn[i]._id.Key,
+                            ThongKe:{
+                                BTH: tn[i].count,
+                                CC: 0,
+                            }
+                        }
+                        data.push(thongtin);
+                    }
+                    else{
+                        let thongtin =    {
+                            Khoa: tn[i]._id.Key,
+                            ThongKe:{
+                                BTH: 0,
+                                CC: tn[i].count,
+                            }
+                        }
+                        data.push(thongtin);
+                    }
+                    
+                }
+            }
+            else{
+                if (tn[i]._id.KQ == "BTH"){
+                    let thongtin =    {
+                        Khoa: tn[i]._id.Key,
+                        ThongKe:{
+                            BTH: tn[i].count,
+                            CC: 0,
+                        }
+                    }
+                    data.push(thongtin);
+                }
+                else{
+                    let thongtin =    {
+                        Khoa: tn[i]._id.Key,
+                        ThongKe:{
+                            BTH: 0,
+                            CC: tn[i].count,
+                        }
+                    }
+                    data.push(thongtin);
+                }
+            }
+            
+        }
         
-        return sendSuccess(res, "Thống kê sinh viên tốt nghiệp thành công", tn);
+        return sendSuccess(res, "Thống kê sinh viên tốt nghiệp thành công", data);
     }
     catch (error){
         console.log(error)

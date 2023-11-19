@@ -6,6 +6,7 @@ const GiangVienSchema = new Schema(
     {
         MaGV: {
             type: String,
+            unique: true,
             required: true,
         },
         MaTK: {

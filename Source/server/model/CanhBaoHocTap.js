@@ -6,6 +6,7 @@ const CanhBaoHocTapSchema = new Schema(
     {
         MaCBHT: {
             type: String,
+            unique: true,
             required: true,
         },
         Ten: {
