@@ -215,7 +215,7 @@ SinhVienAdminRoute.post('/importFileSV', createSinhVienDir, uploadFile.single("F
                                                 TenDangNhap: element.MaSV,
                                                 MatKhau: password
                                             })
-                        await SinhVien.findOneAndUpdate({ MaSV: element.MaSV },{ 
+                        let sv = await SinhVien.findOneAndUpdate({ MaSV: element.MaSV },{ 
                             HoSV: element.HoSV, 
                             TenSV: element.TenSV, 
                             NgaySinh: element.NgaySinh, 
@@ -227,7 +227,7 @@ SinhVienAdminRoute.post('/importFileSV', createSinhVienDir, uploadFile.single("F
                         });
                     }
                     else{
-                        await SinhVien.findOneAndUpdate({ MaSV: element.MaSV },{ 
+                        let sv = await SinhVien.findOneAndUpdate({ MaSV: element.MaSV },{ 
                             HoSV: element.HoSV, 
                             TenSV: element.TenSV, 
                             NgaySinh: element.NgaySinh, 
@@ -247,7 +247,7 @@ SinhVienAdminRoute.post('/importFileSV', createSinhVienDir, uploadFile.single("F
                         TenDangNhap: element.MaSV,
                         MatKhau: password
                     })
-                    await SinhVien.create({ 
+                    let sv = await SinhVien.create({ 
                         MaSV: element.MaSV,
                         HoSV: element.HoSV, 
                         TenSV: element.TenSV,
@@ -264,7 +264,7 @@ SinhVienAdminRoute.post('/importFileSV', createSinhVienDir, uploadFile.single("F
         else{
             if ( thongtinUpdate.length > 0 ){
                 await thongtinUpdate.forEach( async (element) => {
-                    await SinhVien.findOneAndUpdate({ MaSV: element.MaSV },{ 
+                    let sv = await SinhVien.findOneAndUpdate({ MaSV: element.MaSV },{ 
                         HoSV: element.HoSV, 
                         TenSV: element.TenSV, 
                         NgaySinh: element.NgaySinh, 
@@ -277,7 +277,7 @@ SinhVienAdminRoute.post('/importFileSV', createSinhVienDir, uploadFile.single("F
             }
             if (thongtinCreate.length > 0 ){
                 await thongtinCreate.forEach( async (element) => {
-                    await SinhVien.create({ 
+                    let sv = await SinhVien.create({ 
                         MaSV: element.MaSV,
                         HoSV: element.HoSV, 
                         TenSV: element.TenSV,

@@ -40,3 +40,11 @@ export const createTotNghiepDir = (req, res, next) => {
     req.dirName = 'TotNghiep'
     next()
 }
+
+export const createThucTapDir = (req, res, next) => {
+    mkdir(`public/ThucTap`, { recursive: true }, (err) => {
+        if (err) return sendError(res, 'Không thể tải tập tin lên.')
+    })
+    req.dirName = 'ThucTap'
+    next()
+}

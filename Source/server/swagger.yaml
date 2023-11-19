@@ -2451,6 +2451,12 @@ paths:
           type: string
           description: Lọc theo ngành
           required: true
+        - in: body
+          name: KieuThongKe
+          type: string
+          description: Kiểu thống kê
+          enum: ['Xếp loại','Tốt nghiệp']
+          required: true
       responses:
         200:
           description: Thống kê sinh viên tốt nghiệp thành công.
@@ -3735,6 +3741,16 @@ paths:
           required: true
           description: Mã đăng ký thực tập
         - in: body
+          name: Ho
+          type: string
+          required: true
+          description: Họ người liên hệ
+        - in: body
+          name: Ten
+          type: string
+          required: true
+          description: Tên người liên hệ
+        - in: body
           name: TenCongTy
           type: string
           required: true
@@ -3792,10 +3808,10 @@ paths:
           required: true
           description: Mã đăng ký thực tập
         - in: body
-          name: SoDienThoai
+          name: Email
           type: string
           required: true
-          description: Số điện thoại công ty
+          description: Email công ty
       responses:
         200:
           description: Xóa công ty trong danh sách đăng ký thực tập thành công.
@@ -3939,10 +3955,10 @@ paths:
           required: true
           description: Số lượng cần tuyển
         - in: body
-          name: SoDienThoaiCty
+          name: Email
           type: string
           required: true
-          description: Số điện thoại công ty
+          description: Email công ty
       responses:
         200:
           description: Thêm vị trí thực tập công ty trong danh sách thành công.
@@ -3981,10 +3997,10 @@ paths:
           required: true
           description: Vị trí thực tập công ty
         - in: body
-          name: SoDienThoaiCty
+          name: Email
           type: string
           required: true
-          description: Số điện thoại công ty
+          description: Email công ty
       responses:
         200:
           description: Xóa vị trí thực tập công ty trong danh sách đăng ký thực tập thành công.
@@ -4001,6 +4017,84 @@ paths:
             example: {
               "status": false,
               "message" : "Xóa vị trí thực tập công ty trong danh sách đăng ký thực tập thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/dk-thuc-tap/ImportDSSinhVienDKTT/{MaDKTT}:
+    post: 
+      tags:
+        - "DangKyThucTap"
+      summary: Import danh sách sinh viên đăng ký thực tập
+      produces:
+        - multipart/form-data    
+      parameters:
+        - in: path
+          name: MaDKTT
+          type: String
+          required: true
+        - in: formData
+          name: CapTaiKhoan
+          type: String
+          enum: ['Tạo tài khoản','Không tạo tài khoản']
+          required: true
+        - in: formData
+          name: MatKhauMacDinh
+          type: String
+          description: Mật khẩu mặc định của tài khoản
+          required: true
+        - in: formData
+          name: FileExcel
+          type: file
+          description: file excel
+          required: true
+      responses:
+        200:
+          description: Import danh sách sinh viên đăng ký thực tập thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Import danh sách sinh viên đăng ký thực tập thành công.",
+            }          
+        400:
+          description: Import danh sách sinh viên đăng ký thực tập thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Import danh sách sinh viên đăng ký thực tập thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/dk-thuc-tap/ExportFileExcelDsSVDKTT/{MaKLTT}:
+    get:
+      tags:
+        - "DangKyThucTap"
+      summary: "Export file danh sách công ty và sinh viên đăng ký thực tập"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaKLTT
+          type: string
+          required: true
+          description: Mã đăng ký thực tập
+      responses:
+        200:
+          description: Export file thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Export file thành công.",
+            }
+        400:
+          description: Export file thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Export file thất bại.",
             }
       security:
         - ApiKeyAuth: []

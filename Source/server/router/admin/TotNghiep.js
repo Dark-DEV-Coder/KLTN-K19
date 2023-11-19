@@ -304,127 +304,292 @@ TotNghiepAdminRoute.post('/ThongKeTotNghiepSinhVien/:MaTN', async (req, res) => 
         const isExist = await TotNghiep.findOne({ MaTN: MaTN });
         if (!isExist)
             return sendError(res, "Đợt tốt nghiệp không tồn tại.");
-        const { ThongKeTheo, LocTheoNganh } = req.body;
+        const { ThongKeTheo, LocTheoNganh, KieuThongKe } = req.body;
         let tn = null;
-        if (ThongKeTheo == "Ngành" && LocTheoNganh == "Tất cả"){
-            tn = await TotNghiep.aggregate([
-                {
-                    $match: { "MaTN": MaTN }
-                },
-                { $unwind: '$ThongTin' },
-                {
-                    $group: {
-                        _id: { Key: '$ThongTin.Nganh', XepLoaiTN: '$ThongTin.XepLoaiTN' },
-                        count: { $sum: 1 }
-                    }
-                },
-                {
-                    $sort : { "_id.Key": 1 }
-                }
-            ]);
-        }
-        if (ThongKeTheo == "Lớp"){
-            if (LocTheoNganh == "Tất cả"){
-                tn = await TotNghiep.aggregate([
-                    {
-                        $match: { "MaTN": MaTN }
-                    },
-                    { $unwind: '$ThongTin' },
-                    {
-                        $group: {
-                            _id: { Key: '$ThongTin.Lop', XepLoaiTN: '$ThongTin.XepLoaiTN' },
-                            count: { $sum: 1 }
-                        }
-                    },
-                    {
-                        $sort : { "_id.Key": 1 }
-                    }
-                ]);
-            }
-            else{
-                tn = await TotNghiep.aggregate([
-                    {
-                        $match: { "MaTN": MaTN }
-                    },
-                    { $unwind: '$ThongTin' },
-                    {
-                        $match: { "ThongTin.Nganh": LocTheoNganh }
-                    },
-                    {
-                        $group: {
-                            _id: { Key: '$ThongTin.Lop', XepLoaiTN: '$ThongTin.XepLoaiTN' },
-                            count: { $sum: 1 }
-                        }
-                    },
-                    {
-                        $sort : { "_id.Key": 1 }
-                    }
-                ]);
-            }
-        }
         let data = [];
-        for (let i = 0; i < tn.length ; i++){
-            if (i != tn.length - 1){
-                if (tn[i]._id.Key === tn[i+1]._id.Key){
+        if (KieuThongKe == "Xếp loại"){
+            if (ThongKeTheo == "Ngành" && LocTheoNganh == "Tất cả"){
+                tn = await TotNghiep.aggregate([
+                    {
+                        $match: { "MaTN": MaTN }
+                    },
+                    { $unwind: '$ThongTin' },
+                    {
+                        $group: {
+                            _id: { Key: '$ThongTin.Nganh', XepLoaiTN: '$ThongTin.XepLoaiTN' },
+                            count: { $sum: 1 }
+                        }
+                    },
+                    {
+                        $sort : { "_id.Key": 1 }
+                    }
+                ]);
+                for (let i = 0; i < tn.length ; i++){
+                    let demsx = 0;
+                    let demgioi = 0;
+                    let demkha = 0;
+                    let demtb = 0;
+                    const element = await TotNghiep.aggregate([
+                        {
+                            $match: { "MaTN": MaTN }
+                        },
+                        {
+                            $unwind: '$ThongTin',
+                        },
+                        {
+                            $match: {
+                                'ThongTin.Nganh': tn[i]._id.Key,
+                            },
+                        },
+                    ]);
+                    element.forEach((doc) => {
+                        if (doc.XepLoaiTN == "Xuất sắc")
+                            demsx++;
+                        if (doc.XepLoaiTN == "Giỏi")
+                            demgioi++;
+                        if (doc.XepLoaiTN == "Khá")
+                            demkha++;
+                        if (doc.XepLoaiTN == "Trung bình")
+                            demtb++;
+                    });
                     let thongtin =    {
                         Khoa: tn[i]._id.Key,
                         ThongKe:{
-                            BTH: tn[i].count,
-                            CC: tn[i+1].count,
+                            XuatSac: demsx,
+                            Gioi: demgioi,
+                            Kha: demkha,
+                            TrungBinh: demtb,
                         }
                     }
-                    i++;
                     data.push(thongtin);
                 }
-                else{
-                    if (tn[i]._id.KQ == "BTH"){
+            }
+            if (ThongKeTheo == "Lớp"){
+                if (LocTheoNganh == "Tất cả"){
+                    tn = await TotNghiep.aggregate([
+                        {
+                            $match: { "MaTN": MaTN }
+                        },
+                        { $unwind: '$ThongTin' },
+                        {
+                            $group: {
+                                _id: { Key: '$ThongTin.Lop', XepLoaiTN: '$ThongTin.XepLoaiTN' },
+                                count: { $sum: 1 }
+                            }
+                        },
+                        {
+                            $sort : { "_id.Key": 1 }
+                        }
+                    ]);
+                    for (let i = 0; i < tn.length ; i++){
+                        let demsx = 0;
+                        let demgioi = 0;
+                        let demkha = 0;
+                        let demtb = 0;
+                        const element = await TotNghiep.aggregate([
+                            {
+                                $match: { "MaTN": MaTN }
+                            },
+                            {
+                                $unwind: '$ThongTin',
+                            },
+                            {
+                                $match: {
+                                    'ThongTin.Lop': tn[i]._id.Key,
+                                },
+                            },
+                        ]);
+                        element.forEach((doc) => {
+                            if (doc.XepLoaiTN == "Xuất sắc")
+                                demsx++;
+                            if (doc.XepLoaiTN == "Giỏi")
+                                demgioi++;
+                            if (doc.XepLoaiTN == "Khá")
+                                demkha++;
+                            if (doc.XepLoaiTN == "Trung bình")
+                                demtb++;
+                        });
                         let thongtin =    {
                             Khoa: tn[i]._id.Key,
                             ThongKe:{
-                                BTH: tn[i].count,
-                                CC: 0,
+                                XuatSac: demsx,
+                                Gioi: demgioi,
+                                Kha: demkha,
+                                TrungBinh: demtb,
+                            }
+                        }
+                        data.push(thongtin);
+                    }
+                }
+                else{
+                    tn = await TotNghiep.aggregate([
+                        {
+                            $match: { "MaTN": MaTN }
+                        },
+                        { $unwind: '$ThongTin' },
+                        {
+                            $match: { "ThongTin.Nganh": LocTheoNganh }
+                        },
+                        {
+                            $group: {
+                                _id: { Key: '$ThongTin.Lop', XepLoaiTN: '$ThongTin.XepLoaiTN' },
+                                count: { $sum: 1 }
+                            }
+                        },
+                        {
+                            $sort : { "_id.Key": 1 }
+                        }
+                    ]);
+                    for (let i = 0; i < tn.length ; i++){
+                        let demsx = 0;
+                        let demgioi = 0;
+                        let demkha = 0;
+                        let demtb = 0;
+                        const element = await TotNghiep.aggregate([
+                            {
+                                $match: { "MaTN": MaTN }
+                            },
+                            {
+                                $unwind: '$ThongTin',
+                            },
+                            {
+                                $match: {
+                                    'ThongTin.Lop': tn[i]._id.Key,
+                                    'ThongTin.Nganh': LocTheoNganh,
+                                },
+                            },
+                        ]);
+                        element.forEach((doc) => {
+                            if (doc.XepLoaiTN == "Xuất sắc")
+                                demsx++;
+                            if (doc.XepLoaiTN == "Giỏi")
+                                demgioi++;
+                            if (doc.XepLoaiTN == "Khá")
+                                demkha++;
+                            if (doc.XepLoaiTN == "Trung bình")
+                                demtb++;
+                        });
+                        let thongtin =    {
+                            Khoa: tn[i]._id.Key,
+                            ThongKe:{
+                                XuatSac: demsx,
+                                Gioi: demgioi,
+                                Kha: demkha,
+                                TrungBinh: demtb,
+                            }
+                        }
+                        data.push(thongtin);
+                    }
+                }
+            }
+        }
+        if (KieuThongKe == "Tốt nghiệp"){
+            if (ThongKeTheo == "Ngành" && LocTheoNganh == "Tất cả"){
+                tn = await SinhVien.aggregate([
+                    {
+                        $group: {
+                            _id: { Key: '$Nganh', TrangThaiTotNghiep: '$TrangThaiTotNghiep' },
+                            count: { $sum: 1 }
+                        }
+                    },
+                    {
+                        $sort : { "_id.Key": 1 }
+                    }
+                ]);
+            }
+            if (ThongKeTheo == "Lớp"){
+                if (LocTheoNganh == "Tất cả"){
+                    tn = await SinhVien.aggregate([
+                        {
+                            $group: {
+                                _id: { Key: '$Lop', TrangThaiTotNghiep: '$TrangThaiTotNghiep' },
+                                count: { $sum: 1 }
+                            }
+                        },
+                        {
+                            $sort : { "_id.Key": 1 }
+                        }
+                    ]);
+                }
+                else{
+                    tn = await SinhVien.aggregate([
+                        {
+                            $match: { "Nganh": LocTheoNganh }
+                        },
+                        {
+                            $group: {
+                                _id: { Key: '$Lop', TrangThaiTotNghiep: '$TrangThaiTotNghiep' },
+                                count: { $sum: 1 }
+                            }
+                        },
+                        {
+                            $sort : { "_id.Key": 1 }
+                        }
+                    ]);
+                }
+            }
+            data = [];
+            for (let i = 0; i < tn.length ; i++){
+                if (i != tn.length - 1){
+                    if (tn[i]._id.Key === tn[i+1]._id.Key){
+                        let thongtin = {
+                            Khoa: tn[i]._id.Key,
+                            ThongKe:{
+                                TN: tn[i+1].count,
+                                CTN: tn[i].count,
+                            }
+                        }
+                        i++;
+                        data.push(thongtin);
+                    }
+                    else{
+                        if (tn[i]._id.TrangThaiTotNghiep == "Đã tốt nghiệp"){
+                            let thongtin = {
+                                Khoa: tn[i]._id.Key,
+                                ThongKe:{
+                                    TN: tn[i].count,
+                                    CTN: 0,
+                                }
+                            }
+                            data.push(thongtin);
+                        }
+                        else{
+                            let thongtin = {
+                                Khoa: tn[i]._id.Key,
+                                ThongKe:{
+                                    TN: 0,
+                                    CTN: tn[i].count,
+                                }
+                            }
+                            data.push(thongtin);
+                        }
+                    }
+                }
+                else{
+                    if (tn[i]._id.TrangThaiTotNghiep == "Đã tốt nghiệp"){
+                        let thongtin = {
+                            Khoa: tn[i]._id.Key,
+                            ThongKe:{
+                                TN: tn[i].count,
+                                CTN: 0,
                             }
                         }
                         data.push(thongtin);
                     }
                     else{
-                        let thongtin =    {
+                        let thongtin = {
                             Khoa: tn[i]._id.Key,
                             ThongKe:{
-                                BTH: 0,
-                                CC: tn[i].count,
+                                TN: 0,
+                                CTN: tn[i].count,
                             }
                         }
                         data.push(thongtin);
                     }
-                    
                 }
+                
             }
-            else{
-                if (tn[i]._id.KQ == "BTH"){
-                    let thongtin =    {
-                        Khoa: tn[i]._id.Key,
-                        ThongKe:{
-                            BTH: tn[i].count,
-                            CC: 0,
-                        }
-                    }
-                    data.push(thongtin);
-                }
-                else{
-                    let thongtin =    {
-                        Khoa: tn[i]._id.Key,
-                        ThongKe:{
-                            BTH: 0,
-                            CC: tn[i].count,
-                        }
-                    }
-                    data.push(thongtin);
-                }
-            }
-            
         }
-        
         return sendSuccess(res, "Thống kê sinh viên tốt nghiệp thành công", data);
     }
     catch (error){
