@@ -61,3 +61,9 @@ export const TrangThaiDangKyKLTN = {
     TrongThoiGianDangKy: "Trong thời gian đăng ký",
     ChuaToiThoiGianDangKy: "Chưa tới thời gian đăng ký",
 }
+
+export const TrangThaiDangKyThucTap = {
+    HetThoiGianDangKy: "Hết thời gian đăng ký",
+    TrongThoiGianDangKy: "Trong thời gian đăng ký",
+    ChuaToiThoiGianDangKy: "Chưa tới thời gian đăng ký",
+}

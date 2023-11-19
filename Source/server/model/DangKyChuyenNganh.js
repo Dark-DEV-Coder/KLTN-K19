@@ -6,6 +6,7 @@ const DangKyChuyenNganhSchema = new Schema(
     {
         MaDKCN: {
             type: String,
+            unique: true,
             required: true,
         },
         Ten: {

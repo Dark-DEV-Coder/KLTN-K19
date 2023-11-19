@@ -6,6 +6,7 @@ const TotNghiepSchema = new Schema(
     {
         MaTN: {
             type: String,
+            unique: true,
             required: true,
         },
         Ten: {
