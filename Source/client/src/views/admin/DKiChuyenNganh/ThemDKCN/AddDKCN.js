@@ -35,46 +35,46 @@ const AddDKCN = () => {
         const ngayBD = new Date(tgbd);
         const ngayKT = new Date(tgkt);
         let res = await fetchAddDangKyCN(headers, maDKCN, tenDKCN, khoaDKCN, ngayBD, ngayKT)
-        console.log(res)
-        setTimeout(() => {
+        if (res.status === true) {
             if (sl_httt !== 0) {
-                AddSoLuongChuyenNganh("DCT", "HTTT", sl_httt)
+                let res2 = await fetchAddChuyenNganhDangKyCN(headers, maDKCN, "DCT", "HTTT", sl_httt)
             }
             if (sl_khmt !== 0) {
-                AddSoLuongChuyenNganh("DCT", "KHMT", sl_khmt)
+                let res2 = await fetchAddChuyenNganhDangKyCN(headers, maDKCN, "DCT", "KHMT", sl_khmt)
+                // AddSoLuongChuyenNganh("DCT", "KHMT", sl_khmt)
             }
             if (sl_ktpm !== 0) {
-                AddSoLuongChuyenNganh("DCT", "KTPM", sl_ktpm)
+                let res2 = await fetchAddChuyenNganhDangKyCN(headers, maDKCN, "DCT", "KTPM", sl_ktpm)
+                // AddSoLuongChuyenNganh("DCT", "KTPM", sl_ktpm)
             }
             if (sl_mmt !== 0) {
-                AddSoLuongChuyenNganh("DCT", "MMT", sl_mmt)
+                let res2 = await fetchAddChuyenNganhDangKyCN(headers, maDKCN, "DCT", "MMT", sl_mmt)
+                // AddSoLuongChuyenNganh("DCT", "MMT", sl_mmt)
             }
             if (sl_ltw !== 0) {
-                AddSoLuongChuyenNganh("DKP", "LTW", sl_ltw)
+                let res2 = await fetchAddChuyenNganhDangKyCN(headers, maDKCN, "DKP", "LTW", sl_ltw)
+                // AddSoLuongChuyenNganh("DKP", "LTW", sl_ltw)
             }
             if (sl_ltud !== 0) {
-                AddSoLuongChuyenNganh("DKP", "LTUD", sl_ltud)
+                let res2 = await fetchAddChuyenNganhDangKyCN(headers, maDKCN, "DKP", "LTUD", sl_ltud)
+                // AddSoLuongChuyenNganh("DKP", "LTUD", sl_ltud)
             }
-            if (res.status === true) {
-                toast.success(res.message)
-                navigate("/admin/dkichuyennganh")
-                return;
-            }
-            if (res.status === false) {
-                toast.error(res.message)
-                return;
-            }
-
-        }, 5000)
+            toast.success(res.message)
+            navigate("/admin/dkichuyennganh")
+            return;
+        }
+        if (res.status === false) {
+            toast.error(res.message)
+            return;
+        }
 
 
     }
 
-    const AddSoLuongChuyenNganh = async (MaNganh, MaChuyenNganh, ToiDa) => {
-        const headers = { 'x-access-token': accessToken };
-        let res = await fetchAddChuyenNganhDangKyCN(headers, maDKCN, MaNganh, MaChuyenNganh, ToiDa)
-        console.log("Mã ngành: ", res)
-    }
+    // const AddSoLuongChuyenNganh = async (MaNganh, MaChuyenNganh, ToiDa) => {
+    //     const headers = { 'x-access-token': accessToken };
+    //     let res = await fetchAddChuyenNganhDangKyCN(headers, maDKCN, MaNganh, MaChuyenNganh, ToiDa)
+    // }
 
     const onChangeInputSL = (event, SetSL) => {
         let changeValue = event.target.value;
@@ -82,7 +82,7 @@ const AddDKCN = () => {
     }
     const onChangeInputSL_DKCN = (event, SetSL) => {
         let changeValue = event.target.value;
-        SetSL(parseInt(changeValue));
+        SetSL(changeValue);
     }
 
     // check dữ liệu

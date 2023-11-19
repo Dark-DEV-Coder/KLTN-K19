@@ -1,6 +1,6 @@
 import "./TableKhoaLuan.scss"
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Box, Button } from '@mantine/core';
 import { IconDownload, IconUpload } from '@tabler/icons-react';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
@@ -8,42 +8,45 @@ import { Link } from "react-router-dom";
 import moment from 'moment'
 import { IconButton, } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
-
-const data = [
-    {
-        makl: 'KL1',
-        ten: 'Đợt đăng ký khóa luận năm học 2023-2024',
-        nienkhoa: '2023-2024',
-        trangthai: 1,
-    },
-    {
-        makl: 'KL2',
-        ten: 'Đợt đăng ký khóa luận năm học 2022-2023',
-        nienkhoa: '2022-2023',
-        trangthai: 1,
-    },
-    {
-        makl: 'KL3',
-        ten: 'Đợt đăng ký khóa luận năm học 2021-2022',
-        nienkhoa: '2021-2022',
-        trangthai: 1,
-    },
-    {
-        makl: 'KL4',
-        ten: 'Đợt đăng ký khóa luận năm học 2020-2021',
-        nienkhoa: '2020-2021',
-        trangthai: 1,
-    },
-]
-
+import { toast } from "react-toastify";
+import { useState, useEffect } from 'react';
+import { fetchAllKhoaLuan, fetchDeleteKhoaLuan } from "../GetData"
 const csvConfig = mkConfig({
     fieldSeparator: ',',
     decimalSeparator: '.',
     useKeysAsHeaders: true,
 });
 
-const TableKhoaLuan = () => {
-    const [checkdiv, setCheckdiv] = useState(false)
+const TableKhoaLuan = (props) => {
+    const accessToken = props.accessToken;
+    const [listData_khoaluan, SetListData_khoaluan] = useState([]);
+    // component didmount
+    useEffect(() => {
+        getListKhoaLuan();
+
+    }, []);
+
+    const getListKhoaLuan = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchAllKhoaLuan(headers);
+        if (res && res.data && res.data.DanhSach) {
+            SetListData_khoaluan(res.data.DanhSach)
+        }
+    }
+
+    const handleDeleteRows = async (row) => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDeleteKhoaLuan(headers, row.original.MaKLTN)
+        if (res.status === true) {
+            toast.success(res.message)
+            getListKhoaLuan()
+            return;
+        }
+        if (res.success === false) {
+            toast.error(res.message)
+            return;
+        }
+    }
 
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
@@ -52,13 +55,13 @@ const TableKhoaLuan = () => {
     };
 
     const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(data);
+        const csv = generateCsv(csvConfig)(listData_khoaluan);
         download(csvConfig)(csv);
     };
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'makl',
+                accessorKey: 'MaKLTN',
                 header: 'Mã',
                 size: 80,
                 enableColumnOrdering: false,
@@ -67,15 +70,15 @@ const TableKhoaLuan = () => {
 
             },
             {
-                accessorKey: 'ten',
+                accessorKey: 'Ten',
                 header: 'Tên',
                 size: 400,
                 enableEditing: false,
 
             },
             {
-                accessorKey: 'nienkhoa',
-                header: 'Niên khóa',
+                accessorKey: 'Khoa',
+                header: 'Khóa',
                 size: 150,
                 enableEditing: false,
 
@@ -85,7 +88,7 @@ const TableKhoaLuan = () => {
 
     const table = useMantineReactTable({
         columns,
-        data,
+        data: listData_khoaluan,
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',
@@ -98,19 +101,19 @@ const TableKhoaLuan = () => {
 
         renderRowActions: ({ row, table }) => (
             <Box sx={{ display: 'flex', gap: '0.3rem' }}>
-                <Link to={"/admin/khoaluan/single/" + row.original.makl}>
+                <Link to={"/admin/khoaluan/single/" + row.original.MaKLTN}>
                     <IconButton>
                         <Visibility fontSize="small" />
                     </IconButton>
                 </Link>
 
-                <Link to={"/admin/khoaluan/edit/" + row.original.makl}>
+                <Link to={"/admin/khoaluan/edit/" + row.original.MaKLTN}>
                     <IconButton  >
                         <Edit fontSize="small" />
                     </IconButton>
                 </Link>
 
-                <IconButton onClick={() => console.log(row.original.name)}>
+                <IconButton onClick={() => handleDeleteRows(row)}>
                     <Delete fontSize="small" sx={{ color: 'red' }} />
                 </IconButton>
             </Box >

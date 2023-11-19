@@ -1,12 +1,14 @@
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
-import React, { useMemo, } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Box, Button } from '@mantine/core';
 import { IconUpload } from '@tabler/icons-react';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
 import "./TableDSDeTai.scss"
 import { IconButton, } from '@mui/material';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Delete, Edit, Visibility } from '@mui/icons-material';
+import { fetchDeleteDeTai } from "../../GetData"
+import { toast } from "react-toastify";
 const csvConfig = mkConfig({
     fieldSeparator: ',',
     decimalSeparator: '.',
@@ -14,7 +16,24 @@ const csvConfig = mkConfig({
 });
 
 const TableDSDeTai = (props) => {
-    const { data_detai } = props
+    const { data_detai, MaKLTN } = props
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+    let navigate = useNavigate();
+
+    const handleDeleteRows = async (row) => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDeleteDeTai(headers, MaKLTN, row.original.TenDeTai, row.original.GVHD.MaGV)
+        console.log(res)
+        if (res.status === true) {
+            toast.success(res.message)
+            navigate(`/admin/khoaluan`)
+            return;
+        }
+        if (res.success === false) {
+            toast.error(res.message)
+            return;
+        }
+    }
 
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
@@ -29,26 +48,20 @@ const TableDSDeTai = (props) => {
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'ten',
+                accessorKey: 'TenDeTai',
                 header: 'Tên đề tài',
-                size: 500,
-
-            },
-            {
-                accessorKey: 'giangvienhuongdan',
-                header: 'Giảng viên hướng dẫn',
                 size: 250,
 
             },
             {
-
-                accessorKey: 'donvi',
-                header: 'Đơn vị công tác',
-                size: 100,
+                accessorKey: 'GVHD',
+                accessorFn: (dataRow) => dataRow.GVHD.HoGV + dataRow.GVHD.TenGV,
+                header: 'Giảng viên hướng dẫn',
+                size: 200,
             },
             {
+                accessorKey: 'TrangThaiDeTai',
                 header: 'Trạng thái',
-                accessorKey: 'trangthai',
                 size: 100,
             },
         ]
@@ -68,18 +81,18 @@ const TableDSDeTai = (props) => {
 
         renderRowActions: ({ row }) => (
             <Box sx={{ display: 'flex', gap: '0.3rem' }}>
-                <Link to={"/admin/khoaluan/detai/" + row.original.ten}>
+                <Link to={`/admin/khoaluan/${MaKLTN}/detai/` + row.original.TenDeTai}>
                     <IconButton >
                         <Visibility fontSize="small" />
                     </IconButton>
                 </Link>
-                <Link to={"/admin/khoaluan/detai/edit/" + row.original.ten}>
+                <Link to={`/admin/khoaluan/${MaKLTN}/detai/edit/` + row.original.TenDeTai}>
                     <IconButton  >
                         <Edit fontSize="small" />
                     </IconButton>
                 </Link>
 
-                <IconButton onClick={() => console.log(row.original.name)}>
+                <IconButton onClick={() => handleDeleteRows(row)}>
                     <Delete fontSize="small" sx={{ color: 'red' }} />
                 </IconButton>
             </Box >
@@ -92,18 +105,13 @@ const TableDSDeTai = (props) => {
                     gap: '16px',
                     padding: '8px',
                     flexWrap: 'wrap',
-                }}
-            >
-                {/* <div className="dropdown">
-                    <button className="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Tất cả
-                    </button>
-                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a className="dropdown-item dd ">Đăng ký</a>
-                        <a className="dropdown-item dd">Chưa đăng ký</a>
+                }}>
+                <Link to={`/admin/khoaluan/${MaKLTN}/detai/new`}>
+                    <Button>
+                        Thêm đề tài
+                    </Button>
+                </Link>
 
-                    </div>
-                </div> */}
 
                 <Button
                     disabled={

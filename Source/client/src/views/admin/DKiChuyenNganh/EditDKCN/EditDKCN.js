@@ -30,7 +30,6 @@ const EditDKCN = () => {
     const getDetailDangKyCN = async () => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDetailDangKyCN(headers, dangkychuyennganh.MaDKCN);
-        console.log(res)
         if (res && res.data) {
             setMaDKCN(res.data.MaDKCN)
             SetTen(res.data.Ten)

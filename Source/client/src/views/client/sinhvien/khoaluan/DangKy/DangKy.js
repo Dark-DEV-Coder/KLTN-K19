@@ -83,7 +83,6 @@ const DangKy = () => {
 
     const checkdulieuDetai = (SetDuLieu) => {
         detai === '' ? SetDuLieu(false) : SetDuLieu(true)
-        console.log(checkdetai)
     }
 
 

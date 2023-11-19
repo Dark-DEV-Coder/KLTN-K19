@@ -31,7 +31,6 @@ const AddChuyenNganh = () => {
         }
 
         let res = await fetchAddChuyenNganh(headers, machuyennganh, nganhhoc, tenchuyennganh)
-        console.log(res)
         if (res.status === true) {
             toast.success(res.message)
             navigate("/admin/chuyennganh")
