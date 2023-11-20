@@ -23,7 +23,6 @@ const TableDSDeTai = (props) => {
     const handleDeleteRows = async (row) => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDeleteDeTai(headers, MaKLTN, row.original.TenDeTai, row.original.GVHD.MaGV)
-        console.log(res)
         if (res.status === true) {
             toast.success(res.message)
             navigate(`/admin/khoaluan`)
