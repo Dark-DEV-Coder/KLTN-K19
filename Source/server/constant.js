@@ -52,8 +52,8 @@ export const TrangThaiDangKyChuyenNganh = {
 }
 
 export const DeTaiKhoaLuan = {
-    ChuaDu: "Chưa đủ số lượng sinh viên đăng ký",
-    DaDu: "Đã đủ số lượng sinh viên đăng ký",
+    ChuaDu: "Chưa đăng ký",
+    DaDu: "Đã đăng ký",
 }
 
 export const TrangThaiDangKyKLTN = {
