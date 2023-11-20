@@ -522,3 +522,58 @@ const fetchDeleteDeTai = (headers, MaKLTN, TenDeTai, MaGV) => {
 }
 export { fetchDeleteDeTai };
 
+//Chỉnh sửa đề tài của khóa luận tốt nghiệp
+const fetchEditDeTai = (headers, MaKLTN, TenDeTaiCu, TenDeTaiMoi, MaGV) => {
+    return axios.post(`admin/khoa-luan-tot-nghiep/ChinhSuaTenDeTaiKhoaLuan/${MaKLTN}`, {
+        MaKLTN: MaKLTN,
+        TenDeTaiCu: TenDeTaiCu,
+        TenDeTaiMoi: TenDeTaiMoi,
+        MaGV: MaGV,
+    }, { headers });
+}
+export { fetchEditDeTai };
+
+//Thêm SV đăng ký khóa luận
+const fetchAddSinhVienDangKyKL = (headers, MaKLTN, TenDeTai, MaGV, MaSV, HoSV, TenSV, Email, SoDienThoai, DTBTL, TinChiTL) => {
+    return axios.post(`admin/khoa-luan-tot-nghiep/ThemSVDangKyKL/${MaKLTN}`, {
+        MaKLTN: MaKLTN,
+        TenDeTai: TenDeTai,
+        MaGV: MaGV,
+        MaSV: MaSV,
+        HoSV: HoSV,
+        TenSV: TenSV,
+        Email: Email,
+        SoDienThoai: SoDienThoai,
+        DTBTL: DTBTL,
+        TinChiTL: TinChiTL,
+    }, { headers });
+}
+export { fetchAddSinhVienDangKyKL };
+
+//Sửa SV đăng ký khóa luận
+const fetchEditSinhVienDangKyKL = (headers, MaKLTN, TenDeTai, MaGV, MaSV, HoSV, TenSV, Email, SoDienThoai, DTBTL, TinChiTL) => {
+    return axios.post(`admin/khoa-luan-tot-nghiep/SuaThongTinSVDangKyKL/${MaKLTN}`, {
+        MaKLTN: MaKLTN,
+        TenDeTai: TenDeTai,
+        MaGV: MaGV,
+        MaSV: MaSV,
+        HoSV: HoSV,
+        TenSV: TenSV,
+        Email: Email,
+        SoDienThoai: SoDienThoai,
+        DTBTL: DTBTL,
+        TinChiTL: TinChiTL,
+    }, { headers });
+}
+export { fetchEditSinhVienDangKyKL };
+
+//Xóa SV đăng ký khóa luận
+const fetchDeleteSinhVienDangKyKL = (headers, MaKLTN, TenDeTai, MaGV, MaSV) => {
+    return axios.post(`admin/khoa-luan-tot-nghiep/XoaSVDangKyKL/${MaKLTN}`, {
+        MaKLTN: MaKLTN,
+        TenDeTai: TenDeTai,
+        MaGV: MaGV,
+        MaSV: MaSV,
+    }, { headers });
+}
+export { fetchDeleteSinhVienDangKyKL };

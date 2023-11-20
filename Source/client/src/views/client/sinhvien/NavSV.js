@@ -89,20 +89,6 @@ const NavSV = (props) => {
                             <NavLink to="/dangnhap" style={checkLogin ? { display: 'none' } : { display: 'block' }} >
                                 <button type="button" className="btn btn-secondary btn-lg">ĐĂNG NHẬP</button>
                             </NavLink>
-                            {/* <NavLink to="/login" style={checkLogin ? { display: 'none', marginLeft: '20px' } : { display: 'block', marginLeft: '20px' }} >
-                                <button type="button" className="btn btn-secondary btn-lg">ĐĂNG KÝ</button>
-                            </NavLink> */}
-
-                            {/* <div className='div-btn'>
-                                <NavLink to="/login" style={checkLogin ? { display: 'none' } : { display: 'block' }} >
-                                    <button type="button" className="btn btn-secondary btn-lg">ĐĂNG NHẬP</button>
-                                </NavLink>
-                                <NavLink to="/login" style={checkLogin ? { display: 'none', marginLeft: '20px' } : { display: 'block', marginLeft: '20px' }} >
-                                    <button type="button" className="btn btn-secondary btn-lg">ĐĂNG KÝ</button>
-                                </NavLink>
-                            </div> */}
-
-
                             {/* Đã đăng nhập */}
                             <div className='avt' onClick={() => onClickHiddenInfor()} onBlur={() => onClickHiddenInfor()} style={checkLogin ? { display: 'block' } : { display: 'none' }}>
                                 <ManageAccountsOutlinedIcon style={{ fontSize: '35px', marginRight: '0.5rem', color: '#f2f2f2' }} />
