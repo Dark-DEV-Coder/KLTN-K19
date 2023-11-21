@@ -1,33 +1,15 @@
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Box, Button } from '@mantine/core';
 import { IconDownload, IconUpload } from '@tabler/icons-react';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
 import { Link } from "react-router-dom";
-import {
-    IconButton,
-} from '@mui/material';
+import { toast } from "react-toastify";
+import { useState, useEffect } from 'react';
+import { fetchAllThucTap, fetchDeleteThucTap } from "../GetData"
+import { IconButton } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
-
-const data = [
-    {
-        MaDKTT: 'DKTT1',
-        Ten: 'Thực tập tốt nghiệp đợt 1 năm học 2022-2023',
-        NienKhoa: '2022-2023',
-        ThoiGianBD: '2022-09-15',
-        ThoiGianKT: '2022-10-15',
-        trangthai: 1,
-    },
-    {
-        MaDKTT: 'DKTT2',
-        Ten: 'Thực tập tốt nghiệp đợt 2 năm học 2022-2023',
-        NienKhoa: '2023-2024',
-        ThoiGianBD: '2023-02-20',
-        ThoiGianKT: '2023-03-20',
-        trangthai: 1,
-    },
-
-]
+import moment from "moment";
 
 const csvConfig = mkConfig({
     fieldSeparator: ',',
@@ -35,7 +17,38 @@ const csvConfig = mkConfig({
     useKeysAsHeaders: true,
 });
 
-const TableThucTap = () => {
+const TableThucTap = (props) => {
+    const accessToken = props.accessToken;
+    const [listData, setListData] = useState([]);
+
+    // component didmount
+    useEffect(() => {
+        getListThucTap();
+    }, []);
+
+    const getListThucTap = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchAllThucTap(headers);
+        if (res && res.data && res.data.DanhSach) {
+            setListData(res.data.DanhSach)
+        }
+    }
+
+    const handleDeleteRows = async (row) => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDeleteThucTap(headers, row.original.MaDKTT)
+        if (res.status === true) {
+            toast.success(res.message)
+            getListThucTap()
+            return;
+        }
+        if (res.success === false) {
+            toast.error(res.message)
+            return;
+        }
+    }
+
+
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
         const csv = generateCsv(csvConfig)(rowData);
@@ -43,7 +56,7 @@ const TableThucTap = () => {
     };
 
     const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(data);
+        const csv = generateCsv(csvConfig)(listData);
         download(csvConfig)(csv);
     };
     const columns = useMemo(
@@ -73,6 +86,7 @@ const TableThucTap = () => {
             {
 
                 accessorKey: 'ThoiGianBD',
+                accessorFn: (dataRow) => moment(dataRow.ThoiGianBD).format("DD-MM-YYYY"),
                 header: 'Thời gian bắt đầu',
                 size: 100,
                 enableEditing: false,
@@ -81,6 +95,7 @@ const TableThucTap = () => {
             {
 
                 accessorKey: 'ThoiGianKT',
+                accessorFn: (dataRow) => moment(dataRow.ThoiGianKT).format("DD-MM-YYYY"),
                 header: 'Thời gian kết thúc',
                 size: 100,
                 enableEditing: false,
@@ -91,7 +106,7 @@ const TableThucTap = () => {
 
     const table = useMantineReactTable({
         columns,
-        data,
+        data: listData,
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',
@@ -117,7 +132,7 @@ const TableThucTap = () => {
                     </IconButton>
                 </Link>
 
-                <IconButton onClick={() => console.log(row.original.name)}>
+                <IconButton onClick={() => handleDeleteRows(row)}>
                     <Delete fontSize="small" sx={{ color: 'red' }} />
                 </IconButton>
             </Box >

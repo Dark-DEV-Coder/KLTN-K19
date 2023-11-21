@@ -1,23 +1,57 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import * as React from 'react';
+import { fetchDetailThucTap, fetchEditThucTap } from "../../GetData"
+import { toast } from "react-toastify";
+import moment from "moment";
 const EditThucTap = () => {
-    const dulieutest = {
-        MaDKTT: 'DKTT1',
-        Ten: 'Thực tập tốt nghiệp đợt 1 năm học 2022-2023',
-        NienKhoa: '2022-2023',
-        ThoiGianBD: '2022-09-15',
-        ThoiGianKT: '2022-10-15',
-        trangthai: 1,
-    };
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     const thuctap = useParams();
+    let navigate = useNavigate();
 
-    const [MaDKTT, SetMaDKTT] = useState(dulieutest.MaDKTT)
-    const [Ten, SetTen] = useState(dulieutest.Ten)
-    const [NienKhoa, SetNienKhoa] = useState(dulieutest.NienKhoa)
-    const [ThoiGianBD, SetThoiGianBD] = useState(dulieutest.ThoiGianBD)
-    const [ThoiGianKT, SetThoiGianKT] = useState(dulieutest.ThoiGianKT)
+    const [MaDKTT, SetMaDKTT] = useState("")
+    const [Ten, SetTen] = useState("")
+    const [NienKhoa, SetNienKhoa] = useState("")
+    const [ThoiGianBD, SetThoiGianBD] = useState("")
+    const [ThoiGianKT, SetThoiGianKT] = useState("")
+
+
+    // component didmount
+    useEffect(() => {
+        getDetailThucTap();
+    }, []);
+    const getDetailThucTap = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDetailThucTap(headers, thuctap.MaDKTT);
+        if (res && res.data) {
+            SetMaDKTT(res.data.MaDKTT)
+            SetTen(res.data.Ten)
+            SetNienKhoa(res.data.NienKhoa)
+            SetThoiGianBD(moment(res.data.ThoiGianBD).format("YYYY-MM-DD"))
+            SetThoiGianKT(moment(res.data.ThoiGianKT).format("YYYY-MM-DD"))
+        }
+    }
+    const handleEditThucTap = async () => {
+        const headers = { 'x-access-token': accessToken };
+        if (!Ten || !NienKhoa) {
+            toast.error("Vui lòng điền đầy đủ dữ liệu")
+            return
+        }
+        const ngayBD = new Date(ThoiGianBD)
+        const ngayKT = new Date(ThoiGianKT)
+        let res = await fetchEditThucTap(headers, thuctap.MaDKTT, Ten, NienKhoa, ngayBD, ngayKT)
+        if (res.status === true) {
+            toast.success(res.message)
+            navigate("/admin/thuctap")
+            return;
+        }
+        if (res.status === false) {
+            toast.error(res.message)
+            return;
+
+        }
+    }
 
     const onChangeInputSL = (event, SetSL) => {
         let changeValue = event.target.value;
@@ -59,15 +93,14 @@ const EditThucTap = () => {
 
             <form className="form-edit">
                 <div className="container-edit">
-                    <div className="form-group">
-                        <label className="inputKL" for="inputTen">Tên đợt đăng ký khóa luận</label>
-                        <input type="text" className="form-control" id="inputTen" value={Ten} onChange={(event) => onChangeInputSL(event, SetTen)} onBlur={() => checkdulieu(Ten, SetCheckdulieuTen)} />
-                        <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
-                    </div>
                     <div className="form-row">
-
                         <div className="form-group col-md-6">
-                            <label className="inputKL" for="inputNienKhoa">Niên khóa</label>
+                            <label className="inputKL" htmlFor="inputTen">Tên đợt đăng ký khóa luận</label>
+                            <input type="text" className="form-control" id="inputTen" value={Ten} onChange={(event) => onChangeInputSL(event, SetTen)} onBlur={() => checkdulieu(Ten, SetCheckdulieuTen)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+                        </div>
+                        <div className="form-group col-md-6">
+                            <label className="inputKL" htmlFor="inputNienKhoa">Niên khóa</label>
                             <input type="text" className="form-control" id="inputNienKhoa" value={NienKhoa} onChange={(event) => onChangeInputSL(event, SetNienKhoa)} onBlur={() => checkdulieu(NienKhoa, SetCheckdulieuNienKhoa)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuNienKhoa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
@@ -75,7 +108,7 @@ const EditThucTap = () => {
                     {/* <div className="form-row">
                         <div className="form-group col-md-12">
                             <div className="custom-file">
-                                <label className="inputKL" for="inputDSDT">Danh sách đề tài</label>
+                                <label className="inputKL" htmlFor="inputDSDT">Danh sách đề tài</label>
                                 <input type="file" className="form-control file" id="inputDSDT" onChange={(event) => onChangeInputSL(event, SetDsdt)} />
                             </div>
                             <div className="invalid-feedback" style={{ display: 'block' }}>Chỉ chấp nhận các file có đuôi là xls, xlsm, xlsx, xlt,...</div>
@@ -83,15 +116,15 @@ const EditThucTap = () => {
                     </div> */}
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label className="inputKL" for="inputNgayBD">Ngày bắt đầu</label>
+                            <label className="inputKL" htmlFor="inputNgayBD">Ngày bắt đầu</label>
                             <input type="date" className="form-control" id="inputNgayBD" value={ThoiGianBD} onChange={(event) => onChangeInputSL(event, SetThoiGianBD)} />
                         </div>
                         <div className="form-group col-md-6">
-                            <label className="inputKL" for="inputNgayKT">Ngày kết thúc</label>
+                            <label className="inputKL" htmlFor="inputNgayKT">Ngày kết thúc</label>
                             <input type="date" className="form-control" id="inputNgayKT" value={ThoiGianKT} onChange={(event) => onChangeInputSL(event, SetThoiGianKT)} />
                         </div>
                     </div>
-                    <button className="btn" type="submit">Submit form</button>
+                    <button className="btn" type="button" onClick={() => handleEditThucTap()}>Lưu</button>
                 </div>
 
 
