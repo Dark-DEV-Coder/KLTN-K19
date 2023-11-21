@@ -23,7 +23,7 @@ export const verifyToken = async (req, res, next) => {
                 }
             });
         } else {
-            return sendError(res, 'Bạn không được phép thực hiện chức năng này.', 401)
+            return sendError(res, 'Bạn vui lòng đăng nhập.', 401)
         }
     } catch (error) {
         console.log(error);
@@ -35,6 +35,20 @@ export const verifyAdmin = async (req, res, next) => {
     const role = req.decoded.QuyenTK;
     if (role != null && role != undefined){
         if (role == 'SINHVIEN' || role == 'GIANGVIEN') {
+            return sendError(res, 'Bạn không được phép thực hiện chức năng này.', 403)
+        }  
+    } 
+    else {
+        return sendError(res, 'Bạn không được phép thực hiện chức năng này.', 403)
+    }
+    
+    next()
+}
+
+export const verifyUser = async (req, res, next) => {
+    const role = req.decoded.QuyenTK;
+    if (role != null && role != undefined){
+        if (role != 'SINHVIEN' && role != 'GIANGVIEN') {
             return sendError(res, 'Bạn không được phép thực hiện chức năng này.', 403)
         }  
     } 

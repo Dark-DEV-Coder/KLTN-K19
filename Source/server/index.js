@@ -8,7 +8,7 @@ import { Server } from 'socket.io'
 import http from 'http'
 import session from "express-session"
 import swaggerUi from 'swagger-ui-express'
-import { verifyAdmin, verifyToken } from "./middleware/verify.js"
+import { verifyAdmin, verifyToken, verifyUser } from "./middleware/verify.js"
 import { clearTokenList } from "./service/jwt.js"
 // import { NOTIFY_EVENT, SESSION_AGE } from "./constant.js"
 // import { addSocketSession, handleDisconnect, sendNotify } from "./socket/handle.js"
@@ -19,6 +19,9 @@ import { checkOverload } from "./helper/checkConnectdb.js"
 import { SESSION_AGE } from "./constant.js"
 import adminRoute from "./router/admin/index.js"
 import TaiKhoanRoute from "./router/TaiKhoan.js"
+import SinhVienRoute from "./router/SinhVien.js"
+import GiangVienRoute from "./router/GiangVien.js"
+import DangKyChuyenNganhRoute from "./router/DangKyChuyenNganh.js"
 
 const swaggerDocument = YAML.load('./swagger.yaml')
 
@@ -66,6 +69,9 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/admin', verifyToken, verifyAdmin, adminRoute)
     .use('/api/tai-khoan', TaiKhoanRoute)
+    .use('/api/sinh-vien', verifyUser, SinhVienRoute)
+    .use('/api/giang-vien', verifyUser, GiangVienRoute)
+    .use('/api/dk-chuyen-nganh', DangKyChuyenNganhRoute)
 
 app.use('/*', async (req, res) => {
     res.status(501).send("Don't implement.")
