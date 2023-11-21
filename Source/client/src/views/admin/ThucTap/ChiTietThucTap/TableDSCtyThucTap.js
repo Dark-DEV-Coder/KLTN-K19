@@ -18,7 +18,16 @@ const csvConfig = mkConfig({
 });
 
 const TableDSCtyThucTap = (props) => {
-    const listDSCty = props.listDSCty;
+    const CongTyNgoaiDS = props.CongTyNgoaiDS;
+    const CongTyTrongDS = props.CongTyTrongDS;
+    const [listData, setListData] = useState(CongTyTrongDS)
+    const [trangthaiCty, SetTrangthaiCty] = useState('CongTyTrongDS')
+    const onChangeSelect = (event) => {
+        let changeValue = event.target.value;
+        SetTrangthaiCty(changeValue)
+        changeValue === 'CongTyTrongDS' ? setListData(CongTyTrongDS) : setListData(CongTyNgoaiDS)
+
+    }
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
         const csv = generateCsv(csvConfig)(rowData);
@@ -26,7 +35,7 @@ const TableDSCtyThucTap = (props) => {
     };
 
     const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(listDSCty);
+        const csv = generateCsv(csvConfig)(listData);
         download(csvConfig)(csv);
     };
     const columns = useMemo(
@@ -71,7 +80,7 @@ const TableDSCtyThucTap = (props) => {
 
     const table = useMantineReactTable({
         columns,
-        data: listDSCty,
+        data: listData,
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',
@@ -100,9 +109,6 @@ const TableDSCtyThucTap = (props) => {
             </Box >
 
         ),
-
-
-
         renderTopToolbarCustomActions: ({ table }) => (
             <Box
                 sx={{
@@ -112,6 +118,10 @@ const TableDSCtyThucTap = (props) => {
                     flexWrap: 'wrap',
                 }}
             >
+                <select value={trangthaiCty} className="select-btn" onChange={(event) => onChangeSelect(event, SetTrangthaiCty)} >
+                    <option value='CongTyTrongDS'>Trong danh sách</option>
+                    <option value='CongTyNgoaiDS'>Ngoài danh sách</option>
+                </select>
                 <Button
                     color="lightblue"
                     //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)

@@ -7,8 +7,10 @@ import "./TableDSDeTai.scss"
 import { IconButton, } from '@mui/material';
 import { Link, useNavigate } from "react-router-dom";
 import { Delete, Edit, Visibility } from '@mui/icons-material';
-import { fetchDeleteDeTai } from "../../GetData"
+import { fetchDeleteDeTai, fetchExportFileDSDeTai } from "../../GetData"
 import { toast } from "react-toastify";
+import { AxiosRequestConfig } from 'axios';
+import { CSVLink, CSVDownload } from "react-csv";
 const csvConfig = mkConfig({
     fieldSeparator: ',',
     decimalSeparator: '.',
@@ -19,6 +21,19 @@ const TableDSDeTai = (props) => {
     const { data_detai, MaKLTN } = props
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     let navigate = useNavigate();
+    const [dataExport, setDataExport] = useState([])
+
+    const handleExportFile = async () => {
+        const headers = { 'x-access-token': accessToken }
+        let res = await fetchExportFileDSDeTai(headers, MaKLTN)
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `DSDangKyKhoaLuan.xlsx`);
+        document.body.appendChild(link);
+        link.click();
+
+    }
 
     const handleDeleteRows = async (row) => {
         const headers = { 'x-access-token': accessToken };
@@ -33,6 +48,16 @@ const TableDSDeTai = (props) => {
             return;
         }
     }
+
+    // const getDataExport = (event, done, rows) => {
+    //     let result = []
+    //     rows.map((item, index) => {
+    //         result.push(item.original)
+    //         console.log(item.original)
+    //     })
+    //     // console.log(rows)
+
+    // }
 
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
@@ -106,12 +131,18 @@ const TableDSDeTai = (props) => {
                     flexWrap: 'wrap',
                 }}>
                 <Link to={`/admin/khoaluan/${MaKLTN}/detai/new`}>
-                    <Button>
-                        Thêm đề tài
-                    </Button>
+                    <Button>Thêm đề tài</Button>
                 </Link>
-
-
+                {/* <CSVLink
+                    data={dataExport}
+                    filename={`${MaKLTN}.csv`}
+                    className="btn btn-primary"
+                    asyncOnClick={true}
+                    onClick={(event, done) => getDataExport(event, done, table.getSelectedRowModel().rows)}
+                >
+                    Export Selected Rows
+                </CSVLink> */}
+                <Button onClick={() => handleExportFile()} leftIcon={<IconUpload />}>Export File</Button>
                 <Button
                     disabled={
                         !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()

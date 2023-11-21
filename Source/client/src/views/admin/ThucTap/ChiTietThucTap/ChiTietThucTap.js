@@ -4,59 +4,46 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import TableDSCtyThucTap from "./TableDSCtyThucTap";
 import TableDSSinhVienThucTap from "./TableDSSinhVienThucTap";
-
+import { fetchDetailThucTap, fetchGetDSSVThucTap } from "../../GetData"
+import moment from "moment";
 const ChiTietThucTap = () => {
-    const dulieutest =
-    {
-        MaDKTT: 'DKTT1',
-        Ten: 'Thực tập tốt nghiệp đợt 1 năm học 2022-2023',
-        NienKhoa: '2022-2023',
-        ThoiGianBD: '2022-09-15',
-        ThoiGianKT: '2022-10-15',
-        trangthai: 1,
-    }
-    const data_ctythuctap = [
-        {
-            TenCongTy: 'Công ty A',
-            Website: 'http:///A.com',
-            SoDienThoai: '098888888',
-            Email: 'A@gmail.com',
-            DiaChi: '12/1,Bình Chánh, Nhà Bè, TP.Thủ Đức',
-            trangthai: 1,
-        },
-        {
-            TenCongTy: 'Công ty B',
-            Website: 'http:///B.com',
-            SoDienThoai: '098888888',
-            Email: 'B@gmail.com',
-            DiaChi: '12/1,Bình Chánh, Nhà Bè, TP.Thủ Đức',
-            trangthai: 1,
-        },
-        {
-            TenCongTy: 'Công ty C',
-            Website: 'http:///C.com',
-            SoDienThoai: '098888888',
-            Email: 'C@gmail.com',
-            DiaChi: '12/1,Bình Chánh, Nhà Bè, TP.Thủ Đức',
-            trangthai: 1,
-        },
-        {
-            TenCongTy: 'Công ty D',
-            Website: 'http:///D.com',
-            SoDienThoai: '098888888',
-            Email: 'D@gmail.com',
-            DiaChi: '12/1,Bình Chánh, Nhà Bè, TP.Thủ Đức',
-            trangthai: 1,
-        },
-    ]
-
-
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     const thuctap = useParams();
     // lấy tên rồi add tên vào breacrum
+    const [tenTT, setTenTT] = useState("")
+    const [CongTyNgoaiDS, setCongTyNgoaiDS] = useState([])
+    const [CongTyTrongDS, setCongTyTrongDS] = useState([])
+    const [DSSVThucTap, setDSSVThucTap] = useState([])
+
+    // component didmount
+    useEffect(() => {
+        getDetailThucTap();
+        getDSSVThucTap();
+    }, []);
+    const getDetailThucTap = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDetailThucTap(headers, thuctap.MaDKTT);
+        if (res && res.data) {
+            setTenTT(res.data.Ten)
+            setCongTyNgoaiDS(res.data.CongTyNgoaiDS)
+            setCongTyTrongDS(res.data.CongTyTrongDS)
+            // setNganh_dt(res.data.Nganh)
+            // setTgbd(moment(res.data.ThoiGianBD).format("YYYY-MM-DD"))
+            // setTgkt(moment(res.data.ThoiGianKT).format("YYYY-MM-DD"))
+        }
+    }
+
+    const getDSSVThucTap = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchGetDSSVThucTap(headers, thuctap.MaDKTT);
+        if (res && res.data) {
+            setDSSVThucTap(res.data.Ten)
+        }
+    }
 
     const [value, setValue] = useState('dsSV');
     const handleChange = (event, newValue) => {
@@ -79,7 +66,7 @@ const ChiTietThucTap = () => {
                             </li>
                             <li><i className='bx bx-chevron-right'></i></li>
                             <li>
-                                <Link className="active" >{dulieutest.Ten}</Link>
+                                <Link className="active" >{tenTT}</Link>
                             </li>
                         </ul>
                     </div>
@@ -108,7 +95,7 @@ const ChiTietThucTap = () => {
                             <div className="card4">
                                 <h6 className="card-header">Danh sách công ty thực tập</h6>
                             </div>
-                            <TableDSCtyThucTap listDSCty={data_ctythuctap} />
+                            <TableDSCtyThucTap CongTyNgoaiDS={CongTyNgoaiDS} CongTyTrongDS={CongTyTrongDS} />
 
                         </div>
                     </TabPanel>
