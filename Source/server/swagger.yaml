@@ -42,6 +42,8 @@ tags:
   description: "Các API của model GiangVienClient"
 - name: "DangKyChuyenNganhClient"
   description: "Các API của model DangKyChuyenNganhClient"
+- name: "KhoaLuanTotNghiepClient"
+  description: "Các API của model KhoaLuanTotNghiepClient"
 paths:
   /admin/chuc-nang/DanhSachChucNang:
     get: 
@@ -4522,7 +4524,7 @@ paths:
           name: ID
           type: string
           required: true
-          description: Họ người liên hệ
+          description: ID công ty
         - in: body
           name: HoNguoiLienHe
           type: string
@@ -4574,6 +4576,359 @@ paths:
             example: {
               "status": false,
               "message" : "Sửa thông tin công ty thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /khoa-luan-tot-nghiep/ThongTinKLTN:
+    get:
+      tags:
+        - "KhoaLuanTotNghiepClient"
+      summary: "Xem chi tiết thông tin khóa luận tốt nghiệp"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Xem chi tiết thông tin khóa luận tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Xem chi tiết thông tin khóa luận tốt nghiệp thành công.",
+            }
+        400:
+          description: Xem chi tiết thông tin khóa luận tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Xem chi tiết thông tin khóa luận tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /khoa-luan-tot-nghiep/DSDeTaiTheoGiangVien/{MaKLTN}:
+    get:
+      tags:
+        - "KhoaLuanTotNghiepClient"
+      summary: "Lấy danh sách đề tài của giảng viên"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+        - in: body
+          name: MaGV
+          type: string
+          required: true
+          description: Mã giảng viên
+      responses:
+        200:
+          description: Lấy danh sách đề tài của giảng viên thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Lấy danh sách đề tài của giảng viên thành công.",
+            }
+        400:
+          description: Lấy danh sách đề tài của giảng viên thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Lấy danh sách đề tài của giảng viên thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /khoa-luan-tot-nghiep/SVDangKyDeTai/{MaKLTN}:
+    post:
+      tags:
+        - "KhoaLuanTotNghiepClient"
+      summary: "Sinh viên đăng ký đề tài khóa luận"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+        - in: body
+          name: TenDeTai
+          type: string
+          required: true
+          description: Tên đề tài
+        - in: body
+          name: MaGV
+          type: string
+          required: true
+          description: Mã giảng viên
+        - in: body
+          name: MaSV
+          type: string
+          required: true
+          description: Mã sinh viên
+        - in: body
+          name: HoSV
+          type: string
+          required: true
+          description: Họ sinh viên
+        - in: body
+          name: TenSV
+          type: string
+          required: true
+          description: Tên sinh viên
+        - in: body
+          name: Email
+          type: string
+          required: true
+          description: Email sinh viên
+        - in: body
+          name: SoDienThoai
+          type: string
+          required: true
+          description: Số điện thoại sinh viên
+        - in: body
+          name: DTBTL
+          type: string
+          required: true
+          description: Điểm trung bình tích lũy học kỳ (hệ 4)
+        - in: body
+          name: TinChiTL
+          type: string
+          required: true
+          description: Số tín chỉ tích lũy
+      responses:
+        200:
+          description: Sinh viên đăng ký đề tài khóa luận thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Sinh viên đăng ký đề tài khóa luận thành công.",
+            }
+        400:
+          description: Sinh viên đăng ký đề tài khóa luận thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Sinh viên đăng ký đề tài khóa luận thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /khoa-luan-tot-nghiep/GVChapNhanSVDangKy/{MaKLTN}:
+    post:
+      tags:
+        - "KhoaLuanTotNghiepClient"
+      summary: "Giảng viên chấp nhận sinh viên đăng ký đề tài"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+        - in: body
+          name: TenDeTai
+          type: string
+          required: true
+          description: Tên đề tài
+        - in: body
+          name: MaGV
+          type: string
+          required: true
+          description: Mã giảng viên
+        - in: body
+          name: MaSV
+          type: string
+          required: true
+          description: Mã sinh viên
+        - in: body
+          name: HoSV
+          type: string
+          required: true
+          description: Họ sinh viên
+        - in: body
+          name: TenSV
+          type: string
+          required: true
+          description: Tên sinh viên
+        - in: body
+          name: Email
+          type: string
+          required: true
+          description: Email sinh viên
+        - in: body
+          name: SoDienThoai
+          type: string
+          required: true
+          description: Số điện thoại sinh viên
+        - in: body
+          name: DTBTL
+          type: string
+          required: true
+          description: Điểm trung bình tích lũy học kỳ (hệ 4)
+        - in: body
+          name: TinChiTL
+          type: string
+          required: true
+          description: Số tín chỉ tích lũy
+      responses:
+        200:
+          description: Thêm sinh viên đăng ký khóa luận tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Thêm sinh viên đăng ký khóa luận tốt nghiệp thành công.",
+            }
+        400:
+          description: Thêm sinh viên đăng ký khóa luận tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Thêm sinh viên đăng ký khóa luận tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /khoa-luan-tot-nghiep/GVXoaSVDangKyKLDuKien/{MaKLTN}:
+    post:
+      tags:
+        - "KhoaLuanTotNghiepClient"
+      summary: "Xóa thông tin sinh viên dự kiến đăng ký khóa luận tốt nghiệp"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+        - in: body
+          name: TenDeTai
+          type: string
+          required: true
+          description: Tên đề tài
+        - in: body
+          name: MaGV
+          type: string
+          required: true
+          description: Mã giảng viên
+        - in: body
+          name: MaSV
+          type: string
+          required: true
+          description: Mã sinh viên
+      responses:
+        200:
+          description: Xóa thông tin sinh viên dự kiến đăng ký khóa luận tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Xóa thông tin sinh viên dự kiến đăng ký khóa luận tốt nghiệp thành công.",
+            }
+        400:
+          description: Xóa thông tin sinh viên dự kiến đăng ký khóa luận tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Xóa thông tin sinh viên dự kiến đăng ký khóa luận tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /khoa-luan-tot-nghiep/GVXoaSVDangKyKLChinhThuc/{MaKLTN}:
+    post:
+      tags:
+        - "KhoaLuanTotNghiepClient"
+      summary: "Xóa thông tin sinh viên chính thức đăng ký khóa luận tốt nghiệp"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+        - in: body
+          name: TenDeTai
+          type: string
+          required: true
+          description: Tên đề tài
+        - in: body
+          name: MaGV
+          type: string
+          required: true
+          description: Mã giảng viên
+        - in: body
+          name: MaSV
+          type: string
+          required: true
+          description: Mã sinh viên
+      responses:
+        200:
+          description: Xóa thông tin sinh viên chính thức đăng ký khóa luận tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Xóa thông tin sinh viên chính thức đăng ký khóa luận tốt nghiệp thành công.",
+            }
+        400:
+          description: Xóa thông tin sinh viên chính thức đăng ký khóa luận tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Xóa thông tin sinh viên chính thức đăng ký khóa luận tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /khoa-luan-tot-nghiep/ThongTinChiTietDetaiGV/{MaKLTN}:
+    get:
+      tags:
+        - "KhoaLuanTotNghiepClient"
+      summary: "Lấy thông tin chi tiết đề tài khóa luận tốt nghiệp"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+        - in: body
+          name: MaGV
+          type: string
+          required: true
+          description: Mã giảng viên
+        - in: body
+          name: TenDeTai
+          type: string
+          required: true
+          description: Tên đề tài
+      responses:
+        200:
+          description: Lấy thông tin chi tiết đề tài khóa luận tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Lấy thông tin chi tiết đề tài khóa luận tốt nghiệp thành công.",
+            }
+        400:
+          description: Lấy thông tin chi tiết đề tài khóa luận tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Lấy thông tin chi tiết đề tài khóa luận tốt nghiệp thất bại.",
             }
       security:
         - ApiKeyAuth: []
