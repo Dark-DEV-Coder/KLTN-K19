@@ -4473,6 +4473,115 @@ paths:
             }
       security:
         - ApiKeyAuth: []
+  /admin/dk-thuc-tap/ChiTietCty/{MaDKTT}:
+    post: 
+      tags:
+        - "DangKyThucTap"
+      summary: Admin lấy thông tin chi tiết công ty
+      produces:
+        - application/json     
+      parameters:
+      - in: path
+        name: MaDKTT
+        type: string
+        required: true
+        description: Mã đăng ký thực tập
+      - in: body
+        name: ID
+        type: string
+        required: true
+        description: ID của công ty
+      responses:
+        200: 
+          description: Lấy thông tin chi tiết công ty thành công
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Lấy thông tin chi tiết công ty thành công",
+            }
+        400:
+          description: Lấy thông tin chi tiết công ty thất bại
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Lấy thông tin chi tiết công ty thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
+  /admin/dk-thuc-tap/SuaThongTinCty/{MaDKTT}:
+    post:
+      tags:
+        - "DangKyThucTap"
+      summary: "Sửa thông tin công ty"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaDKTT
+          type: string
+          required: true
+          description: Mã đăng ký thực tập
+        - in: body
+          name: ID
+          type: string
+          required: true
+          description: Họ người liên hệ
+        - in: body
+          name: HoNguoiLienHe
+          type: string
+          required: true
+          description: Họ người liên hệ
+        - in: body
+          name: TenNguoiLienHe
+          type: string
+          required: true
+          description: Tên người liên hệ
+        - in: body
+          name: TenCongTy
+          type: string
+          required: true
+          description: Tên công ty
+        - in: body
+          name: Website
+          type: string
+          required: true
+          description: Website công ty
+        - in: body
+          name: SoDienThoai
+          type: string
+          required: true
+          description: Số điện thoại công ty
+        - in: body
+          name: Email
+          type: string
+          required: true
+          description: Email công ty
+        - in: body
+          name: DiaChi
+          type: string
+          required: true
+          description: Địa chỉ công ty
+      responses:
+        200:
+          description: Sửa thông tin công ty thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Sửa thông tin công ty thành công.",
+            }
+        400:
+          description: Sửa thông tin công ty thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Sửa thông tin công ty thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
 securityDefinitions:
   ApiKeyAuth:
     type: apiKey
