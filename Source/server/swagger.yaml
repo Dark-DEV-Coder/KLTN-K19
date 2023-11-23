@@ -3887,11 +3887,6 @@ paths:
         type: string
         required: true
         description: Mã đăng ký thực tập
-      - in: body
-        name: Loai
-        type: string
-        required: true
-        enum: ['Trong danh sách','Ngoài danh sách']
       responses:
         200: 
           description: Lấy danh sách sinh viên của đợt đăng ký thực tập thành công
