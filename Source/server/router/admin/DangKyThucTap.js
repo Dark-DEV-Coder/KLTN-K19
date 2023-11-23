@@ -323,6 +323,9 @@ DangKyThucTapAdminRoute.post('/DanhSachCongTy/:MaDKTT', async (req, res) => {
         if (Loai == "Trong danh sách"){
             dktt.CongTyTrongDS.forEach((element) => {
                 let cty = {
+                    id: element._id,
+                    HoNguoiLienHe: element.HoNguoiLienHe,
+                    TenNguoiLienHe: element.TenNguoiLienHe,
                     Ten: element.TenCongTy,
                     Web: element.Website,
                     DienThoai: element.SoDienThoai,
@@ -335,6 +338,9 @@ DangKyThucTapAdminRoute.post('/DanhSachCongTy/:MaDKTT', async (req, res) => {
         if (Loai == "Ngoài danh sách"){
             dktt.CongTyNgoaiDS.forEach((element) => {
                 let cty = {
+                    id: element._id,
+                    HoNguoiLienHe: element.HoNguoiLienHe,
+                    TenNguoiLienHe: element.TenNguoiLienHe,
                     Ten: element.TenCongTy,
                     Web: element.Website,
                     DienThoai: element.SoDienThoai,
@@ -398,10 +404,10 @@ DangKyThucTapAdminRoute.post('/DanhSachSinhVien/:MaDKTT', async (req, res) => {
                 element.DangKy.forEach((data) => {
                     data.SinhVien.forEach((sinhvien) => {
                         let sv = {
-                            MaSV: sinhvien.SinhVien.MaSV,
-                            Ho: sinhvien.SinhVien.HoSV,
-                            Ten: sinhvien.SinhVien.TenSV,
-                            Lop: sinhvien.SinhVien.Lop,
+                            MaSV: sinhvien.MaSV,
+                            Ho: sinhvien.HoSV,
+                            Ten: sinhvien.TenSV,
+                            Lop: sinhvien.Lop,
                             Cty: element.TenCongTy,
                             Web: element.Website,
                             DienThoai: element.SoDienThoai,
@@ -951,6 +957,123 @@ DangKyThucTapAdminRoute.get('/ExportFileExcelDsSVDKTT/:MaKLTT', async (req, res)
             });
     }
     catch (error){
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route POST /api/admin/dk-thuc-tap/ChiTietCty/{MaDKTT}
+ * @description Lấy thông tin chi tiết công ty
+ * @access public
+ */
+DangKyThucTapAdminRoute.post('/ChiTietCty/:MaDKTT', async (req, res) => {
+    try {
+        const { MaDKTT } = req.params;
+        const { ID } = req.body;
+        const dktt = await DangKyThucTap.findOne({ MaDKTT: MaDKTT }).populate([
+            {
+                path: "CongTyTrongDS",
+                select: "DangKy",
+                populate: [
+                    {
+                        path: "DangKy",
+                        select: "SinhVien",
+                        populate: [
+                            {
+                                path: "SinhVien",
+                                select: "MaSV HoSV TenSV Lop"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                path: "CongTyNgoaiDS",
+                select: "SinhVien",
+                populate: [
+                    {
+                        path: "SinhVien",
+                        select: "MaSV HoSV TenSV Lop",
+                    }
+                ]
+            }
+        ]).lean();
+        if (!dktt)
+            return sendError(res, "Đợt đăng ký thực tập không tồn tại");
+        let thongtin = [];
+        let check = 0;
+        dktt.CongTyTrongDS.forEach((element) => {
+            if (element._id.equals(ID)){
+                check = 1;
+                thongtin.push(element);
+                return;
+            }
+        });
+        if (check == 0){
+            dktt.CongTyNgoaiDS.forEach((element) => {
+                if (element._id.equals(ID)){
+                    thongtin.push(element);
+                    return;
+                }
+            });
+        }
+        return sendSuccess(res, "Thông tin chi tiết công ty", thongtin[0]);
+    }
+    catch (error) {
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route POST /api/admin/dk-thuc-tap/SuaThongTinCty/{MaDKTT}
+ * @description Sửa thông tin công ty
+ * @access public
+ */
+DangKyThucTapAdminRoute.post('/SuaThongTinCty/:MaDKTT', async (req, res) => {
+    try {
+        const { MaDKTT } = req.params;
+        const { ID, HoNguoiLienHe, TenNguoiLienHe, TenCongTy, Website, SoDienThoai, Email, DiaChi } = req.body;
+        const dktt = await DangKyThucTap.findOne({ MaDKTT: MaDKTT });
+        if (!dktt)
+            return sendError(res, "Đợt đăng ký thực tập không tồn tại");
+        let check = 0;
+        dktt.CongTyTrongDS.forEach((element) => {
+            if (element._id.equals(ID)){
+                check = 1;
+                element.HoNguoiLienHe = HoNguoiLienHe;
+                element.TenNguoiLienHe = TenNguoiLienHe;
+                element.TenCongTy = TenCongTy;
+                element.Website = Website;
+                element.SoDienThoai = SoDienThoai;
+                element.Email = Email;
+                element.DiaChi = DiaChi;
+                return;
+            }
+        });
+        if (check == 0){
+            dktt.CongTyNgoaiDS.forEach((element) => {
+                if (element._id.equals(ID)){
+                    element.HoNguoiLienHe = HoNguoiLienHe;
+                    element.TenNguoiLienHe = TenNguoiLienHe;
+                    element.TenCongTy = TenCongTy;
+                    element.Website = Website;
+                    element.SoDienThoai = SoDienThoai;
+                    element.Email = Email;
+                    element.DiaChi = DiaChi;
+                    return;
+                }
+            });
+        }
+        if (check == 1)
+            await DangKyThucTap.findOneAndUpdate({ MaDKTT: MaDKTT }, { CongTyTrongDS: dktt.CongTyTrongDS });
+        else
+            await DangKyThucTap.findOneAndUpdate({ MaDKTT: MaDKTT }, { CongTyNgoaiDS: dktt.CongTyNgoaiDS });
+        
+        return sendSuccess(res, "Sửa thông tin công ty thành công");
+    }
+    catch (error) {
         console.log(error)
         return sendServerError(res)
     }
