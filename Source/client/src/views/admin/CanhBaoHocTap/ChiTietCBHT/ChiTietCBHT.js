@@ -63,7 +63,6 @@ const ChiTietCBHT = () => {
     const getStatisticalCanhBao = async (thongketheo, nganh, khoa) => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchStatisticalCanhBao(headers, canhbao.MaCBHT, thongketheo, nganh, khoa);
-        console.log(res)
         if (res && res.data) {
             let ds_khoa = [];
             let ds_canhbao = [];

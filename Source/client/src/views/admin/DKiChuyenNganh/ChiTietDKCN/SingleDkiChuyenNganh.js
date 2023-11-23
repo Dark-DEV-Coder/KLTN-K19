@@ -49,7 +49,7 @@ const SingleDkiChuyenNganh = () => {
     const getDetailDangKyChuyenNganh = async () => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDetailDangKyCN(headers, dkichuyennganh.MaDKCN);
-        // console.log(res)
+        console.log(res)
         if (res && res.data) {
             SetMaDKCN(res.data.MaDKCN)
             SetTen(res.data.Ten)
@@ -81,7 +81,6 @@ const SingleDkiChuyenNganh = () => {
     const getDetailDSSV = async (manganh, machuyennganh, setState) => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDetailDSSVDangKyCN(headers, dkichuyennganh.MaDKCN, manganh, machuyennganh);
-        // console.log(res)
         if (res && res.data) {
             setState(res.data)
         }
