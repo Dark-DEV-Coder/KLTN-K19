@@ -366,7 +366,6 @@ DangKyThucTapAdminRoute.post('/DanhSachCongTy/:MaDKTT', async (req, res) => {
 DangKyThucTapAdminRoute.post('/DanhSachSinhVien/:MaDKTT', async (req, res) => {
     try {
         const { MaDKTT } = req.params;
-        const { Loai } = req.body;
         const dktt = await DangKyThucTap.findOne({ MaDKTT: MaDKTT }).populate([
             {
                 path: "CongTyTrongDS",
@@ -399,42 +398,40 @@ DangKyThucTapAdminRoute.post('/DanhSachSinhVien/:MaDKTT', async (req, res) => {
             return sendError(res, "Đợt đăng ký thực tập không tồn tại");
 
         let thongtin = [];
-        if (Loai == "Trong danh sách"){
-            dktt.CongTyTrongDS.forEach((element) => {
-                element.DangKy.forEach((data) => {
-                    data.SinhVien.forEach((sinhvien) => {
-                        let sv = {
-                            MaSV: sinhvien.MaSV,
-                            Ho: sinhvien.HoSV,
-                            Ten: sinhvien.TenSV,
-                            Lop: sinhvien.Lop,
-                            Cty: element.TenCongTy,
-                            Web: element.Website,
-                            DienThoai: element.SoDienThoai,
-                            Email: element.Email,
-                            DiaChi: element.DiaChi
-                        }
-                        thongtin.push(sv);
-                    });
+        dktt.CongTyTrongDS.forEach((element) => {
+            element.DangKy.forEach((data) => {
+                data.SinhVien.forEach((sinhvien) => {
+                    let sv = {
+                        MaSV: sinhvien.MaSV,
+                        Ho: sinhvien.HoSV,
+                        Ten: sinhvien.TenSV,
+                        Lop: sinhvien.Lop,
+                        Cty: element.TenCongTy,
+                        Web: element.Website,
+                        DienThoai: element.SoDienThoai,
+                        Email: element.Email,
+                        DiaChi: element.DiaChi
+                    }
+                    thongtin.push(sv);
                 });
             });
-        }
-        if (Loai == "Ngoài danh sách"){
-            dktt.CongTyNgoaiDS.forEach((element) => {
-                let sv = {
-                    MaSV: element.SinhVien.MaSV,
-                    Ho: element.SinhVien.HoSV,
-                    Ten: element.SinhVien.TenSV,
-                    Lop: element.SinhVien.Lop,
-                    Cty: element.TenCongTy,
-                    Web: element.Website,
-                    DienThoai: element.SoDienThoai,
-                    Email: element.Email,
-                    DiaChi: element.DiaChi
-                }
-                thongtin.push(sv);
-            });
-        }
+        });
+
+        dktt.CongTyNgoaiDS.forEach((element) => {
+            let sv = {
+                MaSV: element.SinhVien.MaSV,
+                Ho: element.SinhVien.HoSV,
+                Ten: element.SinhVien.TenSV,
+                Lop: element.SinhVien.Lop,
+                Cty: element.TenCongTy,
+                Web: element.Website,
+                DienThoai: element.SoDienThoai,
+                Email: element.Email,
+                DiaChi: element.DiaChi
+            }
+            thongtin.push(sv);
+        });
+        
         return sendSuccess(res, "Lấy danh sách sinh viên thành công", thongtin);
     }
     catch (error) {
@@ -1070,7 +1067,7 @@ DangKyThucTapAdminRoute.post('/SuaThongTinCty/:MaDKTT', async (req, res) => {
             await DangKyThucTap.findOneAndUpdate({ MaDKTT: MaDKTT }, { CongTyTrongDS: dktt.CongTyTrongDS });
         else
             await DangKyThucTap.findOneAndUpdate({ MaDKTT: MaDKTT }, { CongTyNgoaiDS: dktt.CongTyNgoaiDS });
-        
+
         return sendSuccess(res, "Sửa thông tin công ty thành công");
     }
     catch (error) {
