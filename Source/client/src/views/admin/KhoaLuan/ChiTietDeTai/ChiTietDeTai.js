@@ -4,22 +4,9 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchDetailKhoaLuan } from "../../GetData"
-import { toast } from "react-toastify";
-import moment from "moment";
 const ChiTietDeTai = () => {
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     const detai = useParams();
-    const dulieutest = {
-        ten: 'Phần mềm quản lý ghi chú cá nhân với tính năng nhận dạng tiếng nói',
-        giangvienhuongdan: 'Nguyễn Tuấn Đăng',
-        donvi: 'Khoa CNTT',
-        sinhvien1: 'Cẩm Duyên 1',
-        sinhvien2: 'Cẩm Duyên 2',
-        trangthai: 1,
-
-    };
-
-
 
     const [Detai, setDetai] = useState({})
     const [GiangVien, setGiangVien] = useState({})
@@ -49,7 +36,6 @@ const ChiTietDeTai = () => {
     const getDetailKhoaLuan = async () => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDetailKhoaLuan(headers, detai.MaKLTN);
-        console.log(res)
         if (res && res.data) {
             const dt = res.data.DSDeTai.filter(item => item.TenDeTai === detai.TenDeTai)
             if (dt) {

@@ -40,7 +40,6 @@ const SingleKhoaLuan = () => {
     const getDetailKhoaLuan = async () => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDetailKhoaLuan(headers, khoaluan.MaKLTN);
-        console.log(res)
         if (res && res.data) {
             setTen(res.data.Ten)
             setKhoahoc(res.data.Khoa)
