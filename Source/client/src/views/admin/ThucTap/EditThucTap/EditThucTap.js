@@ -126,13 +126,7 @@ const EditThucTap = () => {
                     </div>
                     <button className="btn" type="button" onClick={() => handleEditThucTap()}>Lưu</button>
                 </div>
-
-
-
             </form>
-
-
-
         </main >
     )
 }

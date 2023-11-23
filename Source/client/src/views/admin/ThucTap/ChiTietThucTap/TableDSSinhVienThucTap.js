@@ -11,160 +11,15 @@ import {
 } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
 
-const data = [
-    {
-        masv: '3119560010',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        lop: 'DCT1192',
-        csthuctap: 'Công ty cổ phần Hinnova',
-        website: 'http://hinnova.com.vn',
-        sdt: '0936362711',
-        email: 'abc@gmail.com',
-        diachi: '181 Đ. Cao Thắng, Phường 12, Quận 10, Thành phố Hồ Chí Minh',
-        trangthai: 1,
-    },
-    {
-        masv: '3119560011',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        lop: 'DCT1192',
-        csthuctap: 'Công ty cổ phần Hinnova',
-        website: 'http://hinnova.com.vn',
-        sdt: '0936362711',
-        email: 'abc@gmail.com',
-        diachi: '181 Đ. Cao Thắng, Phường 12, Quận 10, Thành phố Hồ Chí Minh',
-        trangthai: 1,
-    },
-    {
-        masv: '3119560019',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        lop: 'DCT1192',
-        csthuctap: 'Công ty cổ phần Hinnova',
-        website: 'http://hinnova.com.vn',
-        sdt: '0936362711',
-        email: 'abc@gmail.com',
-        diachi: '181 Đ. Cao Thắng, Phường 12, Quận 10, Thành phố Hồ Chí Minh',
-        trangthai: 1,
-    },
-    {
-        masv: '3119560002',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        lop: 'DCT1192',
-        csthuctap: 'Công ty cổ phần Hinnova',
-        website: 'http://hinnova.com.vn',
-        sdt: '0936362711',
-        email: 'abc@gmail.com',
-        diachi: '181 Đ. Cao Thắng, Phường 12, Quận 10, Thành phố Hồ Chí Minh',
-        trangthai: 1,
-    },
-    {
-        masv: '3119560023',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        lop: 'DCT1192',
-        csthuctap: 'Công ty cổ phần Hinnova',
-        website: 'http://hinnova.com.vn',
-        sdt: '0936362711',
-        email: 'abc@gmail.com',
-        diachi: '181 Đ. Cao Thắng, Phường 12, Quận 10, Thành phố Hồ Chí Minh',
-        trangthai: 1,
-    },
-    {
-        masv: '3119560025',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        lop: 'DCT1192',
-        csthuctap: 'Công ty cổ phần Hinnova',
-        website: 'http://hinnova.com.vn',
-        sdt: '0936362711',
-        email: 'abc@gmail.com',
-        diachi: '181 Đ. Cao Thắng, Phường 12, Quận 10, Thành phố Hồ Chí Minh',
-        trangthai: 1,
-    },
-    {
-        masv: '3119560027',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        lop: 'DCT1192',
-        csthuctap: 'Công ty cổ phần Hinnova',
-        website: 'http://hinnova.com.vn',
-        sdt: '0936362711',
-        email: 'abc@gmail.com',
-        diachi: '181 Đ. Cao Thắng, Phường 12, Quận 10, Thành phố Hồ Chí Minh',
-        trangthai: 1,
-    },
-    {
-        masv: '3119560029',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        lop: 'DCT1192',
-        csthuctap: 'Công ty cổ phần Hinnova',
-        website: 'http://hinnova.com.vn',
-        sdt: '0936362711',
-        email: 'abc@gmail.com',
-        diachi: '181 Đ. Cao Thắng, Phường 12, Quận 10, Thành phố Hồ Chí Minh',
-        trangthai: 1,
-    },
-    {
-        masv: '3119560031',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        lop: 'DCT1192',
-        csthuctap: 'Công ty cổ phần Hinnova',
-        website: 'http://hinnova.com.vn',
-        sdt: '0936362711',
-        email: 'abc@gmail.com',
-        diachi: '181 Đ. Cao Thắng, Phường 12, Quận 10, Thành phố Hồ Chí Minh',
-        trangthai: 1,
-    },
-    {
-        masv: '3119560032',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        lop: 'DCT1192',
-        csthuctap: 'Công ty cổ phần Hinnova',
-        website: 'http://hinnova.com.vn',
-        sdt: '0936362711',
-        email: 'abc@gmail.com',
-        diachi: '181 Đ. Cao Thắng, Phường 12, Quận 10, Thành phố Hồ Chí Minh',
-        trangthai: 1,
-    },
-    {
-        masv: '3119560036',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        lop: 'DCT1192',
-        csthuctap: 'Công ty cổ phần Hinnova',
-        website: 'http://hinnova.com.vn',
-        sdt: '0936362711',
-        email: 'abc@gmail.com',
-        diachi: '181 Đ. Cao Thắng, Phường 12, Quận 10, Thành phố Hồ Chí Minh',
-        trangthai: 1,
-    },
-    {
-        masv: '3119560039',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        lop: 'DCT1192',
-        csthuctap: 'Công ty cổ phần Hinnova',
-        website: 'http://hinnova.com.vn',
-        sdt: '0936362711',
-        email: 'abc@gmail.com',
-        diachi: '181 Đ. Cao Thắng, Phường 12, Quận 10, Thành phố Hồ Chí Minh',
-        trangthai: 1,
-    },
-]
-
 const csvConfig = mkConfig({
     fieldSeparator: ',',
     decimalSeparator: '.',
     useKeysAsHeaders: true,
 });
 
-const TableDSSinhVienThucTap = () => {
+const TableDSSinhVienThucTap = (props) => {
+    const DSSVThucTap = props.DSSVThucTap;
+    const MaDKTT = props.MaDKTT
     const [trangthaiCty, SetTrangthaiCty] = useState(1)
     const onChangeSelect = (event, SetSelect) => {
         let changeValue = event.target.value;
@@ -177,13 +32,13 @@ const TableDSSinhVienThucTap = () => {
     };
 
     const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(data);
+        const csv = generateCsv(csvConfig)(DSSVThucTap);
         download(csvConfig)(csv);
     };
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'masv',
+                accessorKey: 'MaSV',
                 header: 'Mã',
                 size: 100,
                 enableColumnOrdering: false,
@@ -191,52 +46,52 @@ const TableDSSinhVienThucTap = () => {
                 enableSorting: false,
             },
             {
-                accessorKey: 'hosv',
+                accessorKey: 'Ho',
                 header: 'Họ',
-                size: 100,
+                size: 150,
                 enableEditing: false,
             },
             {
-                accessorKey: 'tensv',
+                accessorKey: 'Ten',
                 header: 'Tên',
                 size: 100,
                 enableEditing: false,
             },
             {
 
-                accessorKey: 'lop',
+                accessorKey: 'Lop',
                 header: 'Lớp',
                 size: 100,
                 enableEditing: false,
 
             },
             {
-                accessorKey: 'csthuctap',
+                accessorKey: 'Cty',
                 header: 'Cơ sở thực tập',
                 size: 200,
                 enableEditing: false,
             },
             {
-                accessorKey: 'website',
+                accessorKey: 'Web',
                 header: 'Website',
                 size: 100,
                 enableEditing: false,
             },
             {
-                accessorKey: 'sdt',
+                accessorKey: 'DienThoai',
                 header: 'Điện thoại',
                 size: 100,
                 enableEditing: false,
             },
             {
-                accessorKey: 'email',
+                accessorKey: 'Email',
                 header: 'Email',
                 size: 130,
                 enableEditing: false,
             },
 
             {
-                accessorKey: 'diachi',
+                accessorKey: 'DiaChi',
                 header: 'Địa chỉ',
                 size: 250,
                 enableEditing: false,
@@ -247,7 +102,7 @@ const TableDSSinhVienThucTap = () => {
 
     const table = useMantineReactTable({
         columns,
-        data,
+        data: DSSVThucTap,
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',
@@ -290,10 +145,10 @@ const TableDSSinhVienThucTap = () => {
                 }}
             >
 
-                <select value={trangthaiCty} className="select-btn" onChange={(event) => onChangeSelect(event, SetTrangthaiCty)} >
+                {/* <select value={trangthaiCty} className="select-btn" onChange={(event) => onChangeSelect(event, SetTrangthaiCty)} >
                     <option value='1'>Trong danh sách</option>
                     <option value='0'>Ngoài danh sách</option>
-                </select>
+                </select> */}
                 <Button
                     color="lightblue"
                     //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)

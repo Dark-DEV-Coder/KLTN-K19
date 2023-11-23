@@ -25,7 +25,7 @@ const TableCTDKCN = (props) => {
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'masv',
+                accessorKey: 'MaSV',
                 header: 'Mã',
                 size: 100,
                 enableColumnOrdering: false,
@@ -34,21 +34,21 @@ const TableCTDKCN = (props) => {
 
             },
             {
-                accessorKey: 'ho',
+                accessorKey: 'HoSV',
                 header: 'Họ lót',
                 size: 100,
                 enableEditing: false,
 
             },
             {
-                accessorKey: 'ten',
+                accessorKey: 'TenSV',
                 header: 'Tên',
                 size: 100,
                 enableEditing: false,
             },
             {
 
-                accessorKey: 'diem',
+                accessorKey: 'Diem',
                 header: 'Điểm',
                 size: 100,
                 enableEditing: false,
@@ -57,7 +57,7 @@ const TableCTDKCN = (props) => {
             },
             {
 
-                accessorKey: 'chuyennganh',
+                accessorKey: 'ChuyenNganh',
                 header: 'Chuyên ngành',
                 size: 100,
                 enableEditing: false,

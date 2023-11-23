@@ -41,7 +41,7 @@ const ChiTietThucTap = () => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchGetDSSVThucTap(headers, thuctap.MaDKTT);
         if (res && res.data) {
-            setDSSVThucTap(res.data.Ten)
+            setDSSVThucTap(res.data)
         }
     }
 
@@ -86,7 +86,7 @@ const ChiTietThucTap = () => {
                             <div className="card4">
                                 <h6 className="card-header">Danh sách sinh viên tham gia thực tập</h6>
                             </div>
-                            <TableDSSinhVienThucTap />
+                            <TableDSSinhVienThucTap DSSVThucTap={DSSVThucTap} MaDKTT={thuctap.MaDKTT} />
 
                         </div>
                     </TabPanel>
@@ -95,7 +95,7 @@ const ChiTietThucTap = () => {
                             <div className="card4">
                                 <h6 className="card-header">Danh sách công ty thực tập</h6>
                             </div>
-                            <TableDSCtyThucTap CongTyNgoaiDS={CongTyNgoaiDS} CongTyTrongDS={CongTyTrongDS} />
+                            <TableDSCtyThucTap CongTyNgoaiDS={CongTyNgoaiDS} CongTyTrongDS={CongTyTrongDS} MaDKTT={thuctap.MaDKTT} />
 
                         </div>
                     </TabPanel>

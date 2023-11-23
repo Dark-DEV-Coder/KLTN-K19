@@ -1,15 +1,18 @@
 
 
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Box, Button } from '@mantine/core';
 import { IconDownload, IconUpload } from '@tabler/icons-react';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
     IconButton,
 } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
+import { useState, useEffect } from 'react';
+import { fetchAllThucTap, fetchDeleteCtyThucTap } from "../../GetData"
+import { toast } from "react-toastify";
 
 const csvConfig = mkConfig({
     fieldSeparator: ',',
@@ -18,10 +21,28 @@ const csvConfig = mkConfig({
 });
 
 const TableDSCtyThucTap = (props) => {
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+    let navigate = useNavigate();
+    const MaDKTT = props.MaDKTT;
     const CongTyNgoaiDS = props.CongTyNgoaiDS;
     const CongTyTrongDS = props.CongTyTrongDS;
     const [listData, setListData] = useState(CongTyTrongDS)
     const [trangthaiCty, SetTrangthaiCty] = useState('CongTyTrongDS')
+
+    const handleDeleteRows = async (row) => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDeleteCtyThucTap(headers, MaDKTT, row.original.Email)
+        if (res.status === true) {
+            toast.success(res.message)
+            navigate("/admin/thuctap")
+            // navigate(`/admin/thuctap/single/${MaDKTT}`)
+            return;
+        }
+        if (res.success === false) {
+            toast.error(res.message)
+            return;
+        }
+    }
     const onChangeSelect = (event) => {
         let changeValue = event.target.value;
         SetTrangthaiCty(changeValue)
@@ -40,6 +61,11 @@ const TableDSCtyThucTap = (props) => {
     };
     const columns = useMemo(
         () => [
+            {
+                accessorKey: '_id',
+                header: 'ID công ty',
+                size: 0,
+            },
             {
                 accessorKey: 'TenCongTy',
                 header: 'Tên công ty',
@@ -88,28 +114,30 @@ const TableDSCtyThucTap = (props) => {
         positionActionsColumn: 'last',
         enableColumnActions: true,
         enableRowActions: true,
+        enableHiding: true,
 
         renderRowActions: ({ row, table }) => (
             <Box sx={{ display: 'flex', gap: '0.3rem' }}>
-                <Link to={"/admin/thuctap/vitri/" + row.original.TenCongTy}>
+
+                <Link to={`/admin/thuctap/${MaDKTT}/single/${row.original._id}/${row.original.TenCongTy}`}>
                     <IconButton>
                         <Visibility fontSize="small" />
                     </IconButton>
                 </Link>
 
-                <Link to={"/admin/thuctap/cty/edit/" + row.original.TenCongTy}>
+                <Link to={`/admin/thuctap/${MaDKTT}/edit/${row.original._id}/${row.original.TenCongTy}`}>
                     <IconButton onClick={() => table.setEditingRow(row)}>
                         <Edit fontSize="small" />
                     </IconButton>
                 </Link>
 
-                <IconButton onClick={() => console.log(row.original.name)}>
+                <IconButton onClick={() => handleDeleteRows(row)}>
                     <Delete fontSize="small" sx={{ color: 'red' }} />
                 </IconButton>
             </Box >
 
         ),
-        renderTopToolbarCustomActions: ({ table }) => (
+        renderTopToolbarCustomActions: ({ row, table }) => (
             <Box
                 sx={{
                     display: 'flex',
@@ -122,6 +150,12 @@ const TableDSCtyThucTap = (props) => {
                     <option value='CongTyTrongDS'>Trong danh sách</option>
                     <option value='CongTyNgoaiDS'>Ngoài danh sách</option>
                 </select>
+                <Link to={`/admin/thuctap/${MaDKTT}/new/`}>
+                    <Button>
+                        Thêm công ty
+                    </Button>
+                </Link>
+
                 <Button
                     color="lightblue"
                     //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)

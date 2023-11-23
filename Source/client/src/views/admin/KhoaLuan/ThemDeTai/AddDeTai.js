@@ -19,9 +19,7 @@ const AddDeTai = () => {
             toast.error("Vui lòng điền đầy đủ dữ liệu")
             return
         }
-        console.log(maKLTN.MaKLTN)
         let res = await fetchAddDeTai(headers, maKLTN.MaKLTN, TenDeTai, MaGV)
-        console.log(res)
         if (res.status === true) {
             toast.success(res.message)
             navigate(`/admin/khoaluan/single/${maKLTN.MaKLTN}`)

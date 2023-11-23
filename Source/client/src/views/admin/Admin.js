@@ -62,6 +62,8 @@ import ChiTietTotNghiep from "./TotNghiep/SingleTotNghiep/ChiTietTotNghiep";
 import AddTotNghiep from "./TotNghiep/ThemTotNghiep/AddTotNghiep";
 import EditTotNghiep from "./TotNghiep/EditTotNghiep/EditTotNghiep";
 import AddDeTai from "./KhoaLuan/ThemDeTai/AddDeTai";
+import AddCongTyThucTap from "./ThucTap/ThemCongTyThucTap/AddCongTyThucTap";
+import AddViTriThucTap from "./ThucTap/DSViTriThucTap/AddViTriThucTap";
 const Admin = () => {
 
     const [hiddenDB, setHiddenDB] = useState(false);
@@ -108,9 +110,10 @@ const Admin = () => {
                             <Route path="new" element={<AddThucTap />}></Route>
                             <Route path="single/:MaDKTT" element={<ChiTietThucTap />}></Route>
                             <Route path="edit/:MaDKTT" element={<EditThucTap />}></Route>
-
-                            <Route path="vitri/:TenCongTy" element={<ViTriThucTap />}></Route>
-                            <Route path="cty/edit/:TenCongTy" element={<EditCongTyThucTap />}></Route>
+                            <Route path=":MaDKTT/new" element={<AddCongTyThucTap />}></Route>
+                            <Route path=":MaDKTT/single/:id/:TenCongTy" element={<ViTriThucTap />}></Route>
+                            <Route path=":MaDKTT/edit/:id/:TenCongTy" element={<EditCongTyThucTap />}></Route>
+                            <Route path=":MaDKTT/:id/new" element={<AddViTriThucTap />}></Route>
                         </Route>
                         <Route path='canhbaohoctap'  >
                             <Route index element={<CanhBaoHocTap />}></Route>

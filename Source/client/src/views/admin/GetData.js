@@ -635,3 +635,72 @@ const fetchDeleteThucTap = (headers, MaDKTT) => {
     return axios.delete(`admin/dk-thuc-tap/Xoa/${MaDKTT}`, { headers });
 }
 export { fetchDeleteThucTap };
+
+//Thêm Công ty thực tập
+const fetchAddCtyThucTap = (headers, MaDKTT, Ho, Ten, TenCongTy, Website, SoDienThoai, Email, DiaChi) => {
+    return axios.post(`admin/dk-thuc-tap/ThemCongTyTrongDanhSach/${MaDKTT}`, {
+        MaDKTT: MaDKTT,
+        Ho: Ho,
+        Ten: Ten,
+        TenCongTy: TenCongTy,
+        Website: Website,
+        SoDienThoai: SoDienThoai,
+        Email: Email,
+        DiaChi: DiaChi,
+
+    }, { headers });
+}
+export { fetchAddCtyThucTap };
+
+//Get Chi Tiết Công ty thực tập
+const fetchDetailCongTyThucTap = (headers, MaDKTT, id) => {
+    return axios.post(`admin/dk-thuc-tap/ChiTietCty/${MaDKTT}`, { MaDKTT: MaDKTT, ID: id }, { headers });
+}
+export { fetchDetailCongTyThucTap };
+
+//Sửa thông tin Công ty thực tập
+const fetchEditCtyThucTap = (headers, MaDKTT, ID, HoNguoiLienHe, TenNguoiLienHe, TenCongTy, Website, SoDienThoai, Email, DiaChi) => {
+    return axios.post(`admin/dk-thuc-tap/SuaThongTinCty/${MaDKTT}`, {
+        MaDKTT: MaDKTT,
+        ID: ID,
+        HoNguoiLienHe: HoNguoiLienHe,
+        TenNguoiLienHe: TenNguoiLienHe,
+        TenCongTy: TenCongTy,
+        Website: Website,
+        SoDienThoai: SoDienThoai,
+        Email: Email,
+        DiaChi: DiaChi,
+
+    }, { headers });
+}
+export { fetchEditCtyThucTap };
+
+//Xóa Công ty thực tập
+const fetchDeleteCtyThucTap = (headers, MaDKTT, Email) => {
+    return axios.post(`admin/dk-thuc-tap/XoaCongTyTrongDanhSach/${MaDKTT}`, {
+        MaDKTT: MaDKTT,
+        Email: Email,
+    }, { headers });
+}
+export { fetchDeleteCtyThucTap };
+
+//Thêm vị trí Công ty thực tập
+const fetchAddViTriCtyThucTap = (headers, MaDKTT, ViTri, ToiDa, Email) => {
+    return axios.post(`admin/dk-thuc-tap/ThemViTriCongTyTrongDanhSach/${MaDKTT}`, {
+        MaDKTT: MaDKTT,
+        ViTri: ViTri,
+        ToiDa: ToiDa,
+        Email: Email,
+    }, { headers });
+}
+export { fetchAddViTriCtyThucTap };
+
+//Xóa vị trí Công ty thực tập
+const fetchDeleteViTriCtyThucTap = (headers, MaDKTT, ViTri, Email) => {
+    return axios.post(`admin/dk-thuc-tap/XoaViTriCongTyTrongDanhSach/${MaDKTT}`, {
+        MaDKTT: MaDKTT,
+        ViTri: ViTri,
+        Email: Email,
+    }, { headers });
+}
+export { fetchDeleteViTriCtyThucTap };
