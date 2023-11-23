@@ -22,6 +22,7 @@ import TaiKhoanRoute from "./router/TaiKhoan.js"
 import SinhVienRoute from "./router/SinhVien.js"
 import GiangVienRoute from "./router/GiangVien.js"
 import DangKyChuyenNganhRoute from "./router/DangKyChuyenNganh.js"
+import KhoaLuanTotNghiepRoute from "./router/KhoaLuanTotNghiep.js"
 
 const swaggerDocument = YAML.load('./swagger.yaml')
 
@@ -72,6 +73,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/sinh-vien', verifyUser, SinhVienRoute)
     .use('/api/giang-vien', verifyUser, GiangVienRoute)
     .use('/api/dk-chuyen-nganh', DangKyChuyenNganhRoute)
+    .use('/api/khoa-luan-tot-nghiep', KhoaLuanTotNghiepRoute)
 
 app.use('/*', async (req, res) => {
     res.status(501).send("Don't implement.")
