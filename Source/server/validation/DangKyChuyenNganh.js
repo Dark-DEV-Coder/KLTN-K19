@@ -41,3 +41,13 @@ export const KtraDuLieuDKCNKhiXoaMonChuyenNganh = data => {
 
     return error.get()
 }
+
+export const KtraSVDangKyChuyenNganh = data => {
+    const error = new Error()
+
+    error.isRequired(data.MaSV, "MaSV")
+        .isRequired(data.MaNganh, "MaNganh")
+        .isRequired(data.MaChuyenNganh, "MaChuyenNganh")
+
+    return error.get()
+}
