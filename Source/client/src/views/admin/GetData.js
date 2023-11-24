@@ -140,10 +140,9 @@ export { fetchDetailChucNang };
 
 //Sửa  Chức Năng
 const fetchEditChucNang = (headers, MaCN, data) => {
-    // for (const pair of data.entries()) {
-    //     console.log(pair[0] + ": " + pair[1]);
-    // }
-    // console.log(data.TenChucNang)
+    for (const pair of data.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+    }
     return axios.post(`admin/chuc-nang/ChinhSua/${MaCN}`, data, { headers });
 }
 export { fetchEditChucNang };
@@ -266,6 +265,17 @@ const fetchDeleteTaiKhoan = (headers, MaTK) => {
     return axios.delete(`admin/tai-khoan/Xoa/${MaTK}`, { headers });
 }
 export { fetchDeleteTaiKhoan };
+
+//Đổi mật khẩu  Tài khoản
+const fetchEditMatKhau = (headers, MaTK, MatKhauCu, MatKhauMoi, NhapLaiMatKhauMoi) => {
+    return axios.post(`tai-khoan/DoiMatKhau`, {
+        MaSo: MaTK,
+        MatKhauCu: MatKhauCu,
+        MatKhauMoi: MatKhauMoi,
+        NhapLaiMatKhauMoi: NhapLaiMatKhauMoi,
+    }, { headers });
+}
+export { fetchEditMatKhau };
 //Tài khoản
 
 

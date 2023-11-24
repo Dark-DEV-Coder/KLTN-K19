@@ -14,7 +14,7 @@ const LoginAdmin = (props) => {
     }
     const GetToken = () => {
         if (loggedIn) {
-            navigate("/admin/")
+            // navigate("/admin/")
             return
         }
     }
@@ -26,6 +26,7 @@ const LoginAdmin = (props) => {
     const [TenDangNhap, setTenDangNhap] = useState("");
     const [MatKhau, setMatKhau] = useState("");
     const [accessToken, setAccessToken] = useState("");
+    const [list_CN, setList_CN] = useState([])
     const [isShowPass, setIsShowPass] = useState(false);
     const [loadingAPI, setLoadingAPI] = useState(false)
     const onChangeInputSL = (event, SetState) => {
@@ -51,8 +52,13 @@ const LoginAdmin = (props) => {
         console.log("Login: ", res)
         if (res.status) {
             if (res.data && res.data.accessToken) {
+                setList_CN(res.data.ThongTin.QuyenHan.ChucNang)
                 localStorage.setItem("accessToken", res.data.accessToken)
-                localStorage.setItem("QuyenHan", res.data.ThongTin.QuyenHan.MaQTK)
+                localStorage.setItem("MaGV", res.data.ThongTin.MaGV)
+                localStorage.setItem("TenGV", res.data.ThongTin.HoTen)
+                localStorage.setItem("HinhGV", res.data.ThongTin.Hinh)
+                // localStorage.setItem("QuyenHan", res.data.ThongTin.QuyenHan.MaQTK)
+                localStorage.setItem("listChucNang", JSON.stringify(res.data.ThongTin.QuyenHan.ChucNang))
             }
             OnCheckLogin();
             toast.success(res.message)

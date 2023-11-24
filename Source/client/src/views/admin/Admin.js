@@ -64,6 +64,7 @@ import EditTotNghiep from "./TotNghiep/EditTotNghiep/EditTotNghiep";
 import AddDeTai from "./KhoaLuan/ThemDeTai/AddDeTai";
 import AddCongTyThucTap from "./ThucTap/ThemCongTyThucTap/AddCongTyThucTap";
 import AddViTriThucTap from "./ThucTap/DSViTriThucTap/AddViTriThucTap";
+import DoiMatKhau from "./Password/DoiMatKhau";
 const Admin = () => {
 
     const [hiddenDB, setHiddenDB] = useState(false);
@@ -84,7 +85,7 @@ const Admin = () => {
                     <Routes >
                         {/* <Route path="/admin/"> */}
                         <Route index element={<Tongquan />}></Route>
-                        <Route path='dkichuyennganh'  >
+                        <Route path='dkychuyennganh'  >
                             <Route index element={<DkiChuyenNganh />}></Route>
                             <Route path="new" element={<AddDKCN />}></Route>
                             <Route path="single/:MaDKCN" element={<SingleDkiChuyenNganh />}></Route>
@@ -147,6 +148,7 @@ const Admin = () => {
                             <Route path="new" element={<AddTaiKhoan />} ></Route>
                             <Route path="single/:MaTK" element={<SingleTaiKhoan />} ></Route>
                             <Route path="edit/:MaTK" element={<EditTaiKhoan />} ></Route>
+                            <Route path="doimatkhau" element={<DoiMatKhau />} ></Route>
                         </Route>
                         <Route path='quyentaikhoan'  >
                             <Route index element={<QuyenTaiKhoan />}></Route>
