@@ -59,24 +59,6 @@ const AddTaiKhoan = () => {
     const checkdulieu = (value, setDuLieu) => {
         value === '' ? setDuLieu(false) : setDuLieu(true)
     }
-
-
-    const listchucnang = [
-        { MaCN: 'home', TenChucNang: 'Dashboard', },
-        { MaCN: 'dkichuyennganh', TenChucNang: 'Đăng ký chuyên ngành' },
-        { MaCN: 'khoaluan', TenChucNang: 'Khóa luận' },
-        { MaCN: 'thuctap', TenChucNang: 'Thực tập' },
-        { MaCN: 'totnghiep', TenChucNang: 'Tốt nghiệp' },
-        { MaCN: 'canhbaohoctap', TenChucNang: 'Cảnh báo' },
-        { MaCN: 'giangvien', TenChucNang: 'Giảng viên' },
-        { MaCN: 'sinhvien', TenChucNang: 'Sinh viên' },
-        { MaCN: 'nganhhoc', TenChucNang: 'Ngành' },
-        { MaCN: 'chuyennganh', TenChucNang: 'Chuyên ngành' },
-        { MaCN: 'taikhoan', TenChucNang: 'Tài khoản' },
-        { MaCN: 'chucnang', TenChucNang: 'Chức năng' },
-        { MaCN: 'chat', TenChucNang: 'ChatBox' },
-
-    ]
     return (
         <>
             <main className="main2">

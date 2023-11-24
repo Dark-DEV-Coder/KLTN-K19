@@ -13,6 +13,8 @@ const EditChucNang = () => {
     const [TenChucNang, setTenChucNang] = useState("")
     const [Hinh, setHinh] = useState("")
 
+    const [loadingAPI, setLoadingAPI] = useState(false)
+
     useEffect(() => {
         getDetailChucNang();
 
@@ -27,6 +29,7 @@ const EditChucNang = () => {
         }
     }
     const handleEditChucNang = async () => {
+        console.log(Hinh)
         const headers = { 'x-access-token': accessToken };
         if (!TenChucNang) {
             toast.error("Vui lòng điền đầy đủ dữ liệu !")
@@ -34,9 +37,10 @@ const EditChucNang = () => {
         }
         let value_img = new FormData();
         // value_img.TenChucNang = TenChucNang;
+        value_img.append("MaCN", MaCN);
         value_img.append("TenChucNang", TenChucNang);
         value_img.append("Hinh", Hinh);
-
+        setLoadingAPI(true);
         let res = await fetchEditChucNang(headers, MaCN, value_img)
         if (res.status === true) {
             toast.success(res.message)
@@ -47,6 +51,7 @@ const EditChucNang = () => {
             toast.error(res.message)
             return;
         }
+        setLoadingAPI(false)
     }
     const onChangeFile = (event, setSL) => {
         const img = event.target.files[0];
@@ -62,6 +67,7 @@ const EditChucNang = () => {
     // check dữ liệu
     const [checkdulieuMa, setCheckdulieuMa] = useState(true)
     const [checkdulieuTen, setCheckdulieuTen] = useState(true)
+    const [checkdulieuHinh, setCheckdulieuHinh] = useState(true)
     const checkdulieu = (value, setDuLieu) => {
         value === '' ? setDuLieu(false) : setDuLieu(true)
     }
@@ -105,17 +111,19 @@ const EditChucNang = () => {
                         </div>
                     </div>
                     <div className="form-row">
-                        <div className="form-group col-md-12">
+                        <div className="form-group col-md-7">
                             <div className="custom-file">
                                 <label className="inputKL" htmlFor="inputDSDT">Icon chức năng  <a href="https://boxicons.com/" target="_blank" rel="noopener" style={{ fontWeight: '400' }}>(Link lấy icon)</a></label>
-                                <input type="file" accept=".png" className="form-control file" id="inputDSDT" onChange={(event) => onChangeFile(event, setHinh)} />
+                                <input type="file" accept=".png" className="form-control file" id="inputDSDT" onChange={(event) => onChangeFile(event, setHinh)} onBlur={() => checkdulieu(Hinh, setCheckdulieuHinh)} />
                             </div>
-                            <div className="invalid-feedback" style={{ display: 'block' }}>Chỉ chấp nhận các file có đuôi là png, ...</div>
+                            <div className="invalid-feedback" style={{ display: checkdulieuHinh ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+                            <div className="invalid-feedback" style={{ display: 'block', color: 'blue' }}>Chỉ chấp nhận các file có đuôi là png, ...</div>
                         </div>
+                        {Hinh ? <img className="img-preview" src={Hinh.preview} /> : ""}
                     </div>
 
 
-                    <button className="btn" type="button" onClick={() => handleEditChucNang()}>Lưu</button>
+                    <button className="btn" type="button" onClick={() => handleEditChucNang()}>{loadingAPI ? "Đang lưu ..." : "Lưu"}</button>
                 </div>
 
 

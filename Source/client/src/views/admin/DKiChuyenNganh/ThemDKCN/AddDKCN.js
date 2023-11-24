@@ -60,7 +60,7 @@ const AddDKCN = () => {
                 // AddSoLuongChuyenNganh("DKP", "LTUD", sl_ltud)
             }
             toast.success(res.message)
-            navigate("/admin/dkichuyennganh")
+            navigate("/admin/dkychuyennganh")
             return;
         }
         if (res.status === false) {

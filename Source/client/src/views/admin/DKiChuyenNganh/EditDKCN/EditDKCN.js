@@ -71,7 +71,7 @@ const EditDKCN = () => {
         let res = await fetchEditDangKyCN(headers, dangkychuyennganh.MaDKCN, Ten, Khoa, ngayBD, ngayKT)
         if (res.status === true) {
             toast.success(res.message)
-            navigate("/admin/dkichuyennganh")
+            navigate("/admin/dkychuyennganh")
             return;
         }
         if (res.status === false) {
