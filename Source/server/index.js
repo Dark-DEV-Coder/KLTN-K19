@@ -70,8 +70,8 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     .use('/api/admin', verifyToken, verifyAdmin, adminRoute)
     .use('/api/tai-khoan', TaiKhoanRoute)
-    .use('/api/sinh-vien', verifyUser, SinhVienRoute)
-    .use('/api/giang-vien', verifyUser, GiangVienRoute)
+    .use('/api/sinh-vien', verifyToken, verifyUser, SinhVienRoute)
+    .use('/api/giang-vien',verifyToken, verifyUser, GiangVienRoute)
     .use('/api/dk-chuyen-nganh', DangKyChuyenNganhRoute)
     .use('/api/khoa-luan-tot-nghiep', KhoaLuanTotNghiepRoute)
 
