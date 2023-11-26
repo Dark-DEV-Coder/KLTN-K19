@@ -292,6 +292,36 @@ const fetchDetailQuyenTK = (headers, MaQTK) => {
 }
 export { fetchDetailQuyenTK };
 
+//Sửa Quyền tài khoản
+const fetchEditQuyenTK = (headers, MaQTK, TenQuyenTK, MaCN, ChucNangCon) => {
+    return axios.put(`admin/quyen-tai-khoan/ChinhSua/${MaQTK}`, {
+        TenQuyenTK: TenQuyenTK,
+        MaCN: MaCN,
+        ChucNangCon: ChucNangCon,
+    }, { headers });
+}
+export { fetchEditQuyenTK };
+
+//Thêm Quyền tài khoản
+const fetchAddQuyenTK = (headers, MaQTK, TenQuyenTK, MaCN, ChucNangCon) => {
+    console.log("API MaQTK : ", MaQTK)
+    console.log("API TenQuyenTK : ", TenQuyenTK)
+    console.log("API MaCN : ", MaCN)
+    console.log("API ChucNangCon : ", ChucNangCon)
+    return axios.post(`admin/quyen-tai-khoan/Them`, {
+        MaQTK: MaQTK,
+        TenQuyenTK: TenQuyenTK,
+        MaCN: MaCN,
+        ChucNangCon: ChucNangCon,
+    }, { headers });
+}
+export { fetchAddQuyenTK };
+
+//Xóa  Quyền Tài Khoản
+const fetchDeleteQuyenTK = (headers, MaQTK) => {
+    return axios.delete(`admin/quyen-tai-khoan/Xoa/${MaQTK}`, { headers });
+}
+export { fetchDeleteQuyenTK };
 
 // Quyền tài khoản
 

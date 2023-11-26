@@ -34,11 +34,11 @@ function App() {
   }
 
   const [loggedIn, setLoggedIn] = useState();
-  useEffect(() => {
-    let token = localStorage.getItem("accessToken");
-    token ? setLoggedIn(true) : setLoggedIn(false)
-  }, [])
-  const [loggedInClient, setLoggedInClient] = useState(false);
+  // useEffect(() => {
+  //   let token = localStorage.getItem("accessToken");
+  //   token ? setLoggedIn(true) : setLoggedIn(false)
+  // }, [])
+  // const [loggedInClient, setLoggedInClient] = useState(false);
   const CheckLogin = () => {
     let token = localStorage.getItem("accessToken");
     token ? setLoggedIn(true) : setLoggedIn(false)
@@ -50,15 +50,11 @@ function App() {
       <div className='App'>
         <Routes>
           <Route path='/admin/login' element={<LoginAdmin loggedIn={loggedIn} CheckLogin={() => CheckLogin()} />}></Route>
-          <Route path='admin/*' element={loggedIn ?
+          <Route path='admin/*' element={localStorage.getItem("accessToken") && localStorage.getItem("MaGV") ?
             <Admin /> : <Navigate to="/admin/login" />}>
           </Route>
           <Route path='/*' element={<Client />}></Route>
-
-
         </Routes>
-
-
         <ToastContainer
           position="top-right"
           autoClose={5000}

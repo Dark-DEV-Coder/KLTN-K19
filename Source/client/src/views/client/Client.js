@@ -29,9 +29,10 @@ import NavGV from "./giangvien/NavGV";
 import KhoaLuanGV from "./giangvien/khoaluan/KhoaLuanGV";
 import Signup from "./Signup/Signup";
 import Quenmatkhau from "./taikhoan/quenmatkhau/Quenmatkhau";
+import { useEffect, useState } from "react";
 const Client = () => {
-    const checklogin = true
-    const checkquyen = true
+    const [checkLogin, setCheckLogin] = useState(false)
+    const [checkQuyen, setCheckQuyen] = useState(false)
     const danhmucSV = [
         { id: '/', title: 'TRANG CHỦ' },
         { id: 'thuctap', title: 'THỰC TẬP' },
@@ -49,83 +50,78 @@ const Client = () => {
         { id: 'totnghiep', title: 'TỐT NGHIỆP' },
         { id: 'canhbaohoctap', title: 'CẢNH BÁO HỌC TẬP' },
     ]
+
+    const checklogin = () => {
+        localStorage.getItem("accessToken") && localStorage.getItem("ThongTin") ? setCheckLogin(true) : setCheckLogin(false)
+        localStorage.getItem("accessToken") && localStorage.getItem("ThongTin") && JSON.parse(localStorage.getItem("ThongTin")).ChucVu === "Sinh viên" ? setCheckQuyen(true) : setCheckQuyen(false)
+    }
+    useEffect(() => {
+        checklogin()
+    })
     return (
         <div>
-            {/* Check quyền để chạy Nav giảng viên hay sinh viên */}
-            {checkquyen === true ?
-                <div>
-                    <Nav />
-                    <NavSV danhmuc={danhmucSV} />
-                    <ChatBox />
-                    {/* Check login để router */}
-                    {checklogin === true ?
-                        <Routes >
-                            <Route path="/">
-                                <Route index path='' element={<TrangChu />} exact></Route>
-                                {/* <Route path='dangnhap' element={<Login />}></Route>
-                            <Route path='dangky' element={<Signup />}></Route> */}
-                                {/* <Route path='thuctap' element={<Error />} ></Route> */}
-                                <Route path='khoaluan' >
-                                    <Route index element={<KhoaLuan />}></Route>
-                                    <Route path='dky-khoaluan' element={<DangKy />}></Route >
-                                    <Route path='dieukiendkykhoaluan' element={<DieuKien />}></Route>
-                                    <Route path='huongdandky' element={<HuongDanDK />}></Route>
-                                </Route>
-                                <Route path='thuctap' >
-                                    <Route index element={<Thuctap />}></Route>
-                                    <Route path='dieukiendkythuctap' element={<DieuKienDK_TT />}></Route>
-                                    <Route path='huongdandkythuctap' element={<HuongDanDK_TT />}></Route>
-                                </Route>
-                                <Route path='chuyennganh' >
-                                    <Route index element={<Error />}></Route>
-                                    <Route path='ds-sinhvien' element={<KQDKchuyennganh />}></Route >
-                                    <Route path='dieukiendkychuyennganh' element={<DieuKienDK_CN />}></Route>
-                                    <Route path='huongdandkychuyennganh' element={<HuongDanDK_CN />}></Route>
-                                </Route>
-                                <Route path='taikhoan' >
-                                    <Route index element={<Taikhoan />}></Route>
-                                    <Route path='doimatkhau' element={<Doimatkhau />}></Route >
-                                </Route>
 
-                                <Route path='contract' element={<Contact />}></Route>
-                                {/* <Route path='thongbao/chitiet' element={<DetailNotification />}></Route> */}
-                                <Route path='*' element={<Error />}></Route>
-                            </Route>
-                        </Routes >
-                        :
-                        <Routes >
-                            <Route path="/">
-                                <Route index path='' element={<TrangChu />} exact></Route>
-                                <Route path='dangnhap' element={<Login />}></Route>
-                                <Route path='dangky' element={<Signup />}></Route>
-                                <Route path='quenmatkhau' element={<Quenmatkhau />}></Route>
-                                <Route path='contract' element={<Contact />}></Route>
-                                {/* <Route path='thongbao/chitiet' element={<DetailNotification />}></Route> */}
-                                <Route path='*' element={<Error />}></Route>
-                            </Route>
-                        </Routes >
-                    }
-                    {/* Check login để router */}
-                    <Footer />
-                </div>
-                :
+            {/* Check quyền để chạy Nav giảng viên hay sinh viên */}
+            {checkLogin
+                ?
                 <div>
-                    <Nav />
-                    <NavGV danhmuc={danhmucGV} />
-                    <ChatBox />
-                    {checklogin === true ?
-                        <Routes >
-                            <Route path="/">
-                                <Route index path='' element={<TrangChu />} exact></Route>
-                                {/* <Route path='dangnhap' element={<Login />}></Route>
-                                <Route path='dangky' element={<Signup />}></Route> */}
-                                <Route path='khoaluan' >
-                                    {/* <Route index element={<KhoaLuan />}></Route> */}
-                                    <Route path='ds-sinhviendky' element={<KhoaLuanGV />}></Route >
-                                    {/* <Route path='dieukiendkykhoaluan' element={<DieuKien />}></Route>
-                                    <Route path='huongdandky' element={<HuongDanDK />}></Route> */}
+                    {checkQuyen
+                        ?
+                        <div>
+                            <Nav />
+                            <NavSV danhmuc={danhmucSV} checkLogin={checkLogin} />
+                            <ChatBox />
+                            <Routes >
+                                <Route path="/">
+                                    <Route index path='' element={<TrangChu />} exact></Route>
+                                    {/* <Route path='dangnhap' element={<Login />}></Route>
+                            <Route path='dangky' element={<Signup />}></Route> */}
+                                    {/* <Route path='thuctap' element={<Error />} ></Route> */}
+                                    <Route path='khoaluan' >
+                                        <Route index element={<KhoaLuan />}></Route>
+                                        <Route path='dky-khoaluan' element={<DangKy />}></Route >
+                                        <Route path='dieukiendkykhoaluan' element={<DieuKien />}></Route>
+                                        <Route path='huongdandky' element={<HuongDanDK />}></Route>
+                                    </Route>
+                                    <Route path='thuctap' >
+                                        <Route index element={<Thuctap />}></Route>
+                                        <Route path='dieukiendkythuctap' element={<DieuKienDK_TT />}></Route>
+                                        <Route path='huongdandkythuctap' element={<HuongDanDK_TT />}></Route>
+                                    </Route>
+                                    <Route path='chuyennganh' >
+                                        <Route index element={<Error />}></Route>
+                                        <Route path='ds-sinhvien' element={<KQDKchuyennganh />}></Route >
+                                        <Route path='dieukiendkychuyennganh' element={<DieuKienDK_CN />}></Route>
+                                        <Route path='huongdandkychuyennganh' element={<HuongDanDK_CN />}></Route>
+                                    </Route>
+                                    <Route path='taikhoan' >
+                                        <Route index element={<Taikhoan />}></Route>
+                                        <Route path='doimatkhau' element={<Doimatkhau />}></Route >
+                                    </Route>
+
+                                    <Route path='contract' element={<Contact />}></Route>
+                                    {/* <Route path='thongbao/chitiet' element={<DetailNotification />}></Route> */}
+                                    <Route path='*' element={<Error />}></Route>
                                 </Route>
-                                {/* <Route path='thuctap' >
+                            </Routes >
+                        </div>
+                        :
+                        <div>
+                            <Nav />
+                            <NavGV danhmuc={danhmucGV} checkLogin={checkLogin} />
+                            <ChatBox />
+                            <Routes >
+                                <Route path="/">
+                                    <Route index path='' element={<TrangChu />} exact></Route>
+                                    {/* <Route path='dangnhap' element={<Login />}></Route>
+                                <Route path='dangky' element={<Signup />}></Route> */}
+                                    <Route path='khoaluan' >
+                                        {/* <Route index element={<KhoaLuan />}></Route> */}
+                                        <Route path='ds-sinhviendky' element={<KhoaLuanGV />}></Route >
+                                        {/* <Route path='dieukiendkykhoaluan' element={<DieuKien />}></Route>
+                                    <Route path='huongdandky' element={<HuongDanDK />}></Route> */}
+                                    </Route>
+                                    {/* <Route path='thuctap' >
                                     <Route index element={<Thuctap />}></Route>
                                     <Route path='dieukiendkythuctap' element={<DieuKienDK_TT />}></Route>
                                     <Route path='huongdandkythuctap' element={<HuongDanDK_TT />}></Route>
@@ -136,29 +132,36 @@ const Client = () => {
                                     <Route path='dieukiendkychuyennganh' element={<DieuKienDK_CN />}></Route>
                                     <Route path='huongdandkychuyennganh' element={<HuongDanDK_CN />}></Route>
                                 </Route> */}
-                                <Route path='taikhoan' >
-                                    <Route index element={<Taikhoan />}></Route>
-                                    <Route path='doimatkhau' element={<Doimatkhau />}></Route >
-                                </Route>
+                                    <Route path='taikhoan' >
+                                        <Route index element={<Taikhoan />}></Route>
+                                        <Route path='doimatkhau' element={<Doimatkhau />}></Route >
+                                    </Route>
 
-                                <Route path='contract' element={<Contact />}></Route>
-                                {/* <Route path='thongbao/chitiet' element={<DetailNotification />}></Route> */}
-                                <Route path='*' element={<Error />}></Route>
-                            </Route>
-                        </Routes >
-                        :
-                        <Routes >
-                            <Route path="/">
-                                <Route index path='' element={<TrangChu />} exact></Route>
-                                <Route path='dangnhap' element={<Login />}></Route>
-                                <Route path='dangky' element={<Signup />}></Route>
-                                <Route path='quenmatkhau' element={<Quenmatkhau />}></Route>
-                                <Route path='contract' element={<Contact />}></Route>
-                                {/* <Route path='thongbao/chitiet' element={<DetailNotification />}></Route> */}
-                                <Route path='*' element={<Error />}></Route>
-                            </Route>
-                        </Routes >
+                                    <Route path='contract' element={<Contact />}></Route>
+                                    {/* <Route path='thongbao/chitiet' element={<DetailNotification />}></Route> */}
+                                    <Route path='*' element={<Error />}></Route>
+                                </Route>
+                            </Routes >
+                        </div>
                     }
+                    <Footer />
+                </div>
+                :
+                <div>
+                    <Nav />
+                    <NavSV danhmuc={danhmucSV} />
+                    <ChatBox />
+                    <Routes >
+                        <Route path="/">
+                            <Route index path='' element={<TrangChu />} exact></Route>
+                            <Route path='dangnhap' element={<Login />}></Route>
+                            <Route path='dangky' element={<Signup />}></Route>
+                            <Route path='quenmatkhau' element={<Quenmatkhau />}></Route>
+                            <Route path='contract' element={<Contact />}></Route>
+                            {/* <Route path='thongbao/chitiet' element={<DetailNotification />}></Route> */}
+                            <Route path='*' element={<Error />}></Route>
+                        </Route>
+                    </Routes >
                     <Footer />
                 </div>
             }

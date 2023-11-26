@@ -13,12 +13,11 @@ const LoginAdmin = (props) => {
         CheckLogin();
     }
     const GetToken = () => {
-        if (loggedIn) {
-            // navigate("/admin/")
+        if (localStorage.getItem("accessToken") && localStorage.getItem("MaGV")) {
+            navigate("/admin/*")
             return
         }
     }
-
     useEffect(() => {
         GetToken()
     }, [])
@@ -52,6 +51,7 @@ const LoginAdmin = (props) => {
         console.log("Login: ", res)
         if (res.status) {
             if (res.data && res.data.accessToken) {
+                navigate("/admin/")
                 setList_CN(res.data.ThongTin.QuyenHan.ChucNang)
                 localStorage.setItem("accessToken", res.data.accessToken)
                 localStorage.setItem("MaGV", res.data.ThongTin.MaGV)
@@ -64,6 +64,7 @@ const LoginAdmin = (props) => {
             toast.success(res.message)
             navigate("/admin/")
             return
+
         }
         if (!res.status) {
             toast.error(res.message)

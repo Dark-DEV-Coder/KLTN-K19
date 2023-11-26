@@ -1,18 +1,31 @@
 import '../../../css/style.css'
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import PasswordOutlinedIcon from '@mui/icons-material/PasswordOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./NavSV.scss"
 const NavSV = (props) => {
-    const [checkLogin, SetCheckLogin] = useState(false)
-    const [hiddenInfor, SetHiddenInfor] = useState(false)
+    const checkLogin = props.checkLogin;
+    const [ThongTin, setThongTin] = useState({})
+    // const checkQuyen = props.checkQuyen;
+    let navigate = useNavigate();
+    // const [checkLogin, SetCheckLogin] = useState()
+    const [hiddenInfor, SetHiddenInfor] = useState()
     const danhmuc = props.danhmuc;
+    useEffect(() => {
+        if (checkLogin) {
+            let thongtinnguoidung = JSON.parse(localStorage.getItem("ThongTin"))
+            setThongTin(thongtinnguoidung)
+        }
+    }, [])
     const onClickLogout = () => {
-        SetCheckLogin(false)
+        window.localStorage.clear();
+        // SetCheckLogin(false)
         SetHiddenInfor(false)
+        navigate("/")
+        window.location.reload()
     }
     const onClickHiddenInfor = () => {
         SetHiddenInfor(!hiddenInfor)
@@ -92,7 +105,7 @@ const NavSV = (props) => {
                             {/* Đã đăng nhập */}
                             <div className='avt' onClick={() => onClickHiddenInfor()} onBlur={() => onClickHiddenInfor()} style={checkLogin ? { display: 'block' } : { display: 'none' }}>
                                 <ManageAccountsOutlinedIcon style={{ fontSize: '35px', marginRight: '0.5rem', color: '#f2f2f2' }} />
-                                <span>Xin chào, Lê Thị Cẩm Duyên</span>
+                                <span>Xin chào, {ThongTin.HoTen}</span>
                             </div>
 
                             <div className="avt-infor" style={hiddenInfor ? { display: 'block' } : { display: 'none' }}>

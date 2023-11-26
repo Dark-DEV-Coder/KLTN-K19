@@ -7,7 +7,7 @@ import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your l
 import { Link } from "react-router-dom";
 import { IconButton } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
-import { fetchAllQuyenTK, fetchDeleteGiangVien } from "../GetData"
+import { fetchAllQuyenTK, fetchDeleteQuyenTK } from "../GetData"
 import { toast } from "react-toastify";
 import { useState, useEffect } from 'react';
 
@@ -30,6 +30,19 @@ const TableQuyenTaiKhoan = (props) => {
         let res = await fetchAllQuyenTK(headers);
         if (res && res.data && res.data.DanhSach) {
             setListData_QuyenTaiKhoan(res.data.DanhSach)
+        }
+    }
+    const handleDeleteRows = async (row) => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDeleteQuyenTK(headers, row.original.MaQTK)
+        if (res.status === true) {
+            toast.success(res.message)
+            getListQuyenTaiKhoan()
+            return;
+        }
+        if (res.success === false) {
+            toast.error(res.message)
+            return;
         }
     }
 
@@ -89,7 +102,7 @@ const TableQuyenTaiKhoan = (props) => {
                     </IconButton>
                 </Link>
 
-                <IconButton onClick={() => console.log(row.original.name)}>
+                <IconButton onClick={() => handleDeleteRows(row)}>
                     <Delete fontSize="small" sx={{ color: 'red' }} />
                 </IconButton>
             </Box >

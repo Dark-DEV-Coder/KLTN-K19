@@ -9,10 +9,11 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { fetchLogin } from "../GetData_client"
 const Login = () => {
+    let navigate = useNavigate();
     const [TenDangNhap, setTenDangNhap] = useState("");
     const [MatKhau, setMatKhau] = useState("");
-    const [accessToken, setAccessToken] = useState("");
     const [isShowPass, setIsShowPass] = useState(false);
     const [loadingAPI, setLoadingAPI] = useState(false)
     const onChangeInputSL = (event, SetState) => {
@@ -29,26 +30,26 @@ const Login = () => {
 
     const handleLogin = async () => {
         if (!TenDangNhap || !MatKhau) {
-            toast.error("Dữ liệu điền chưa đủ điều kiện !")
+            toast.error("Vui lòng điền đẩy đủ dữ liệu !")
             return
         }
         setLoadingAPI(true);
-        // let res = await fetchLoginAdmin(TenDangNhap, MatKhau);
+        let res = await fetchLogin(TenDangNhap, MatKhau);
+        console.log(res)
         // setAccessToken(res.data.accessToken)
-        // if (res.status) {
-        //     if (res.data && res.data.accessToken) {
-        //         localStorage.setItem("accessToken", res.data.accessToken)
-        //         localStorage.setItem("QuyenHan", res.data.ThongTin.QuyenHan.MaQTK)
-        //     }
-        //     OnCheckLogin();
-        //     toast.success(res.message)
-        //     navigate("/admin")
-        //     return
-        // }
-        // if (!res.status) {
-        //     toast.error(res.message)
-        // }
-        // setLoadingAPI(false)
+        if (res.status) {
+            if (res.data && res.data.accessToken) {
+                localStorage.setItem("accessToken", res.data.accessToken)
+                localStorage.setItem("ThongTin", JSON.stringify(res.data.ThongTin))
+            }
+            navigate("/")
+            window.location.reload()
+            return
+        }
+        if (!res.status) {
+            toast.error(res.message)
+        }
+        setLoadingAPI(false)
     }
     return (
         <>
