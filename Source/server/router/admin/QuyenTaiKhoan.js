@@ -117,8 +117,8 @@ QuyenTaiKhoanAdminRoute.post('/Them', async (req, res) => {
                 }
             });
         }
-
-        await QuyenTaiKhoan.create({ MaQTK: MaQTK, TenQuyenTK: TenQuyenTK });
+        else
+            await QuyenTaiKhoan.create({ MaQTK: MaQTK, TenQuyenTK: TenQuyenTK });
         
         return sendSuccess(res, "Thêm quyền tài khoản thành công");
     }
