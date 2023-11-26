@@ -1,10 +1,16 @@
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { fetchAllChucNang, fetchAddQuyenTK } from "../../GetData"
+import { toast } from "react-toastify";
 const AddQuyenTaiKhoan = () => {
-
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+    let navigate = useNavigate();
     const [MaQuyen, SetMaQuyen] = useState("")
     const [TenQuyen, SetTenQuyen] = useState("")
+    const [listchucnang, setListchucnang] = useState([]);
+    const [listchucnangTK, setListchucnangTK] = useState([]);
+    const [listmachucnangTK, setListmachucnangTK] = useState([]);
 
     const onChangeInputSL = (event, SetState) => {
         let changeValue = event.target.value;
@@ -17,27 +23,68 @@ const AddQuyenTaiKhoan = () => {
     const checkdulieu = (value, SetDuLieu) => {
         value === '' ? SetDuLieu(false) : SetDuLieu(true)
     }
+    useEffect(() => {
+        getListChucNang();
+    }, []);
+    const getListChucNang = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchAllChucNang(headers);
+        if (res && res.data && res.data.DanhSach) {
+            setListchucnang(res.data.DanhSach)
+        }
+    }
+    const onChangeChucNang = (item2) => {
+        let current = listchucnangTK;
+        let current_ma = listmachucnangTK;
+        let check = current.filter(item => item.MaCN === item2.MaCN).length;
+        if (check === 1) {
+            current = current.filter(item => item.MaCN !== item2.MaCN)
+            current_ma = current_ma.filter(item => item !== item2.MaCN)
+            setListchucnangTK(current)
+            setListmachucnangTK(current_ma)
+            return
+        }
+        if (check === 0) {
+            current = [...current, item2]
+            current_ma = [...current_ma, item2.MaCN]
+            setListchucnangTK(current)
+            setListmachucnangTK(current_ma)
+            return
+        }
+    }
+    const handleAddQuyenTK = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let maCN = "";
+        let ChucNangCon = "";
+        listmachucnangTK.map((item, index) => {
+            if (index === 0) {
+                maCN = maCN + item
+                ChucNangCon = ChucNangCon + "Thêm,Sửa,Xóa,Xem danh sách"
+            }
+            else {
+                maCN = maCN + ";" + item
+                ChucNangCon = ChucNangCon + ";Thêm,Sửa,Xóa,Xem danh sách"
+            }
+        })
+        if (!headers || !MaQuyen || !TenQuyen) {
+            toast.error("Vui lòng nhập đầy đủ dữ liệu !")
+            return
+        }
+        console.log("MaCN: ", maCN)
+        console.log("ChucNangCon: ", ChucNangCon)
+        let res = await fetchAddQuyenTK(headers, MaQuyen, TenQuyen, maCN, ChucNangCon)
+        if (res.status === true) {
+            toast.success(res.message)
+            navigate(`/admin/quyentaikhoan`)
+            return;
+        }
+        if (res.status === false) {
+            toast.error(res.message)
+            return;
 
-    const chucnangcuaTK = [
+        }
 
-    ]
-
-    const listchucnang = [
-        { MaCN: 'home', TenChucNang: 'Dashboard', },
-        { MaCN: 'dkichuyennganh', TenChucNang: 'Đăng ký chuyên ngành' },
-        { MaCN: 'khoaluan', TenChucNang: 'Khóa luận' },
-        { MaCN: 'thuctap', TenChucNang: 'Thực tập' },
-        { MaCN: 'totnghiep', TenChucNang: 'Tốt nghiệp' },
-        { MaCN: 'canhbaohoctap', TenChucNang: 'Cảnh báo' },
-        { MaCN: 'giangvien', TenChucNang: 'Giảng viên' },
-        { MaCN: 'sinhvien', TenChucNang: 'Sinh viên' },
-        { MaCN: 'nganhhoc', TenChucNang: 'Ngành' },
-        { MaCN: 'chuyennganh', TenChucNang: 'Chuyên ngành' },
-        { MaCN: 'taikhoan', TenChucNang: 'Tài khoản' },
-        { MaCN: 'chucnang', TenChucNang: 'Chức năng' },
-        { MaCN: 'chat', TenChucNang: 'ChatBox' },
-
-    ]
+    }
     return (
         <>
             <main className="main2">
@@ -81,19 +128,21 @@ const AddQuyenTaiKhoan = () => {
                             </div>
                         </div>
                         <div className="form-row">
-                            {listchucnang && listchucnang.length > 0 &&
+                            {
+                                listchucnang && listchucnang.length > 0 &&
                                 listchucnang.map((item, index) => {
-
                                     return (
-                                        <div className="form-check form-check-inline" key={item.MaCN}>
-                                            <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value={item.MaCN} defaultChecked={chucnangcuaTK.filter(item2 => item2.MaCN == item.MaCN).length > 0 ? true : false} />
-                                            <label className="inputTKK" for="inlineCheckbox1">{item.TenChucNang}</label>
+                                        <div key={item.MaCN} >
+                                            <div className="form-check form-check-inline" key={item.MaCN}>
+                                                <input className="form-check-input" type="checkbox" id="inlineCheckbox1" value={item.MaCN} checked={listmachucnangTK.filter(item2 => item2 === item.MaCN).length > 0 ? true : false} onChange={(event) => onChangeChucNang(item)} />
+                                                <label className="inputTKK label-TCN" htmlFor="inlineCheckbox1">{item.TenChucNang}</label>
+                                            </div>
                                         </div>
                                     )
                                 })
                             }
                         </div>
-                        <button className="btn" type="submit" style={{ marginTop: '2rem' }}>Submit form</button>
+                        <button className="btn" type="button" onClick={() => handleAddQuyenTK()}>Lưu</button>
                     </div>
                 </form>
 

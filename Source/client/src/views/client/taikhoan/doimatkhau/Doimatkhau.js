@@ -1,29 +1,54 @@
 import "./Doimatkhau.scss"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { fetchEditMatKhau } from "../../GetData_client"
+import { toast } from "react-toastify";
+import moment from "moment";
 const Doimatkhau = () => {
-
-    const dulieutest = {
-        masv: '3119560010',
-        tendangnhap: '3119560010',
-        matkhau: 'password',
-        trangthai: 1,
-    }
-
-    const [suadoi, SetSuadoi] = useState(true)
-    const [tendangnhap, SetTendangnhap] = useState(dulieutest.tendangnhap)
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+    let navigate = useNavigate();
+    const [tendangnhap, SetTendangnhap] = useState("")
     const [matkhaucu, SetMatkhaucu] = useState("")
     const [matkhaumoi, SetMatkhaumoi] = useState("")
     const [xacnhanmk, SetXacnhanmk] = useState("")
+
+    useEffect(() => {
+        let thongtin = JSON.parse(localStorage.getItem("ThongTin"))
+        SetTendangnhap(thongtin.MaSo)
+    }, [])
 
     const onChangeInput = (event, SetState) => {
         let changeValue = event.target.value;
         SetState(changeValue);
     }
 
+    const handleEditMK = async () => {
+        const headers = { 'x-access-token': accessToken };
+        if (!headers || !matkhaucu || !matkhaumoi || !xacnhanmk) {
+            toast.error("Vui lòng nhập đầy đủ dữ liệu !")
+            return;
+        }
+        if (matkhaumoi !== xacnhanmk) {
+            toast.error("Nhập lại mật khẩu không giống mật khẩu mới !")
+            return;
+        }
+        let res = await fetchEditMatKhau(headers, tendangnhap, matkhaucu, matkhaumoi, xacnhanmk)
+        console.log(res)
+        if (res.status === true) {
+            window.localStorage.clear();
+            navigate("/dangnhap")
+            window.location.reload()
+            return;
+        }
+        if (res.status === false) {
+            toast.error(res.message)
+            return;
+        }
+    }
+
 
     // check dữ liệu
-    const [checktendangnhap, SetChecktendangnhap] = useState(true)
+    // const [checktendangnhap, SetChecktendangnhap] = useState(true)
     const [checkmatkhaucu, SetCheckmatkhaucu] = useState(true)
     const [checkmatkhaumoi, SetCheckmatkhaumoi] = useState(true)
     const [checkxacnhanmatkhau, SetCheckxacnhanmatkhau] = useState(true)
@@ -54,8 +79,7 @@ const Doimatkhau = () => {
                             <div className="form-row">
                                 <div className="form-group col-md-6">
                                     <label className="inputDK" htmlFor="inputTrinhdo">Tên đăng nhập</label>
-                                    <input type="text" className="form-control" id="inputTrinhdo" value={tendangnhap} placeholder="Điền họ lót ..." onChange={(event) => onChangeInput(event, SetTendangnhap)} onBlur={() => checkdulieu(tendangnhap, SetChecktendangnhap)} disabled />
-                                    <div className="invalid-feedback" style={{ display: checktendangnhap ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+                                    <input type="text" className="form-control" id="inputTrinhdo" value={tendangnhap} disabled />
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="inputDK" htmlFor="inputTrinhdo">Mật khẩu cũ</label>
@@ -73,12 +97,12 @@ const Doimatkhau = () => {
                                 <div className="form-group col-md-6">
                                     <label className="inputDK" htmlFor="inputTrinhdo">Xác nhận mật khẩu mới</label>
                                     <input type="text" className="form-control" id="inputTrinhdo" value={xacnhanmk} placeholder="Điền lại mật khẩu mới ..." onChange={(event) => onChangeInput(event, SetXacnhanmk)} onBlur={() => checkdulieumatkhau(xacnhanmk, SetCheckxacnhanmatkhau, SetCheckxacnhanmatkhau2)} />
-                                    {/* <div className="invalid-feedback" style={{ display: checkxacnhanmatkhau ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu</div> */}
-                                    <div className="invalid-feedback" style={{ display: checkxacnhanmatkhau && checkxacnhanmatkhau2 ? 'none' : 'block' }}>Dữ liệu không khớp mật khẩu mới  </div>
+                                    <div className="invalid-feedback" style={{ display: checkxacnhanmatkhau ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu</div>
+                                    {/* <div className="invalid-feedback" style={{ display: checkxacnhanmatkhau && checkxacnhanmatkhau2 ? 'none' : 'block' }}>Dữ liệu không khớp mật khẩu mới  </div> */}
                                 </div>
                             </div>
                         </div>
-                        <button type="button" className="btntk btn btn-secondary" >Lưu thay đổi</button>
+                        <button type="button" className="btntk btn btn-secondary" onClick={() => handleEditMK()} >Lưu thay đổi</button>
                     </form>
                 </div>
             </div >

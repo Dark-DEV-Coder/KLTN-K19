@@ -1,75 +1,128 @@
 import "./Taikhoan.scss"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { fetchDetailSinhVien, fetchDetailGiangVien, fetchEditSinhVien } from "../GetData_client"
+import { toast } from "react-toastify";
+import moment from "moment";
 const Taikhoan = () => {
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+    let navigate = useNavigate();
+    const [ThongTin, setThongTin] = useState({})
+    const [suadoi, setSuadoi] = useState(true)
+    const [holot, setHolot] = useState("")
+    const [ten, setTen] = useState("")
+    const [maso, setMaso] = useState("")
+    const [lopsinhvien, setLopsinhvien] = useState("")
+    const [nganh, setNganh] = useState("")
+    const [chuyennganh, setChuyennganh] = useState("")
+    const [email, setEmail] = useState("")
+    const [sdt, setSdt] = useState("")
+    // const [diachithuongtrusinhvien, setDiachithuongtrusinhvien] = useState("")
+    // const [diachilienhesinhvien, setDiachilienhesinhvien] = useState("")
+    const [gioitinh, setGioitinh] = useState("Nam")
+    const [ngaysinh, setNgaysinh] = useState("2003-10-12")
+    const [khoa, setKhoa] = useState("")
 
-    const dulieutest = {
-        masv: '3119560010',
-        hosv: 'Lê Thị',
-        tensv: 'A',
-        email: 'abc@gmail.com',
-        sdt: '0936362711',
-        gioitinh: 'nữ',
-        ngaysinh: '2001-07-20',
-        khoa: 'K19',
-        chuyennganh: 'khmt',
-        nganh: 'ktpm',
-        lop: 'DKP1191',
-        trangthaitotnghiep: 'Chưa tốt nghiệp',
-        trangthai: 1,
+    // component didmount
+    useEffect(() => {
+        let thongtin = JSON.parse(localStorage.getItem("ThongTin"))
+        setThongTin(thongtin)
+        thongtin.ChucVu === "Sinh viên" ? getDetailSinhVien(thongtin.MaSo) : getDetailGiangVien(thongtin.MaSo)
+    }, []);
+    const getDetailGiangVien = async (MaSo) => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDetailGiangVien(headers, MaSo);
+        console.log("GV: ", res)
+        // if (res && res.data) {
+        //     setMagv(res.data.MaGV)
+        //     setHogv(res.data.HoGV)
+        //     setTengv(res.data.TenGV)
+        //     setEmail(res.data.Email)
+        //     setSdt(res.data.SoDienThoai)
+        //     setGioitinh(res.data.GioiTinh)
+        //     setNgaysinh(moment(res.data.NgaySinh).format("YYYY-MM-DD"))
+        //     setDonvicongtac(res.data.DonViCongTac)
+        //     setChuyennganh(res.data.ChuyenNganh)
+        //     setTrinhdo(res.data.TrinhDo)
+        //     setHinh(res.data.Hinh)
+        // }
+    }
+    const getDetailSinhVien = async (MaSo) => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDetailSinhVien(headers, MaSo);
+        if (res && res.data) {
+            setMaso(res.data.MaSV)
+            setHolot(res.data.HoSV)
+            setTen(res.data.TenSV)
+            setEmail(res.data.Email)
+            setSdt(res.data.SoDienThoai)
+            setGioitinh(res.data.GioiTinh)
+            setNgaysinh(moment(res.data.NgaySinh).format("YYYY-MM-DD"))
+            setLopsinhvien(res.data.Lop)
+            setChuyennganh(res.data.ChuyenNganh)
+            setKhoa(res.data.Khoa)
+            setNganh(res.data.Nganh)
+        }
     }
 
-    const [suadoi, SetSuadoi] = useState(true)
-    const [holotsinhvien, SetHolotinhvien] = useState(dulieutest.hosv)
-    const [tensinhvien, SetTensinhvien] = useState(dulieutest.tensv)
-    const [mssvsinhvien, SetMssvsinhvien] = useState(dulieutest.masv)
-    const [lopsinhvien, SetLopsinhvien] = useState(dulieutest.lop)
-    const [nganhsinhvien, SetNganhsinhvien] = useState(dulieutest.nganh)
-    const [chuyennganhsinhvien, SetChuyennganhsinhvien] = useState(dulieutest.chuyennganh)
-    const [emailsinhvien, SetEmailsinhvien] = useState(dulieutest.email)
-    const [sdtsinhvien, SetSdtsinhvien] = useState(dulieutest.sdt)
-    const [diachithuongtrusinhvien, SetDiachithuongtrusinhvien] = useState("")
-    const [diachilienhesinhvien, SetDiachilienhesinhvien] = useState("")
-    const [gioitinh, SetGioitinh] = useState(dulieutest.gioitinh)
-    const [ngaysinh, SetNgaysinh] = useState(dulieutest.ngaysinh)
-    const [khoa, SetKhoa] = useState(dulieutest.khoa)
 
     const onClickSuaDoi = () => {
-        SetSuadoi(!suadoi)
+        setSuadoi(!suadoi)
     }
-    const onChangeInput = (event, SetState) => {
+    const onChangeInput = (event, setState) => {
         let changeValue = event.target.value;
-        SetState(changeValue);
+        setState(changeValue);
     }
 
-    const onChangeSelect = (event, SetSelect) => {
+    const onChangeSelect = (event, setSelect) => {
         let changeValue = event.target.value;
-        SetSelect(changeValue);
+        setSelect(changeValue);
+    }
+
+    const handleEdit = async () => {
+        const headers = { 'x-access-token': accessToken };
+        if (!holot || !ten || !email || !sdt) {
+            toast.error("Vui lòng điền đầy đủ dữ liệu")
+            return
+        }
+        const value_ngaysinh = new Date(ngaysinh)
+        let res = await fetchEditSinhVien(headers, maso, holot, ten, email, sdt, gioitinh, value_ngaysinh)
+        console.log(res)
+        if (res.status === true) {
+            toast.success(res.message)
+            navigate("/taikhoan")
+            return;
+        }
+        if (res.status === false) {
+            toast.error(res.message)
+            return;
+
+        }
     }
 
 
     // check dữ liệu
-    const [checkmssvsinhvien, SetCheckmssvsinhvien] = useState(true)
-    const [checkholotsinhvien, SetCheckholotsinhvien] = useState(true)
-    const [checktensinhvien, SetChecktensinhvien] = useState(true)
-    const [checkemailsinhvien, SetCheckemailsinhvien] = useState(true)
-    const [checksdtsinhvien, SetChecksdtsinhvien] = useState(true)
-    const [checknganhsinhvien, SetChecknganhsinhvien] = useState(true)
-    const [checkchuyennganhsinhvien, SetCheckchuyennganhsinhvien] = useState(true)
-    const [checklopsinhvien, SetChecklopsinhvien] = useState(true)
-    const [checkdiachithuongtrusinhvien, SetCheckdiachithuongtrusinhvien] = useState(true)
-    const [checkdiachilienhesinhvien, SetCheckdiachilienhesinhvien] = useState(true)
-    const [checkdulieuKhoa, SetCheckdulieuKhoa] = useState(true)
-    const [checkdtlsinhvien, SetCheckdtlsinhvien] = useState(true)
-    const checkdulieu = (value, SetDuLieu) => {
-        value === '' ? SetDuLieu(false) : SetDuLieu(true)
+    const [checkmaso, setCheckmaso] = useState(true)
+    const [checkholot, setCheckholot] = useState(true)
+    const [checkten, setCheckten] = useState(true)
+    const [checkemail, setCheckemail] = useState(true)
+    const [checksdt, setChecksdt] = useState(true)
+    const [checknganh, setChecknganh] = useState(true)
+    const [checkchuyennganh, setCheckchuyennganh] = useState(true)
+    const [checklopsinhvien, setChecklopsinhvien] = useState(true)
+    // const [checkdiachithuongtrusinhvien, setCheckdiachithuongtrusinhvien] = useState(true)
+    // const [checkdiachilienhesinhvien, setCheckdiachilienhesinhvien] = useState(true)
+    const [checkdulieuKhoa, setCheckdulieuKhoa] = useState(true)
+    // const [checkdtlsinhvien, setCheckdtlsinhvien] = useState(true)
+    const checkdulieu = (value, setDuLieu) => {
+        value === '' ? setDuLieu(false) : setDuLieu(true)
     }
-    const checkdulieuSo = (value, SetDuLieu) => {
-        value == 0 ? SetDuLieu(false) : SetDuLieu(true)
-    }
+    // const checkdulieuSo = (value, setDuLieu) => {
+    //     value == 0 ? setDuLieu(false) : setDuLieu(true)
+    // }
 
-    // const checkdulieuDetai = (SetDuLieu) => {
-    //     detai === '' ? SetDuLieu(false) : SetDuLieu(true)
+    // const checkdulieuDetai = (setDuLieu) => {
+    //     detai === '' ? setDuLieu(false) : setDuLieu(true)
     //     console.log(checkdetai)
     // }
 
@@ -92,36 +145,36 @@ const Taikhoan = () => {
                         <div className="container-edit">
                             <div className="form-row">
                                 <div className="form-group col-md-4">
+                                    <label className="inputDK" htmlFor="inputTrinhdo">Mã số</label>
+                                    <input type="text" className="form-control" id="inputTrinhdo" value={maso} placeholder="Điền mã số sinh viên ..." onChange={(event) => onChangeInput(event, setMaso)} onBlur={() => checkdulieu(maso, setCheckmaso)} disabled={true} />
+                                    <div className="invalid-feedback" style={{ display: checkmaso ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+                                </div>
+                                <div className="form-group col-md-4">
                                     <label className="inputDK" htmlFor="inputTrinhdo">Họ lót</label>
-                                    <input type="text" className="form-control" id="inputTrinhdo" value={holotsinhvien} placeholder="Điền họ lót ..." onChange={(event) => onChangeInput(event, SetHolotinhvien)} onBlur={() => checkdulieu(holotsinhvien, SetCheckholotsinhvien)} disabled={suadoi} />
-                                    <div className="invalid-feedback" style={{ display: checkholotsinhvien ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+                                    <input type="text" className="form-control" id="inputTrinhdo" value={holot} placeholder="Điền họ lót ..." onChange={(event) => onChangeInput(event, setHolot)} onBlur={() => checkdulieu(holot, setCheckholot)} disabled={suadoi} />
+                                    <div className="invalid-feedback" style={{ display: checkholot ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                                 </div>
                                 <div className="form-group col-md-4">
                                     <label className="inputDK" htmlFor="inputTrinhdo">Tên</label>
-                                    <input type="text" className="form-control" id="inputTrinhdo" value={tensinhvien} placeholder="Điền tên ..." onChange={(event) => onChangeInput(event, SetTensinhvien)} onBlur={() => checkdulieu(tensinhvien, SetChecktensinhvien)} disabled={suadoi} />
-                                    <div className="invalid-feedback" style={{ display: checktensinhvien ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
-                                </div>
-                                <div className="form-group col-md-4">
-                                    <label className="inputDK" htmlFor="inputTrinhdo">Mã số sinh viên</label>
-                                    <input type="text" className="form-control" id="inputTrinhdo" value={mssvsinhvien} placeholder="Điền mã số sinh viên ..." onChange={(event) => onChangeInput(event, SetMssvsinhvien)} onBlur={() => checkdulieu(mssvsinhvien, SetCheckmssvsinhvien)} disabled={suadoi} />
-                                    <div className="invalid-feedback" style={{ display: checkmssvsinhvien ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+                                    <input type="text" className="form-control" id="inputTrinhdo" value={ten} placeholder="Điền tên ..." onChange={(event) => onChangeInput(event, setTen)} onBlur={() => checkdulieu(ten, setCheckten)} disabled={suadoi} />
+                                    <div className="invalid-feedback" style={{ display: checkten ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-4">
                                     <label className="inputSV" htmlFor="inputGioitinhGV">Giới tính</label>
-                                    <select value={gioitinh} onChange={(event) => onChangeSelect(event, SetGioitinh)} id="inputGioitinhGV" className="form-control" disabled={suadoi}>
+                                    <select value={gioitinh} onChange={(event) => onChangeSelect(event, setGioitinh)} id="inputGioitinhGV" className="form-control" disabled={suadoi}>
                                         <option value='Nam'>Nam</option>
                                         <option value='Nữ'>Nữ</option>
                                     </select>
                                 </div>
                                 <div className="form-group col-md-4">
                                     <label className="inputSV" htmlFor="inputNgaysinh">Ngày sinh</label>
-                                    <input type="date" className="form-control" id="inputNgaysinh" value={ngaysinh} onChange={(event) => onChangeInput(event, SetNgaysinh)} disabled={suadoi} />
+                                    <input type="date" className="form-control" id="inputNgaysinh" value={ngaysinh} onChange={(event) => onChangeInput(event, setNgaysinh)} disabled={suadoi} />
                                 </div>
                                 <div className="form-group col-md-4">
                                     <label className="inputSV" htmlFor="inputKhoa">Khóa</label>
-                                    <input type="text" className="form-control" id="inputKhoa" placeholder="Điền khóa ..." value={khoa} onChange={(event) => onChangeInput(event, SetKhoa)} onBlur={() => checkdulieu(khoa, SetCheckdulieuKhoa)} disabled={suadoi} />
+                                    <input type="text" className="form-control" id="inputKhoa" placeholder="Điền khóa ..." value={khoa} onChange={(event) => onChangeInput(event, setKhoa)} onBlur={() => checkdulieu(khoa, setCheckdulieuKhoa)} disabled={suadoi} />
                                     <div className="invalid-feedback" style={{ display: checkdulieuKhoa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                                 </div>
                             </div>
@@ -129,48 +182,48 @@ const Taikhoan = () => {
                             <div className="form-row">
                                 <div className="form-group col-md-4">
                                     <label className="inputDK" htmlFor="inputTrinhdo">Lớp</label>
-                                    <input type="text" className="form-control" id="inputTrinhdo" value={lopsinhvien} placeholder="Điền lớp ..." onChange={(event) => onChangeInput(event, SetLopsinhvien)} onBlur={() => checkdulieu(lopsinhvien, SetChecklopsinhvien)} disabled={suadoi} />
+                                    <input type="text" className="form-control" id="inputTrinhdo" value={lopsinhvien} placeholder="Điền lớp ..." onChange={(event) => onChangeInput(event, setLopsinhvien)} onBlur={() => checkdulieu(lopsinhvien, setChecklopsinhvien)} disabled={true} />
                                     <div className="invalid-feedback" style={{ display: checklopsinhvien ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu</div>
                                 </div>
                                 <div className="form-group col-md-4">
                                     <label className="inputDK" htmlFor="inputTrinhdo">Chuyên ngành</label>
-                                    <input type="text" className="form-control" id="inputTrinhdo" value={chuyennganhsinhvien} placeholder="Điền chuyên ngành ..." onChange={(event) => onChangeInput(event, SetChuyennganhsinhvien)} onBlur={() => checkdulieu(chuyennganhsinhvien, SetCheckchuyennganhsinhvien)} disabled={suadoi} />
-                                    <div className="invalid-feedback" style={{ display: checkchuyennganhsinhvien ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu</div>
+                                    <input type="text" className="form-control" id="inputTrinhdo" value={chuyennganh} placeholder="Điền chuyên ngành ..." onChange={(event) => onChangeInput(event, setChuyennganh)} onBlur={() => checkdulieu(chuyennganh, setCheckchuyennganh)} disabled={true} />
+                                    <div className="invalid-feedback" style={{ display: checkchuyennganh ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu</div>
                                 </div>
                                 <div className="form-group col-md-4">
                                     <label className="inputDK" htmlFor="inputTrinhdo">Ngành</label>
-                                    <input type="text" className="form-control" id="inputTrinhdo" value={nganhsinhvien} placeholder="Điền ngành ..." onChange={(event) => onChangeInput(event, SetNganhsinhvien)} onBlur={() => checkdulieu(nganhsinhvien, SetChecknganhsinhvien)} disabled={suadoi} />
-                                    <div className="invalid-feedback" style={{ display: checknganhsinhvien ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu</div>
+                                    <input type="text" className="form-control" id="inputTrinhdo" value={nganh} placeholder="Điền ngành ..." onChange={(event) => onChangeInput(event, setNganh)} onBlur={() => checkdulieu(nganh, setChecknganh)} disabled={true} />
+                                    <div className="invalid-feedback" style={{ display: checknganh ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu</div>
                                 </div>
                             </div>
 
                             <div className="form-row">
                                 <div className="form-group col-md-6">
                                     <label className="inputDK" htmlFor="inputTrinhdo">Email</label>
-                                    <input type="text" className="form-control" id="inputTrinhdo" value={emailsinhvien} placeholder="Điền email ..." onChange={(event) => onChangeInput(event, SetEmailsinhvien)} onBlur={() => checkdulieu(emailsinhvien, SetCheckemailsinhvien)} disabled={suadoi} />
-                                    <div className="invalid-feedback" style={{ display: checkemailsinhvien ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+                                    <input type="text" className="form-control" id="inputTrinhdo" value={email} placeholder="Điền email ..." onChange={(event) => onChangeInput(event, setEmail)} onBlur={() => checkdulieu(email, setCheckemail)} disabled={suadoi} />
+                                    <div className="invalid-feedback" style={{ display: checkemail ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="inputDK" htmlFor="inputTrinhdo">Số điện thoại</label>
-                                    <input type="text" className="form-control" id="inputTrinhdo" value={sdtsinhvien} placeholder="Điền số điện thoại ..." onChange={(event) => onChangeInput(event, SetSdtsinhvien)} onBlur={() => checkdulieu(sdtsinhvien, SetChecksdtsinhvien)} disabled={suadoi} />
-                                    <div className="invalid-feedback" style={{ display: checksdtsinhvien ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+                                    <input type="text" className="form-control" id="inputTrinhdo" value={sdt} placeholder="Điền số điện thoại ..." onChange={(event) => onChangeInput(event, setSdt)} onBlur={() => checkdulieu(sdt, setChecksdt)} disabled={suadoi} />
+                                    <div className="invalid-feedback" style={{ display: checksdt ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                                 </div>
                             </div>
 
-                            <div className="form-row">
+                            {/* <div className="form-row">
                                 <div className="form-group col-md-6">
                                     <label className="inputDK" htmlFor="inputTrinhdo">Địa chỉ thường trú</label>
-                                    <input type="text" className="form-control" id="inputTrinhdo" value={diachithuongtrusinhvien} placeholder="Điền địa chỉ thường trú ..." onChange={(event) => onChangeInput(event, SetDiachithuongtrusinhvien)} onBlur={() => checkdulieu(diachithuongtrusinhvien, SetCheckdiachithuongtrusinhvien)} disabled={suadoi} />
+                                    <input type="text" className="form-control" id="inputTrinhdo" value={diachithuongtrusinhvien} placeholder="Điền địa chỉ thường trú ..." onChange={(event) => onChangeInput(event, setDiachithuongtrusinhvien)} onBlur={() => checkdulieu(diachithuongtrusinhvien, setCheckdiachithuongtrusinhvien)} disabled={suadoi} />
                                     <div className="invalid-feedback" style={{ display: checkdiachithuongtrusinhvien ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label className="inputDK" htmlFor="inputTrinhdo">Địa chỉ liên hệ</label>
-                                    <input type="text" className="form-control" id="inputTrinhdo" value={diachilienhesinhvien} placeholder="Điền địa chỉ liên hệ ..." onChange={(event) => onChangeInput(event, SetDiachilienhesinhvien)} onBlur={() => checkdulieu(diachilienhesinhvien, SetCheckdiachilienhesinhvien)} disabled={suadoi} />
+                                    <input type="text" className="form-control" id="inputTrinhdo" value={diachilienhesinhvien} placeholder="Điền địa chỉ liên hệ ..." onChange={(event) => onChangeInput(event, setDiachilienhesinhvien)} onBlur={() => checkdulieu(diachilienhesinhvien, setCheckdiachilienhesinhvien)} disabled={suadoi} />
                                     <div className="invalid-feedback" style={{ display: checkdiachilienhesinhvien ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
-                        <button type="button" className="btntk btn btn-secondary" style={suadoi ? { display: 'none' } : { display: 'block' }} >Lưu thay đổi</button>
+                        <button type="button" className="btntk btn btn-secondary" style={suadoi ? { display: 'none' } : { display: 'block' }} onClick={() => handleEdit()} >Lưu thay đổi</button>
                     </form>
                 </div>
             </div >
