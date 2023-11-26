@@ -32,3 +32,16 @@ export const KtraDuLieuSinhVienKhiChinhSua = data => {
 
     return error.get()
 }
+
+export const KtraDuLieuSinhVienKhiChinhSuaClient = data => {
+    const error = new Error()
+
+    error.isRequired(data.HoSV, "HoSV")
+        .isRequired(data.TenSV, "TenSV")
+        .isRequired(data.Email, "Email")
+        .isRequired(data.SoDienThoai, "SoDienThoai")
+        .isRequired(data.GioiTinh, "GioiTinh")
+        .isRequired(data.NgaySinh, "NgaySinh")
+
+    return error.get()
+}

@@ -1,6 +1,6 @@
 import express from "express"
 import SinhVien from "../model/SinhVien.js";
-import { KtraDuLieuSinhVienKhiChinhSua } from "../validation/SinhVien.js";
+import { KtraDuLieuSinhVienKhiChinhSuaClient } from "../validation/SinhVien.js";
 import { sendError, sendServerError, sendSuccess } from "../helper/client.js";
 
 const SinhVienRoute = express.Router()
@@ -31,7 +31,7 @@ SinhVienRoute.get('/ChiTietSinhVien/:MaSV', async (req, res) => {
 */
 SinhVienRoute.put('/ChinhSuaThongTin/:MaSV', async (req, res) => {
     try{
-        const errors = KtraDuLieuSinhVienKhiChinhSua(req.body)
+        const errors = KtraDuLieuSinhVienKhiChinhSuaClient(req.body)
         if (errors)
             return sendError(res, errors)
         const { HoSV, TenSV, Email, SoDienThoai, GioiTinh, NgaySinh } = req.body;
