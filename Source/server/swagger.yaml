@@ -44,6 +44,8 @@ tags:
   description: "Các API của model DangKyChuyenNganhClient"
 - name: "KhoaLuanTotNghiepClient"
   description: "Các API của model KhoaLuanTotNghiepClient"
+- name: "DangKyThucTapClient"
+  description: "Các API của model DangKyThucTapClient"
 paths:
   /admin/chuc-nang/DanhSachChucNang:
     get: 
@@ -4932,6 +4934,111 @@ paths:
             }
       security:
         - ApiKeyAuth: []
+  /dk-thuc-tap/ChiTietDKTTDangMo:
+    get:
+      tags:
+        - "DangKyThucTapClient"
+      summary: "Xem chi tiết thông tin đăng ký thực tập"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Xem chi tiết thông tin đăng ký thực tập thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Xem chi tiết thông tin đăng ký thực tập thành công.",
+            }
+        400:
+          description: Xem chi tiết thông tin đăng ký thực tập thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Xem chi tiết thông tin đăng ký thực tập thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /dk-thuc-tap/DSCtyTrongDanhSach/{MaDKTT}:
+    post: 
+      tags:
+        - "DangKyThucTapClient"
+      summary: Lấy danh sách công ty trong danh sách của đợt đăng ký thực tập
+      produces:
+        - application/json     
+      parameters:
+      - in: path
+        name: MaDKTT
+        type: string
+        required: true
+        description: Mã đăng ký thực tập
+      responses:
+        200: 
+          description: Lấy danh sách công ty trong danh sách của đợt đăng ký thực tập thành công
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Lấy danh sách công ty trong danh sách của đợt đăng ký thực tập thành công",
+            }
+        400:
+          description: Lấy danh sách công ty trong danh sách của đợt đăng ký thực tập thất bại
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Lấy danh sách công ty trong danh sách của đợt đăng ký thực tập thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
+  /dk-thuc-tap/SVDangKyCtyTrongDS/{MaDKTT}:
+    post: 
+      tags:
+        - "DangKyThucTapClient"
+      summary:  Sinh viên đăng ký thực tập công ty trong danh sách
+      produces:
+        - application/json     
+      parameters:
+      - in: path
+        name: MaDKTT
+        type: string
+        required: true
+        description: Mã đăng ký thực tập
+      - in: body
+        name: ViTri
+        type: string
+        required: true
+        description: Vị trí
+      - in: body
+        name: EmailCty
+        type: string
+        required: true
+        description: Email công ty
+      - in: body
+        name: MaSV
+        type: string
+        required: true
+        description: Mã sinh viên
+      responses:
+        200: 
+          description:  Sinh viên đăng ký thực tập công ty trong danh sách thành công
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": " Sinh viên đăng ký thực tập công ty trong danh sách thành công",
+            }
+        400:
+          description:  Sinh viên đăng ký thực tập công ty trong danh sách thất bại
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": " Sinh viên đăng ký thực tập công ty trong danh sách thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
 securityDefinitions:
   ApiKeyAuth:
     type: apiKey

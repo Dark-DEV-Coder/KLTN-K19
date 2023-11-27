@@ -2,7 +2,7 @@ import express from "express"
 import fs from 'fs'
 import argon2 from "argon2"
 import { sendError, sendServerError, sendSuccess } from "../../helper/client.js"
-import { CapTaiKhoanChoSinhVienKhiImportFile, TrangThaiDangKyThucTap } from "../../constant.js"
+import { CapTaiKhoanChoSinhVienKhiImportFile, TrangThaiDangKyThucTap, TrangThaiSinhVien } from "../../constant.js"
 import DangKyThucTap from "../../model/DangKyThucTap.js"
 import { DoiDinhDangNgay, XuLyNgaySinh } from "../../helper/XuLyDuLieu.js"
 import Nganh from "../../model/Nganh.js"
@@ -652,7 +652,8 @@ DangKyThucTapAdminRoute.post('/ImportDSSinhVienDKTT/:MaDKTT', createThucTapDir, 
                             DTBTLHK: thongtinUpdate[i].DTBTLHK, 
                             Nganh: thongtinUpdate[i].Nganh, 
                             Lop : thongtinUpdate[i].Lop,
-                            MaTK: taikhoan._id
+                            MaTK: taikhoan._id,
+                            TrangThai: TrangThaiSinhVien.DaCoTaiKhoan
                         });
                         svdangkytt.push(sv._id);
                     }
@@ -664,7 +665,8 @@ DangKyThucTapAdminRoute.post('/ImportDSSinhVienDKTT/:MaDKTT', createThucTapDir, 
                             Khoa: thongtinUpdate[i].Khoa, 
                             DTBTLHK: thongtinUpdate[i].DTBTLHK, 
                             Nganh: thongtinUpdate[i].Nganh, 
-                            Lop : thongtinUpdate[i].Lop
+                            Lop : thongtinUpdate[i].Lop,
+                            TrangThai: TrangThaiSinhVien.DaCoTaiKhoan
                         });
                         svdangkytt.push(sv._id);
                     }
@@ -687,7 +689,8 @@ DangKyThucTapAdminRoute.post('/ImportDSSinhVienDKTT/:MaDKTT', createThucTapDir, 
                         Nganh: thongtinCreate[i].Nganh, 
                         Lop: thongtinCreate[i].Lop ,
                         DTBTLHK: thongtinCreate[i].DTBTLHK,
-                        MaTK: taikhoan._id
+                        MaTK: taikhoan._id,
+                        TrangThai: TrangThaiSinhVien.DaCoTaiKhoan
                     });
                     svdangkytt.push(sv._id);
                 };
