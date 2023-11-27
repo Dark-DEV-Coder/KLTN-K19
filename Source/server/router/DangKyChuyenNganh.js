@@ -183,11 +183,11 @@ DangKyChuyenNganhRoute.post('/SVHuyDangKyChuyenNganh/:MaDKCN', verifyToken, veri
 })
 
 /**
- * @route GET /api/dk-chuyen-nganh/DSSVDangKyChuyenNganh/{MaDKCN}
+ * @route POST /api/dk-chuyen-nganh/DSSVDangKyChuyenNganh/{MaDKCN}
  * @description Lấy danh sách sinh viên đăng ký chuyên ngành
  * @access public
  */
-DangKyChuyenNganhRoute.get('/DSSVDangKyChuyenNganh/:MaDKCN', async (req, res) => {
+DangKyChuyenNganhRoute.post('/DSSVDangKyChuyenNganh/:MaDKCN', async (req, res) => {
     try {
         const { MaNganh, MaChuyenNganh } = req.body;
         const { MaDKCN } = req.params;

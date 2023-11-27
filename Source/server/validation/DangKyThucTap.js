@@ -74,3 +74,20 @@ export const KtraSVDangKyThucTapCtyTrongDS = data => {
 
     return error.get()
 }
+
+export const KtraSVDangKyThucTapCtyNgoaiDS = data => {
+    const error = new Error()
+
+    error.isRequired(data.Ho, "Ho")
+        .isRequired(data.Ten, "Ten")
+        .isRequired(data.TenCongTy, "TenCongTy")
+        .isRequired(data.Website, "Website")
+        .isRequired(data.SoDienThoai, "SoDienThoai")
+        .isInvalidPhone(data.SoDienThoai, "SoDienThoai")
+        .isRequired(data.EmailCty, "EmailCty")
+        .isRequired(data.DiaChi, "DiaChi")
+        .isRequired(data.ViTri, "ViTri")
+        .isRequired(data.MaSV, "MaSV")
+
+    return error.get()
+}

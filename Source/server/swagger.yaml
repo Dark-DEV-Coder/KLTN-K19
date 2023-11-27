@@ -4431,7 +4431,7 @@ paths:
       security:
         - ApiKeyAuth: []
   /dk-chuyen-nganh/DSSVDangKyChuyenNganh/{MaDKCN}:
-    get:
+    post:
       tags:
         - "DangKyChuyenNganhClient"
       summary: "Lấy danh sách sinh viên đăng ký chuyên ngành"
@@ -4608,7 +4608,7 @@ paths:
       security:
         - ApiKeyAuth: []
   /khoa-luan-tot-nghiep/DSDeTaiTheoGiangVien/{MaKLTN}:
-    get:
+    post:
       tags:
         - "KhoaLuanTotNghiepClient"
       summary: "Lấy danh sách đề tài của giảng viên"
@@ -5039,6 +5039,152 @@ paths:
             }
       security:
       - ApiKeyAuth: []
+  /dk-thuc-tap/SVDangKyCtyNgoaiDS/{MaDKTT}:
+    post: 
+      tags:
+        - "DangKyThucTapClient"
+      summary:  Sinh viên đăng ký thực tập công ty ngoài danh sách
+      produces:
+        - application/json     
+      parameters:
+      - in: path
+        name: MaDKTT
+        type: string
+        required: true
+        description: Mã đăng ký thực tập
+      - in: body
+        name: Ho
+        type: string
+        required: true
+        description: Họ người liên hệ
+      - in: body
+        name: Ten
+        type: string
+        required: true
+        description: Tên người liên hệ
+      - in: body
+        name: TenCongTy
+        type: string
+        required: true
+        description: Tên công ty
+      - in: body
+        name: Website
+        type: string
+        required: true
+        description: Website công ty
+      - in: body
+        name: SoDienThoai
+        type: string
+        required: true
+        description: Số điện thoại công ty
+      - in: body
+        name: DiaChi
+        type: string
+        required: true
+        description: Địa chỉ công ty
+      - in: body
+        name: EmailCty
+        type: string
+        required: true
+        description: Email công ty
+      - in: body
+        name: ViTri
+        type: string
+        required: true
+        description: Vị trí
+      - in: body
+        name: MaSV
+        type: string
+        required: true
+        description: Mã sinh viên
+      responses:
+        200: 
+          description:  Sinh viên đăng ký thực tập công ty ngoài danh sách thành công
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": " Sinh viên đăng ký thực tập công ty ngoài danh sách thành công",
+            }
+        400:
+          description:  Sinh viên đăng ký thực tập công ty ngoài danh sách thất bại
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": " Sinh viên đăng ký thực tập công ty ngoài danh sách thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
+  /dk-thuc-tap/SVHuyDangKyThucTap/{MaDKTT}:
+    post: 
+      tags:
+        - "DangKyThucTapClient"
+      summary:  Sinh viên hủy đăng ký thực tập
+      produces:
+        - application/json     
+      parameters:
+      - in: path
+        name: MaDKTT
+        type: string
+        required: true
+        description: Mã đăng ký thực tập
+      - in: body
+        name: MaSV
+        type: string
+        required: true
+        description: Mã sinh viên
+      responses:
+        200: 
+          description:  Sinh viên hủy đăng ký thực tập thành công
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Sinh viên hủy đăng ký thực tập thành công",
+            }
+        400:
+          description:  Sinh viên hủy đăng ký thực tập thất bại
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Sinh viên hủy đăng ký thực tập thất bại",
+            }
+      security:
+      - ApiKeyAuth: []
+  /khoa-luan-tot-nghiep/DSDeTaiChuaDangKy/{MaKLTN}:
+    post:
+      tags:
+        - "KhoaLuanTotNghiepClient"
+      summary: "Lấy danh sách đề tài chưa đăng ký"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+      responses:
+        200:
+          description: Lấy danh sách đề tài chưa đăng ký thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Lấy danh sách đề tài chưa đăng ký thành công.",
+            }
+        400:
+          description: Lấy danh sách đề tài chưa đăng ký thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Lấy danh sách đề tài chưa đăng ký thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
 securityDefinitions:
   ApiKeyAuth:
     type: apiKey
