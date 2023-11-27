@@ -223,7 +223,8 @@ SinhVienAdminRoute.post('/importFileSV', createSinhVienDir, uploadFile.single("F
                             DTBTLHK: element.DTBTLHK, 
                             Nganh: element.Nganh, 
                             Lop : element.Lop,
-                            MaTK: taikhoan._id
+                            MaTK: taikhoan._id,
+                            TrangThai: TrangThaiSinhVien.DaCoTaiKhoan
                         });
                     }
                     else{
@@ -234,7 +235,8 @@ SinhVienAdminRoute.post('/importFileSV', createSinhVienDir, uploadFile.single("F
                             Khoa: element.Khoa, 
                             DTBTLHK: element.DTBTLHK, 
                             Nganh: element.Nganh, 
-                            Lop : element.Lop
+                            Lop : element.Lop,
+                            TrangThai: TrangThaiSinhVien.DaCoTaiKhoan
                         });
                     }
                 })
@@ -256,7 +258,8 @@ SinhVienAdminRoute.post('/importFileSV', createSinhVienDir, uploadFile.single("F
                         Nganh: element.Nganh, 
                         Lop: element.Lop ,
                         DTBTLHK: element.DTBTLHK,
-                        MaTK: taikhoan._id
+                        MaTK: taikhoan._id,
+                        TrangThai: TrangThaiSinhVien.DaCoTaiKhoan
                     });
                 });
             }

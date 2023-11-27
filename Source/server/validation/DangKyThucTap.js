@@ -64,3 +64,13 @@ export const KtraKhiXoaViTriCongTyTrongDS = data => {
 
     return error.get()
 }
+
+export const KtraSVDangKyThucTapCtyTrongDS = data => {
+    const error = new Error()
+
+    error.isRequired(data.ViTri, "ViTri")
+        .isRequired(data.EmailCty, "EmailCty")
+        .isRequired(data.MaSV, "MaSV")
+
+    return error.get()
+}

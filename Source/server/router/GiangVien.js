@@ -33,7 +33,7 @@ GiangVienRoute.get('/ChiTietGiangVien/:MaGV', async (req, res) => {
  * @description Chỉnh sửa thông tin giảng viên
  * @access public
 */
-GiangVienRoute.post('/ChinhSua/:MaGV', createGiangVienDir, uploadImg.single("Hinh"), async (req, res) => {
+GiangVienRoute.post('/ChinhSuaThongTin/:MaGV', createGiangVienDir, uploadImg.single("Hinh"), async (req, res) => {
     try{
         const errors = KtraDuLieuGiangVienKhiChinhSua(req.body)
         if (errors)

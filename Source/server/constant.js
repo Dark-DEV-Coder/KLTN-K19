@@ -17,6 +17,11 @@ export const TrangThaiSinhVien = {
     DaXoa: 'Đã xóa'
 }
 
+export const TrangThaiThucTap = {
+    ChuaThucTap: 'Chưa đăng ký',
+    DaThucTap: 'Đã đăng ký'
+}
+
 export const TrangThaiSinhVienTotNghiep = {
     ChuaTotNghiep: 'Chưa tốt nghiệp',
     DaTotNghiep: 'Đã tốt nghiệp'
