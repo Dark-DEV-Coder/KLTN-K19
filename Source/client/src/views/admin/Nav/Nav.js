@@ -2,8 +2,9 @@ import "./Nav3.scss"
 import avt from "../da.png"
 
 const Nav = (props) => {
-    const { changleHidden, changleSwitchMode, loggedIn } = props;
-
+    const { changleHidden, changleSwitchMode } = props;
+    const TenGV = localStorage.getItem("TenGV")
+    const HinhGV = localStorage.getItem("HinhGV")
     const onChangleHidden = () => {
         changleHidden();
     }
@@ -22,10 +23,7 @@ const Nav = (props) => {
             </form>
             <input type="checkbox" id="switch-mode" hidden />
             {/* <label htmlFor="switch-mode" className="switch-mode" onClick={() => onChangleSwitchMode()}></label> */}
-            <a href="#" className="notification">
-                <i className='bx bxs-bell'></i>
-                <span className="num">8</span>
-            </a>
+            <label className="name-gv">Xin chào, {TenGV}</label>
             <a href="#" className="profile">
                 <img src={avt} />
             </a>

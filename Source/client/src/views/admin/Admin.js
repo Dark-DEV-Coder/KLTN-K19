@@ -62,6 +62,9 @@ import ChiTietTotNghiep from "./TotNghiep/SingleTotNghiep/ChiTietTotNghiep";
 import AddTotNghiep from "./TotNghiep/ThemTotNghiep/AddTotNghiep";
 import EditTotNghiep from "./TotNghiep/EditTotNghiep/EditTotNghiep";
 import AddDeTai from "./KhoaLuan/ThemDeTai/AddDeTai";
+import AddCongTyThucTap from "./ThucTap/ThemCongTyThucTap/AddCongTyThucTap";
+import AddViTriThucTap from "./ThucTap/DSViTriThucTap/AddViTriThucTap";
+import DoiMatKhau from "./Password/DoiMatKhau";
 const Admin = () => {
 
     const [hiddenDB, setHiddenDB] = useState(false);
@@ -82,7 +85,7 @@ const Admin = () => {
                     <Routes >
                         {/* <Route path="/admin/"> */}
                         <Route index element={<Tongquan />}></Route>
-                        <Route path='dkichuyennganh'  >
+                        <Route path='dkychuyennganh'  >
                             <Route index element={<DkiChuyenNganh />}></Route>
                             <Route path="new" element={<AddDKCN />}></Route>
                             <Route path="single/:MaDKCN" element={<SingleDkiChuyenNganh />}></Route>
@@ -108,9 +111,10 @@ const Admin = () => {
                             <Route path="new" element={<AddThucTap />}></Route>
                             <Route path="single/:MaDKTT" element={<ChiTietThucTap />}></Route>
                             <Route path="edit/:MaDKTT" element={<EditThucTap />}></Route>
-
-                            <Route path="vitri/:TenCongTy" element={<ViTriThucTap />}></Route>
-                            <Route path="cty/edit/:TenCongTy" element={<EditCongTyThucTap />}></Route>
+                            <Route path=":MaDKTT/new" element={<AddCongTyThucTap />}></Route>
+                            <Route path=":MaDKTT/single/:id/:TenCongTy" element={<ViTriThucTap />}></Route>
+                            <Route path=":MaDKTT/edit/:id/:TenCongTy" element={<EditCongTyThucTap />}></Route>
+                            <Route path=":MaDKTT/:id/new" element={<AddViTriThucTap />}></Route>
                         </Route>
                         <Route path='canhbaohoctap'  >
                             <Route index element={<CanhBaoHocTap />}></Route>
@@ -144,6 +148,7 @@ const Admin = () => {
                             <Route path="new" element={<AddTaiKhoan />} ></Route>
                             <Route path="single/:MaTK" element={<SingleTaiKhoan />} ></Route>
                             <Route path="edit/:MaTK" element={<EditTaiKhoan />} ></Route>
+                            <Route path="doimatkhau" element={<DoiMatKhau />} ></Route>
                         </Route>
                         <Route path='quyentaikhoan'  >
                             <Route index element={<QuyenTaiKhoan />}></Route>

@@ -2,20 +2,37 @@ import "./KhoaLuan.scss"
 import { Link } from "react-router-dom";
 import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
 import { data_khoaluan } from "../../data"
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { fetchDetailKhoaLuan } from "../../GetData_client"
+import { toast } from "react-toastify";
+import moment from "moment";
 const KhoaLuan = () => {
-    const [khoaluan, SetKhoaluan] = useState(data_khoaluan)
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+    const [khoaluan, setKhoaluan] = useState({})
+    const [detai, setKDetai] = useState([])
+    // component didmount
+    useEffect(() => {
+        getDetailKhoaLuan();
+    }, []);
+    const getDetailKhoaLuan = async (MaSo) => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDetailKhoaLuan(headers);
+        if (res && res.data) {
+            setKhoaluan(res.data)
+            setKDetai(res.data.DSDeTai)
+        }
+    }
     return (
         <div className="container-khoaluan">
             <ol className="breadcrumb" >
                 <li className="breadcrumb-item"><a href="#">Trang chủ</a></li>
                 <li className="breadcrumb-item">Khóa luận</li>
-                <li className="breadcrumb-item active">Khóa luận học kỳ 1 năm học 2023-2024</li>
+                <li className="breadcrumb-item active">{khoaluan.Ten}</li>
             </ol>
             <div className="container-tb-update">
-                <h3>Khóa luận học kỳ 1 năm học 2023-2024</h3>
-                <h6>Ngày cập nhật : 10/09/2023</h6>
-                <h6 className="time-line">Thời gian đăng ký : [ 10/09/2023 - 22/10/2023 ] </h6>
+                <h3>{khoaluan.Ten}</h3>
+                <h6>Ngày cập nhật : {moment(khoaluan.updatedAt).format("DD/MM/YYYY")}</h6>
+                <h6 className="time-line">Thời gian đăng ký : [{moment(khoaluan.ThoiGianBD).format("DD/MM/YYYY")} - {moment(khoaluan.ThoiGianKT).format("DD/MM/YYYY")} ] </h6>
             </div>
             <div className="container-dky">
                 <h5>Danh sách đề tài được công bố</h5>
@@ -47,38 +64,83 @@ const KhoaLuan = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {khoaluan && khoaluan.length > 0 &&
-                            khoaluan.map((item, index) => {
-                                return (
-                                    <>
-                                        <tr key={index}>
-                                            <th scope="row" rowSpan="2">{index + 1}</th>
-                                            <td>{item.sinhvien1}</td>
-                                            <td>{item.MSSV1}</td>
-                                            <td>{item.TC1}</td>
-                                            <td>{item.TB1}</td>
-                                            <td>{item.Email1}</td>
-                                            <td>{item.Sdt1}</td>
-                                            <td rowSpan="2">{item.ten}</td>
-                                            <td rowSpan="2">{item.giangvienhuongdan}</td>
-                                            <td rowSpan="2">{item.donvi}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>{item.sinhvien2}</td>
-                                            <td>{item.MSSV2}</td>
-                                            <td>{item.TC2}</td>
-                                            <td>{item.TB2}</td>
-                                            <td>{item.Email2}</td>
-                                            <td>{item.Sdt2}</td>
-                                        </tr></>
-                                )
+                        {detai && detai.length > 0 &&
+                            detai.map((item, index) => {
+                                // Khi đề tài đủ 2 SV đăng ký
+                                if (item.SVChinhThuc.length > 1) {
+                                    return (
+                                        <>
+                                            <tr >
+                                                <th scope="row" rowSpan="2">{index + 1}</th>
+                                                <td>{item.SVChinhThuc[0].HoSV + " " + item.SVChinhThuc[0].TenSV}</td>
+                                                <td> {item.SVChinhThuc[0].MaSV}</td>
+                                                <td>{item.SVChinhThuc[0].TinChiTL}</td>
+                                                <td>{item.SVChinhThuc[0].DTBTL}</td>
+                                                <td>{item.SVChinhThuc[0].Email}</td>
+                                                <td>{item.SVChinhThuc[0].SoDienThoai}</td>
+                                                <td rowSpan="2">{item.TenDeTai}</td>
+                                                <td rowSpan="2">{item.GVHD.HoGV + " " + item.GVHD.TenGV}</td>
+                                                <td rowSpan="2">{item.GVHD.DonViCongTac}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{item.SVChinhThuc[1].HoSV + " " + item.SVChinhThuc[1].TenSV}</td>
+                                                <td> {item.SVChinhThuc[1].MaSV}</td>
+                                                <td>{item.SVChinhThuc[1].TinChiTL}</td>
+                                                <td>{item.SVChinhThuc[1].DTBTL}</td>
+                                                <td>{item.SVChinhThuc[1].Email}</td>
+                                                <td>{item.SVChinhThuc[1].SoDienThoai}</td>
+                                            </tr></>
+                                    )
+                                }
+
+                                //Khi đề tài chỉ 1 SV đăng ký
+                                if (item.SVChinhThuc.length === 1) {
+                                    return (
+                                        <>
+                                            <tr key={item.TenDeTai}>
+                                                <th scope="row" rowSpan="2">{index + 1}</th>
+                                                <td>{item.SVChinhThuc[0].HoSV + " " + item.SVChinhThuc[0].TenSV}</td>
+                                                <td> {item.SVChinhThuc[0].MaSV}</td>
+                                                <td>{item.SVChinhThuc[0].TinChiTL}</td>
+                                                <td>{item.SVChinhThuc[0].DTBTL}</td>
+                                                <td>{item.SVChinhThuc[0].Email}</td>
+                                                <td>{item.SVChinhThuc[0].SoDienThoai}</td>
+                                                <td rowSpan="2">{item.TenDeTai}</td>
+                                                <td rowSpan="2">{item.GVHD.HoGV + " " + item.GVHD.TenGV}</td>
+                                                <td rowSpan="2">{item.GVHD.DonViCongTac}</td>
+                                            </tr>
+                                        </>
+                                    )
+                                }
+
+                                //Khi đề tài không có SV đăng ký
+                                if (!item.SVChinhThuc.length) {
+                                    return (
+                                        <>
+                                            <tr key={item.TenDeTai}>
+                                                <th scope="row" rowSpan="2">{index + 1}</th>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td rowSpan="2">{item.TenDeTai}</td>
+                                                <td rowSpan="2">{item.GVHD.HoGV + " " + item.GVHD.TenGV}</td>
+                                                <td rowSpan="2">{item.GVHD.DonViCongTac}</td>
+                                            </tr>
+                                        </>
+                                    )
+                                }
+
                             })
                         }
+
                     </tbody>
                 </table>
                 <h6>Ghi chú: mỗi số thứ tự là 2 sinh viên chung một đề tài</h6>
             </div>
-        </div>
+        </div >
     )
 }
 export default KhoaLuan

@@ -116,13 +116,13 @@ const TableDKiChuyenNganh = (props) => {
 
         renderRowActions: ({ row, table }) => (
             <Box sx={{ display: 'flex', gap: '0.3rem' }}>
-                <Link to={"/admin/dkichuyennganh/single/" + row.original.MaDKCN}>
+                <Link to={"/admin/dkychuyennganh/single/" + row.original.MaDKCN}>
                     <IconButton>
                         <Visibility fontSize="small" />
                     </IconButton>
                 </Link>
 
-                <Link to={"/admin/dkichuyennganh/edit/" + row.original.MaDKCN}>
+                <Link to={"/admin/dkychuyennganh/edit/" + row.original.MaDKCN}>
                     <IconButton  >
                         <Edit fontSize="small" />
                     </IconButton>
