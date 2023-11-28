@@ -2,10 +2,34 @@ import "./KhoaLuanGV.scss"
 import { Link } from "react-router-dom";
 import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
 import { data_khoaluan } from "../../data"
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { fetchDetailKhoaLuan, fetchDSDeTaiCuaGV } from "../../GetData_client"
+import { toast } from "react-toastify";
+import moment from "moment";
 const KhoaLuanGV = () => {
-    const [khoaluan, SetKhoaluan] = useState(data_khoaluan)
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+    const [khoaluan, setKhoaluan] = useState({})
+    const [detai, setKDetai] = useState([])
     const [search, SetSearch] = useState('')
+
+    // component didmount
+    useEffect(() => {
+
+        getDetailKhoaLuan();
+    }, []);
+    const getDetailKhoaLuan = async (MaSo) => {
+        let thongtin = JSON.parse(localStorage.getItem("ThongTin"))
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDetailKhoaLuan(headers);
+        // console.log(res)
+        if (res && res.data) {
+            setKhoaluan(res.data)
+            let res2 = await fetchDSDeTaiCuaGV(headers, res.data.MaKLTN, thongtin.MaSo);
+            console.log(res2)
+            setKDetai(res2.data)
+        }
+    }
+
     const onChangSearch = (event) => {
         let result = event.target.value;
         SetSearch(result);
@@ -15,19 +39,21 @@ const KhoaLuanGV = () => {
             <ol className="breadcrumb" >
                 <li className="breadcrumb-item"><a href="#">Trang chủ</a></li>
                 <li className="breadcrumb-item">Khóa luận</li>
-                <li className="breadcrumb-item active">Khóa luận học kỳ 1 năm học 2023-2024</li>
+                <li className="breadcrumb-item active">{khoaluan.Ten}</li>
             </ol>
             <div className="container-tb-update">
-                <h3>Khóa luận học kỳ 1 năm học 2023-2024</h3>
-                <h6>Ngày cập nhật : 10/09/2023</h6>
-                <h6 className="time-line">Thời gian đăng ký : [ 10/09/2023 - 22/10/2023 ] </h6>
+                <h3>{khoaluan.Ten}</h3>
+                <h6>Ngày cập nhật : {moment(khoaluan.updatedAt).format("DD/MM/YYYY")}</h6>
+                <h6 className="time-line">Thời gian đăng ký : [{moment(khoaluan.ThoiGianBD).format("hh:mm:ss DD/MM/YYYY")} - {moment(khoaluan.ThoiGianKT).format("hh:mm:ss DD/MM/YYYY")} ] </h6>
             </div>
             <div className="container-dky">
                 <h5>Danh sách sinh viên đăng ký đề tài</h5>
-                <div className="col-md-3">
+                <div className="col-md-4" style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <input type="text" className="form-control" id="validationCustom02" placeholder="Tìm kiếm ..." onChange={(event) => onChangSearch(event)} />
+                    <Link to="/khoaluan/taomoi">
+                        <button type="button" style={{ marginLeft: '0.5rem' }} class="btn btn-outline-primary">Thêm đề tài</button>
+                    </Link>
                 </div>
-
             </div>
 
             <div className="content-table">
@@ -54,7 +80,33 @@ const KhoaLuanGV = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {khoaluan && khoaluan.length > 0 &&
+                        {/* {detai && detai.length > 0 &&
+                            detai.filter((item) => {
+                                return search.toLocaleLowerCase() === '' ? item : item.ten.toLocaleLowerCase().includes(search)
+                            }).map((item, index) => {
+                                console.log(item)
+                                // Khi đề tài đủ 2 SV đăng ký
+                                return (
+                                    <>
+                                        <tr key={index}>
+                                            <th scope="row">{index + 1}</th>
+                                            <td>{item.SVDuKien[0].HoSV + " " + item.SVDuKien[0].TenSV}</td>
+                                            <td>{item.SVDuKien[0].MaSV}</td>
+                                            <td>{item.SVDuKien[0].TinChiTL}</td>
+                                            <td>{item.SVDuKien[0].DTBTL}</td>
+                                            <td>{item.SVDuKien[0].Email}</td>
+                                            <td>{item.SVDuKien[0].SoDienThoai}</td>
+                                            <td >{item.TenDeTai}</td>
+                                            <td ><button type="button" className="btn btn-outline-success">Chấp nhận</button></td>
+                                            <td ><button type="button" className="btn btn-outline-danger">Từ chối</button></td>
+                                        </tr>
+                                    </>
+                                )
+
+                            })
+                        } */}
+
+                        {/* {khoaluan && khoaluan.length > 0 &&
                             khoaluan.filter((item) => {
                                 return search.toLocaleLowerCase() === '' ? item : item.ten.toLocaleLowerCase().includes(search)
                             }).map((item, index) => {
@@ -82,8 +134,8 @@ const KhoaLuanGV = () => {
                                         </tr></>
                                 )
                             })
-                        }
-                    </tbody>
+                        } */}
+                    </tbody >
                 </table>
                 <h6>Ghi chú: mỗi số thứ tự là 2 sinh viên chung một đề tài</h6>
             </div>

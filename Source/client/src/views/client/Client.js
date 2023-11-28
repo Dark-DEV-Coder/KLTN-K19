@@ -30,6 +30,7 @@ import KhoaLuanGV from "./giangvien/khoaluan/KhoaLuanGV";
 import Signup from "./Signup/Signup";
 import Quenmatkhau from "./taikhoan/quenmatkhau/Quenmatkhau";
 import { useEffect, useState } from "react";
+import DangKyChuyenNganh from "./sinhvien/chuyennganh/DangKy/DangKyChuyenNganh";
 const Client = () => {
     const [checkLogin, setCheckLogin] = useState(false)
     const [checkQuyen, setCheckQuyen] = useState(false)
@@ -90,6 +91,7 @@ const Client = () => {
                                     </Route>
                                     <Route path='chuyennganh' >
                                         <Route index element={<Error />}></Route>
+                                        <Route path='dangky' element={<DangKyChuyenNganh />}></Route >
                                         <Route path='ds-sinhvien' element={<KQDKchuyennganh />}></Route >
                                         <Route path='dieukiendkychuyennganh' element={<DieuKienDK_CN />}></Route>
                                         <Route path='huongdandkychuyennganh' element={<HuongDanDK_CN />}></Route>
@@ -116,8 +118,10 @@ const Client = () => {
                                     {/* <Route path='dangnhap' element={<Login />}></Route>
                                 <Route path='dangky' element={<Signup />}></Route> */}
                                     <Route path='khoaluan' >
-                                        {/* <Route index element={<KhoaLuan />}></Route> */}
+                                        <Route index element={<KhoaLuan />}></Route>
+                                        <Route path='dky-khoaluan' element={<DangKy />}></Route >
                                         <Route path='ds-sinhviendky' element={<KhoaLuanGV />}></Route >
+                                        <Route path='taomoi' element={<KhoaLuanGV />}></Route >
                                         {/* <Route path='dieukiendkykhoaluan' element={<DieuKien />}></Route>
                                     <Route path='huongdandky' element={<HuongDanDK />}></Route> */}
                                     </Route>

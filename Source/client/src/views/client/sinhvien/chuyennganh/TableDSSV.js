@@ -25,7 +25,7 @@ const TableDSSV = (props) => {
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'masv',
+                accessorKey: 'MaSV',
                 header: 'Mã',
                 size: 100,
                 enableColumnOrdering: false,
@@ -34,21 +34,21 @@ const TableDSSV = (props) => {
 
             },
             {
-                accessorKey: 'ho',
+                accessorKey: 'HoSV',
                 header: 'Họ lót',
                 size: 200,
                 enableEditing: false,
 
             },
             {
-                accessorKey: 'ten',
+                accessorKey: 'TenSV',
                 header: 'Tên',
                 size: 100,
                 enableEditing: false,
             },
             {
 
-                accessorKey: 'chuyennganh',
+                accessorKey: 'ChuyenNganh',
                 header: 'Chuyên ngành',
                 size: 100,
                 enableEditing: false,

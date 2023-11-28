@@ -44,7 +44,9 @@ const EditTaiKhoan = () => {
             toast.error("Vui lòng điền đầy đủ dữ liệu !")
             return
         }
+        console.log(QuyenTK)
         let res = await fetchEditTaiKhoan(headers, MaTK, TenDangNhap, QuyenTK)
+        console.log(res)
         if (res.status === true) {
             toast.success(res.message)
             navigate("/admin/taikhoan")
