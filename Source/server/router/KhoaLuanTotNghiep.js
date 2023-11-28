@@ -1,12 +1,10 @@
 import express from "express"
 import fs from 'fs'
 import { sendError, sendServerError, sendSuccess } from "../helper/client.js"
-import { DoiDinhDangNgay, XuLyNgaySinh } from "../helper/XuLyDuLieu.js"
-import Nganh from "../model/Nganh.js"
 import KhoaLuanTotNghiep from "../model/KhoaLuanTotNghiep.js"
 import SinhVien from "../model/SinhVien.js"
 import GiangVien from "../model/GiangVien.js"
-import { KtraDuLieuKLTNKhiChinhSua, KtraDuLieuKLTNKhiChinhSuaDeTaiKhoaLuan, KtraDuLieuKLTNKhiSuaThongTinSVDangKyKhoaLuan, KtraDuLieuKLTNKhiThem, KtraDuLieuKLTNKhiThemDeTaiKhoaLuan, KtraDuLieuKLTNKhiThemSVDangKyKhoaLuan, KtraDuLieuKLTNKhiXoaDeTaiKhoaLuan, KtraDuLieuKLTNKhiXoaSVDangKyKhoaLuan } from "../validation/KhoaLuanTotNghiep.js"
+import { KtraDuLieuKLTNKhiChinhSuaDeTaiKhoaLuan, KtraDuLieuKLTNKhiThemDeTaiKhoaLuan, KtraDuLieuKLTNKhiThemSVDangKyKhoaLuan, KtraDuLieuKLTNKhiXoaDeTaiKhoaLuan, KtraDuLieuKLTNKhiXoaSVDangKyKhoaLuan } from "../validation/KhoaLuanTotNghiep.js"
 import { DeTaiKhoaLuan, TrangThaiDangKyKLTN } from "../constant.js"
 import { verifyToken, verifyUser } from "../middleware/verify.js"
 
@@ -439,6 +437,147 @@ KhoaLuanTotNghiepRoute.post('/DSDeTaiChuaDangKy/:MaKLTN', verifyToken, verifyUse
         return sendSuccess(res, "Danh sách đề tài chưa đăng ký.", thongtin);
     }
     catch (error) {
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route POST /api/khoa-luan-tot-nghiep/ThemDeTaiKhoaLuan/{MaKLTN}
+ * @description Thêm đề tài khóa luận
+ * @access public
+ */
+KhoaLuanTotNghiepRoute.post('/ThemDeTaiKhoaLuan/:MaKLTN', async (req, res) => {
+    try{
+        const errors = KtraDuLieuKLTNKhiThemDeTaiKhoaLuan(req.body)
+        if (errors)
+            return sendError(res, errors)
+        const { TenDeTai, MaGV } = req.body;
+        const { MaKLTN } = req.params;
+
+        const isExist = await KhoaLuanTotNghiep.findOne({ MaKLTN: MaKLTN }).lean();
+        if (!isExist)
+            return sendError(res, "Đợt đăng ký khóa luận tốt nghiệp không tồn tại");
+        const giangvien = await GiangVien.findOne({ MaGV: MaGV });
+        if (!giangvien)
+            return sendError(res, "Giảng viên này không tồn tại trong hệ thống");
+
+        let thongtin = {
+            TenDeTai: TenDeTai,
+            GVHD: giangvien._id,
+            SVChinhThuc: [],
+            SVDuKien: [],
+        }
+        let check = 0;
+        if (isExist.DSDeTai.length > 0){
+            isExist.DSDeTai.forEach((element) => {
+                if ( element.TenDeTai.includes(TenDeTai) && element.GVHD.equals(giangvien._id) ){
+                    check = 1;
+                    return;
+                }
+            });
+            if ( check == 1 )
+                return sendError(res, "Đề tài này đã tồn tại.");
+            else{
+                isExist.DSDeTai.push(thongtin);
+                await KhoaLuanTotNghiep.findOneAndUpdate({ MaKLTN: MaKLTN }, { DSDeTai: isExist.DSDeTai });
+            }
+        }
+        else{
+            isExist.DSDeTai.push(thongtin);
+            await KhoaLuanTotNghiep.findOneAndUpdate({ MaKLTN: MaKLTN }, { DSDeTai: isExist.DSDeTai });
+        }
+
+        return sendSuccess(res, "Thêm đề tài khóa luận thành công");
+    }
+    catch (error){
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route POST /api/khoa-luan-tot-nghiep/ChinhSuaTenDeTaiKhoaLuan/{MaKLTN}
+ * @description Chỉnh sửa tên đề tài khóa luận
+ * @access public
+ */
+KhoaLuanTotNghiepRoute.post('/ChinhSuaTenDeTaiKhoaLuan/:MaKLTN', async (req, res) => {
+    try{
+        const errors = KtraDuLieuKLTNKhiChinhSuaDeTaiKhoaLuan(req.body)
+        if (errors)
+            return sendError(res, errors)
+        const { TenDeTaiCu, TenDeTaiMoi, MaGV } = req.body;
+        const { MaKLTN } = req.params;
+
+        const isExist = await KhoaLuanTotNghiep.findOne({ MaKLTN: MaKLTN }).lean();
+        if (!isExist)
+            return sendError(res, "Đợt đăng ký khóa luận tốt nghiệp không tồn tại");
+        const giangvien = await GiangVien.findOne({ MaGV: MaGV });
+        if (!giangvien)
+            return sendError(res, "Giảng viên này không tồn tại trong hệ thống");
+
+        let check = 0;
+        if (isExist.DSDeTai.length > 0){
+            isExist.DSDeTai.forEach((element) => {
+                if ( element.TenDeTai.includes(TenDeTaiCu) && element.GVHD.equals(giangvien._id) ){
+                    check = 1;
+                    element.TenDeTai = TenDeTaiMoi;
+                    return;
+                }
+            });
+            if ( check == 1 )
+                await KhoaLuanTotNghiep.findOneAndUpdate({ MaKLTN: MaKLTN }, { DSDeTai: isExist.DSDeTai });
+            else
+                return sendError(res, "Không tồn tại đề tài này để sửa tên đề tài");
+        }
+        else
+            return sendError(res, "Không tồn tại đề tài này để sửa tên đề tài");
+
+        return sendSuccess(res, "Chỉnh sửa tên đề tài khóa luận thành công");
+    }
+    catch (error){
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route POST /api/khoa-luan-tot-nghiep/XoaDeTaiKhoaLuan/{MaKLTN}
+ * @description Xóa đề tài khóa luận
+ * @access public
+ */
+KhoaLuanTotNghiepRoute.post('/XoaDeTaiKhoaLuan/:MaKLTN', async (req, res) => {
+    try{
+        const errors = KtraDuLieuKLTNKhiXoaDeTaiKhoaLuan(req.body)
+        if (errors)
+            return sendError(res, errors)
+        const { TenDeTai, MaGV } = req.body;
+        const { MaKLTN } = req.params;
+
+        const isExist = await KhoaLuanTotNghiep.findOne({ MaKLTN: MaKLTN }).lean();
+        if (!isExist)
+            return sendError(res, "Đợt đăng ký khóa luận tốt nghiệp không tồn tại");
+        const giangvien = await GiangVien.findOne({ MaGV: MaGV });
+        if (!giangvien)
+            return sendError(res, "Giảng viên này không tồn tại trong hệ thống");
+
+        if (isExist.DSDeTai.length > 0){
+            let i = 0;
+            isExist.DSDeTai.forEach((element) => {
+                if ( element.TenDeTai.includes(TenDeTai) && element.GVHD.equals(giangvien._id) ){
+                    isExist.DSDeTai.splice(i,1);
+                    return;
+                }
+                i++;
+            });
+            await KhoaLuanTotNghiep.findOneAndUpdate({ MaKLTN: MaKLTN }, { DSDeTai: isExist.DSDeTai });
+        }
+        else
+            return sendError(res, "Thông tin này không tồn tại nên không thể xóa.");
+
+        return sendSuccess(res, "Xóa đề tài khóa luận thành công");
+    }
+    catch (error){
         console.log(error)
         return sendServerError(res)
     }
