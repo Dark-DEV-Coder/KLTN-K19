@@ -241,10 +241,9 @@ const fetchDetailTaiKhoan = (headers, MaTK) => {
 export { fetchDetailTaiKhoan };
 
 //Sửa Tài khoản
-const fetchEditTaiKhoan = (headers, MaTK, TenDangNhap, QuyenTK) => {
+const fetchEditTaiKhoan = (headers, MaTK, QuyenTK) => {
     return axios.put(`admin/tai-khoan/ChinhSua/${MaTK}`, {
-        TenDangNhap: TenDangNhap,
-        QuyenTK: QuyenTK,
+        MaQTK: QuyenTK,
     }, { headers });
 }
 export { fetchEditTaiKhoan };

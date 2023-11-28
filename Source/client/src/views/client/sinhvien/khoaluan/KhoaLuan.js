@@ -1,10 +1,7 @@
 import "./KhoaLuan.scss"
 import { Link } from "react-router-dom";
-import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
-import { data_khoaluan } from "../../data"
 import { useState, useEffect } from "react";
 import { fetchDetailKhoaLuan } from "../../GetData_client"
-import { toast } from "react-toastify";
 import moment from "moment";
 const KhoaLuan = () => {
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
@@ -14,9 +11,10 @@ const KhoaLuan = () => {
     useEffect(() => {
         getDetailKhoaLuan();
     }, []);
-    const getDetailKhoaLuan = async (MaSo) => {
+    const getDetailKhoaLuan = async () => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDetailKhoaLuan(headers);
+        console.log(res)
         if (res && res.data) {
             setKhoaluan(res.data)
             setKDetai(res.data.DSDeTai)
@@ -37,7 +35,7 @@ const KhoaLuan = () => {
             <div className="container-dky">
                 <h5>Danh sách đề tài được công bố</h5>
                 <Link to="/khoaluan/dky-khoaluan">
-                    <button type="button" className="btn btn-outline-primary">Đăng ký</button>
+                    <button className="btn btn-outline-primary">Đăng ký</button>
                 </Link>
 
             </div>
@@ -66,6 +64,7 @@ const KhoaLuan = () => {
                     <tbody>
                         {detai && detai.length > 0 &&
                             detai.map((item, index) => {
+                                console.log(item)
                                 // Khi đề tài đủ 2 SV đăng ký
                                 if (item.SVChinhThuc.length > 1) {
                                     return (
@@ -109,7 +108,16 @@ const KhoaLuan = () => {
                                                 <td rowSpan="2">{item.GVHD.HoGV + " " + item.GVHD.TenGV}</td>
                                                 <td rowSpan="2">{item.GVHD.DonViCongTac}</td>
                                             </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
                                         </>
+
                                     )
                                 }
 
@@ -128,6 +136,14 @@ const KhoaLuan = () => {
                                                 <td rowSpan="2">{item.TenDeTai}</td>
                                                 <td rowSpan="2">{item.GVHD.HoGV + " " + item.GVHD.TenGV}</td>
                                                 <td rowSpan="2">{item.GVHD.DonViCongTac}</td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                         </>
                                     )

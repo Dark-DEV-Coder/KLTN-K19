@@ -212,7 +212,7 @@ const EditGiangVien = () => {
                             </div>
                             <div className="invalid-feedback" style={{ display: 'block', color: 'blue' }}>Chỉ chấp nhận các file có đuôi là png, jpeg, jpg ...</div>
                         </div>
-                        {Hinh ? <img className="img-preview" src={Hinh} /> : ""}
+                        {Hinh ? <img className="img-preview" src={Hinh.preview} /> : ""}
                     </div>
                     <button className="btn" type="button" onClick={() => handleEditGiangVien()}>Lưu</button>
                 </div>
