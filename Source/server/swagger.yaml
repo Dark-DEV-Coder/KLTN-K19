@@ -5185,6 +5185,169 @@ paths:
             }
       security:
         - ApiKeyAuth: []
+  /dk-chuyen-nganh/LayDSChuyenNganhDK:
+    post: 
+      tags:
+        - "DangKyChuyenNganhClient"
+      summary: Lấy danh sách chuyên ngành
+      produces:
+        - application/json     
+      parameters:
+        - in: body
+          name: TenNganh
+          type: string
+          description: Tên ngành
+          required: true
+      responses:
+        200:
+          description: Lấy danh sách chuyên ngành thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Lấy danh sách chuyên ngành thành công.",
+            }          
+        400:
+          description: Lấy danh sách chuyên ngành thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message": "Lấy danh sách chuyên ngành thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /khoa-luan-tot-nghiep/ThemDeTaiKhoaLuan/{MaKLTN}:
+    post:
+      tags:
+        - "KhoaLuanTotNghiepClient"
+      summary: "Thêm đề tài khóa luận tốt nghiệp"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+        - in: body
+          name: TenDeTai
+          type: string
+          required: true
+          description: Tên đề tài
+        - in: body
+          name: MaGV
+          type: string
+          required: true
+          description: Mã giảng viên
+      responses:
+        200:
+          description: Thêm đề tài khóa luận tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Thêm đề tài khóa luận tốt nghiệp thành công.",
+            }
+        400:
+          description: Thêm đề tài khóa luận tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Thêm đề tài khóa luận tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /khoa-luan-tot-nghiep/ChinhSuaTenDeTaiKhoaLuan/{MaKLTN}:
+    post:
+      tags:
+        - "KhoaLuanTotNghiepClient"
+      summary: "Chỉnh sửa tên đề tài khóa luận tốt nghiệp"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+        - in: body
+          name: TenDeTaiCu
+          type: string
+          required: true
+          description: Tên đề tài cũ
+        - in: body
+          name: TenDeTaiMoi
+          type: string
+          required: true
+          description: Tên đề tài mới
+        - in: body
+          name: MaGV
+          type: string
+          required: true
+          description: Mã giảng viên
+      responses:
+        200:
+          description: Chỉnh sửa tên đề tài khóa luận tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Chỉnh sửa tên đề tài khóa luận tốt nghiệp thành công.",
+            }
+        400:
+          description: Chỉnh sửa tên đề tài khóa luận tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Chỉnh sửa tên đề tài khóa luận tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /khoa-luan-tot-nghiep/XoaDeTaiKhoaLuan/{MaKLTN}:
+    post:
+      tags:
+        - "KhoaLuanTotNghiepClient"
+      summary: "Xóa đề tài khóa luận tốt nghiệp"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+        - in: body
+          name: TenDeTai
+          type: string
+          required: true
+          description: Tên đề tài
+        - in: body
+          name: MaGV
+          type: string
+          required: true
+          description: Mã giảng viên
+      responses:
+        200:
+          description: Xóa đề tài khóa luận tốt nghiệp thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Xóa đề tài khóa luận tốt nghiệp thành công.",
+            }
+        400:
+          description: Xóa đề tài khóa luận tốt nghiệp thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Xóa đề tài khóa luận tốt nghiệp thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
 securityDefinitions:
   ApiKeyAuth:
     type: apiKey

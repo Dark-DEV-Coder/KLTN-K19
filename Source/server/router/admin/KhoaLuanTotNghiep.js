@@ -524,7 +524,6 @@ KhoaLuanTotNghiepAdminRoute.post('/ChinhSuaTenDeTaiKhoaLuan/:MaKLTN', async (req
         let check = 0;
         if (isExist.DSDeTai.length > 0){
             isExist.DSDeTai.forEach((element) => {
-                console.log(element.TenDeTai)
                 if ( element.TenDeTai.includes(TenDeTaiCu) && element.GVHD.equals(giangvien._id) ){
                     check = 1;
                     element.TenDeTai = TenDeTaiMoi;

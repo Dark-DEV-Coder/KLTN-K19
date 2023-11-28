@@ -90,15 +90,20 @@ DangKyChuyenNganhRoute.post('/SVDangKyChuyenNganh/:MaDKCN', verifyToken, verifyU
         ]);
         if (KtraDKCN)
             return sendError(res, "Bạn đã đăng ký chuyên ngành khác");
-
+        let check = 0;
         dkcn.ThongTin.forEach((element) => {
             if (element.ChuyenNganh.equals(chuyennganh._id) && element.Nganh.equals(nganh._id)){
-                element.SinhVien.push(sinhvien._id);
-                element.DaDangKy = element.DaDangKy + 1;
-                element.ConLai = element.ToiDa - element.DaDangKy;
-                return;
+                if (element.ConLai > 0){
+                    check = 1;
+                    element.SinhVien.push(sinhvien._id);
+                    element.DaDangKy = element.DaDangKy + 1;
+                    element.ConLai = element.ToiDa - element.DaDangKy;
+                    return;
+                }
             }
         });
+        if (check == 0)
+            return sendError(res, "Hết chỗ đăng ký chuyên ngành này.")
         await DangKyChuyenNganh.findOneAndUpdate({ MaDKCN: MaDKCN }, { ThongTin: dkcn.ThongTin });
         await SinhVien.findOneAndUpdate({ MaSV: MaSV }, { ChuyenNganh: chuyennganh.TenChuyenNganh });
 
@@ -222,6 +227,30 @@ DangKyChuyenNganhRoute.post('/DSSVDangKyChuyenNganh/:MaDKCN', async (req, res) =
         if (!isExist)
             return sendError(res, "Không tìm thấy danh sách sinh viên"); 
         return sendSuccess(res, "Lấy danh sách sinh viên thành công.", isExist[0].sv)
+    }
+    catch (error) {
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route POST /api/dk-chuyen-nganh/LayDSChuyenNganhDK
+ * @description Lấy danh sách chuyên ngành
+ * @access public
+ */
+DangKyChuyenNganhRoute.post('/LayDSChuyenNganhDK', async (req, res) => {
+    try {
+        const { TenNganh } = req.body;
+        const nganh = await Nganh.findOne({ TenNganh: TenNganh });
+        if (!nganh)
+            return sendError(res, "Ngành này không tồn tại");
+
+        const isExist = await ChuyenNganh.findOne({ MaNganh: nganh._id });
+        if (!isExist)
+            return sendError(res, "Danh sách chuyên ngành không tồn tại"); 
+
+        return sendSuccess(res, "Danh sách chuyên ngành.", isExist)
     }
     catch (error) {
         console.log(error)
