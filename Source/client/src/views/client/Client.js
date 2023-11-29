@@ -31,6 +31,9 @@ import Signup from "./Signup/Signup";
 import Quenmatkhau from "./taikhoan/quenmatkhau/Quenmatkhau";
 import { useEffect, useState } from "react";
 import DangKyChuyenNganh from "./sinhvien/chuyennganh/DangKy/DangKyChuyenNganh";
+import DsDeTaicuaGiangVien from "./giangvien/khoaluan/DsDeTaiCuaGiangVien/DsDeTaicuaGiangVien";
+import ThemDeTai from "./giangvien/khoaluan/ThemDeTai";
+import ChinhSuaDeTai from "./giangvien/khoaluan/ChinhSuaDeTai/ChinhSuaDeTai";
 const Client = () => {
     const [checkLogin, setCheckLogin] = useState(false)
     const [checkQuyen, setCheckQuyen] = useState(false)
@@ -118,10 +121,10 @@ const Client = () => {
                                     {/* <Route path='dangnhap' element={<Login />}></Route>
                                 <Route path='dangky' element={<Signup />}></Route> */}
                                     <Route path='khoaluan' >
-                                        <Route index element={<KhoaLuan />}></Route>
-                                        <Route path='dky-khoaluan' element={<DangKy />}></Route >
+                                        <Route index element={<DsDeTaicuaGiangVien />}></Route>
+                                        <Route path='chinhsua-detai/:TenDeTai' element={<ChinhSuaDeTai />}></Route >
                                         <Route path='ds-sinhviendky' element={<KhoaLuanGV />}></Route >
-                                        <Route path='taomoi' element={<KhoaLuanGV />}></Route >
+                                        <Route path='taomoi' element={<ThemDeTai />}></Route >
                                         {/* <Route path='dieukiendkykhoaluan' element={<DieuKien />}></Route>
                                     <Route path='huongdandky' element={<HuongDanDK />}></Route> */}
                                     </Route>

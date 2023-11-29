@@ -111,7 +111,7 @@ const ChiTietDeTai = () => {
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputDT" htmlFor="inputGiangvienhuongdan">Giảng viên hướng dẫn</label>
-                            <input type="text" className="form-control" id="inputGiangvienhuongdan" value={GiangVien.HoGV + GiangVien.TenGV} disabled />
+                            <input type="text" className="form-control" id="inputGiangvienhuongdan" value={GiangVien.HoGV + " " + GiangVien.TenGV} disabled />
                         </div>
                     </div>
                     <div className="form-row">

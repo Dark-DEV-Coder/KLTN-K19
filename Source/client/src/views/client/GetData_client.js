@@ -79,10 +79,6 @@ export { fetchDetailKhoaLuan };
 
 //Đăng ký chuyên ngành
 const fetchDkyChuyenNganh = (headers, MaDKCN, MaSV, MaNganh, MaChuyenNganh) => {
-    // console.log("MaDKCN: ", MaDKCN)
-    // console.log("MaSV: ", MaSV)
-    // console.log("MaNganh: ", MaNganh)
-    // console.log("MaChuyenNganh: ", MaChuyenNganh)
     return axios.post(`dk-chuyen-nganh/SVDangKyChuyenNganh/${MaDKCN}`, {
         MaDKCN: MaDKCN,
         MaSV: MaSV,
@@ -92,6 +88,79 @@ const fetchDkyChuyenNganh = (headers, MaDKCN, MaSV, MaNganh, MaChuyenNganh) => {
 }
 export { fetchDkyChuyenNganh };
 
+// Chi tiết đề tài
+const fetchDetailDeTai = (headers, MaKLTN, TenDeTai, MaGV) => {
+    return axios.post(`khoa-luan-tot-nghiep/ThongTinChiTietDeTaiGV/${MaKLTN}`, {
+        MaGV: MaGV,
+        TenDeTai: TenDeTai
+    }, { headers })
+}
+export { fetchDetailDeTai };
+
+// Sửa Tên đề tài
+const fetchEditDeTai = (headers, MaKLTN, TenDeTaiCu, TenDeTaiMoi, MaGV) => {
+    return axios.post(`khoa-luan-tot-nghiep/ChinhSuaTenDeTaiKhoaLuan/${MaKLTN}`, {
+        MaGV: MaGV,
+        TenDeTaiCu: TenDeTaiCu,
+        TenDeTaiMoi: TenDeTaiMoi
+    }, { headers })
+}
+export { fetchEditDeTai };
+
+// Xóa đề tài
+const fetchDeleteDeTai = (headers, MaKLTN, TenDeTai, MaGV) => {
+    return axios.post(`khoa-luan-tot-nghiep/XoaDeTaiKhoaLuan/${MaKLTN}`, {
+        MaGV: MaGV,
+        TenDeTai: TenDeTai
+    }, { headers })
+}
+export { fetchDeleteDeTai };
+
+// Chấp nhận Sv đăng ký
+const fetchAcceptSVDangKy = (headers, MaKLTN, TenDeTai, MaGV, MaSV, HoSV, TenSV, Email, SoDienThoai, DTBTL, TinChiTL) => {
+    return axios.post(`khoa-luan-tot-nghiep/GVChapNhanSVDangKy/${MaKLTN}`, {
+        MaGV: MaGV,
+        TenDeTai: TenDeTai,
+        MaSV: MaSV,
+        HoSV: HoSV,
+        TenSV: TenSV,
+        Email: Email,
+        SoDienThoai: SoDienThoai,
+        DTBTL: DTBTL,
+        TinChiTL: TinChiTL
+    }, { headers })
+}
+export { fetchAcceptSVDangKy };
+
+// Xóa SV chính thức
+const fetchDeleteSVChinhThuc = (headers, MaKLTN, TenDeTai, MaGV, MaSV) => {
+    return axios.post(`khoa-luan-tot-nghiep/GVXoaSVDangKyKLChinhThuc/${MaKLTN}`, {
+        MaGV: MaGV,
+        TenDeTai: TenDeTai,
+        MaSV: MaSV
+    }, { headers })
+}
+export { fetchDeleteSVChinhThuc };
+
+// Xóa SV dự kiến
+const fetchDeleteSVDuKien = (headers, MaKLTN, TenDeTai, MaGV, MaSV) => {
+    return axios.post(`khoa-luan-tot-nghiep/GVXoaSVDangKyKLDuKien/${MaKLTN}`, {
+        MaGV: MaGV,
+        TenDeTai: TenDeTai,
+        MaSV: MaSV
+    }, { headers })
+}
+export { fetchDeleteSVDuKien };
+
+// Thêm đề tài
+const fetchAddDeTai = (headers, MaKLTN, TenDeTai, MaGV) => {
+    return axios.post(`khoa-luan-tot-nghiep/ThemDeTaiKhoaLuan/${MaKLTN}`, {
+        MaGV: MaGV,
+        TenDeTai: TenDeTai
+    }, { headers })
+}
+export { fetchAddDeTai };
+
 // DS đề tài theo GV
 const fetchDSDeTaiCuaGV = (headers, MaKLTN, MaGV) => {
     return axios.post(`khoa-luan-tot-nghiep/DSDeTaiTheoGiangVien/${MaKLTN}`, {
@@ -99,6 +168,14 @@ const fetchDSDeTaiCuaGV = (headers, MaKLTN, MaGV) => {
     }, { headers })
 }
 export { fetchDSDeTaiCuaGV };
+
+// DS đề tài theo GV chưa được đăng ký
+const fetchDSDeTaiCuaGVChuaDK = (headers, MaKLTN, MaGV) => {
+    return axios.post(`khoa-luan-tot-nghiep/DSDeTaiChuaDangKyTheoGiangVien/${MaKLTN}`, {
+        MaGV: MaGV
+    }, { headers })
+}
+export { fetchDSDeTaiCuaGVChuaDK };
 
 
 

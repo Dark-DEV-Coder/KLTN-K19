@@ -44,9 +44,9 @@ const EditTaiKhoan = () => {
             toast.error("Vui lòng điền đầy đủ dữ liệu !")
             return
         }
-        console.log(QuyenTK)
-        let res = await fetchEditTaiKhoan(headers, MaTK, TenDangNhap, QuyenTK)
-        console.log(res)
+        // console.log(QuyenTK)
+        let res = await fetchEditTaiKhoan(headers, MaTK, QuyenTK)
+        // console.log(res)
         if (res.status === true) {
             toast.success(res.message)
             navigate("/admin/taikhoan")
@@ -102,14 +102,14 @@ const EditTaiKhoan = () => {
                         <div className="form-row">
                             <div className="form-group col-md-6">
                                 <label className="inputTK" htmlFor="inputTenDN">Tên đăng nhập</label>
-                                <input type="text" className="form-control" id="inputTenDN" value={TenDangNhap} onChange={(event) => onChangeInputSL(event, setTenDangNhap)} onBlur={() => checkdulieu(TenDangNhap, setCheckdulieuTenDN)} />
+                                <input type="text" className="form-control" id="inputTenDN" value={TenDangNhap} onChange={(event) => onChangeInputSL(event, setTenDangNhap)} onBlur={() => checkdulieu(TenDangNhap, setCheckdulieuTenDN)} disabled={true} />
                                 <div className="invalid-feedback" style={{ display: checkdulieuTenDN ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                             </div>
-                            <div className="form-group col-md-6">
+                            {/* <div className="form-group col-md-6">
                                 <label className="inputTK" htmlFor="inputTenGV">Mật khẩu</label>
-                                <input type="text" className="form-control" id="inputTenDN" value={MatKhau} onChange={(event) => onChangeInputSL(event, setMatKhau)} onBlur={() => checkdulieu(MatKhau, setCheckdulieuMatKhau)} />
+                                <input type="text" className="form-control" id="inputTenDN" value={MatKhau} onChange={(event) => onChangeInputSL(event, setMatKhau)} onBlur={() => checkdulieu(MatKhau, setCheckdulieuMatKhau)} disabled={true} />
                                 <div className="invalid-feedback" style={{ display: checkdulieuMatKhau ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="form-row" >
                             <div className="form-group col-md-12">

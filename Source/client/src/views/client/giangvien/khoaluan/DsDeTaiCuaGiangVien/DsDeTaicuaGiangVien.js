@@ -1,23 +1,45 @@
-import "./KhoaLuan.scss"
+
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { fetchDetailKhoaLuan } from "../../GetData_client"
+import { toast } from "react-toastify";
+import { fetchDetailKhoaLuan, fetchDSDeTaiCuaGV, fetchDeleteDeTai } from "../../../GetData_client"
 import moment from "moment";
-const KhoaLuan = () => {
+const DsDeTaicuaGiangVien = () => {
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     const [khoaluan, setKhoaluan] = useState({})
     const [detai, setKDetai] = useState([])
+    const [thongtin, setthongtin] = useState({})
     // component didmount
     useEffect(() => {
         getDetailKhoaLuan();
     }, []);
     const getDetailKhoaLuan = async () => {
+        let thongtin = JSON.parse(localStorage.getItem("ThongTin"))
+        setthongtin(thongtin)
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDetailKhoaLuan(headers);
         // console.log(res)
         if (res && res.data) {
             setKhoaluan(res.data)
-            setKDetai(res.data.DSDeTai)
+            let res2 = await fetchDSDeTaiCuaGV(headers, res.data.MaKLTN, thongtin.MaSo)
+            if (res2 && res2.data) {
+                setKDetai(res2.data)
+            }
+        }
+    }
+
+    const handleDeleteDeTai = async (TenDeTai) => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDeleteDeTai(headers, khoaluan.MaKLTN, TenDeTai, thongtin.MaSo)
+        // console.log(res)
+        if (res.status === true) {
+            toast.success(res.message)
+            getDetailKhoaLuan()
+            return;
+        }
+        if (res.success === false) {
+            toast.error(res.message)
+            return;
         }
     }
     return (
@@ -34,8 +56,8 @@ const KhoaLuan = () => {
             </div>
             <div className="container-dky">
                 <h5>Danh sách đề tài được công bố</h5>
-                <Link to="/khoaluan/dky-khoaluan">
-                    <button className="btn btn-outline-primary">Đăng ký</button>
+                <Link to="/khoaluan/taomoi">
+                    <button type="button" style={{ marginLeft: '0.5rem' }} className="btn btn-outline-primary">Thêm đề tài</button>
                 </Link>
 
             </div>
@@ -51,14 +73,13 @@ const KhoaLuan = () => {
                             <th scope="col" rowSpan="2" className="th-email">Email</th>
                             <th scope="col" rowSpan="2">Điện thoại</th>
                             <th scope="col" rowSpan="2">Tên đề tài</th>
-                            <th scope="col" colSpan="2">Giảng viên hướng dẫn</th>
+                            <th scope="col" colSpan="2" rowSpan="2">Hành động</th>
                         </tr>
                         <tr>
                             <th scope="col">Họ tên sinh viên</th>
                             <th scope="col">Mã số sinh viên</th>
 
-                            <th scope="col">Họ tên</th>
-                            <th scope="col">Đơn vị công tác</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -77,9 +98,15 @@ const KhoaLuan = () => {
                                                 <td>{item.SVChinhThuc[0].Email}</td>
                                                 <td>{item.SVChinhThuc[0].SoDienThoai}</td>
                                                 <td rowSpan="2">{item.TenDeTai}</td>
-                                                <td rowSpan="2">{item.GVHD.HoGV + " " + item.GVHD.TenGV}</td>
-                                                <td rowSpan="2">{item.GVHD.DonViCongTac}</td>
-                                            </tr>
+                                                <td rowSpan="2" colSpan="2">
+                                                    <div style={{ display: 'flex' }}>
+                                                        <Link to={"/khoaluan/chinhsua-detai/" + item.TenDeTai}>
+                                                            <button type="button" style={{ marginLeft: '0.5rem' }} className="btn btn-outline-success">Sửa</button>
+                                                        </Link>
+                                                        <button type="button" style={{ marginLeft: '0.5rem' }} className="btn btn-outline-danger" onClick={() => handleDeleteDeTai(item.TenDeTai)}>Xóa</button>
+                                                    </div>
+                                                </td>
+                                            </tr >
                                             <tr>
                                                 <td>{item.SVChinhThuc[1].HoSV + " " + item.SVChinhThuc[1].TenSV}</td>
                                                 <td> {item.SVChinhThuc[1].MaSV}</td>
@@ -104,8 +131,14 @@ const KhoaLuan = () => {
                                                 <td>{item.SVChinhThuc[0].Email}</td>
                                                 <td>{item.SVChinhThuc[0].SoDienThoai}</td>
                                                 <td rowSpan="2">{item.TenDeTai}</td>
-                                                <td rowSpan="2">{item.GVHD.HoGV + " " + item.GVHD.TenGV}</td>
-                                                <td rowSpan="2">{item.GVHD.DonViCongTac}</td>
+                                                <td rowSpan="2" colSpan="2">
+                                                    <div style={{ display: 'flex' }}>
+                                                        <Link to={"/khoaluan/chinhsua-detai/" + item.TenDeTai}>
+                                                            <button type="button" style={{ marginLeft: '0.5rem' }} className="btn btn-outline-success">Sửa</button>
+                                                        </Link>
+                                                        <button type="button" style={{ marginLeft: '0.5rem' }} className="btn btn-outline-danger" onClick={() => handleDeleteDeTai(item.TenDeTai)}>Xóa</button>
+                                                    </div>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td></td>
@@ -133,8 +166,14 @@ const KhoaLuan = () => {
                                                 <td></td>
                                                 <td></td>
                                                 <td rowSpan="2">{item.TenDeTai}</td>
-                                                <td rowSpan="2">{item.GVHD.HoGV + " " + item.GVHD.TenGV}</td>
-                                                <td rowSpan="2">{item.GVHD.DonViCongTac}</td>
+                                                <td rowSpan="2" colSpan="2">
+                                                    <div style={{ display: 'flex' }}>
+                                                        <Link to={"/khoaluan/chinhsua-detai/" + item.TenDeTai}>
+                                                            <button type="button" style={{ marginLeft: '0.5rem' }} className="btn btn-outline-success">Sửa</button>
+                                                        </Link>
+                                                        <button type="button" style={{ marginLeft: '0.5rem' }} className="btn btn-outline-danger" onClick={() => handleDeleteDeTai(item.TenDeTai)}>Xóa</button>
+                                                    </div>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td></td>
@@ -158,4 +197,4 @@ const KhoaLuan = () => {
         </div >
     )
 }
-export default KhoaLuan
+export default DsDeTaicuaGiangVien

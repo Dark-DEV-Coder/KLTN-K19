@@ -56,12 +56,14 @@ const DangKy = () => {
             toast.error("Vui lòng nhập đầy đủ dữ liệu !")
             return;
         }
-        if (mssvsinhvien1 || holotsinhvien1 || tensinhvien1 || emailsinhvien1 || sdtsinhvien1 || stcsinhvien1 || dtlsinhvien1 || mssvsinhvien2 || holotsinhvien2 || tensinhvien2 || emailsinhvien2 || sdtsinhvien2 || stcsinhvien2 || dtlsinhvien2) {
+        if (mssvsinhvien1 && holotsinhvien1 && tensinhvien1 && emailsinhvien1 && sdtsinhvien1 && stcsinhvien1 && dtlsinhvien1 && mssvsinhvien2 && holotsinhvien2 && tensinhvien2 && emailsinhvien2 && sdtsinhvien2 && stcsinhvien2 && dtlsinhvien2) {
+            console.log("Chạy 2")
             let res = await fetchSinhVienDangKyKhoaLuan(headers, khoaluan.MaKLTN, detai, MaGV, mssvsinhvien1, holotsinhvien1, tensinhvien1, emailsinhvien1, sdtsinhvien1, dtlsinhvien1, stcsinhvien1)
             // console.log(res)
             let res2 = await fetchSinhVienDangKyKhoaLuan(headers, khoaluan.MaKLTN, detai, MaGV, mssvsinhvien2, holotsinhvien2, tensinhvien2, emailsinhvien2, sdtsinhvien2, dtlsinhvien2, stcsinhvien2)
             // console.log(res)
             if (res.status === true && res2.status === true) {
+                console.log("Chạy 2")
                 toast.success(res2.message)
                 navigate("/khoaluan")
                 return;
@@ -71,10 +73,12 @@ const DangKy = () => {
                 return;
             }
         }
-        if (mssvsinhvien1 || holotsinhvien1 || tensinhvien1 || emailsinhvien1 || sdtsinhvien1 || stcsinhvien1 || dtlsinhvien1 || !mssvsinhvien2 || !holotsinhvien2 || !tensinhvien2 || !emailsinhvien2 || !sdtsinhvien2 || !stcsinhvien2 || !dtlsinhvien2) {
+        if (mssvsinhvien1 && holotsinhvien1 && tensinhvien1 && emailsinhvien1 && sdtsinhvien1 && stcsinhvien1 && dtlsinhvien1 && !mssvsinhvien2 && !holotsinhvien2 && !tensinhvien2 && !emailsinhvien2 && !sdtsinhvien2 && !stcsinhvien2 && !dtlsinhvien2) {
+            console.log("ChạySV1")
             let res2 = await fetchSinhVienDangKyKhoaLuan(headers, khoaluan.MaKLTN, detai, MaGV, mssvsinhvien2, holotsinhvien2, tensinhvien2, emailsinhvien2, sdtsinhvien2, dtlsinhvien2, stcsinhvien2)
             // console.log(res)
             if (res2.status === true) {
+                console.log("ChạySV1")
                 toast.success(res2.message)
                 navigate("/khoaluan")
                 return;
@@ -84,10 +88,12 @@ const DangKy = () => {
                 return;
             }
         }
-        if (!mssvsinhvien1 || !holotsinhvien1 || !tensinhvien1 || !emailsinhvien1 || !sdtsinhvien1 || !stcsinhvien1 || !dtlsinhvien1 || mssvsinhvien2 || holotsinhvien2 || tensinhvien2 || emailsinhvien2 || sdtsinhvien2 || stcsinhvien2 || dtlsinhvien2) {
+        if (!mssvsinhvien1 && !holotsinhvien1 && !tensinhvien1 && !emailsinhvien1 && !sdtsinhvien1 && !stcsinhvien1 && !dtlsinhvien1 && mssvsinhvien2 && holotsinhvien2 && tensinhvien2 && emailsinhvien2 && sdtsinhvien2 && stcsinhvien2 && dtlsinhvien2) {
+            console.log("ChạySV2")
             let res2 = await fetchSinhVienDangKyKhoaLuan(headers, khoaluan.MaKLTN, detai, MaGV, mssvsinhvien2, holotsinhvien2, tensinhvien2, emailsinhvien2, sdtsinhvien2, dtlsinhvien2, stcsinhvien2)
             // console.log(res)
             if (res2.status === true) {
+                console.log("ChạySV2")
                 toast.success(res2.message)
                 navigate("/khoaluan")
                 return;

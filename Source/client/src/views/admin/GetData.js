@@ -243,10 +243,20 @@ export { fetchDetailTaiKhoan };
 //Sửa Tài khoản
 const fetchEditTaiKhoan = (headers, MaTK, QuyenTK) => {
     return axios.put(`admin/tai-khoan/ChinhSua/${MaTK}`, {
+        MaTK: MaTK,
         MaQTK: QuyenTK,
+        
     }, { headers });
 }
 export { fetchEditTaiKhoan };
+
+//Kích hoạt Tài khoản
+const fetchAcceptTaiKhoan = (headers, MaTK) => {
+    return axios.post(`admin/tai-khoan/KichHoatTaiKhoan/${MaTK}`, {
+        MaTK: MaTK
+    }, { headers });
+}
+export { fetchAcceptTaiKhoan };
 
 //Thêm Tài khoản
 const fetchAddTaiKhoan = (headers, MaTK, TenDangNhap, MatKhau, MaQTK) => {
