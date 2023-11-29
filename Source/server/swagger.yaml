@@ -5348,6 +5348,43 @@ paths:
             }
       security:
         - ApiKeyAuth: []
+  /khoa-luan-tot-nghiep/DSDeTaiChuaDangKyTheoGiangVien/{MaKLTN}:
+    post:
+      tags:
+        - "KhoaLuanTotNghiepClient"
+      summary: "Lấy danh sách đề tài chưa đăng ký của giảng viên"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaKLTN
+          type: string
+          required: true
+          description: Mã khóa luận tốt nghiệp
+        - in: body
+          name: MaGV
+          type: string
+          required: true
+          description: Mã giảng viên
+      responses:
+        200:
+          description: Lấy danh sách đề tài chưa đăng ký của giảng viên thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Lấy danh sách đề tài chưa đăng ký của giảng viên thành công.",
+            }
+        400:
+          description: Lấy danh sách đề tài chưa đăng ký của giảng viên thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Lấy danh sách đề tài chưa đăng ký của giảng viên thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
 securityDefinitions:
   ApiKeyAuth:
     type: apiKey

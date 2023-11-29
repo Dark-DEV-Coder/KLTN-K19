@@ -583,4 +583,49 @@ KhoaLuanTotNghiepRoute.post('/XoaDeTaiKhoaLuan/:MaKLTN', async (req, res) => {
     }
 })
 
+/**
+ * @route POST /api/khoa-luan-tot-nghiep/DSDeTaiChuaDangKyTheoGiangVien/{MaKLTN}
+ * @description Lấy danh sách đề tài chưa đăng ký của giảng viên
+ * @access public
+ */
+KhoaLuanTotNghiepRoute.post('/DSDeTaiChuaDangKyTheoGiangVien/:MaKLTN', verifyToken, verifyUser, async (req, res) => {
+    try {
+        const { MaKLTN } = req.params;
+        const { MaGV } = req.body;
+        const kltn = await KhoaLuanTotNghiep.findOne({ MaKLTN: MaKLTN }).populate([
+            {
+                path: "Nganh",
+                select: "MaNganh TenNganh",
+            },
+            {
+                path: "DSDeTai",
+                select: "GVHD",
+                populate: [
+                    {
+                        path: "GVHD",
+                        select: "MaGV HoGV TenGV DonViCongTac"
+                    },
+                ]
+            },
+        ]).lean();
+        if (!kltn)
+            return sendError(res, "Đợt khóa luận tốt nghiệp không tồn tại");
+        const giangvien = await GiangVien.findOne({ MaGV: MaGV });
+        if (!giangvien)
+            return sendError(res, "Giảng viên này không tồn tại.");
+        let thongtin = [];
+        kltn.DSDeTai.forEach((element) => {
+            if ( element.GVHD.MaGV == MaGV && element.SVChinhThuc < 2 ){
+                thongtin.push(element);
+            }
+        });
+
+        return sendSuccess(res, "Danh sách đề tài chưa đăng ký của giảng viên.", thongtin);
+    }
+    catch (error) {
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
 export default KhoaLuanTotNghiepRoute
