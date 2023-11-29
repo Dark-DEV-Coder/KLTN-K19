@@ -33,7 +33,7 @@ const Doimatkhau = () => {
             return;
         }
         let res = await fetchEditMatKhau(headers, tendangnhap, matkhaucu, matkhaumoi, xacnhanmk)
-        console.log(res)
+        // console.log(res)
         if (res.status === true) {
             window.localStorage.clear();
             navigate("/dangnhap")

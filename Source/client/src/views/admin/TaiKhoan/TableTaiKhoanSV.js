@@ -10,7 +10,7 @@ import { IconButton } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
 import { toast } from "react-toastify";
 import { useState, useEffect } from 'react';
-import { fetchAllTaiKhoanSV, fetchDeleteTaiKhoan } from "../GetData"
+import { fetchAllTaiKhoanSV, fetchDeleteTaiKhoan, fetchAcceptTaiKhoan } from "../GetData"
 const csvConfig = mkConfig({
     fieldSeparator: ',',
     decimalSeparator: '.',
@@ -38,10 +38,25 @@ const TableTaiKhoanSV = (props) => {
             setListData(res.data.DanhSach.filter(item => item.TrangThai === 'Đã kích hoạt'))
         }
     }
+    const handleAcceptRows = async (row) => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchAcceptTaiKhoan(headers, row.original.MaTK)
+        console.log("Đồng ý: ", res)
+        if (res.status === true) {
+            toast.success(res.message)
+            window.location.reload()
+            return;
+        }
+        if (res.success === false) {
+            toast.error(res.message)
+            return;
+        }
+    }
 
     const handleDeleteRows = async (row) => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDeleteTaiKhoan(headers, row.original.MaTK)
+        console.log("Từ chối: ", res)
         if (res.status === true) {
             toast.success(res.message)
             getListTaiKhoanSV()
@@ -132,8 +147,8 @@ const TableTaiKhoanSV = (props) => {
                 </Box >
                 :
                 <Box sx={{ display: 'flex', gap: '0.3rem' }}>
-                    <button type="button" className="btn btn-outline-success">Chấp nhận</button>
-                    <button type="button" className="btn btn-outline-danger">Từ chối</button>
+                    <button type="button" className="btn btn-outline-success" onClick={() => handleAcceptRows(row)}>Chấp nhận</button>
+                    <button type="button" className="btn btn-outline-danger" onClick={() => handleDeleteRows(row)}>Từ chối</button>
                 </Box >
         ),
 
