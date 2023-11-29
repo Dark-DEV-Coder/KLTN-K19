@@ -615,7 +615,7 @@ KhoaLuanTotNghiepRoute.post('/DSDeTaiChuaDangKyTheoGiangVien/:MaKLTN', verifyTok
             return sendError(res, "Giảng viên này không tồn tại.");
         let thongtin = [];
         kltn.DSDeTai.forEach((element) => {
-            if ( element.GVHD.MaGV == MaGV && element.SVChinhThuc < 2 ){
+            if ( element.GVHD.MaGV == MaGV && element.SVChinhThuc.length < 2 ){
                 thongtin.push(element);
             }
         });
