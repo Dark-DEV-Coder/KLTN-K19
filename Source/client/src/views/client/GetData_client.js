@@ -206,3 +206,44 @@ const fetchSinhVienDangKyKhoaLuan = (headers, MaKLTN, TenDeTai, MaGV, MaSV, HoSV
 }
 export { fetchSinhVienDangKyKhoaLuan };
 
+// Thông tin đợt đăng ký thực tập
+const fetchDetailThucTap = (headers) => {
+    return axios.get(`dk-thuc-tap/ChiTietDKTTDangMo`, { headers })
+}
+export { fetchDetailThucTap };
+
+//SV đăng ký thực tập trong danh sách
+const fetchSinhVienDangKyThucTapTrongDS = (headers, MaDKTT, Vitri, EmailCty, MaSV) => {
+    return axios.post(`dk-thuc-tap/SVDangKyCtyTrongDS/${MaDKTT}`, {
+        ViTri: Vitri,
+        EmailCty: EmailCty,
+        MaSV: MaSV,
+    }, { headers })
+}
+export { fetchSinhVienDangKyThucTapTrongDS };
+
+//SV đăng ký thực tập ngoài danh sách
+const fetchSinhVienDangKyThucTapNgoaiDS = (headers, MaDKTT, Ho, Ten, TenCongTy, Website, SoDienThoai, DiaChi, EmailCty, ViTri, MaSV) => {
+    return axios.post(`dk-thuc-tap/SVDangKyCtyNgoaiDS/${MaDKTT}`, {
+        Ho: Ho,
+        Ten: Ten,
+        TenCongTy: TenCongTy,
+        Website: Website,
+        SoDienThoai: SoDienThoai,
+        DiaChi: DiaChi,
+        EmailCty: EmailCty,
+        ViTri: ViTri,
+        MaSV: MaSV,
+    }, { headers })
+}
+export { fetchSinhVienDangKyThucTapNgoaiDS };
+
+
+//SV hủy đăng ký thực tập
+const fetchSinhVienHuyDangKyThucTap = (headers, MaDKTT, MaSV) => {
+    return axios.post(`dk-thuc-tap/SVHuyDangKyThucTap/${MaDKTT}`, {
+        MaDKTT: MaDKTT,
+        MaSV: MaSV,
+    }, { headers })
+}
+export { fetchSinhVienHuyDangKyThucTap };

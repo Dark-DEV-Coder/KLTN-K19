@@ -34,6 +34,7 @@ import DangKyChuyenNganh from "./sinhvien/chuyennganh/DangKy/DangKyChuyenNganh";
 import DsDeTaicuaGiangVien from "./giangvien/khoaluan/DsDeTaiCuaGiangVien/DsDeTaicuaGiangVien";
 import ThemDeTai from "./giangvien/khoaluan/ThemDeTai";
 import ChinhSuaDeTai from "./giangvien/khoaluan/ChinhSuaDeTai/ChinhSuaDeTai";
+import ThongTinDotThucTap from "./sinhvien/thuctap/ThongTinDotThucTap/ThongTinDotThucTap";
 const Client = () => {
     const [checkLogin, setCheckLogin] = useState(false)
     const [checkQuyen, setCheckQuyen] = useState(false)
@@ -88,7 +89,8 @@ const Client = () => {
                                         <Route path='huongdandky' element={<HuongDanDK />}></Route>
                                     </Route>
                                     <Route path='thuctap' >
-                                        <Route index element={<Thuctap />}></Route>
+                                        <Route index element={<ThongTinDotThucTap />}></Route>
+                                        <Route path='dky-thuctap' element={<Thuctap />}></Route>
                                         <Route path='dieukiendkythuctap' element={<DieuKienDK_TT />}></Route>
                                         <Route path='huongdandkythuctap' element={<HuongDanDK_TT />}></Route>
                                     </Route>
