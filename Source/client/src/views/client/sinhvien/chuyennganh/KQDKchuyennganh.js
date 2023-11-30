@@ -76,92 +76,108 @@ const KQDKchuyennganh = () => {
             return
         }
     }
-    return (
-        <div className="container-chuyennganh">
-            <ol className="breadcrumb" >
-                <li className="breadcrumb-item"><a href="#">Trang chủ</a></li>
-                <li className="breadcrumb-item">Chuyên ngành</li>
-                <li className="breadcrumb-item active">Kết quả đăng ký chuyên ngành</li>
-            </ol>
-            <div className="container-tb-update">
-                <h3>{chuyennganh.Ten}</h3>
-                <h6>Ngày cập nhật : {moment(chuyennganh.updatedAt).format("DD/MM/YYYY")}</h6>
-                <h6 className="time-line">Thời gian đăng ký : [{moment(chuyennganh.ThoiGianBD).format("DD/MM/YYYY")} - {moment(chuyennganh.ThoiGianKT).format("DD/MM/YYYY")} ] </h6>
+    if (chuyennganh) {
+        return (
+            <div className="container-chuyennganh">
+                <ol className="breadcrumb" >
+                    <li className="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                    <li className="breadcrumb-item">Đăng ký chuyên ngành</li>
+                    <li className="breadcrumb-item active">Kết quả đăng ký chuyên ngành</li>
+                </ol>
+                <div className="container-tb-update">
+                    <h3>{chuyennganh.Ten}</h3>
+                    <h6>Ngày cập nhật : {moment(chuyennganh.updatedAt).format("DD/MM/YYYY")}</h6>
+                    <h6 className="time-line">Thời gian đăng ký : [{moment(chuyennganh.ThoiGianBD).format("DD/MM/YYYY")} - {moment(chuyennganh.ThoiGianKT).format("DD/MM/YYYY")} ] </h6>
+                </div>
+                <div className="container-dky">
+                    <h5>Danh sách được công bố</h5>
+                </div>
+
+                <div className="content-table">
+                    <TabContext value={valueTable}>
+                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                            <TabList onChange={handleChangeCNTT} aria-label="lab API tabs example">
+                                {listChuyenNganh && listChuyenNganh.length > 0 &&
+                                    listChuyenNganh.map((item, index) => {
+                                        return (
+                                            <Tab label={item.ChuyenNganh.TenChuyenNganh} value={item.ChuyenNganh.MaChuyenNganh} onClick={() => handleChangeListData(item.ChuyenNganh.MaChuyenNganh)} />
+                                        )
+                                    })
+                                }
+                            </TabList>
+                        </Box>
+
+                        <TabPanel value="KTPM">
+                            <div className="table">
+                                <div className="card4">
+                                    {/* <h6 className="card-header">Số lượng: {data_CNCNTT.length}</h6> */}
+                                </div>
+                                <TableDSSV listData={data_KTPM} />
+                            </div>
+                        </TabPanel>
+
+                        <TabPanel value="HTTT">
+                            <div className="table">
+                                <div className="card4">
+                                    {/* <h6 className="card-header">Số lượng: {data_CNKTPM.length}</h6> */}
+                                </div>
+                                <TableDSSV listData={data_HTTT} />
+                            </div>
+                        </TabPanel>
+                        <TabPanel value="KHMT">
+                            <div className="table">
+                                <div className="card4">
+                                    {/* <h6 className="card-header">Số lượng: {data_CNCNTT.length}</h6> */}
+                                </div>
+                                <TableDSSV listData={data_KHMT} />
+                            </div>
+                        </TabPanel>
+
+                        <TabPanel value="MMT">
+                            <div className="table">
+                                <div className="card4">
+                                    {/* <h6 className="card-header">Số lượng: {data_CNKTPM.length}</h6> */}
+                                </div>
+                                <TableDSSV listData={data_MMT} />
+                            </div>
+                        </TabPanel>
+                        <TabPanel value="LTUD">
+                            <div className="table">
+                                <div className="card4">
+                                    {/* <h6 className="card-header">Số lượng: {data_CNCNTT.length}</h6> */}
+                                </div>
+                                <TableDSSV listData={data_LTUD} />
+                            </div>
+                        </TabPanel>
+
+                        <TabPanel value="LTW">
+                            <div className="table">
+                                <div className="card4">
+                                    {/* <h6 className="card-header">Số lượng: {data_CNKTPM.length}</h6> */}
+                                </div>
+                                <TableDSSV listData={data_LTW} />
+                            </div>
+                        </TabPanel>
+
+                    </TabContext>
+
+                </div>
             </div>
-            <div className="container-dky">
-                <h5>Danh sách được công bố</h5>
-            </div>
+        )
+    }
+    else
+        return (
+            <div className="container-taikhoan">
+                <ol className="breadcrumb" >
+                    <li className="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                    <li className="breadcrumb-item">Đăng ký chuyên ngành</li>
+                </ol>
+                {/* Thông tin đợt DKCN */}
+                <div className="container-tb-update">
+                    <h3>Hiện tại không có đợt đăng ký chuyên ngành nào được mở</h3>
+                </div>
+            </div >
+        )
 
-            <div className="content-table">
-                <TabContext value={valueTable}>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                        <TabList onChange={handleChangeCNTT} aria-label="lab API tabs example">
-                            {listChuyenNganh && listChuyenNganh.length > 0 &&
-                                listChuyenNganh.map((item, index) => {
-                                    return (
-                                        <Tab label={item.ChuyenNganh.TenChuyenNganh} value={item.ChuyenNganh.MaChuyenNganh} onClick={() => handleChangeListData(item.ChuyenNganh.MaChuyenNganh)} />
-                                    )
-                                })
-                            }
-                        </TabList>
-                    </Box>
-
-                    <TabPanel value="KTPM">
-                        <div className="table">
-                            <div className="card4">
-                                {/* <h6 className="card-header">Số lượng: {data_CNCNTT.length}</h6> */}
-                            </div>
-                            <TableDSSV listData={data_KTPM} />
-                        </div>
-                    </TabPanel>
-
-                    <TabPanel value="HTTT">
-                        <div className="table">
-                            <div className="card4">
-                                {/* <h6 className="card-header">Số lượng: {data_CNKTPM.length}</h6> */}
-                            </div>
-                            <TableDSSV listData={data_HTTT} />
-                        </div>
-                    </TabPanel>
-                    <TabPanel value="KHMT">
-                        <div className="table">
-                            <div className="card4">
-                                {/* <h6 className="card-header">Số lượng: {data_CNCNTT.length}</h6> */}
-                            </div>
-                            <TableDSSV listData={data_KHMT} />
-                        </div>
-                    </TabPanel>
-
-                    <TabPanel value="MMT">
-                        <div className="table">
-                            <div className="card4">
-                                {/* <h6 className="card-header">Số lượng: {data_CNKTPM.length}</h6> */}
-                            </div>
-                            <TableDSSV listData={data_MMT} />
-                        </div>
-                    </TabPanel>
-                    <TabPanel value="LTUD">
-                        <div className="table">
-                            <div className="card4">
-                                {/* <h6 className="card-header">Số lượng: {data_CNCNTT.length}</h6> */}
-                            </div>
-                            <TableDSSV listData={data_LTUD} />
-                        </div>
-                    </TabPanel>
-
-                    <TabPanel value="LTW">
-                        <div className="table">
-                            <div className="card4">
-                                {/* <h6 className="card-header">Số lượng: {data_CNKTPM.length}</h6> */}
-                            </div>
-                            <TableDSSV listData={data_LTW} />
-                        </div>
-                    </TabPanel>
-
-                </TabContext>
-
-            </div>
-        </div>
-    )
 }
 export default KQDKchuyennganh

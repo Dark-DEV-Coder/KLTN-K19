@@ -69,7 +69,8 @@ const NavSV = (props) => {
                                 <li className="nav-item dropdown dropdown1">
                                     <Link className="nav-link dropdown-toggle" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">THỰC TẬP</Link>
                                     <div className="dropdown-menu" aria-labelledby="dropdown04">
-                                        <Link to="/thuctap" className="dropdown-item" >Đăng ký thực tập</Link>
+                                        <Link to="/thuctap" className="dropdown-item" >Thông tin đợt đăng ký thực tập</Link>
+                                        <Link to="/thuctap/dky-thuctap" className="dropdown-item" >Đăng ký thực tập</Link>
                                         <Link to="/thuctap/dieukiendkythuctap" className="dropdown-item" >Điều kiện đăng ký</Link>
                                         <Link to="/thuctap/huongdandkythuctap" className="dropdown-item" >Hướng dẫn đăng ký</Link>
                                     </div>
@@ -78,8 +79,8 @@ const NavSV = (props) => {
                                 <li className="nav-item dropdown dropdown1">
                                     <Link className="nav-link dropdown-toggle" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">CHUYÊN NGÀNH</Link>
                                     <div className="dropdown-menu" aria-labelledby="dropdown04">
-                                        <Link to="/chuyennganh/dangky" className="dropdown-item" >Đăng ký chuyên ngành</Link>
                                         <Link to="/chuyennganh/ds-sinhvien" className="dropdown-item" >Kết quả đăng ký chuyên ngành</Link>
+                                        <Link to="/chuyennganh/dangky" className="dropdown-item" >Đăng ký chuyên ngành</Link>
                                         <Link to="/chuyennganh/dieukiendkychuyennganh" className="dropdown-item" >Điều kiện đăng ký</Link>
                                         <Link to="/chuyennganh/huongdandkychuyennganh" className="dropdown-item" >Hướng dẫn đăng ký</Link>
                                     </div>
