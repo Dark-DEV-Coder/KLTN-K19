@@ -5,7 +5,7 @@ import KhoaLuanTotNghiep from "../model/KhoaLuanTotNghiep.js"
 import SinhVien from "../model/SinhVien.js"
 import GiangVien from "../model/GiangVien.js"
 import { KtraDuLieuKLTNKhiChinhSuaDeTaiKhoaLuan, KtraDuLieuKLTNKhiThemDeTaiKhoaLuan, KtraDuLieuKLTNKhiThemSVDangKyKhoaLuan, KtraDuLieuKLTNKhiXoaDeTaiKhoaLuan, KtraDuLieuKLTNKhiXoaSVDangKyKhoaLuan } from "../validation/KhoaLuanTotNghiep.js"
-import { DeTaiKhoaLuan, TrangThaiDangKyKLTN } from "../constant.js"
+import { DeTaiKhoaLuan, TrangThaiDangKyKLTN, TrangThaiKhoaLuan } from "../constant.js"
 import { verifyToken, verifyUser } from "../middleware/verify.js"
 
 const KhoaLuanTotNghiepRoute = express.Router()
@@ -122,7 +122,9 @@ KhoaLuanTotNghiepRoute.post('/SVDangKyDeTai/:MaKLTN', verifyToken, verifyUser, a
         const sinhvien = await SinhVien.findOne({ MaSV: MaSV });
         if (!sinhvien)
             return sendError(res, "Sinh viên này không tồn tại trong hệ thống");
-        let sv = {
+        if (sinhvien.TrangThaiKhoaLuan == TrangThaiKhoaLuan.DaDangKy)
+            return sendError(res, "Bạn đã đăng ký khóa luận rồi.");
+        const sv = {
             MaSV: MaSV,
             HoSV: HoSV,
             TenSV: TenSV,
@@ -134,10 +136,10 @@ KhoaLuanTotNghiepRoute.post('/SVDangKyDeTai/:MaKLTN', verifyToken, verifyUser, a
         kltn.DSDeTai.forEach((element) => {
             if ( element.GVHD.MaGV == MaGV && element.TenDeTai == TenDeTai ){
                 element.SVDuKien.push(sv);
-                return;
             }
         });
         await KhoaLuanTotNghiep.findOneAndUpdate({ MaKLTN: MaKLTN }, { DSDeTai: kltn.DSDeTai });
+        await SinhVien.findOneAndUpdate({ MaSV: MaSV }, { TrangThaiKhoaLuan: TrangThaiKhoaLuan.DaDangKy });
         return sendSuccess(res, "Sinh viên đăng ký thành công.");
     }
     catch (error) {
@@ -280,8 +282,10 @@ KhoaLuanTotNghiepRoute.post('/GVXoaSVDangKyKLDuKien/:MaKLTN', verifyToken, verif
                     return;
                 }
             });
-            if ( check == 1 )
+            if ( check == 1 ){
                 await KhoaLuanTotNghiep.findOneAndUpdate({ MaKLTN: MaKLTN }, { DSDeTai: isExist.DSDeTai });
+                await SinhVien.findOneAndUpdate({ MaSV: MaSV }, { TrangThaiKhoaLuan: TrangThaiKhoaLuan.ChuaDangKy });
+            }
             else
                 return sendError(res, "Đề tài này không tồn tại.")
         }
@@ -340,8 +344,10 @@ KhoaLuanTotNghiepRoute.post('/GVXoaSVDangKyKLChinhThuc/:MaKLTN', verifyToken, ve
                     return;
                 }
             });
-            if ( check == 1 )
+            if ( check == 1 ){
                 await KhoaLuanTotNghiep.findOneAndUpdate({ MaKLTN: MaKLTN }, { DSDeTai: isExist.DSDeTai });
+                await SinhVien.findOneAndUpdate({ MaSV: MaSV }, { TrangThaiKhoaLuan: TrangThaiKhoaLuan.ChuaDangKy });
+            }
             else
                 return sendError(res, "Đề tài này không tồn tại.")
         }
