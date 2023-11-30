@@ -22,6 +22,11 @@ export const TrangThaiThucTap = {
     DaThucTap: 'Đã đăng ký'
 }
 
+export const TrangThaiKhoaLuan = {
+    ChuaDangKy: 'Chưa đăng ký',
+    DaDangKy: 'Đã đăng ký'
+}
+
 export const TrangThaiSinhVienTotNghiep = {
     ChuaTotNghiep: 'Chưa tốt nghiệp',
     DaTotNghiep: 'Đã tốt nghiệp'
