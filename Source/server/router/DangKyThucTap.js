@@ -91,7 +91,7 @@ DangKyThucTapRoute.post('/SVDangKyCtyTrongDS/:MaDKTT', verifyToken, verifyUser, 
             if (element.Email.includes(EmailCty)){
                 element.DangKy.forEach((data) => {
                     if (data.ViTri.includes(ViTri)){
-                      if (data.ConLai == 0){
+                    if (data.ConLai == 0){
                             check = 2;
                             return;
                         }
