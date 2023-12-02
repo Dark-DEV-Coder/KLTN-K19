@@ -495,7 +495,7 @@ DangKyThucTapAdminRoute.post('/ThemViTriCongTyTrongDanhSach/:MaDKTT', async (req
             ViTri: ViTri,
             ToiDa: Number(ToiDa),
             DaDangKy: 0,
-            ConLai: 0,
+            ConLai: Number(ToiDa),
             SinhVien: [],
         }
         let check = 0;
