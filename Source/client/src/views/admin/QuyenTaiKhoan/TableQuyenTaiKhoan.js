@@ -140,13 +140,13 @@ const TableQuyenTaiKhoan = (props) => {
                     Export Selected Rows
                 </Button>
 
-                <Button
+                {/* <Button
                     //only export selected rows
                     // onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
                     leftIcon={<IconDownload />}
                     variant="filled" >
                     Import Data
-                </Button>
+                </Button> */}
             </Box>
 
         ),

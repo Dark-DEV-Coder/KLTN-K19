@@ -22,26 +22,24 @@ const ChiTietThucTap = () => {
     // component didmount
     useEffect(() => {
         getDetailThucTap();
-        getDSSVThucTap();
     }, []);
     const getDetailThucTap = async () => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDetailThucTap(headers, thuctap.MaDKTT);
+        // console.log(res)
         if (res && res.data) {
             setTenTT(res.data.Ten)
             setCongTyNgoaiDS(res.data.CongTyNgoaiDS)
             setCongTyTrongDS(res.data.CongTyTrongDS)
+            let res2 = await fetchGetDSSVThucTap(headers, thuctap.MaDKTT);
+            // console.log(thuctap.MaDKTT)
+            // console.log(res2)
+            if (res2 && res2.data) {
+                setDSSVThucTap(res2.data)
+            }
             // setNganh_dt(res.data.Nganh)
             // setTgbd(moment(res.data.ThoiGianBD).format("YYYY-MM-DD"))
             // setTgkt(moment(res.data.ThoiGianKT).format("YYYY-MM-DD"))
-        }
-    }
-
-    const getDSSVThucTap = async () => {
-        const headers = { 'x-access-token': accessToken };
-        let res = await fetchGetDSSVThucTap(headers, thuctap.MaDKTT);
-        if (res && res.data) {
-            setDSSVThucTap(res.data)
         }
     }
 

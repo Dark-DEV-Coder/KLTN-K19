@@ -175,6 +175,7 @@ const ChiTietTotNghiep = () => {
     const getStatisticalTotNghiep_TT = async (thongketheo, nganh) => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchStatisticalTotNghiep(headers, totnghiep.MaTN, thongketheo, nganh, "Xếp loại");
+        console.log(res)
         if (res && res.data && res.data.length > 0) {
             let ds_khoa = [];
             let ds_xuatsac = [];

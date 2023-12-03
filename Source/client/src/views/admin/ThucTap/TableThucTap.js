@@ -150,7 +150,7 @@ const TableThucTap = (props) => {
                     flexWrap: 'wrap',
                 }}
             >
-                <Button
+                {/* <Button
                     color="lightblue"
                     //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                     onClick={handleExportData}
@@ -158,7 +158,9 @@ const TableThucTap = (props) => {
                     variant="filled"
                 >
                     Export All Data
-                </Button>
+                </Button> */}
+
+
                 {/* <Button
                             disabled={table.getPrePaginationRowModel().rows.length === 0}
                             //export all rows, including from the next page, (still respects filtering and sorting)
@@ -179,7 +181,9 @@ const TableThucTap = (props) => {
                         >
                             Export Page Rows
                         </Button> */}
-                <Button
+
+
+                {/* <Button
                     disabled={
                         !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
                     }
@@ -189,16 +193,16 @@ const TableThucTap = (props) => {
                     variant="filled"
                 >
                     Export Selected Rows
-                </Button>
+                </Button> */}
 
-                <Button
+                {/* <Button
                     //only export selected rows
                     // onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
                     leftIcon={<IconDownload />}
                     variant="filled"
                 >
                     Import Data
-                </Button>
+                </Button> */}
                 {/* <Button
                             sx={{ backgroundColor: 'green' }}
                             //only export selected rows

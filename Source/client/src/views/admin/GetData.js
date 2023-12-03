@@ -219,6 +219,12 @@ const fetchDeleteSinhVien = (headers, MaSV) => {
     return axios.delete(`admin/sinh-vien/Xoa/${MaSV}`, { headers });
 }
 export { fetchDeleteSinhVien };
+
+//Import DSSV
+const fetchImportDSSVSinhVien = (headers) => {
+    return axios.post(`admin/sinh-vien/importFileSV`, { headers });
+}
+export { fetchImportDSSVSinhVien };
 //Sinh Viên
 
 //Tài khoản
@@ -245,7 +251,7 @@ const fetchEditTaiKhoan = (headers, MaTK, QuyenTK) => {
     return axios.put(`admin/tai-khoan/ChinhSua/${MaTK}`, {
         MaTK: MaTK,
         MaQTK: QuyenTK,
-        
+
     }, { headers });
 }
 export { fetchEditTaiKhoan };
@@ -285,6 +291,15 @@ const fetchEditMatKhau = (headers, MaTK, MatKhauCu, MatKhauMoi, NhapLaiMatKhauMo
     }, { headers });
 }
 export { fetchEditMatKhau };
+
+//Đổi Phục hồi mật khẩu
+const fetchPhucHoiMatKhau = (headers, MaTK, MatKhauMoi) => {
+    return axios.post(`admin/tai-khoan/PhucHoiMatKhau/${MaTK}`, {
+        MaTK: MaTK,
+        MatKhauPhucHoi: MatKhauMoi,
+    }, { headers });
+}
+export { fetchPhucHoiMatKhau };
 //Tài khoản
 
 
@@ -487,10 +502,6 @@ export { fetchAddDangKyCN };
 
 //Thêm Chuyên ngành Đăng ký
 const fetchAddChuyenNganhDangKyCN = (headers, MaDKCN, MaNganh, MaChuyenNganh, ToiDa) => {
-    console.log("MaDKCN: ", MaDKCN)
-    console.log("MaNganh: ", MaNganh)
-    console.log("MaChuyenNganh: ", MaChuyenNganh)
-    console.log("ToiDa: ", ToiDa)
 
     return axios.post(`admin/dk-chuyen-nganh/ThemChuyenNganhDangKy/${MaDKCN}`, {
         MaDKCN: MaDKCN,

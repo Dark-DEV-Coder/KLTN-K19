@@ -110,7 +110,7 @@ const AddGiangVien = () => {
                         </li>
                         <li><i className='bx bx-chevron-right'></i></li>
                         <li>
-                            <Link className="active" >new</Link>
+                            <Link className="active" >Tạo mới</Link>
                         </li>
 
 

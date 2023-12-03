@@ -29,9 +29,13 @@ const AddDKCN = () => {
     const handleAddDangKyCN = async () => {
         const headers = { 'x-access-token': accessToken };
         if (!headers || !maDKCN || !tenDKCN || !khoaDKCN) {
-            toast.error("Vui lòng điền đầy đủ dữ liệu")
+            toast.error("Vui lòng điền đầy đủ dữ liệu !")
             return
         }
+        // if (!danhsachSV) {
+        //     toast.error("Vui lòng chọn file dữ liệu danh sách sinh viên !")
+        //     return
+        // }
         const ngayBD = new Date(tgbd);
         const ngayKT = new Date(tgkt);
         let res = await fetchAddDangKyCN(headers, maDKCN, tenDKCN, khoaDKCN, ngayBD, ngayKT)
@@ -90,6 +94,8 @@ const AddDKCN = () => {
     const [checkdulieuTen, SetCheckdulieuTen] = useState(true)
     const [checkdulieuKhoa, SetCheckdulieuKhoa] = useState(true)
     const [checkdulieuMatKhau, SetCheckdulieuNienMatKhau] = useState(true)
+    const [checkdulieudanhsach, SetCheckdulieudanhsach] = useState(true)
+
     const checkdulieu = (value, SetDuLieu) => {
         value === '' ? SetDuLieu(false) : SetDuLieu(true)
     }
@@ -144,7 +150,9 @@ const AddDKCN = () => {
                         <div className="form-group col-md-6">
                             <div className="custom-file">
                                 <label className="inputDKCN" htmlFor="inputDSSVDKCN">Danh sách sinh viên</label>
-                                <input type="file" className="form-control file" id="inputDSSVDKCN" placeholder="Điền niên khóa" onChange={(event) => onChangeInputSL(event, SetDanhsachSV)} />
+                                <input type="file" className="form-control file" id="inputDSSVDKCN" placeholder="Điền niên khóa" onChange={(event) => onChangeInputSL(event, SetDanhsachSV)} onBlur={() => checkdulieu(danhsachSV, SetCheckdulieudanhsach)} />
+                                <div className="invalid-feedback" style={{ display: checkdulieudanhsach ? 'none' : 'block' }}>Vui lòng chọn file danh sách sinh viên </div>
+                                <div className="invalid-feedback" style={{ display: 'block', color: 'blue' }}>Chỉ nhận file có đuôi xlsx,.. </div>
 
                             </div>
                         </div>
@@ -165,10 +173,11 @@ const AddDKCN = () => {
                             <input type="date" className="form-control" id="inputNgayKTDKCN" value={tgkt} onChange={(event) => onChangeInputSL(event, SetTgkt)} />
                         </div>
                     </div>
-                    <div className="row">
+                    {/* <div className="row"> */}
+                    {/* <TableDanhSachChuyenNganh /> */}
 
-                        {/* CNTT */}
-                        <div className="col-sm-6">
+                    {/* CNTT */}
+                    {/* <div className="col-sm-6">
                             <div className="card">
                                 <div className="card-body">
                                     <h5 className="card-title2">CÔNG NGHỆ THÔNG TIN</h5>
@@ -206,14 +215,13 @@ const AddDKCN = () => {
                                             </div>
                                         </li>
                                     </ul>
-                                    {/* <p className="note">*Lưu ý: Nếu không nhập số lượng thì mặc định bằng 0</p> */}
                                 </div>
                             </div>
-                        </div>
-                        {/* CNTT */}
+                        </div> */}
+                    {/* CNTT */}
 
-                        {/* KTPM */}
-                        <div className="col-sm-6">
+                    {/* KTPM */}
+                    {/* <div className="col-sm-6">
                             <div className="card">
                                 <div className="card-body">
                                     <h5 className="card-title2">KỸ THUẬT PHẦN MỀM</h5>
@@ -254,12 +262,12 @@ const AddDKCN = () => {
 
                                 </div>
                             </div>
-                        </div>
-                        {/* KTPM */}
+                        </div> */}
+                    {/* KTPM */}
 
 
-                        <p className="note">*Lưu ý: Nếu không nhập số lượng thì mặc định bằng 0</p>
-                    </div>
+                    {/* <p className="note">*Lưu ý: Nếu không nhập số lượng thì mặc định bằng 0</p>
+                    </div> */}
                     <button className="btn" type="button" onClick={() => handleAddDangKyCN()}>Lưu</button>
                 </div>
 

@@ -6,6 +6,8 @@ import { Box, Button } from '@mantine/core';
 import { IconDownload, IconUpload } from '@tabler/icons-react';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
 import { Link, useNavigate } from "react-router-dom";
+import exportFromJSON from 'export-from-json'
+// import { CSVLink } from 'react-csv';
 import {
     IconButton,
 } from '@mui/material';
@@ -15,6 +17,7 @@ import { fetchAllThucTap, fetchDeleteCtyThucTap } from "../../GetData"
 import { toast } from "react-toastify";
 
 const csvConfig = mkConfig({
+    filename: 'DanhsachCongTy',
     fieldSeparator: ',',
     decimalSeparator: '.',
     useKeysAsHeaders: true,
@@ -28,6 +31,7 @@ const TableDSCtyThucTap = (props) => {
     const CongTyTrongDS = props.CongTyTrongDS;
     const [listData, setListData] = useState(CongTyTrongDS)
     const [trangthaiCty, SetTrangthaiCty] = useState('CongTyTrongDS')
+    const [exportData, setExportData] = useState([])
 
     const handleDeleteRows = async (row) => {
         const headers = { 'x-access-token': accessToken };
@@ -176,16 +180,15 @@ const TableDSCtyThucTap = (props) => {
                 >
                     Export Selected Rows
                 </Button>
-
-                <Button
+                {/* < Button
                     //only export selected rows
                     // onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
-                    leftIcon={<IconDownload />}
+                    leftIcon={< IconDownload />}
                     variant="filled"
                 >
                     Import Data
-                </Button>
-            </Box>
+                </ Button > */}
+            </Box >
 
         ),
     });

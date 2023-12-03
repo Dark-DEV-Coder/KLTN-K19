@@ -1,25 +1,25 @@
+
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import * as React from 'react';
-import "./AddNganh.scss"
-import { fetchAddNganh } from "../../GetData"
+import { fetchPhucHoiMatKhau } from "../GetData"
 import { toast } from "react-toastify";
-const AddNganh = () => {
+const PhucHoiMatKhau = () => {
 
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     let navigate = useNavigate();
-    const [Manganh, SetMaNganh] = useState('')
-    const [TenNganh, SetTenNganh] = useState('')
-    const handleAddNganh = async () => {
+    const MaGV = localStorage.getItem("MaGV")
+    const [mkmoi, SetMkmoi] = useState('')
+    const handleEditMK = async () => {
         const headers = { 'x-access-token': accessToken };
-        if (!Manganh || !TenNganh) {
+        if (!headers || !mkmoi) {
             toast.error("Vui lòng nhập đầy đủ dữ liệu !")
-            return
+            return;
         }
-        let res = await fetchAddNganh(headers, Manganh, TenNganh)
+        let res = await fetchPhucHoiMatKhau(headers, MaGV, mkmoi)
         if (res.status === true) {
-            toast.success(res.message)
-            navigate("/admin/nganhhoc")
+            window.localStorage.clear();
+            navigate("/admin/login")
             return;
         }
         if (res.status === false) {
@@ -34,8 +34,9 @@ const AddNganh = () => {
     }
 
     // check dữ liệu
-    const [checkdulieuMa, SetCheckdulieuMa] = useState(true)
-    const [checkdulieuTen, SetCheckdulieuTen] = useState(true)
+    // const [checkdulieuMkcu, SetCheckdulieuMkcu] = useState(true)
+    const [checkdulieuMkmoi, SetCheckdulieuMkmoi] = useState(true)
+    // const [checkdulieuMkmoi2, SetCheckdulieuMkmoi2] = useState(true)
     const checkdulieu = (value, SetDuLieu) => {
         value === '' ? SetDuLieu(false) : SetDuLieu(true)
     }
@@ -45,18 +46,18 @@ const AddNganh = () => {
             {/* <HeaderMain title={'Chuyên ngành'} /> */}
             <div className="head-title">
                 <div className="left">
-                    <h1>TẠO MỚI</h1>
+                    <h1>CHỈNH SỬA</h1>
                     <ul className="breadcrumb">
                         <li>
                             <Link>Dashboard</Link>
                         </li>
                         <li><i className='bx bx-chevron-right'></i></li>
                         <li>
-                            <Link>Ngành</Link>
+                            <Link>Tài khoản</Link>
                         </li>
                         <li><i className='bx bx-chevron-right'></i></li>
                         <li>
-                            <Link className="active" >Tạo mới</Link>
+                            <Link className="active" >Phục hồi mật khẩu</Link>
                         </li>
 
 
@@ -70,22 +71,20 @@ const AddNganh = () => {
                 <div className="container-edit">
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label className="inputNganh" htmlFor="inputMa">Mã ngành</label>
-                            <input type="text" className="form-control" id="inputMa" placeholder="Điền mã ngành ..." onChange={(event) => onChangeInputSL(event, SetMaNganh)} onBlur={() => checkdulieu(Manganh, SetCheckdulieuMa)} />
-                            <div className="invalid-feedback" style={{ display: checkdulieuMa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+                            <label className="inputNganh" htmlFor="inputMa">Mã giảng viên</label>
+                            <input type="text" className="form-control" id="inputMa" defaultValue={MaGV} disabled={true} />
                         </div>
                         <div className="form-group col-md-6">
-                            <label className="inputNganh" htmlFor="inputTen">Tên ngành</label>
-                            <input type="text" className="form-control" id="inputTen" placeholder="Điền tên ngành ..." onChange={(event) => onChangeInputSL(event, SetTenNganh)} onBlur={() => checkdulieu(TenNganh, SetCheckdulieuTen)} />
-                            <div className="invalid-feedback" style={{ display: checkdulieuTen ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
+                            <label className="inputNganh" htmlFor="inputTen">Mật khẩu khôi phục</label>
+                            <input type="text" className="form-control" id="inputTen" value={mkmoi} placeholder="Điền mật khẩu khôi phục ..." onChange={(event) => onChangeInputSL(event, SetMkmoi)} onBlur={() => checkdulieu(mkmoi, SetCheckdulieuMkmoi)} />
+                            <div className="invalid-feedback" style={{ display: checkdulieuMkmoi ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                     </div>
 
-
-                    <button className="btn" type="button" onClick={() => handleAddNganh()}>Lưu</button>
+                    <button className="btn" type="button" onClick={() => handleEditMK()}>Lưu</button>
                 </div>
             </form>
         </main >
     )
 }
-export default AddNganh;
+export default PhucHoiMatKhau;
