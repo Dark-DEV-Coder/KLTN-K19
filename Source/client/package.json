@@ -17,6 +17,7 @@
     "apexcharts": "^3.44.0",
     "axios": "^1.6.0",
     "babel-plugin-macros": "^3.1.0",
+    "export-from-json": "^1.7.3",
     "export-to-csv": "^1.0.0",
     "mantine-react-table": "^1.2.1",
     "material-react-table": "^2.0.2",

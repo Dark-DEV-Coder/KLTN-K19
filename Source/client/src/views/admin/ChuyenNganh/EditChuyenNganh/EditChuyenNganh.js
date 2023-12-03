@@ -100,7 +100,7 @@ const EditChuyenNganh = () => {
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputNganh" htmlFor="inputMa">Mã chuyên ngành</label>
-                            <input type="text" className="form-control" id="inputMa" value={machuyenganh} onChange={(event) => onChangeInputSL(event, SetMachuyennganh)} onBlur={(event) => checkdulieu(machuyenganh, SetCheckdulieuMa)} />
+                            <input type="text" className="form-control" id="inputMa" value={machuyenganh} onChange={(event) => onChangeInputSL(event, SetMachuyennganh)} onBlur={(event) => checkdulieu(machuyenganh, SetCheckdulieuMa)} disabled={true} />
                             <div className="invalid-feedback" style={{ display: checkdulieuMa ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
                         <div className="form-group col-md-6">

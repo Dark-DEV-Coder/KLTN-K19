@@ -79,7 +79,7 @@ const TableDSDeTai = (props) => {
             },
             {
                 accessorKey: 'GVHD',
-                accessorFn: (dataRow) => dataRow.GVHD.HoGV + dataRow.GVHD.TenGV,
+                accessorFn: (dataRow) => dataRow.GVHD.HoGV + " " + dataRow.GVHD.TenGV,
                 header: 'Giảng viên hướng dẫn',
                 size: 200,
             },

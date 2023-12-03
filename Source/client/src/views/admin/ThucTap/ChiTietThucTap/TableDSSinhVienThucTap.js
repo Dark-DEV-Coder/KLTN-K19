@@ -12,6 +12,7 @@ import {
 import { Delete, Edit, Visibility } from '@mui/icons-material';
 
 const csvConfig = mkConfig({
+    filename: 'Danh-sach-sinh-vien-tham-gia-thuc-tap',
     fieldSeparator: ',',
     decimalSeparator: '.',
     useKeysAsHeaders: true,
@@ -120,11 +121,11 @@ const TableDSSinhVienThucTap = (props) => {
                         <Visibility fontSize="small" />
                     </IconButton>
                 </Link>
-                <Link to={"/admin/thuctap/edit/sinhvien/" + row.original.masv}>
+                {/* <Link to={"/admin/thuctap/edit/sinhvien/" + row.original.masv}>
                     <IconButton onClick={() => table.setEditingRow(row)}>
                         <Edit fontSize="small" />
                     </IconButton>
-                </Link>
+                </Link> */}
 
                 <IconButton onClick={() => console.log(row.original.name)}>
                     <Delete fontSize="small" sx={{ color: 'red' }} />
@@ -135,7 +136,7 @@ const TableDSSinhVienThucTap = (props) => {
 
 
 
-        renderTopToolbarCustomActions: ({ table }) => (
+        renderTopToolbarCustomActions: ({ row, table }) => (
             <Box
                 sx={{
                     display: 'flex',
@@ -144,11 +145,6 @@ const TableDSSinhVienThucTap = (props) => {
                     flexWrap: 'wrap',
                 }}
             >
-
-                {/* <select value={trangthaiCty} className="select-btn" onChange={(event) => onChangeSelect(event, SetTrangthaiCty)} >
-                    <option value='1'>Trong danh sách</option>
-                    <option value='0'>Ngoài danh sách</option>
-                </select> */}
                 <Button
                     color="lightblue"
                     //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
@@ -158,26 +154,6 @@ const TableDSSinhVienThucTap = (props) => {
                 >
                     Export All Data
                 </Button>
-                {/* <Button
-                            disabled={table.getPrePaginationRowModel().rows.length === 0}
-                            //export all rows, including from the next page, (still respects filtering and sorting)
-                            onClick={() =>
-                                handleExportRows(table.getPrePaginationRowModel().rows)
-                            }
-                            leftIcon={<IconDownload />}
-                            variant="filled"
-                        >
-                            Export All Rows
-                        </Button> */}
-                {/* <Button
-                            disabled={table.getRowModel().rows.length === 0}
-                            //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
-                            onClick={() => handleExportRows(table.getRowModel().rows)}
-                            leftIcon={<IconDownload />}
-                            variant="filled"
-                        >
-                            Export Page Rows
-                        </Button> */}
                 <Button
                     disabled={
                         !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
@@ -189,25 +165,15 @@ const TableDSSinhVienThucTap = (props) => {
                 >
                     Export Selected Rows
                 </Button>
-
-                <Button
+                {/* < Button
                     //only export selected rows
                     // onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
-                    leftIcon={<IconDownload />}
+                    leftIcon={< IconDownload />}
                     variant="filled"
                 >
                     Import Data
-                </Button>
-                {/* <Button
-                            sx={{ backgroundColor: 'green' }}
-                            //only export selected rows
-                            // onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
-                            leftIcon={<IconDownload />}
-                            variant="filled"
-                        >
-                            Create Data
-                        </Button> */}
-            </Box>
+                </ Button > */}
+            </Box >
 
         ),
     });

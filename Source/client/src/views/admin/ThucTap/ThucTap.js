@@ -6,7 +6,7 @@ const ThucTap = () => {
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     return (
         <>
-            <main className="main2">
+            <main className="main2" style={{ height: '800px' }}>
                 {/* <HeaderMain title={'Chuyên ngành'} /> */}
                 <div className="head-title">
                     <div className="left">
@@ -28,10 +28,6 @@ const ThucTap = () => {
                 </div>
 
                 <TableThucTap accessToken={accessToken} />
-
-
-
-
             </main >
         </>
     )

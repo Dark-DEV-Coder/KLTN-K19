@@ -56,10 +56,12 @@ const Dashboard = (props) => {
                     </NavLink>
                 </li>
                 <li>
-                    <a className="logout">
-                        <i className='bx bx-reset'></i>
-                        <span className="text" >Phục hồi mật khẩu</span>
-                    </a>
+                    <NavLink to={"/admin/taikhoan/phuc-hoi-mat-khau"} className={({ isActive }) => isActive ? "active logout" : 'logout'}>
+                        <a className="logout">
+                            <i className='bx bx-reset'></i>
+                            <span className="text" >Phục hồi mật khẩu</span>
+                        </a>
+                    </NavLink>
                 </li>
                 <li onClick={() => LogOut()}>
                     <a className="logout">
