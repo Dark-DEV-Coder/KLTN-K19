@@ -2830,6 +2830,11 @@ paths:
           type: string
           required: true
           description: Mã chuyên ngành
+        - in: body
+          name: SoLuong
+          type: string
+          required: true
+          description: Số lượng tối đa
       responses:
         200:
           description: Sửa thông tin chuyên ngành để sinh viên đăng ký thành công.
@@ -5382,6 +5387,48 @@ paths:
             example: {
               "status": false,
               "message" : "Lấy danh sách đề tài chưa đăng ký của giảng viên thất bại.",
+            }
+      security:
+        - ApiKeyAuth: []
+  /admin/dk-chuyen-nganh/XoaChuyenNganhDangKy/{MaDKCN}:
+    post:
+      tags:
+        - "DangKyChuyenNganh"
+      summary: "Xóa thông tin chuyên ngành để sinh viên đăng ký"
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: MaDKCN
+          type: string
+          required: true
+          description: Mã đăng ký chuyên ngành
+        - in: body
+          name: MaNganh
+          type: string
+          required: true
+          description: Mã ngành
+        - in: body
+          name: MaChuyenNganh
+          type: string
+          required: true
+          description: Mã chuyên ngành
+      responses:
+        200:
+          description: Xóa thông tin chuyên ngành để sinh viên đăng ký thành công.
+          schema:
+            type: object
+            example: {
+              "status": true,
+              "message": "Xóa thông tin chuyên ngành để sinh viên đăng ký thành công.",
+            }
+        400:
+          description: Xóa thông tin chuyên ngành để sinh viên đăng ký thất bại.
+          schema:
+            type: object
+            example: {
+              "status": false,
+              "message" : "Xóa thông tin chuyên ngành để sinh viên đăng ký thất bại.",
             }
       security:
         - ApiKeyAuth: []
