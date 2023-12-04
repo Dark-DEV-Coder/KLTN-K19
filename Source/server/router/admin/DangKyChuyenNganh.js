@@ -288,7 +288,7 @@ DangKyChuyenNganhAdminRoute.post('/SuaChuyenNganhDangKy/:MaDKCN', async (req, re
         const errors = KtraDuLieuDKCNKhiXoaMonChuyenNganh(req.body)
         if (errors)
             return sendError(res, errors)
-        const { MaNganh, MaChuyenNganh } = req.body;
+        const { MaNganh, MaChuyenNganh, SoLuong } = req.body;
         const { MaDKCN } = req.params;
 
         const isExist = await DangKyChuyenNganh.findOne({ MaDKCN: MaDKCN }).lean();
@@ -298,22 +298,31 @@ DangKyChuyenNganhAdminRoute.post('/SuaChuyenNganhDangKy/:MaDKCN', async (req, re
         const nganh = await Nganh.findOne({ MaNganh: MaNganh });
         const chuyennganh = await ChuyenNganh.findOne({ MaChuyenNganh: MaChuyenNganh });
 
+        let check = 0;
         if (isExist.ThongTin.length > 0){
             isExist.ThongTin.forEach((element) => {
                 if ( element.Nganh.equals(nganh._id) && element.ChuyenNganh.equals(chuyennganh._id) ){
-                    element.ToiDa = 0;
-                    element.ConLai = 0;
-                    element.DaDangKy = 0;
-                    element.SinhVien = [];
-                    return;
+                    if (element.SinhVien.length > SoLuong){
+                        check = 2;
+                        return;
+                    }
+                    else{
+                        check = 1;
+                        element.ToiDa = SoLuong;
+                        element.ConLai = element.ToiDa - element.DaDangKy;
+                        return;
+                    }
                 }
             });
-            await DangKyChuyenNganh.findOneAndUpdate({ MaDKCN: MaDKCN }, { ThongTin: isExist.ThongTin });
+            if (check == 2)
+                return sendError(res, "Số lượng sinh viên đăng ký lớn hơn số lượng muốn sửa.");
+            if (check == 1)
+                await DangKyChuyenNganh.findOneAndUpdate({ MaDKCN: MaDKCN }, { ThongTin: isExist.ThongTin });
         }
         else
-            return sendError(res, "Thông tin này không tồn tại nên không thể xóa.");
+            return sendError(res, "Thông tin này không tồn tại nên không thể sửa.");
 
-        return sendSuccess(res, "Xóa chuyên ngành đăng ký thành công");
+        return sendSuccess(res, "Sửa chuyên ngành đăng ký thành công");
     }
     catch (error){
         console.log(error)
@@ -411,6 +420,47 @@ DangKyChuyenNganhAdminRoute.post('/ThonKeSVDangKyChuyenNganh', async (req, res) 
         return sendSuccess(res, "Lấy danh sách sinh viên thành công.", array);
     }
     catch (error) {
+        console.log(error)
+        return sendServerError(res)
+    }
+})
+
+/**
+ * @route POST /api/admin/dk-chuyen-nganh/XoaChuyenNganhDangKy/{MaDKCN}
+ * @description Xóa thông tin chuyên ngành sinh viên đăng ký
+ * @access public
+ */
+DangKyChuyenNganhAdminRoute.post('/XoaChuyenNganhDangKy/:MaDKCN', async (req, res) => {
+    try{
+        const errors = KtraDuLieuDKCNKhiXoaMonChuyenNganh(req.body)
+        if (errors)
+            return sendError(res, errors)
+        const { MaNganh, MaChuyenNganh } = req.body;
+        const { MaDKCN } = req.params;
+
+        const isExist = await DangKyChuyenNganh.findOne({ MaDKCN: MaDKCN }).lean();
+        if (!isExist)
+            return sendError(res, "Đợt đăng ký chuyên ngành không tồn tại");
+
+        const nganh = await Nganh.findOne({ MaNganh: MaNganh });
+        const chuyennganh = await ChuyenNganh.findOne({ MaChuyenNganh: MaChuyenNganh });
+
+        if (isExist.ThongTin.length > 0){
+            let i = 0;
+            isExist.ThongTin.forEach((element) => {
+                if ( element.Nganh.equals(nganh._id) && element.ChuyenNganh.equals(chuyennganh._id) ){
+                    isExist.ThongTin.splice(i,1);
+                    return;
+                }
+            });
+            await DangKyChuyenNganh.findOneAndUpdate({ MaDKCN: MaDKCN }, { ThongTin: isExist.ThongTin });
+        }
+        else
+            return sendError(res, "Thông tin này không tồn tại nên không thể xóa.");
+
+        return sendSuccess(res, "Xóa chuyên ngành đăng ký thành công");
+    }
+    catch (error){
         console.log(error)
         return sendServerError(res)
     }
