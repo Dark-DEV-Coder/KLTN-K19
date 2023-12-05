@@ -32,7 +32,7 @@ dotenv.config()
 /**
  * Connect MongoDB
 */
-mongoose.connect(process.env.MONGO_URI, { maxPoolSize: 100 })
+mongoose.connect("mongodb+srv://kltnk19sgu20222023:HotrodaotaoKLTNK19@hotrodaotaosgu.spib2wu.mongodb.net/hotrodaotao_kltn_sgu", { maxPoolSize: 100 })
 const db = mongoose.connection
 db.on('error', () => console.log('MongoDB connection error.'))
 db.once('open', () => {
