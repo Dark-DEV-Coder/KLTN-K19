@@ -59,7 +59,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(
     {
-        origin: process.env.DEV == 1 ? 'http://localhost:3000' : process.env.HOST,
+        origin: 'http://localhost:3000',
         credentials: true
     }
 ))
