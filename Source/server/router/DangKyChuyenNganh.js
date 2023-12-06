@@ -88,7 +88,7 @@ DangKyChuyenNganhRoute.post('/SVDangKyChuyenNganh/:MaDKCN', verifyToken, verifyU
                 },
             },
         ]);
-        if (KtraDKCN)
+        if (KtraDKCN.length > 0)
             return sendError(res, "Bạn đã đăng ký chuyên ngành khác");
         let check = 0;
         dkcn.ThongTin.forEach((element) => {
