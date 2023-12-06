@@ -441,11 +441,11 @@ DangKyThucTapAdminRoute.post('/DanhSachSinhVien/:MaDKTT', async (req, res) => {
 })
 
 /**
- * @route POST /api/admin/dk-thuc-tap/TuDongCapNhatTrangThaiDKTT
+ * @route GET /api/admin/dk-thuc-tap/TuDongCapNhatTrangThaiDKTT
  * @description Tự động cập nhập trạng thái của các đợt đăng ký thực tập
  * @access public
  */
-DangKyThucTapAdminRoute.post('/TuDongCapNhatTrangThaiDKTT', async (req, res) => {
+DangKyThucTapAdminRoute.get('/TuDongCapNhatTrangThaiDKTT', async (req, res) => {
     try{
 
         const dktt = await DangKyThucTap.find({ TrangThai: { $in: [TrangThaiDangKyThucTap.ChuaToiThoiGianDangKy, TrangThaiDangKyThucTap.TrongThoiGianDangKy]} }).lean();

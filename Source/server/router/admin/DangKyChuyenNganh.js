@@ -331,11 +331,11 @@ DangKyChuyenNganhAdminRoute.post('/SuaChuyenNganhDangKy/:MaDKCN', async (req, re
 })
 
 /**
- * @route POST /api/admin/dk-chuyen-nganh/TuDongCapNhatTrangThaiDKCN
+ * @route GET /api/admin/dk-chuyen-nganh/TuDongCapNhatTrangThaiDKCN
  * @description Tự động cập nhập trạng thái của các đợt đăng ký chuyên ngành
  * @access public
  */
-DangKyChuyenNganhAdminRoute.post('/TuDongCapNhatTrangThaiDKCN', async (req, res) => {
+DangKyChuyenNganhAdminRoute.get('/TuDongCapNhatTrangThaiDKCN', async (req, res) => {
     try{
 
         const dkcn = await DangKyChuyenNganh.find({ TrangThai: { $in: [TrangThaiDangKyChuyenNganh.ChuaToiThoiGianDangKy, TrangThaiDangKyChuyenNganh.TrongThoiGianDangKy]} }).lean();

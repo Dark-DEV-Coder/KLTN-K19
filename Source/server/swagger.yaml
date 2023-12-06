@@ -2855,7 +2855,7 @@ paths:
       security:
         - ApiKeyAuth: []
   /admin/dk-chuyen-nganh/TuDongCapNhatTrangThaiDKCN:
-    post:
+    get:
       tags:
         - "DangKyChuyenNganh"
       summary: "Tự động cập nhập trạng thái của các đợt đăng ký chuyên ngành"
@@ -3433,7 +3433,7 @@ paths:
       security:
         - ApiKeyAuth: []
   /admin/khoa-luan-tot-nghiep/TuDongCapNhatTrangThaiKLTN:
-    post:
+    get:
       tags:
         - "KhoaLuanTotNghiep"
       summary: "Tự động cập nhập trạng thái của các đợt đăng ký khóa luận tốt nghiệp"
@@ -3916,7 +3916,7 @@ paths:
       security:
       - ApiKeyAuth: []
   /admin/dk-thuc-tap/TuDongCapNhatTrangThaiDKTT:
-    post:
+    get:
       tags:
         - "DangKyThucTap"
       summary: "Tự động cập nhập trạng thái của các đợt đăng ký thực tập"
