@@ -589,11 +589,11 @@ KhoaLuanTotNghiepAdminRoute.post('/XoaDeTaiKhoaLuan/:MaKLTN', async (req, res) =
 })
 
 /**
- * @route POST /api/admin/khoa-luan-tot-nghiep/TuDongCapNhatTrangThaiKLTN
+ * @route GET /api/admin/khoa-luan-tot-nghiep/TuDongCapNhatTrangThaiKLTN
  * @description Tự động cập nhập trạng thái của các đợt đăng ký khóa luận tốt nghiệp
  * @access public
  */
-KhoaLuanTotNghiepAdminRoute.post('/TuDongCapNhatTrangThaiKLTN', async (req, res) => {
+KhoaLuanTotNghiepAdminRoute.get('/TuDongCapNhatTrangThaiKLTN', async (req, res) => {
     try{
 
         const kltn = await KhoaLuanTotNghiep.find({ TrangThai: { $in: [TrangThaiDangKyKLTN.ChuaToiThoiGianDangKy, TrangThaiDangKyKLTN.TrongThoiGianDangKy]} }).lean();
