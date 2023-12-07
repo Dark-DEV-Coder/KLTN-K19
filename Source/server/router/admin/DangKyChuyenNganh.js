@@ -452,6 +452,7 @@ DangKyChuyenNganhAdminRoute.post('/XoaChuyenNganhDangKy/:MaDKCN', async (req, re
                     isExist.ThongTin.splice(i,1);
                     return;
                 }
+                i++;
             });
             await DangKyChuyenNganh.findOneAndUpdate({ MaDKCN: MaDKCN }, { ThongTin: isExist.ThongTin });
         }
