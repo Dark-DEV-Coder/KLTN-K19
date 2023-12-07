@@ -10,7 +10,7 @@ import { IconButton, } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
 import { toast } from "react-toastify";
 import { useState, useEffect } from 'react';
-import { fetchAllKhoaLuan, fetchDeleteKhoaLuan } from "../GetData"
+import { fetchAllKhoaLuan, fetchDeleteKhoaLuan, fetchUpdateKhoaLuan } from "../GetData"
 const csvConfig = mkConfig({
     fieldSeparator: ',',
     decimalSeparator: '.',
@@ -23,7 +23,7 @@ const TableKhoaLuan = (props) => {
     // component didmount
     useEffect(() => {
         getListKhoaLuan();
-
+        getUpdateKhoaLuan();
     }, []);
 
     const getListKhoaLuan = async () => {
@@ -32,6 +32,11 @@ const TableKhoaLuan = (props) => {
         if (res && res.data && res.data.DanhSach) {
             SetListData_khoaluan(res.data.DanhSach)
         }
+    }
+    const getUpdateKhoaLuan = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchUpdateKhoaLuan(headers);
+        // console.log(res)
     }
 
     const handleDeleteRows = async (row) => {

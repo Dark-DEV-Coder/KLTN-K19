@@ -75,7 +75,7 @@ const DangKy = () => {
         }
         if (mssvsinhvien1 && holotsinhvien1 && tensinhvien1 && emailsinhvien1 && sdtsinhvien1 && stcsinhvien1 && dtlsinhvien1 && !mssvsinhvien2 && !holotsinhvien2 && !tensinhvien2 && !emailsinhvien2 && !sdtsinhvien2 && !stcsinhvien2 && !dtlsinhvien2) {
             console.log("ChạySV1")
-            let res2 = await fetchSinhVienDangKyKhoaLuan(headers, khoaluan.MaKLTN, detai, MaGV, mssvsinhvien2, holotsinhvien2, tensinhvien2, emailsinhvien2, sdtsinhvien2, dtlsinhvien2, stcsinhvien2)
+            let res2 = await fetchSinhVienDangKyKhoaLuan(headers, khoaluan.MaKLTN, detai, MaGV, mssvsinhvien1, holotsinhvien1, tensinhvien1, emailsinhvien1, sdtsinhvien1, dtlsinhvien1, stcsinhvien1)
             // console.log(res)
             if (res2.status === true) {
                 console.log("ChạySV1")

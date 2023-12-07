@@ -1,24 +1,27 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import * as React from 'react';
-import { fetchAllChuyenNganh, fetchAllNganh, fetchDetailNganh, fetchAddChuyenNganhDangKyCN } from "../../GetData"
+import { fetchAllChuyenNganh, fetchAllNganh, fetchEditChuyenNganhDK } from "../../GetData"
 import { toast } from "react-toastify";
 const EditChuyenNganhDKCN = () => {
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     const chuyennganhDK = useParams()
     let navigate = useNavigate();
-    const [nganhhoc, setNganhhoc] = useState("")
-    const [chuyennganh, setChuyennganh] = useState("")
+
     const [toida, setToida] = useState("")
     const [listChuyenNganh, setListChuyenNganh] = useState([]);
     const [listNganh, setListNganh] = useState([]);
-    const handleAddChuyenNganhDK = async () => {
+    const handleEditChuyenNganhDK = async () => {
         const headers = { 'x-access-token': accessToken };
-        if (!nganhhoc || !chuyennganh || !toida) {
+        if (!toida) {
             toast.error("Vui lòng nhập đầy đủ dữ liệu !")
             return
         }
-        let res = await fetchAddChuyenNganhDangKyCN(headers, chuyennganhDK.MaDKCN, nganhhoc, chuyennganh, toida)
+        if (toida < chuyennganhDK.ToiDa) {
+            toast.error("Không thể hạ số lượng tối đa !")
+            return
+        }
+        let res = await fetchEditChuyenNganhDK(headers, chuyennganhDK.MaDKCN, chuyennganhDK.MaNganh, chuyennganhDK.MaChuyenNganh, toida)
         if (res.status === true) {
             toast.success(res.message)
             navigate(`/admin/dkychuyennganh/edit/${chuyennganhDK.MaDKCN}`)
@@ -49,28 +52,10 @@ const EditChuyenNganhDKCN = () => {
             setListNganh(res.data.DanhSach)
         }
     }
-    const onChangeSelectNganh = (event) => {
-        let changeValue = event.target.value;
-        setNganhhoc(changeValue);
-        getChuyenNganh(changeValue);
-        setChuyennganh('')
-    }
 
     const onChangeInputSL = (event, setState) => {
         let changeValue = event.target.value;
         setState(changeValue);
-    }
-
-    const onChangeSelect = (event, setSelect) => {
-        let changeValue = event.target.value;
-        setSelect(changeValue);
-    }
-    const getChuyenNganh = async (value) => {
-        const headers = { 'x-access-token': accessToken };
-        let res = await fetchDetailNganh(headers, value);
-        if (res && res.data && res.data.Nganh) {
-            setListChuyenNganh(res.data.ChuyenNganh)
-        }
     }
 
     // check dữ liệu
@@ -79,7 +64,6 @@ const EditChuyenNganhDKCN = () => {
     const checkdulieu = (value, SetDuLieu) => {
         value === '' ? SetDuLieu(false) : SetDuLieu(true)
     }
-
     return (
         <main className="main2">
             {/* <HeaderMain title={'Chuyên ngành'} /> */}
@@ -100,7 +84,7 @@ const EditChuyenNganhDKCN = () => {
                         </li>
                         <li><i className='bx bx-chevron-right'></i></li>
                         <li>
-                            <Link className="active" >Tạo mới</Link>
+                            <Link className="active" >Chỉnh sửa số lượng</Link>
                         </li>
                     </ul>
                 </div>
@@ -119,7 +103,7 @@ const EditChuyenNganhDKCN = () => {
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label className="inputSV" htmlFor="inputNganh">Ngành</label>
-                            <select value={nganhhoc} onChange={(event) => onChangeSelectNganh(event)} id="inputNganh" className="form-control">
+                            <select value={chuyennganhDK.MaNganh} disabled={true} id="inputNganh" className="form-control">
                                 {listNganh && listNganh.length > 0 &&
                                     listNganh.map((item, index) => {
                                         return (
@@ -131,7 +115,7 @@ const EditChuyenNganhDKCN = () => {
                         </div>
                         <div className="form-group col-md-6">
                             <label className="inputSV" htmlFor="inputChuyenNganh">Chuyên Ngành</label>
-                            <select value={chuyennganh} onChange={(event) => onChangeSelect(event, setChuyennganh)} id="inputChuyenNganh" className="form-control">
+                            <select value={chuyennganhDK.MaChuyenNganh} disabled={true} id="inputChuyenNganh" className="form-control">
                                 {
                                     listChuyenNganh && listChuyenNganh.length > 0 &&
                                     listChuyenNganh.map((item, index) => {
@@ -146,14 +130,14 @@ const EditChuyenNganhDKCN = () => {
                     <div className="form-row">
                         <div className="form-group col-md-12">
                             <label className="inputSV" htmlFor="inputKhoa">Số lượng tối đa</label>
-                            <input type="text" className="form-control" id="inputKhoa" placeholder="Điền số lượng tối đa ..." value={toida} onChange={(event) => onChangeInputSL(event, setToida)} onBlur={() => checkdulieu(toida, SetCheckdulieuToida)} />
+                            <input type="text" className="form-control" id="inputKhoa" placeholder={`Điền số lượng tối đa (số lượng hiện tại là ${chuyennganhDK.ToiDa} ) ...`} value={toida} onChange={(event) => onChangeInputSL(event, setToida)} onBlur={() => checkdulieu(toida, SetCheckdulieuToida)} />
                             <div className="invalid-feedback" style={{ display: checkdulieuToida ? 'none' : 'block' }}>Vui lòng điền vào ô dữ liệu </div>
                         </div>
 
                     </div>
 
 
-                    <button className="btn" type="button" onClick={() => handleAddChuyenNganhDK()}>Lưu</button>
+                    <button className="btn" type="button" onClick={() => handleEditChuyenNganhDK()}>Lưu</button>
                 </div>
             </form>
         </main >

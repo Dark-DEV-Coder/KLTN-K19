@@ -67,6 +67,7 @@ import AddViTriThucTap from "./ThucTap/DSViTriThucTap/AddViTriThucTap";
 import DoiMatKhau from "./Password/DoiMatKhau";
 import ThemChuyenNganhDKCN from "./DKiChuyenNganh/ChuyenNganhDK/ThemChuyenNganhDKCN";
 import PhucHoiMatKhau from "./Password/PhucHoiMatKhau";
+import EditChuyenNganhDKCN from "./DKiChuyenNganh/ChuyenNganhDK/EditChuyenNganhDKCN ";
 const Admin = () => {
 
     const [hiddenDB, setHiddenDB] = useState(false);
@@ -94,6 +95,7 @@ const Admin = () => {
                             <Route path="edit/:MaDKCN" element={<EditDKCN />}></Route>
 
                             <Route path=":MaDKCN/them-chuyen-nganh" element={<ThemChuyenNganhDKCN />}></Route>
+                            <Route path=":MaDKCN/chinh-sua-chuyen-nganh/:MaNganh/:MaChuyenNganh/:ToiDa" element={<EditChuyenNganhDKCN />}></Route>
                         </Route>
                         <Route path='khoaluan'  >
                             <Route index element={<KhoaLuan />}></Route>
