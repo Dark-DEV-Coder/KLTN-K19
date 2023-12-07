@@ -3,10 +3,10 @@ import React, { useMemo } from 'react';
 import { Box, Button } from '@mantine/core';
 import { IconDownload, IconUpload } from '@tabler/icons-react';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IconButton } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
-import { fetchDeleteNganh } from "../../GetData"
+import { fetchDeleteChuyenNganhDK } from "../../GetData"
 import { toast } from "react-toastify";
 import { useState, useEffect } from 'react';
 const csvConfig = mkConfig({
@@ -16,25 +16,26 @@ const csvConfig = mkConfig({
 });
 
 const TableDSChuyenNganh = (props) => {
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+    let navigate = useNavigate();
     const list_data = props.list_data
     const MaDKCN = props.MaDKCN
 
-
-
-
-    // const handleDeleteRows = async (row) => {
-    //     const headers = { 'x-access-token': accessToken };
-    //     let res = await fetchDeleteNganh(headers, row.original.MaNganh)
-    //     if (res.status === true) {
-    //         toast.success(res.message)
-    //         getListNganh()
-    //         return;
-    //     }
-    //     if (res.success === false) {
-    //         toast.error(res.message)
-    //         return;
-    //     }
-    // }
+    const handleDeleteRows = async (row) => {
+        console.log(row.original.ChuyenNganh.MaChuyenNganh)
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDeleteChuyenNganhDK(headers, MaDKCN, row.original.Nganh.MaNganh, row.original.ChuyenNganh.MaChuyenNganh)
+        console.log(res)
+        if (res.status === true) {
+            // window.location.reload();
+            // navigate("/admin/dkychuyennganh")
+            return;
+        }
+        if (res.success === false) {
+            toast.error(res.message)
+            return;
+        }
+    }
 
     const handleExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
@@ -93,12 +94,12 @@ const TableDSChuyenNganh = (props) => {
                     <Visibility fontSize="small" />
                 </IconButton>
 
-                <Link to={`/admin/dkychuyennganh/${MaDKCN}/them-chuyen-nganh`}>
+                <Link to={`/admin/dkychuyennganh/${MaDKCN}/chinh-sua-chuyen-nganh/${row.original.Nganh.MaNganh}/${row.original.ChuyenNganh.MaChuyenNganh}/${row.original.ToiDa}`}>
                     <IconButton  >
                         <Edit fontSize="small" />
                     </IconButton>
                 </Link>
-                <IconButton >
+                <IconButton onClick={() => handleDeleteRows(row)} >
                     <Delete fontSize="small" sx={{ color: 'red' }} />
                 </IconButton>
             </Box >
