@@ -43,7 +43,7 @@ const KQDKchuyennganh = () => {
     const getDetailDSSV = async (MaDKCN, manganh, machuyennganh, setState) => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDetailDSSVChuyenNganh(headers, MaDKCN, manganh, machuyennganh);
-        // console.log(res)
+        console.log(res)
         if (res && res.data) {
             setState(res.data)
         }
@@ -76,12 +76,15 @@ const KQDKchuyennganh = () => {
             return
         }
     }
-    if (chuyennganh) {
+    const isEmpty = (v) => {
+        return Object.keys(v).length === 0;
+    };
+    if (!isEmpty(chuyennganh)) {
         return (
             <div className="container-chuyennganh">
                 <ol className="breadcrumb" >
                     <li className="breadcrumb-item"><a href="#">Trang chủ</a></li>
-                    <li className="breadcrumb-item">Đăng ký chuyên ngành</li>
+                    <li className="breadcrumb-item">Chuyên ngành</li>
                     <li className="breadcrumb-item active">Kết quả đăng ký chuyên ngành</li>
                 </ol>
                 <div className="container-tb-update">
@@ -170,7 +173,7 @@ const KQDKchuyennganh = () => {
             <div className="container-taikhoan">
                 <ol className="breadcrumb" >
                     <li className="breadcrumb-item"><a href="#">Trang chủ</a></li>
-                    <li className="breadcrumb-item">Đăng ký chuyên ngành</li>
+                    <li className="breadcrumb-item">Chuyên ngành</li>
                 </ol>
                 {/* Thông tin đợt DKCN */}
                 <div className="container-tb-update">

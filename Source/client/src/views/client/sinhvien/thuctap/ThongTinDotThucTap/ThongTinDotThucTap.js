@@ -20,7 +20,10 @@ const ThongTinDotThucTap = () => {
             setListcty(ress.data.CongTyTrongDS)
         }
     }
-    if (thuctap) {
+    const isEmpty = (v) => {
+        return Object.keys(v).length === 0;
+    };
+    if (!isEmpty(thuctap)) {
         return (
             <div className="container-taikhoan">
                 <ol className="breadcrumb" >

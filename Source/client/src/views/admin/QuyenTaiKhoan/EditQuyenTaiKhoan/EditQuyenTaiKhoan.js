@@ -32,7 +32,7 @@ const EditQuyenTaiKhoan = () => {
     const getDetailQuyenTK = async () => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDetailQuyenTK(headers, quyenTK.MaQTK);
-        console.log(res)
+        // console.log(res)
         if (res && res.data) {
             setMaquyen(res.data.MaQTK)
             setTenquyen(res.data.TenQuyenTK)
@@ -67,7 +67,7 @@ const EditQuyenTaiKhoan = () => {
             return
         }
         let res = await fetchEditQuyenTK(headers, quyenTK.MaQTK, tenquyen, maCN, ChucNangCon)
-        console.log(res)
+        // console.log(res)
         if (res.status === true) {
             toast.success(res.message)
             navigate(`/admin/quyentaikhoan/single/${quyenTK.MaQTK}`)

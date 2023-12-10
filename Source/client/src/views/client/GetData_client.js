@@ -88,6 +88,17 @@ const fetchDkyChuyenNganh = (headers, MaDKCN, MaSV, MaNganh, MaChuyenNganh) => {
 }
 export { fetchDkyChuyenNganh };
 
+// Hủy Đăng ký chuyên ngành
+const fetchHuyDkyChuyenNganh = (headers, MaDKCN, MaSV, MaNganh, MaChuyenNganh) => {
+    return axios.post(`dk-chuyen-nganh/SVHuyDangKyChuyenNganh/${MaDKCN}`, {
+        MaDKCN: MaDKCN,
+        MaSV: MaSV,
+        MaNganh: MaNganh,
+        MaChuyenNganh: MaChuyenNganh
+    }, { headers })
+}
+export { fetchHuyDkyChuyenNganh };
+
 // Chi tiết đề tài
 const fetchDetailDeTai = (headers, MaKLTN, TenDeTai, MaGV) => {
     return axios.post(`khoa-luan-tot-nghiep/ThongTinChiTietDeTaiGV/${MaKLTN}`, {

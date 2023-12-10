@@ -222,8 +222,11 @@ const fetchDeleteSinhVien = (headers, MaSV) => {
 export { fetchDeleteSinhVien };
 
 //Import DSSV
-const fetchImportDSSVSinhVien = (headers) => {
-    return axios.post(`admin/sinh-vien/importFileSV`, { headers });
+const fetchImportDSSVSinhVien = (headers, data) => {
+    for (const pair of data.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+    }
+    return axios.post(`admin/sinh-vien/importFileSV`, data, { headers });
 }
 export { fetchImportDSSVSinhVien };
 //Sinh Viên
@@ -673,7 +676,7 @@ export { fetchDeleteSinhVienDangKyKL };
 
 // ExportFile Ds đề tài và sv đăng ký đề tài
 const fetchExportFileDSDeTai = (headers, MaKLTN) => {
-    return axios.get(`admin/khoa-luan-tot-nghiep/ExportFileExcelDsDeTai/${MaKLTN}`, { headers })
+    return axios.get(`admin/khoa-luan-tot-nghiep/ExportFileExcelDsDeTai/${MaKLTN}`, { headers, responseType: "blob" })
 }
 export { fetchExportFileDSDeTai };
 //Khóa luận
@@ -728,6 +731,12 @@ const fetchDeleteThucTap = (headers, MaDKTT) => {
     return axios.delete(`admin/dk-thuc-tap/Xoa/${MaDKTT}`, { headers });
 }
 export { fetchDeleteThucTap };
+
+// ExportFile Ds sv và cty thực tập
+const fetchExportFileDSSV_Cty = (headers, MaDKTT) => {
+    return axios.get(`admin/dk-thuc-tap/ExportFileExcelDsSVDKTT/${MaDKTT}`, { headers, responseType: "blob" })
+}
+export { fetchExportFileDSSV_Cty };
 
 //Tự động cập nhật thực tập
 const fetchUpdateThucTap = (headers) => {

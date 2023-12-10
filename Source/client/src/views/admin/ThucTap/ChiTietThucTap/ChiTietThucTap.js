@@ -8,8 +8,9 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import TableDSCtyThucTap from "./TableDSCtyThucTap";
 import TableDSSinhVienThucTap from "./TableDSSinhVienThucTap";
-import { fetchDetailThucTap, fetchGetDSSVThucTap } from "../../GetData"
+import { fetchDetailThucTap, fetchGetDSSVThucTap, fetchExportFileDSSV_Cty } from "../../GetData"
 import moment from "moment";
+import { Button } from "@mui/material";
 const ChiTietThucTap = () => {
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     const thuctap = useParams();
@@ -43,6 +44,19 @@ const ChiTietThucTap = () => {
         }
     }
 
+    const handleExportFile = async () => {
+        const headers = { 'x-access-token': accessToken }
+        let res = await fetchExportFileDSSV_Cty(headers, thuctap.MaDKTT)
+        console.log(res)
+        const url = URL.createObjectURL(new Blob([res]));
+        const aTag = document.createElement('a')
+        aTag.href = url
+        aTag.setAttribute('download', `DSThucTap_${thuctap.MaDKTT}.xlsx`)
+        document.body.appendChild(aTag)
+        aTag.click();
+        aTag.remove();
+    }
+
     const [value, setValue] = useState('dsSV');
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -68,6 +82,12 @@ const ChiTietThucTap = () => {
                             </li>
                         </ul>
                     </div>
+                    <Button className="btn-download" style={{ fontFamily: "Montserrat", fontWeight: '400' }}
+                        onClick={() => handleExportFile()}
+                    >
+                        <i className='bx bxs-cloud-download'></i>
+                        <span className="text">Export Data</span>
+                    </Button>
                 </div>
 
                 {/* Tab */}
