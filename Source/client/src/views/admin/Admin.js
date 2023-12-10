@@ -68,6 +68,7 @@ import DoiMatKhau from "./Password/DoiMatKhau";
 import ThemChuyenNganhDKCN from "./DKiChuyenNganh/ChuyenNganhDK/ThemChuyenNganhDKCN";
 import PhucHoiMatKhau from "./Password/PhucHoiMatKhau";
 import EditChuyenNganhDKCN from "./DKiChuyenNganh/ChuyenNganhDK/EditChuyenNganhDKCN ";
+import ImportSV from "./SinhVien/ImportSV/ImportSV";
 const Admin = () => {
 
     const [hiddenDB, setHiddenDB] = useState(false);
@@ -136,6 +137,7 @@ const Admin = () => {
                         <Route path='sinhvien'  >
                             <Route index element={<SinhVien />}></Route>
                             <Route path="new" element={<AddSinhVien />} ></Route>
+                            <Route path="importFile" element={<ImportSV />} ></Route>
                             <Route path="edit/:MaSV" element={<EditSinhVien />} ></Route>
                         </Route>
                         <Route path='nganhhoc'  >

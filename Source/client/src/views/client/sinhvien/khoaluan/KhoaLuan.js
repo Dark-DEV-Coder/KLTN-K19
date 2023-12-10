@@ -20,7 +20,10 @@ const KhoaLuan = () => {
             setKDetai(res.data.DSDeTai)
         }
     }
-    if (khoaluan) {
+    const isEmpty = (v) => {
+        return Object.keys(v).length === 0;
+    };
+    if (!isEmpty(khoaluan)) {
         return (
             <div className="container-khoaluan">
                 <ol className="breadcrumb" >

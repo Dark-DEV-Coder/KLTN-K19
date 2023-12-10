@@ -239,23 +239,20 @@ const TableSinhVien = (props) => {
                     Export Selected Rows
                 </Button>
 
-                <Button
-                    //only export selected rows
-                    // onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
-                    leftIcon={<IconDownload />}
-                    variant="filled"
-                >
-                    Import Data
-                </Button>
-                {/* <Button
-                            sx={{ backgroundColor: 'green' }}
-                            //only export selected rows
-                            // onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
-                            leftIcon={<IconDownload />}
-                            variant="filled"
-                        >
-                            Create Data
-                        </Button> */}
+                <Link to="/admin/sinhvien/importFile">
+                    <Button
+                        //only export selected rows
+                        // onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
+                        leftIcon={<IconDownload />}
+                        variant="filled"
+                    >
+                        Import Data
+                        {/* <input style={{ cursor: 'pointer' }} type="file" accept=".xlsx" onChange={(event) => onChangeFile(event, setHinh)} /> */}
+                        {/* <input type="file" accept="image/*" className="form-control file" id="inputDSDT" onChange={(event) => onChangeFile(event, setHinh)} onBlur={() => checkdulieu(Hinh, setCheckdulieuHinh)} /> */}
+                        {/* <input type="file" accept="xlsx">Import Data</input> */}
+
+                    </Button>
+                </Link>
             </Box>
 
         ),

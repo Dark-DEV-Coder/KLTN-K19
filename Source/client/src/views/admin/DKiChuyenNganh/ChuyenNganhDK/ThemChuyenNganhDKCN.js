@@ -7,7 +7,7 @@ const ThemChuyenNganhDKCN = () => {
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     const chuyennganhDK = useParams()
     let navigate = useNavigate();
-    const [nganhhoc, setNganhhoc] = useState("")
+    const [nganhhoc, setNganhhoc] = useState("DCT")
     const [chuyennganh, setChuyennganh] = useState("")
     const [toida, setToida] = useState("")
     const [listChuyenNganh, setListChuyenNganh] = useState([]);

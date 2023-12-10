@@ -22,10 +22,10 @@ const TableDSChuyenNganh = (props) => {
     const MaDKCN = props.MaDKCN
 
     const handleDeleteRows = async (row) => {
-        console.log(row.original.ChuyenNganh.MaChuyenNganh)
+        // console.log(row.original.ChuyenNganh.MaChuyenNganh)
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDeleteChuyenNganhDK(headers, MaDKCN, row.original.Nganh.MaNganh, row.original.ChuyenNganh.MaChuyenNganh)
-        console.log(res)
+        // console.log(res)
         if (res.status === true) {
             // window.location.reload();
             // navigate("/admin/dkychuyennganh")

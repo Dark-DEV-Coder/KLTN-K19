@@ -41,7 +41,7 @@ const TableTaiKhoanSV = (props) => {
     const handleAcceptRows = async (row) => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchAcceptTaiKhoan(headers, row.original.MaTK)
-        console.log("Đồng ý: ", res)
+        // console.log("Đồng ý: ", res)
         if (res.status === true) {
             toast.success(res.message)
             window.location.reload()
@@ -56,7 +56,7 @@ const TableTaiKhoanSV = (props) => {
     const handleDeleteRows = async (row) => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDeleteTaiKhoan(headers, row.original.MaTK)
-        console.log("Từ chối: ", res)
+        // console.log("Từ chối: ", res)
         if (res.status === true) {
             toast.success(res.message)
             getListTaiKhoanSV()

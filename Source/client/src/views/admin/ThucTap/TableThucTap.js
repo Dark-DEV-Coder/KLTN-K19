@@ -36,9 +36,7 @@ const TableThucTap = (props) => {
     }
     const getUpdateThucTap = async () => {
         const headers = { 'x-access-token': accessToken };
-        console.log("header: ", headers)
         let res = await fetchUpdateThucTap(headers);
-        console.log(res)
     }
 
     const handleDeleteRows = async (row) => {
