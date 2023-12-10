@@ -74,6 +74,8 @@ DangKyChuyenNganhRoute.post('/SVDangKyChuyenNganh/:MaDKCN', verifyToken, verifyU
             return sendError(res, "Bạn không được phép đăng ký chuyên ngành");
         if (sinhvien.Nganh != nganh.TenNganh)
             return sendError(res, "Bạn không được phép đăng ký chuyên ngành này");
+        if (sinhvien.ChuyenNganh != null)
+            return sendError(res, "Bạn đã đăng ký chuyên ngành khác");
 
         const KtraDKCN = await DangKyChuyenNganh.aggregate([
             {
@@ -84,12 +86,13 @@ DangKyChuyenNganhRoute.post('/SVDangKyChuyenNganh/:MaDKCN', verifyToken, verifyU
             },
             {
                 $match: {
-                    'ThongTin.SinhVien': sinhvien._id,
+                    'ThongTin.Nganh': nganh._id,
+                    'ThongTin.ChuyenNganh': chuyennganh._id
                 },
             },
         ]);
-        if (KtraDKCN.length > 0)
-            return sendError(res, "Bạn đã đăng ký chuyên ngành khác");
+        if (KtraDKCN.length == 0)
+            return sendError(res, "Chuyên ngành đăng ký không tồn tại");
         let check = 0;
         dkcn.ThongTin.forEach((element) => {
             if (element.ChuyenNganh.equals(chuyennganh._id) && element.Nganh.equals(nganh._id)){
@@ -144,6 +147,8 @@ DangKyChuyenNganhRoute.post('/SVHuyDangKyChuyenNganh/:MaDKCN', verifyToken, veri
             return sendError(res, "Bạn không được phép đăng ký chuyên ngành");
         if (sinhvien.Nganh != nganh.TenNganh)
             return sendError(res, "Bạn không được phép đăng ký chuyên ngành này");
+        if (sinhvien.ChuyenNganh == null)
+            return sendError(res, "Bạn chưa đăng ký chuyên ngành nên không thể hủy");
 
         const KtraDKCN = await DangKyChuyenNganh.aggregate([
             {
@@ -154,18 +159,19 @@ DangKyChuyenNganhRoute.post('/SVHuyDangKyChuyenNganh/:MaDKCN', verifyToken, veri
             },
             {
                 $match: {
-                    'ThongTin.SinhVien': sinhvien._id,
+                    'ThongTin.Nganh': nganh._id,
+                    'ThongTin.ChuyenNganh': chuyennganh._id
                 },
             },
         ]);
-        if (!KtraDKCN)
-            return sendError(res, "Bạn chưa đăng ký chuyên ngành nên không thể hủy");
+        if (KtraDKCN.length == 0)
+            return sendError(res, "Chuyênh ngành hoặc ngành này không tồn tại.");
 
         dkcn.ThongTin.forEach((element) => {
             if (element.ChuyenNganh.equals(chuyennganh._id) && element.Nganh.equals(nganh._id)){
                 let i = 0;
                 element.SinhVien.forEach((data) => {
-                    if (data._id.equals(sinhvien._id)){
+                    if (data.equals(sinhvien._id)){
                         element.SinhVien.splice(i,1);
                         return;
                     }

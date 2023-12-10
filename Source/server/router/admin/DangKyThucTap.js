@@ -456,11 +456,11 @@ DangKyThucTapAdminRoute.get('/TuDongCapNhatTrangThaiDKTT', async (req, res) => {
             for(let i = 0; i< dktt.length; i++){
                 trangthai = "";
                 if ( now < dktt[i].ThoiGianBD && now < dktt[i].ThoiGianKT)
-                    trangthai = TrangThaiDangKyChuyenNganh.ChuaToiThoiGianDangKy;
+                    trangthai = TrangThaiDangKyThucTap.ChuaToiThoiGianDangKy;
                 if ( dktt[i].ThoiGianBD <= now && now <= dktt[i].ThoiGianKT)
-                    trangthai = TrangThaiDangKyChuyenNganh.TrongThoiGianDangKy;
+                    trangthai = TrangThaiDangKyThucTap.TrongThoiGianDangKy;
                 if ( now > dktt[i].ThoiGianBD && now > dktt[i].ThoiGianKT)
-                    trangthai = TrangThaiDangKyChuyenNganh.HetThoiGianDangKy
+                    trangthai = TrangThaiDangKyThucTap.HetThoiGianDangKy
                 await DangKyThucTap.findOneAndUpdate({ MaDKTT: dktt[i].MaDKTT }, { TrangThai: trangthai });
             }
         }
