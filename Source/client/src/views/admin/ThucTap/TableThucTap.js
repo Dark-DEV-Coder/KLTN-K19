@@ -6,7 +6,7 @@ import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your l
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useState, useEffect } from 'react';
-import { fetchAllThucTap, fetchDeleteThucTap } from "../GetData"
+import { fetchAllThucTap, fetchDeleteThucTap, fetchUpdateThucTap } from "../GetData"
 import { IconButton } from '@mui/material';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
 import moment from "moment";
@@ -24,6 +24,7 @@ const TableThucTap = (props) => {
     // component didmount
     useEffect(() => {
         getListThucTap();
+        getUpdateThucTap();
     }, []);
 
     const getListThucTap = async () => {
@@ -32,6 +33,10 @@ const TableThucTap = (props) => {
         if (res && res.data && res.data.DanhSach) {
             setListData(res.data.DanhSach)
         }
+    }
+    const getUpdateThucTap = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchUpdateThucTap(headers);
     }
 
     const handleDeleteRows = async (row) => {

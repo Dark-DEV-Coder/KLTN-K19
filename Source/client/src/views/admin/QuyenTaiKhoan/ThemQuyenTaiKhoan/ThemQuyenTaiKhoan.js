@@ -70,8 +70,8 @@ const AddQuyenTaiKhoan = () => {
             toast.error("Vui lòng nhập đầy đủ dữ liệu !")
             return
         }
-        console.log("MaCN: ", maCN)
-        console.log("ChucNangCon: ", ChucNangCon)
+        // console.log("MaCN: ", maCN)
+        // console.log("ChucNangCon: ", ChucNangCon)
         let res = await fetchAddQuyenTK(headers, MaQuyen, TenQuyen, maCN, ChucNangCon)
         if (res.status === true) {
             toast.success(res.message)

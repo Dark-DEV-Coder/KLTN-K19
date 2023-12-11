@@ -123,6 +123,7 @@ const fetchDeleteChuyenNganh = (headers, MaChuyenNganh) => {
     return axios.delete(`admin/chuyen-nganh/Xoa/${MaChuyenNganh}`, { headers });
 }
 export { fetchDeleteChuyenNganh };
+
 //Chuyên ngành
 
 //Chức năng
@@ -221,8 +222,11 @@ const fetchDeleteSinhVien = (headers, MaSV) => {
 export { fetchDeleteSinhVien };
 
 //Import DSSV
-const fetchImportDSSVSinhVien = (headers) => {
-    return axios.post(`admin/sinh-vien/importFileSV`, { headers });
+const fetchImportDSSVSinhVien = (headers, data) => {
+    for (const pair of data.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+    }
+    return axios.post(`admin/sinh-vien/importFileSV`, data, { headers });
 }
 export { fetchImportDSSVSinhVien };
 //Sinh Viên
@@ -512,11 +516,37 @@ const fetchAddChuyenNganhDangKyCN = (headers, MaDKCN, MaNganh, MaChuyenNganh, To
 }
 export { fetchAddChuyenNganhDangKyCN };
 
+//Sửa số lượng  Chuyên ngành Đăng ký
+const fetchEditChuyenNganhDK = (headers, MaDKCN, MaNganh, MaChuyenNganh, SoLuong) => {
+    return axios.post(`admin/dk-chuyen-nganh/SuaChuyenNganhDangKy/${MaDKCN}`, {
+        MaNganh: MaNganh,
+        MaChuyenNganh: MaChuyenNganh,
+        SoLuong: SoLuong,
+    }, { headers });
+}
+export { fetchEditChuyenNganhDK };
+
+//Xóa  Chuyên ngành Đăng ký
+const fetchDeleteChuyenNganhDK = (headers, MaDKCN, MaNganh, MaChuyenNganh) => {
+    return axios.post(`admin/dk-chuyen-nganh/XoaChuyenNganhDangKy/${MaDKCN}`, {
+        MaNganh: MaNganh,
+        MaChuyenNganh: MaChuyenNganh
+    }, { headers });
+}
+export { fetchDeleteChuyenNganhDK };
+
 //Xóa  Đăng ký chuyên ngành
 const fetchDeleteDangKyCN = (headers, MaDKCN) => {
     return axios.delete(`admin/dk-chuyen-nganh/Xoa/${MaDKCN}`, { headers });
 }
 export { fetchDeleteDangKyCN };
+
+//Cập nhật  Đăng ký chuyên ngành
+const fetchUpdateDangKyCN = (headers) => {
+    return axios.get(`admin/dk-chuyen-nganh/TuDongCapNhatTrangThaiDKCN`, { headers });
+}
+export { fetchUpdateDangKyCN };
+
 
 // Đăng ký chuyên ngành
 
@@ -563,6 +593,12 @@ const fetchDeleteKhoaLuan = (headers, MaKLTN) => {
     return axios.delete(`admin/khoa-luan-tot-nghiep/Xoa/${MaKLTN}`, { headers });
 }
 export { fetchDeleteKhoaLuan };
+
+//Tự động cập nhật  khóa luận
+const fetchUpdateKhoaLuan = (headers) => {
+    return axios.get(`admin/khoa-luan-tot-nghiep/TuDongCapNhatTrangThaiKLTN`, { headers });
+}
+export { fetchUpdateKhoaLuan };
 
 //Thêm đề tài của khóa luận tốt nghiệp
 const fetchAddDeTai = (headers, MaKLTN, TenDeTai, MaGV) => {
@@ -640,7 +676,7 @@ export { fetchDeleteSinhVienDangKyKL };
 
 // ExportFile Ds đề tài và sv đăng ký đề tài
 const fetchExportFileDSDeTai = (headers, MaKLTN) => {
-    return axios.get(`admin/khoa-luan-tot-nghiep/ExportFileExcelDsDeTai/${MaKLTN}`, { headers })
+    return axios.get(`admin/khoa-luan-tot-nghiep/ExportFileExcelDsDeTai/${MaKLTN}`, { headers, responseType: "blob" })
 }
 export { fetchExportFileDSDeTai };
 //Khóa luận
@@ -695,6 +731,19 @@ const fetchDeleteThucTap = (headers, MaDKTT) => {
     return axios.delete(`admin/dk-thuc-tap/Xoa/${MaDKTT}`, { headers });
 }
 export { fetchDeleteThucTap };
+
+// ExportFile Ds sv và cty thực tập
+const fetchExportFileDSSV_Cty = (headers, MaDKTT) => {
+    return axios.get(`admin/dk-thuc-tap/ExportFileExcelDsSVDKTT/${MaDKTT}`, { headers, responseType: "blob" })
+}
+export { fetchExportFileDSSV_Cty };
+
+//Tự động cập nhật thực tập
+const fetchUpdateThucTap = (headers) => {
+    // console.log(headers)
+    return axios.get(`admin/dk-thuc-tap/TuDongCapNhatTrangThaiDKTT`, { headers });
+}
+export { fetchUpdateThucTap };
 
 //Thêm Công ty thực tập
 const fetchAddCtyThucTap = (headers, MaDKTT, Ho, Ten, TenCongTy, Website, SoDienThoai, Email, DiaChi) => {

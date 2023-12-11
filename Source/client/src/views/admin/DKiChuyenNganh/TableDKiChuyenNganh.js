@@ -10,7 +10,7 @@ import { Delete, Edit, Visibility } from '@mui/icons-material';
 import moment from "moment";
 import { toast } from "react-toastify";
 import { useEffect, useState } from 'react';
-import { fetchAllDangKyCN, fetchDeleteDangKyCN } from "../GetData"
+import { fetchAllDangKyCN, fetchDeleteDangKyCN, fetchUpdateDangKyCN } from "../GetData"
 
 const csvConfig = mkConfig({
     fieldSeparator: ',',
@@ -23,8 +23,14 @@ const TableDKiChuyenNganh = (props) => {
     const [listData_dkchuyennganh, SetListData_dkchuyennganh] = useState([]);
     // component didmount
     useEffect(() => {
+        getUpdateDangKyChuyenNganh();
         getListDangKyChuyenNganh();
     }, []);
+    const getUpdateDangKyChuyenNganh = async () => {
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchUpdateDangKyCN(headers);
+        // console.log(res)
+    }
 
     const getListDangKyChuyenNganh = async () => {
         const headers = { 'x-access-token': accessToken };

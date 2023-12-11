@@ -19,6 +19,7 @@
     "babel-plugin-macros": "^3.1.0",
     "export-from-json": "^1.7.3",
     "export-to-csv": "^1.0.0",
+    "js-file-download": "^0.4.12",
     "mantine-react-table": "^1.2.1",
     "material-react-table": "^2.0.2",
     "moment": "^2.29.4",

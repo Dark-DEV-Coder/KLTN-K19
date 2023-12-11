@@ -24,14 +24,23 @@ const TableDSDeTai = (props) => {
     const [dataExport, setDataExport] = useState([])
 
     const handleExportFile = async () => {
+
+        // const url = window.URL.createObjectURL(new Blob([res.data]));
+        // const link = document.createElement('a');
+        // link.href = url;
+        // link.setAttribute('download', `DSDangKyKhoaLuan.xlsx`);
+        // document.body.appendChild(link);
+        // link.click();
         const headers = { 'x-access-token': accessToken }
         let res = await fetchExportFileDSDeTai(headers, MaKLTN)
-        const url = window.URL.createObjectURL(new Blob([res.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `DSDangKyKhoaLuan.xlsx`);
-        document.body.appendChild(link);
-        link.click();
+        // console.log(res)
+        const url = URL.createObjectURL(new Blob([res]));
+        const aTag = document.createElement('a')
+        aTag.href = url
+        aTag.setAttribute('download', `DanhsachKhoaLuan_${MaKLTN}.xlsx`)
+        document.body.appendChild(aTag)
+        aTag.click();
+        aTag.remove();
 
     }
 
