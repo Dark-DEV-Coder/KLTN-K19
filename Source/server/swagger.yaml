@@ -4076,7 +4076,7 @@ paths:
             }
       security:
         - ApiKeyAuth: []
-  /admin/dk-thuc-tap/ExportFileExcelDsSVDKTT/{MaKLTT}:
+  /admin/dk-thuc-tap/ExportFileExcelDsSVDKTT/{MaDKTT}:
     get:
       tags:
         - "DangKyThucTap"
@@ -4085,7 +4085,7 @@ paths:
         - application/json
       parameters:
         - in: path
-          name: MaKLTT
+          name: MaDKTT
           type: string
           required: true
           description: Mã đăng ký thực tập
