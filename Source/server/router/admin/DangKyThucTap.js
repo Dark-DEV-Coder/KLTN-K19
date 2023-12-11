@@ -738,16 +738,16 @@ DangKyThucTapAdminRoute.post('/ImportDSSinhVienDKTT/:MaDKTT', createThucTapDir, 
 })
 
 /**
- * @route GET /api/admin/dk-thuc-tap/ExportFileExcelDsSVDKTT/{MaKLTT}
+ * @route GET /api/admin/dk-thuc-tap/ExportFileExcelDsSVDKTT/{MaDKTT}
  * @description Export file danh sách công ty và sinh viên đăng ký thực tập
  * @access public
  */
-DangKyThucTapAdminRoute.get('/ExportFileExcelDsSVDKTT/:MaKLTT', async (req, res) => {
+DangKyThucTapAdminRoute.get('/ExportFileExcelDsSVDKTT/:MaDKTT', async (req, res) => {
     try{
-        const { MaKLTT } = req.params;
+        const { MaDKTT } = req.params;
         const now = new Date();
 
-        const dktt = await DangKyThucTap.findOne({ MaKLTT: MaKLTT }).populate([
+        const dktt = await DangKyThucTap.findOne({ MaDKTT: MaDKTT }).populate([
             {
                 path: "CongTyTrongDS",
                 select: "DangKy",
