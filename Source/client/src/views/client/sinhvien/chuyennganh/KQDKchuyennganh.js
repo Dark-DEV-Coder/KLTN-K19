@@ -43,7 +43,7 @@ const KQDKchuyennganh = () => {
     const getDetailDSSV = async (MaDKCN, manganh, machuyennganh, setState) => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDetailDSSVChuyenNganh(headers, MaDKCN, manganh, machuyennganh);
-        console.log(res)
+        // console.log(res)
         if (res && res.data) {
             setState(res.data)
         }

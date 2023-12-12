@@ -93,7 +93,7 @@ const TableKhoaLuan = (props) => {
 
     const table = useMantineReactTable({
         columns,
-        data: listData_khoaluan,
+        data: listData_khoaluan.reverse(),
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',

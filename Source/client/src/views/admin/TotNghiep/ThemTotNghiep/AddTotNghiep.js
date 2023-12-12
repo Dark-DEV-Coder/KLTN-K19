@@ -17,7 +17,11 @@ const AddTotNghiep = () => {
     const handleAddTotNghiep = async () => {
         const headers = { 'x-access-token': accessToken };
         if (!headers || !MaTN || !Ten || !NienKhoa) {
-            toast.error("Vui lòng điền đầy đủ dữ liệu")
+            toast.error("Vui lòng điền đầy đủ dữ liệu !")
+            return
+        }
+        if (!FilePDF) {
+            toast.error("Vui lòng chọn file danh sách sinh viên !")
             return
         }
         let value_canhbao = new FormData();
@@ -48,7 +52,7 @@ const AddTotNghiep = () => {
     }
     const onChangeFile = (event, setSL) => {
         const file = event.target.files[0];
-        file.preview = URL.createObjectURL(file)
+        // file.preview = URL.createObjectURL(file)
         setSL(file)
     }
 

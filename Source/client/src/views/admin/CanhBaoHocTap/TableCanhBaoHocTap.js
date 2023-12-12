@@ -120,7 +120,7 @@ const TableCanhBaoHocTap = (props) => {
 
     const table = useMantineReactTable({
         columns,
-        data: listData_canhbao,
+        data: listData_canhbao.reverse(),
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',

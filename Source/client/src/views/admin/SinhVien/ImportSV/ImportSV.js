@@ -6,7 +6,7 @@ import * as React from 'react';
 import { fetchImportDSSVSinhVien } from "../../GetData"
 import { toast } from "react-toastify";
 const ImportSV = () => {
-
+    let navigate = useNavigate();
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     const [captaikhoan, SetCaptaikhoan] = useState('Tạo tài khoản')
     const [matkhau, SetMatkhau] = useState('')
@@ -21,17 +21,16 @@ const ImportSV = () => {
         value_dssv.append("CapTaiKhoan", captaikhoan);
         value_dssv.append("MatKhauMacDinh", matkhau);
         value_dssv.append("FileExcel", fileSV);
-        // let res = await fetchImportDSSVSinhVien(headers, value_dssv)
-        // console.log("res: ", res)
-        // if (res.status === true) {
-        //     toast.success(res.message)
-        //     navigate("/admin/nganhhoc")
-        //     return;
-        // }
-        // if (res.status === false) {
-        //     toast.error(res.message)
-        //     return;
-        // }
+        let res = await fetchImportDSSVSinhVien(headers, value_dssv)
+        if (res.status === true) {
+            toast.success(res.message)
+            navigate("/admin/sinhvien")
+            return;
+        }
+        if (res.status === false) {
+            toast.error(res.message)
+            return;
+        }
     }
 
     const onChangeInputSL = (event, SetSL) => {
@@ -40,9 +39,9 @@ const ImportSV = () => {
     }
     const onChangeFile = (event, setSL) => {
         const file = event.target.files[0];
-        console.log(file)
+        // console.log(file)
         // img.preview = URL.createObjectURL(img)
-        // setSL(img)
+        setSL(file)
     }
     const onChangeSelect = (event, SetSelect) => {
         let changeValue = event.target.value;

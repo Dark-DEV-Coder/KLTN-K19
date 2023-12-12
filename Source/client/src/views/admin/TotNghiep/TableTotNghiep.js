@@ -102,7 +102,7 @@ const TableTotNghiep = (props) => {
 
     const table = useMantineReactTable({
         columns,
-        data: listData_TN,
+        data: listData_TN.reverse(),
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',

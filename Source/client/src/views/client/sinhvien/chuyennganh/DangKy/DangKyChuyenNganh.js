@@ -32,8 +32,6 @@ const DangKyChuyenNganh = () => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDetailSinhVien(headers, MaSo);
         let res2 = await fetchDetailChuyenNganh(headers);
-        console.log(res)
-        console.log(res2)
         if (res && res.data && res2 && res2.data) {
             setDKCN(res2.data)
             setMaDKCN(res2.data.MaDKCN)
@@ -66,17 +64,17 @@ const DangKyChuyenNganh = () => {
 
 
     const handleDangKyCN = async () => {
-        console.log()
+        // console.log()
         const headers = { 'x-access-token': accessToken };
         if (!headers || !chuyennganh) {
             toast.error("Vui lòng chọn lại chuyên ngành một lần nữa !")
             return;
         }
         let huyDky = await fetchHuyDkyChuyenNganh(headers, MaDKCN, SinhVien.MaSV, manganh, chuyennganh)
-        console.log(huyDky)
+        // console.log(huyDky)
         if (huyDky.status === true) {
             let res = await fetchDkyChuyenNganh(headers, MaDKCN, SinhVien.MaSV, manganh, chuyennganh)
-            console.log("DK: ", res)
+            // console.log("DK: ", res)
             if (res.status === true) {
                 toast.success(res.message)
                 navigate("/chuyennganh/ds-sinhvien")

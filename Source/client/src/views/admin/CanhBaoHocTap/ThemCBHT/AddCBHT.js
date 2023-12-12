@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import * as React from 'react';
 import "./AddCBHT.scss"
 import { toast } from "react-toastify";
-import { fetchAddCanhBao } from "../../GetData"
+import { fetchAddCanhBao, fetchImportDSSVSinhVien } from "../../GetData"
 const AddCBHT = () => {
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     let navigate = useNavigate();
@@ -31,6 +31,7 @@ const AddCBHT = () => {
         value_canhbao.append("KetQuaDRL", KetQuaDRL);
         value_canhbao.append("FileExcelPDF", FileExcelPDF);
         let res = await fetchAddCanhBao(headers, value_canhbao)
+        console.log(res)
         if (res.status === true) {
             toast.success(res.message)
             navigate("/admin/canhbaohoctap")
@@ -53,7 +54,7 @@ const AddCBHT = () => {
     }
     const onChangeFile = (event, setSL) => {
         const file = event.target.files[0];
-        file.preview = URL.createObjectURL(file)
+        // file.preview = URL.createObjectURL(file)
         setSL(file)
     }
 
