@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 import * as React from 'react';
 import { toast } from "react-toastify";
-import { fetchAddDangKyCN, fetchAddChuyenNganhDangKyCN } from "../../GetData"
+import { fetchAddDangKyCN, fetchAddChuyenNganhDangKyCN, fetchImportDSSVSinhVien } from "../../GetData"
 const AddDKCN = () => {
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     let navigate = useNavigate();
@@ -28,41 +28,25 @@ const AddDKCN = () => {
 
     const handleAddDangKyCN = async () => {
         const headers = { 'x-access-token': accessToken };
-        if (!headers || !maDKCN || !tenDKCN || !khoaDKCN) {
+        if (!headers || !maDKCN || !tenDKCN || !khoaDKCN || !matkhau) {
             toast.error("Vui lòng điền đầy đủ dữ liệu !")
             return
         }
-        // if (!danhsachSV) {
-        //     toast.error("Vui lòng chọn file dữ liệu danh sách sinh viên !")
-        //     return
-        // }
+        if (!danhsachSV) {
+            toast.error("Vui lòng chọn file dữ liệu danh sách sinh viên !")
+            return
+        }
         const ngayBD = new Date(tgbd);
         const ngayKT = new Date(tgkt);
         let res = await fetchAddDangKyCN(headers, maDKCN, tenDKCN, khoaDKCN, ngayBD, ngayKT)
-        if (res.status === true) {
-            if (sl_httt !== 0) {
-                let res2 = await fetchAddChuyenNganhDangKyCN(headers, maDKCN, "DCT", "HTTT", sl_httt)
-            }
-            if (sl_khmt !== 0) {
-                let res2 = await fetchAddChuyenNganhDangKyCN(headers, maDKCN, "DCT", "KHMT", sl_khmt)
-                // AddSoLuongChuyenNganh("DCT", "KHMT", sl_khmt)
-            }
-            if (sl_ktpm !== 0) {
-                let res2 = await fetchAddChuyenNganhDangKyCN(headers, maDKCN, "DCT", "KTPM", sl_ktpm)
-                // AddSoLuongChuyenNganh("DCT", "KTPM", sl_ktpm)
-            }
-            if (sl_mmt !== 0) {
-                let res2 = await fetchAddChuyenNganhDangKyCN(headers, maDKCN, "DCT", "MMT", sl_mmt)
-                // AddSoLuongChuyenNganh("DCT", "MMT", sl_mmt)
-            }
-            if (sl_ltw !== 0) {
-                let res2 = await fetchAddChuyenNganhDangKyCN(headers, maDKCN, "DKP", "LTW", sl_ltw)
-                // AddSoLuongChuyenNganh("DKP", "LTW", sl_ltw)
-            }
-            if (sl_ltud !== 0) {
-                let res2 = await fetchAddChuyenNganhDangKyCN(headers, maDKCN, "DKP", "LTUD", sl_ltud)
-                // AddSoLuongChuyenNganh("DKP", "LTUD", sl_ltud)
-            }
+
+        let value_dssv = new FormData();
+        value_dssv.append("CapTaiKhoan", "Tạo tài khoản");
+        value_dssv.append("MatKhauMacDinh", matkhau);
+        value_dssv.append("FileExcel", danhsachSV);
+        let res2 = await fetchImportDSSVSinhVien(headers, value_dssv)
+        console.log(res2)
+        if (res.status === true && res2.status === true) {
             toast.success(res.message)
             navigate("/admin/dkychuyennganh")
             return;
@@ -87,6 +71,12 @@ const AddDKCN = () => {
     const onChangeInputSL_DKCN = (event, SetSL) => {
         let changeValue = event.target.value;
         SetSL(changeValue);
+    }
+    const onChangeFile = (event, setSL) => {
+        const file = event.target.files[0];
+        // console.log(file)
+        // img.preview = URL.createObjectURL(img)
+        setSL(file)
     }
 
     // check dữ liệu
@@ -150,7 +140,7 @@ const AddDKCN = () => {
                         <div className="form-group col-md-6">
                             <div className="custom-file">
                                 <label className="inputDKCN" htmlFor="inputDSSVDKCN">Danh sách sinh viên</label>
-                                <input type="file" className="form-control file" id="inputDSSVDKCN" placeholder="Điền niên khóa" onChange={(event) => onChangeInputSL(event, SetDanhsachSV)} onBlur={() => checkdulieu(danhsachSV, SetCheckdulieudanhsach)} />
+                                <input type="file" accept=".xlsx" className="form-control file" id="inputDSSVDKCN" placeholder="Điền niên khóa" onChange={(event) => onChangeFile(event, SetDanhsachSV)} onBlur={() => checkdulieu(danhsachSV, SetCheckdulieudanhsach)} />
                                 <div className="invalid-feedback" style={{ display: checkdulieudanhsach ? 'none' : 'block' }}>Vui lòng chọn file danh sách sinh viên </div>
                                 <div className="invalid-feedback" style={{ display: 'block', color: 'blue' }}>Chỉ nhận file có đuôi xlsx,.. </div>
 

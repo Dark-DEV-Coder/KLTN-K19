@@ -14,7 +14,7 @@ const ThongTinDotThucTap = () => {
     const getDetailThucTap = async () => {
         const headers = { 'x-access-token': accessToken };
         let ress = await fetchDetailThucTap(headers)
-        console.log("DetailThucTap ", ress)
+        // console.log("DetailThucTap ", ress)
         if (ress && ress.data) {
             setThuctap(ress.data)
             setListcty(ress.data.CongTyTrongDS)

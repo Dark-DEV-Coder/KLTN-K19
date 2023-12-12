@@ -111,7 +111,7 @@ const TableThucTap = (props) => {
 
     const table = useMantineReactTable({
         columns,
-        data: listData,
+        data: listData.reverse(),
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',

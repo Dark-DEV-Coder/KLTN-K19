@@ -63,6 +63,7 @@ const ChiTietTotNghiep = () => {
     const getDetailTotNghiep = async () => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDetailTotNghiep(headers, totnghiep.MaTN);
+        // console.log(res)
         if (res && res.data) {
             setMaTN(res.data.MaTN)
             setTen(res.data.Ten)
@@ -74,6 +75,7 @@ const ChiTietTotNghiep = () => {
     const getStatisticalTotNghiep_SL = async (thongketheo, nganh) => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchStatisticalTotNghiep(headers, totnghiep.MaTN, thongketheo, nganh, "Tốt nghiệp");
+        console.log(res)
         if (res && res.data && res.data.length > 0) {
             let ds_khoa = [];
             let ds_totnghiep = [];

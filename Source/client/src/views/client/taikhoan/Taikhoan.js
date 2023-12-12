@@ -35,7 +35,7 @@ const Taikhoan = () => {
     const getDetailGiangVien = async (MaSo) => {
         const headers = { 'x-access-token': accessToken };
         let res = await fetchDetailGiangVien(headers, MaSo);
-        console.log("GV: ", res)
+        // console.log("GV: ", res)
         if (res && res.data) {
             setMaso(res.data.MaGV)
             setHolot(res.data.HoGV)
@@ -127,7 +127,7 @@ const Taikhoan = () => {
             value_giangvien.append("TrinhDo", trinhdo);
             value_giangvien.append("Hinh", Hinh);
             let res = await fetchEditGiangVien(headers, maso, value_giangvien)
-            console.log(res)
+            // console.log(res)
             if (res.status === true) {
                 toast.success(res.message)
                 navigate("/taikhoan")

@@ -109,7 +109,7 @@ const TableDKiChuyenNganh = (props) => {
 
     const table = useMantineReactTable({
         columns,
-        data: listData_dkchuyennganh,
+        data: listData_dkchuyennganh.reverse(),
         enableRowSelection: true,
         columnFilterDisplayMode: 'popover',
         paginationDisplayMode: 'pages',
