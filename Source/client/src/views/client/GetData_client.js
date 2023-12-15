@@ -48,9 +48,9 @@ export { fetchDetailGiangVien };
 
 //Sửa thông tin Giảng viên - lỗi
 const fetchEditGiangVien = (headers, MaGV, data) => {
-    for (const pair of data.entries()) {
-        console.log(pair[0] + ": " + pair[1]);
-    }
+    // for (const pair of data.entries()) {
+    //     console.log(pair[0] + ": " + pair[1]);
+    // }
     // console.log(data.HoGV)
     return axios.post(`giang-vien/ChinhSuaThongTin/${MaGV}`, data, { headers });
 }
