@@ -258,3 +258,15 @@ const fetchSinhVienHuyDangKyThucTap = (headers, MaDKTT, MaSV) => {
     }, { headers })
 }
 export { fetchSinhVienHuyDangKyThucTap };
+
+// Get khóa luận các năm
+const fetchKhoaLuanCacNam = (headers) => {
+    return axios.get(`khoa-luan-tot-nghiep/DSKLDuocCongBo`, { headers })
+}
+export { fetchKhoaLuanCacNam };
+
+// Get khóa luận các năm
+const fetchDetailKhoaLuanCacNam = (headers, MaKLTN) => {
+    return axios.get(`khoa-luan-tot-nghiep/ChiTietDSDeTaiCongBo/${MaKLTN}`, { headers })
+}
+export { fetchDetailKhoaLuanCacNam };

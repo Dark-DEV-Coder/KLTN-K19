@@ -2,36 +2,47 @@
 import "./KhoaLuanCacNam.scss"
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { fetchDetailKhoaLuan } from "../../../GetData_client"
+import { fetchDetailKhoaLuan, fetchKhoaLuanCacNam, fetchDetailKhoaLuanCacNam } from "../../../GetData_client"
 import moment from "moment";
 const KhoaLuanCacNam = () => {
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
     const [khoaluan, setKhoaluan] = useState({})
     const [detai, setKDetai] = useState([])
+
+    const [dsKLCongBo, setDsKLCongBo] = useState([])
+    const [maKLTN, setMaKLTN] = useState("")
     // component didmount
     useEffect(() => {
-        getDetailKhoaLuan();
+        getDSKhoaLuanCongBo();
     }, []);
-    const getDetailKhoaLuan = async () => {
+    const getDSKhoaLuanCongBo = async () => {
         const headers = { 'x-access-token': accessToken };
-        let res = await fetchDetailKhoaLuan(headers);
-        // console.log(res)
+        let res = await fetchKhoaLuanCacNam(headers);
         if (res && res.data) {
-            setKhoaluan(res.data)
-            setKDetai(res.data.DSDeTai)
+            setDsKLCongBo(res.data)
+            setMaKLTN(res.data[0].MaKLTN)
+            let res2 = await fetchDetailKhoaLuanCacNam(headers, res.data[0].MaKLTN);
+            if (res2 && res.data) {
+                setKDetai(res2.data.DSDeTai)
+            }
         }
     }
+    const onChangeSelect = async (event, SetSelect) => {
+        let changeValue = event.target.value;
+        SetSelect(changeValue);
 
-    // const onChangeSelect = (event, SetSelect) => {
-    //     let changeValue = event.target.value;
-    //     SetSelect(changeValue);
-    //     changeValue === 'Đã kích hoạt' ? SetListData(listData_TKGV.filter(item => item.TrangThai === 'Đã kích hoạt')) : SetListData(listData_TKGV.filter(item => item.TrangThai === 'Chưa kích hoạt'))
-    // }
+        const headers = { 'x-access-token': accessToken };
+        let res = await fetchDetailKhoaLuanCacNam(headers, changeValue);
+        if (res && res.data) {
+            setKDetai(res.data.DSDeTai)
+        }
+
+    }
 
     const isEmpty = (v) => {
         return Object.keys(v).length === 0;
     };
-    if (!isEmpty(khoaluan)) {
+    if (!isEmpty(dsKLCongBo)) {
         return (
             <div className="container-khoaluan">
                 <ol className="breadcrumb" >
@@ -41,10 +52,12 @@ const KhoaLuanCacNam = () => {
                 </ol>
                 <div className="container-tb-update">
                     <h3>Danh sách khóa luận được công bố qua các năm</h3>
-                    <select value="DANH SÁCH ĐĂNG KÝ ĐỀ TÀI KHÓA LUẬN TỐT NGHIỆP NĂM HỌC 2020-2021" className="select-btn">
-                        <option value='DANH SÁCH ĐĂNG KÝ ĐỀ TÀI KHÓA LUẬN TỐT NGHIỆP NĂM HỌC 2020-2021'>DANH SÁCH ĐĂNG KÝ ĐỀ TÀI KHÓA LUẬN TỐT NGHIỆP NĂM HỌC 2020-2021</option>
-                        <option value='DANH SÁCH ĐĂNG KÝ ĐỀ TÀI KHÓA LUẬN TỐT NGHIỆP NĂM HỌC 2022-2023'>DANH SÁCH ĐĂNG KÝ ĐỀ TÀI KHÓA LUẬN TỐT NGHIỆP NĂM HỌC 2022-2023</option>
-                        <option value='DANH SÁCH ĐĂNG KÝ ĐỀ TÀI KHÓA LUẬN TỐT NGHIỆP NĂM HỌC 2023-2024'>DANH SÁCH ĐĂNG KÝ ĐỀ TÀI KHÓA LUẬN TỐT NGHIỆP NĂM HỌC 2023-2024</option>
+                    <select value={dsKLCongBo && dsKLCongBo.length > 0 ? maKLTN : ""} className="select-btnn" onChange={(event) => onChangeSelect(event, setMaKLTN)}>
+                        {dsKLCongBo && dsKLCongBo.length > 0 && dsKLCongBo.map((item, index) => {
+                            return (
+                                <option value={item.MaKLTN}>{item.Ten}</option>
+                            )
+                        })}
                     </select>
                 </div>
                 <div className="container-dky">
@@ -178,10 +191,11 @@ const KhoaLuanCacNam = () => {
                 <ol className="breadcrumb" >
                     <li className="breadcrumb-item"><a href="#">Trang chủ</a></li>
                     <li className="breadcrumb-item">Khóa luận tốt nghiệp</li>
+                    <li className="breadcrumb-item active">Danh sách khóa luận được công bố các năm</li>
                 </ol>
                 {/* Thông tin đợt DKCN */}
                 <div className="container-tb-update">
-                    <h3>Hiện tại không có đợt đăng ký khóa luận tốt nghiệp nào được mở</h3>
+                    <h3>Danh sách khóa luận được công bố các năm rỗng</h3>
                 </div>
             </div >
         )

@@ -547,6 +547,29 @@ export { fetchUpdateDangKyCN };
 // Đăng ký chuyên ngành
 
 //Khóa luận
+
+// Ghim khóa luận công bố
+const fetchGhimKhoaLuan = (headers, MaKLTN) => {
+    return axios.post(`admin/khoa-luan-tot-nghiep/CongBoDeTaiKhoaLuan/${MaKLTN}`, {
+        MaKLTN: MaKLTN,
+    }, { headers });
+}
+export { fetchGhimKhoaLuan };
+
+// Bỏ ghim khóa luận công bố
+const fetchBoGhimKhoaLuan = (headers, MaKLTN) => {
+    return axios.post(`admin/khoa-luan-tot-nghiep/HuyCongBoDeTaiKhoaLuan/${MaKLTN}`, {
+        MaKLTN: MaKLTN,
+    }, { headers });
+}
+export { fetchBoGhimKhoaLuan };
+
+// Import kết quả khóa luận
+const fetchImportKQKhoaLuan = (headers, MaKLTN, data) => {
+    return axios.post(`admin/khoa-luan-tot-nghiep/ImportKetQuaKLTN/${MaKLTN}`, data, { headers });
+}
+export { fetchImportKQKhoaLuan };
+
 //Get List Khóa luận
 const fetchAllKhoaLuan = (headers) => {
     return axios.get('admin/khoa-luan-tot-nghiep/DanhSachKLTN', { headers });
